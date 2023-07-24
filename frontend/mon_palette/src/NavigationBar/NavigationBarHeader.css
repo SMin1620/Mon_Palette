@@ -5,20 +5,34 @@
   left: 0;
   right: 0;
   top: 0;
+  margin-top: 1.5em;
 }
-
+.navigationBar_left {
+  margin-top: auto;
+  margin-left: 1em;
+}
 .navigationBar_right {
   display: flex;
-  justify-content: space-between;
+  margin-right: 1em;
 }
 
-.navigation_menu > :hover {
-  cursor: pointer;
+.navigationBar_right_right {
+  margin-top: auto;
+  margin-left: 1em;
+}
+
+.navigationBar_right_left {
+  margin-top: auto;
 }
 
 .navigationBar_center > a {
   text-decoration: none;
-  color: black
+  color: black;
+}
+
+.navigationBar_center > a > h3{
+  margin: 0;
+  color: #D72B67
 }
 
 .page {
@@ -27,7 +41,7 @@
   position: absolute;
   top: 0;
   right: 100%;
-  background-color: skyblue;
+  background-color: white;
   transition: right 0.8s ease;
   z-index: 100;
 }
@@ -39,5 +53,30 @@
 .modal_top {
   display: flex;
   justify-content: space-between;
-  border-bottom: 0.5px solid gray;
+  border-bottom: 0.5px solid black;
+}
+
+.modal_left {
+  margin-top: 5%;
+  margin-left: 1em;
+}
+
+.mordal_back {
+  border: 1px solid black;  
+  border-radius: 50%;
+}
+
+.modal_center {
+  margin-right: 5em;
+}
+
+.modal_body {
+  margin-left: 2em;
+}
+
+.modal_body > h1 {
+  font-size: 70px;
+  font-weight: 900;
+  color: #D72B67;
+  margin-top: 1rem;
 }
