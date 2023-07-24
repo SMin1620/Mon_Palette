@@ -20,12 +20,7 @@ public class Hashtag {
     @Column(name = "hashtag_id")
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String name;
 
-    private LocalDateTime createAt;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "feed_id")
-    private Feed feed;
 }
