@@ -1,37 +1,49 @@
 import React from 'react';
 import './NavigationBarBottom.css'
+import { Link } from 'react-router-dom';
 
 
-import HomeIcon from '@mui/icons-material/Home';
-import FireIcon from '@mui/icons-material/LocalFireDepartment';
-import PhotoSizeSelectActualIcon from '@mui/icons-material/PhotoSizeSelectActual';
-import LocalMallIcon from '@mui/icons-material/LocalMall';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
+import FireIcon from '@mui/icons-material/LocalFireDepartmentOutlined';
+import PhotoSizeIcon from '@mui/icons-material/PhotoSizeSelectActualOutlined';
+import LocalMallOutlinedIcon from '@mui/icons-material/LocalMallOutlined';
+import PermIdentityOutlinedIcon from '@mui/icons-material/PermIdentityOutlined';
+
 
 
 function NavigationBarBottom() {
   return (
     <div className="navigationbar_bottom">
-      <div className="nav_bottom_challenge">
-        <FireIcon />
+      
+      <div className="nav_bottom_icons">
+        <Link>
+          <FireIcon sx={{ fontSize: 30 }}/>
+        </Link>
       </div>
 
-      <div className="nav_bottom_feed">
-        <PhotoSizeSelectActualIcon/>
+      <div className="nav_bottom_icons">
+        <Link>
+          <PhotoSizeIcon sx={{ fontSize: 30 }}/>
+        </Link>
       </div>
 
-      <div className="nav_bottom_home">
-        <HomeIcon />
+      <div className="nav_bottom_icons">
+        <Link>
+          <HomeOutlinedIcon sx={{ fontSize: 30 }}/>
+        </Link>
       </div>
 
-      <div className="nav_bottom_shop">
-        <LocalMallIcon />
+      <div className="nav_bottom_icons">
+        <Link>
+          <LocalMallOutlinedIcon sx={{ fontSize: 30 }}/>
+        </Link>
       </div>
 
-      <div className="nav_bottom_myPage">
-        <AccountCircleIcon />
+      <div className="nav_bottom_icons">
+        <Link>
+          <PermIdentityOutlinedIcon sx={{ fontSize: 30 }}/>
+        </Link>
       </div>
-
     </div>
   );
 }
