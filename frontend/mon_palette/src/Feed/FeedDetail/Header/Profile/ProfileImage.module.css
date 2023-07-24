@@ -1,0 +1,13 @@
+/* profile.css */
+.profile-image {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    overflow: hidden;
+  }
+  
+  .profile-image img {
+    width: 100%;
+    height: auto;
+  }
+  
