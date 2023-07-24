@@ -1,11 +1,15 @@
 package com.palette.palette.domain.feed.entity;
 
+import com.palette.palette.domain.hashtag.entity.Hashtag;
 import com.palette.palette.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.cglib.core.Local;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 @Getter
 @Setter
@@ -21,17 +25,22 @@ public class Feed {
     @Column(name = "feed_id")
     private Long id;
 
-    @Column(nullable = false)
-    private String image;
+    // 피드 이미지 리스트
+    @OneToMany(mappedBy = "feed")
+    private List<FeedImage> feedImages = new ArrayList<>();
 
-    // 해시태그 컬럼 추가 해야함.
-
-    // 좋아요 컬럼 추가 해야함.
-
-    // 유저 - 피드
+    // 유저 - 피드 :: 양방향
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
+
+    // 좋아요 컬럼
+
+    // 댓글 - 피드 추가해야함.
+
+    // 피드 - 해시태그 :: 양방향
+    @OneToMany(mappedBy = "feed")
+    private List<Hashtag> hashtags;
 
     private LocalDateTime createAt;
 
