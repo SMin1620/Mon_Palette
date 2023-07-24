@@ -1,0 +1,11 @@
+.navigationbar_bottom {
+  display: flex;
+  justify-content: space-between;
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3em;
+  border: 1px solid black;
+  z-index: -1;
+}
