@@ -26,7 +26,7 @@ public class Feed {
     private Long id;
 
     // 피드 이미지 리스트
-    @OneToMany(mappedBy = "feed")
+    @OneToMany(mappedBy = "feed", cascade = CascadeType.ALL)
     private List<FeedImage> feedImages = new ArrayList<>();
 
     // 유저 - 피드 :: 양방향
@@ -39,7 +39,7 @@ public class Feed {
     // 댓글 - 피드 추가해야함.
 
     // 피드 - 해시태그 :: 양방향
-    @OneToMany(mappedBy = "feed")
+    @OneToMany(mappedBy = "feed", cascade = CascadeType.ALL)
     private List<Hashtag> hashtags;
 
     private LocalDateTime createAt;
