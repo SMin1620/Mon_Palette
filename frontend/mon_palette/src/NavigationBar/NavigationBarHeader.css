@@ -1,0 +1,43 @@
+.navigationBar_header {
+  display: flex;
+  justify-content: space-between;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+}
+
+.navigationBar_right {
+  display: flex;
+  justify-content: space-between;
+}
+
+.navigation_menu > :hover {
+  cursor: pointer;
+}
+
+.navigationBar_center > a {
+  text-decoration: none;
+  color: black
+}
+
+.page {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  right: 100%;
+  background-color: skyblue;
+  transition: right 0.8s ease;
+  z-index: 100;
+}
+
+.show {
+  right: 0;
+}
+
+.modal_top {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 0.5px solid gray;
+}
