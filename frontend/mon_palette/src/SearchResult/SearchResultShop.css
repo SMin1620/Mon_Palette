@@ -1,0 +1,19 @@
+.search_result_shop_wrap {
+  column-count: 2;
+  column-gap: 1em;
+}
+
+.search_result_shop_container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1em;
+}
+
+.search_result_shop_item {
+  display: inline-block;
+  border: 1px solid black;
+}
+
+.search_result_shop_item > img {
+  background-size: contain;
+}
