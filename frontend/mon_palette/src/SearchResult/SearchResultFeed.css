@@ -1,0 +1,21 @@
+.search_result_feed_wrap {
+    column-count: 2;
+    column-gap: 1em;
+    margin: 0 1em;
+    margin-top: 1em;
+  }
+  
+  .search_result_feed_container {
+    justify-content: center;
+  }
+  
+  .search_result_feed_item {
+    display: inline-block;
+    border: 1px solid black;
+    background-color: skyblue;
+    margin-bottom: 1em;
+  }
+  
+  .search_result_feed_item img{
+    width: 100%;
+  }

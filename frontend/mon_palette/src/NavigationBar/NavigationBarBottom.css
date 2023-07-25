@@ -7,8 +7,8 @@
   bottom: 0;
   height: 3em;
   border-top: 0.5px solid black;
-  z-index: -1;
   padding: 0 1rem;
+  background-color: white;
 }
 
 .nav_bottom_icons {
