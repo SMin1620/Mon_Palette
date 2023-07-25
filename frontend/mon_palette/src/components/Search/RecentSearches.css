@@ -1,0 +1,30 @@
+.recent-searches {
+    margin-top: 20px;
+    text-align: start;
+  }
+  
+.recent-searches h3 {
+font-size: 18px;
+font-weight: bold;
+text-align: start;
+}
+
+.recent-searches ul {
+list-style: none;
+padding: 0;
+display: flex;
+flex-wrap: wrap;
+}
+
+.recent-searches ul li {
+padding: 2px 8px;
+background-color: #f2f2f2;
+border-radius: 4px;
+}
+  
+.recent-searches ul li button {
+    padding: 0px 0px 0px 20px;
+    background-color: #f2f2f2;
+    color: black;
+
+}
