@@ -1,6 +1,7 @@
 package com.palette.palette.domain.feed.entity;
 
 import com.palette.palette.domain.feed.dto.feed.FeedReqDto;
+import com.palette.palette.domain.feed.dto.image.FeedImageReqDto;
 import com.palette.palette.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
@@ -8,6 +9,7 @@ import lombok.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -52,25 +54,64 @@ public class Feed {
     private LocalDateTime deleteAt;
 
 
-    //  dto -> entity
-    public static Feed toEntity(FeedReqDto request) {
+    /**
+     * 피드 이미지 생성 메서드
+     */
+    public void addFeedImage(FeedImage feedImage) {
+        System.out.println("add feed image");
+        System.out.println("feedImage >>> " + feedImage.getImagePath());
+        feedImages.add(feedImage);
+        feedImage.setFeed(this);
 
-        return Feed.builder()
-                .content(request.getContent())
+        System.out.println("feedImages >>> " + this.feedImages);
+    }
+
+
+    //  dto -> entity
+    public static Feed toEntity(FeedReqDto feedReqDto, List<FeedImageReqDto> feedImageReqDtos) {
+
+        // 피드 생성
+        Feed feed = Feed.builder()
+                .content(feedReqDto.getContent())
 //                .user() // 토큰에서 가져오기
 //                .hashtags() // 해시 태그 비즈니스 로직
                 .createAt(LocalDateTime.now())
                 .isDelete(false)
                 .build();
 
+        // 피드 이미지 생성
+        List<FeedImage> feedImageList = new ArrayList<>();
+        for (FeedImageReqDto feedImageReqDto : feedImageReqDtos) {
+            FeedImage feedImage = FeedImage.builder()
+                    .feed(feed)
+                    .imagePath(feedImageReqDto.getFeedImage())
+                    .build();
+
+            feedImageList.add(feedImage);
+
+            System.out.println("feedImage >>> " + feedImage.getImagePath());
+
+        }
+
+        feed.setFeedImages(feedImageList);
+
+        return feed;
     }
 
-    /**
-     * 피드 이미지 생성 메서드
-     */
-    public void addFeedImage(FeedImage feedImage) {
-        feedImages.add(feedImage);
-        feedImage.setFeed(this);
+    public static FeedImage toEntity(String imagePath, Feed feed) {
+
+        // 피드 이미지 생성
+        FeedImage feedImage = FeedImage.builder()
+                .imagePath(imagePath)
+                .feed(feed)
+                .build();
+
+        System.out.println("image toEntity >>> " + feedImage.getImagePath());
+
+        // 피드에 피드 이미지 add
+        feed.addFeedImage(feedImage);
+
+        return feedImage;
     }
 
 }

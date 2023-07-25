@@ -33,31 +33,17 @@ public class FeedService {
      * 피드 생성
      */
     @Transactional
-    public FeedResDto feedCreate(
-            FeedReqDto feedReqDto,
-            FeedImageReqDto feedImageReqDto) {
+    public FeedResDto feedCreate(FeedReqDto feedReqDto, List<FeedImageReqDto> images) {
 
         // 피드 생성
-        Feed feed = Feed.toEntity(feedReqDto);
-        feedRepository.save(feed);
+        Feed feed = Feed.toEntity(feedReqDto, images);
 
-        // 피드 이미지 생성
-        if (feedImageReqDto.getFeedImageUrl() != null) {
+        System.out.println("feedReqDto >>> " + feedReqDto.getFeedImages());
 
-            for (String image : feedImageReqDto.getFeedImageUrl()) {
-                if (!image.equals("")) {
-
-                    // dto -> enetity
-                    FeedImage feedImage = FeedImage.builder()
-                            .imagePath(image)
-                            .feed(feed)
-                            .build();
-
-                    // feed image save
-                    feedImageRepository.save(feedImage);
-                }
-            }
+        if (feedReqDto.getFeedImages() == null) {
+            System.out.println("null");
         }
+
         feedRepository.save(feed);
 
         return FeedResDto.toDto(feed);
