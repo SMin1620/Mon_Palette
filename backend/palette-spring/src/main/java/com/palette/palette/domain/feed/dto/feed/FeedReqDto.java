@@ -1,4 +1,4 @@
-package com.palette.palette.domain.feed.dto;
+package com.palette.palette.domain.feed.dto.feed;
 
 import com.palette.palette.domain.feed.entity.FeedImage;
 import com.palette.palette.domain.user.entity.User;
@@ -12,9 +12,6 @@ import java.util.List;
 @Data
 @Builder
 public class FeedReqDto {
-
-    @NotEmpty(message = "이미지가 필요합니다.")
-    private List<FeedImage> feedImages;
 
     @NotEmpty(message = "내용이 필요합니다.")
     private String content;
