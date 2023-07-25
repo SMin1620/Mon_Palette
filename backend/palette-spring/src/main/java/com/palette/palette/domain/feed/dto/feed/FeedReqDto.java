@@ -12,11 +12,11 @@ import java.util.List;
 @Data
 @Builder
 public class FeedReqDto {
-
-    @NotEmpty(message = "내용이 필요합니다.")
+    
+    @Schema(description = "피드 내용", example = "테스트 내용")
     private String content;
 
+    @Schema(description = "태그", example = "#테스트")
     private String tagContent;
-
 
 }

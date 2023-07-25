@@ -1,5 +1,6 @@
 package com.palette.palette.domain.feed.dto.image;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Builder;
 import lombok.Data;
@@ -10,10 +11,10 @@ import java.util.List;
 
 @Data
 @Builder
-@Getter
 public class FeedImageReqDto {
 
     @NotEmpty(message = "이미지가 필요합니다.")
-    private List<MultipartFile> feedImages;
+    @Schema(description = "이미지 주소", example = "/test/test.png")
+    private List<String> feedImageUrl;
 
 }
