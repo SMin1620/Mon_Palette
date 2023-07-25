@@ -22,7 +22,7 @@ function NavigationBarBottom() {
       </div>
 
       <div className="nav_bottom_icons">
-        <Link>
+        <Link to="/feed/">
           <PhotoSizeIcon sx={{ fontSize: 30 }}/>
         </Link>
       </div>
