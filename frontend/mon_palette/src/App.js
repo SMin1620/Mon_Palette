@@ -1,11 +1,12 @@
 
-import './App.css';
 import FollowButton from './Feed/FeedDetail/Header/FollowButton/FollowButton';
+import Profile from './Feed/FeedDetail/Header/Profile/Profile';
 
 function App() {
   return (
     <div className="App">
-    <FollowButton text="follow"/>
+    <Profile />
+    {/* <FollowButton text="follow"/> */}
     </div>
   );
 }
