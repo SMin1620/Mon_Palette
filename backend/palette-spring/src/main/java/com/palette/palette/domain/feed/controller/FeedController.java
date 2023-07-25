@@ -34,14 +34,14 @@ public class FeedController {
 
     /**
      * 피드 생성
+     * ++ 유저 넣어야 함.
      */
     @Operation(summary = "피드 생성")
-    @PostMapping
+    @PostMapping()
     public BaseResponse feedCreate(
-            @RequestBody FeedReqDto feedReqDto,
-            @RequestBody FeedImageReqDto feedImageReqDto) {
+            @RequestBody FeedReqDto feedReqDto) {
 
         System.out.println("피드 생성 로직");
-        return BaseResponse.success(feedService.feedCreate(feedReqDto, feedImageReqDto));
+        return BaseResponse.success(feedService.feedCreate(feedReqDto, feedReqDto.getFeedImages()));
     }
 }
