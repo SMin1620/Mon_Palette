@@ -1,17 +1,12 @@
 package com.palette.palette.domain.feed.entity;
 
-import com.palette.palette.domain.feed.dto.FeedReqDto;
-import com.palette.palette.domain.feed.dto.FeedResDto;
-import com.palette.palette.domain.hashtag.entity.Hashtag;
+import com.palette.palette.domain.feed.dto.feed.FeedReqDto;
 import com.palette.palette.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.cglib.core.Local;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
 @Getter
