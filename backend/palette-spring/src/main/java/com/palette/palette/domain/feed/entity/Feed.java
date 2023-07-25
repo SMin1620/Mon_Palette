@@ -45,8 +45,8 @@ public class Feed {
     // 댓글 - 피드 추가해야함.
 
     // 피드 - 해시태그 :: 양방향
-    @OneToMany(mappedBy = "feed", cascade = CascadeType.ALL)
-    private List<Hashtag> hashtags;
+//    @OneToMany(mappedBy = "feed", cascade = CascadeType.ALL)
+//    private List<Hashtag> hashtags;
 
     private LocalDateTime createAt;
 
