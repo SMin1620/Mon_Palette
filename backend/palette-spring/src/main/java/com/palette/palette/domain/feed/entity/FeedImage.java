@@ -1,5 +1,6 @@
 package com.palette.palette.domain.feed.entity;
 
+import com.palette.palette.domain.feed.dto.image.FeedImageReqDto;
 import jakarta.persistence.*;
 import lombok.*;
 
