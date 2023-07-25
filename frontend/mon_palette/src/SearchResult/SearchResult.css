@@ -19,3 +19,7 @@
   text-decoration: none;
   color: black;
 }
+
+.search_result_body {
+  margin-bottom: 3rem;
+}
