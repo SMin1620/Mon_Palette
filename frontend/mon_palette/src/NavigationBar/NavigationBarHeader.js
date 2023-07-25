@@ -29,7 +29,9 @@ function NavigationBarHeader() {
 
         <div className="navigationBar_right">
           <div className="navigationBar_right_left">
-            <SearchIcon sx={{ fontSize: 30 }} />
+            <Link to='/search/'>
+              <SearchIcon sx={{ fontSize: 30 }} />
+            </Link>
           </div>
 
           <div className="navigationBar_right_right">
