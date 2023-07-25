@@ -1,5 +1,7 @@
 package com.palette.palette.domain.feed.entity;
 
+import com.palette.palette.domain.feed.dto.FeedReqDto;
+import com.palette.palette.domain.feed.dto.FeedResDto;
 import com.palette.palette.domain.hashtag.entity.Hashtag;
 import com.palette.palette.domain.user.entity.User;
 import jakarta.persistence.*;
@@ -8,6 +10,7 @@ import org.springframework.cglib.core.Local;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -24,6 +27,9 @@ public class Feed {
     @GeneratedValue
     @Column(name = "feed_id")
     private Long id;
+
+    @Column(nullable = false)
+    private String content;
 
     // 피드 이미지 리스트
     @OneToMany(mappedBy = "feed", cascade = CascadeType.ALL)
@@ -52,5 +58,24 @@ public class Feed {
 
 
     //  dto -> entity
+    public static Feed toEntity(FeedReqDto request) {
+
+        return Feed.builder()
+                .content(request.getContent())
+//                .user() // 토큰에서 가져오기
+//                .hashtags() // 해시 태그 비즈니스 로직
+                .createAt(LocalDateTime.now())
+                .isDelete(false)
+                .build();
+
+    }
+
+    /**
+     * 피드 이미지 생성 메서드
+     */
+    public void addFeedImage(FeedImage feedImage) {
+        feedImages.add(feedImage);
+        feedImage.setFeed(this);
+    }
 
 }
