@@ -15,7 +15,7 @@ public interface FeedRepository extends JpaRepository<Feed, Long> {
     /**
      * 피드 목록 조회 :: 삭제 여부 기분 (false)
      */
-    @Query("select f from Feed f where f.isDelete = false")
+    @Query("select f from Feed f where f.isDelete = false order by f.createAt desc")
     List<Feed> findAllByDelete();
 
 }
