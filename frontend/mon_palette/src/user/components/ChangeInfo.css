@@ -1,0 +1,76 @@
+html {
+	font-size: 16px; /* 루트 요소(HTML)의 기본 폰트 크기를 설정합니다. */
+}
+@font-face {
+	font-family: "EF_jejudoldam";
+	src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2210-EF@1.0/EF_jejudoldam.woff2")
+		format("woff2");
+	font-weight: normal;
+	font-style: normal;
+}
+.container {
+	display: flex;
+	flex-direction: column; /* 요소들을 세로 방향으로 정렬합니다. */
+	margin: 10% auto;
+	align-items: center; /* 요소들을 가운데 정렬합니다. */
+	text-align: left;
+}
+.form-group {
+	height: 2rem;
+	width: 80%; /* 300px를 rem 단위로 변환 (300 / 16 = 18.75) */
+	margin-bottom: 0.9375rem; /* 15px를 rem 단위로 변환 (15 / 16 = 0.9375) */
+	display: flex;
+	border-bottom: 0.125rem solid #e84c8b;
+	/* 요소들을 가로 방향으로 가운데 정렬합니다. */
+	justify-content: space-between;
+}
+
+label {
+	display: block;
+	font-weight: bold;
+	width: 8rem;
+}
+
+.background-container {
+	display: flex;
+	justify-content: center; /* 요소들을 가로 방향으로 가운데 정렬합니다. */
+	align-items: center; /* 요소들을 세로 방향으로 가운데 정렬합니다. */
+	width: 100%; /* 원하는 이미지 크기로 설정합니다. */
+	height: 30%; /* 원하는 이미지 크기로 설정합니다. */
+	overflow: hidden; /* 이미지가 컨테이너를 벗어나는 부분은 잘립니다. */
+}
+
+/* 이미지를 원형 모양으로 보여줍니다. */
+.background-picture {
+	width: 100%; /* 이미지를 컨테이너 크기에 맞게 조정합니다. */
+	height: 100%; /* 이미지를 컨테이너 크기에 맞게 조정합니다. */
+
+	object-fit: cover; /* 이미지가 비율을 유지하면서 컨테이너를 가득 채우도록 합니다. */
+}
+
+.profile-container {
+	display: flex;
+	justify-content: center; /* 요소들을 가로 방향으로 가운데 정렬합니다. */
+	width: 7rem; /* 원하는 크기로 조정합니다. */
+	height: 7rem; /* 원하는 크기로 조정합니다. */
+	align-items: center; /* 요소들을 세로 방향으로 가운데 정렬합니다. */
+	border-radius: 50%; /* 50%로 설정하여 이미지를 원형으로 만듭니다. */
+	overflow: hidden; /* 이미지가 컨테이너 영역을 벗어나는 부분은 잘립니다. */
+	/* 추가적인 스타일링을 원하면 여기에 작성합니다. */
+}
+
+/* 이미지를 원형 모양으로 보여줍니다. */
+.profile-picture {
+	width: 100%; /* 이미지를 컨테이너 크기에 맞게 조정합니다. */
+	height: 100%; /* 이미지를 컨테이너 크기에 맞게 조정합니다. */
+	object-fit: cover; /* 이미지가 비율을 유지하면서 컨테이너를 가득 채우도록 합니다. */
+}
+
+.arrow-icon {
+	border-radius: 50%;
+	border: 1px solid black;
+}
+
+.group-left {
+	display: flex;
+}
