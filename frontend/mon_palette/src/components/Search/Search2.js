@@ -7,9 +7,6 @@ const Search2 = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [recentSearches, setRecentSearches] = useState([]);
 
-  const handleInputChange = (e) => {
-    setSearchQuery(e.target.value);
-  };
 
   const handleSearch = () => {
     // API 통신을 수행하여 검색 결과를 가져오는 로직을 추가
@@ -36,7 +33,7 @@ const Search2 = () => {
     <div className="search-container">
       <SearchInput
         value={searchQuery}
-        onChange={handleInputChange}
+        onChange={(e) => setSearchQuery(e.target.value)}
         onSearch={handleSearch}
       />
       <RecentSearches
