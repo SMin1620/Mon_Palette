@@ -1,5 +1,6 @@
 package com.palette.palette.domain.feed.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.palette.palette.domain.feed.dto.image.FeedImageReqDto;
 import jakarta.persistence.*;
 import lombok.*;
@@ -22,7 +23,8 @@ public class FeedImage {
     @Column(nullable = false)
     private String imagePath;
 
-    // 피드
+    // 피드 - 피드 이미지
+    @JsonIgnore // @JsonManagedReference, @JsonBackReference 를 사용해서 무한 루프 해결할 수도 있음.
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "feed_id")
     private Feed feed;
