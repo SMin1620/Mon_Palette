@@ -1,22 +1,19 @@
 package com.palette.palette.domain.feed.service;
 
-import com.palette.palette.domain.feed.dto.feed.FeedReqDto;
-import com.palette.palette.domain.feed.dto.feed.FeedResDto;
+import com.palette.palette.domain.feed.dto.detail.FeedDetailResDto;
+import com.palette.palette.domain.feed.dto.list.FeedReqDto;
+import com.palette.palette.domain.feed.dto.list.FeedResDto;
 import com.palette.palette.domain.feed.dto.image.FeedImageReqDto;
 import com.palette.palette.domain.feed.entity.Feed;
-import com.palette.palette.domain.feed.entity.FeedImage;
-import com.palette.palette.domain.feed.repository.FeedImageRepository;
 import com.palette.palette.domain.feed.repository.FeedRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -28,9 +25,13 @@ public class FeedService {
     /**
      * 피드 목록 조회
      */
-    public List<Feed> feedList(int page, int size) {
+    public List<FeedResDto> feedList(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        return feedRepository.findAllByDelete(pageable).getContent();
+        List<FeedResDto> feeds = feedRepository.findAllByDelete(pageable).getContent().stream()
+                .map(FeedResDto::toDto)
+                .collect(Collectors.toList());
+
+        return feeds;
     }
 
     /**
@@ -53,4 +54,15 @@ public class FeedService {
         return FeedResDto.toDto(feed);
     }
 
+    /**
+     * 피드 상세 조회
+     * @param feedId
+     */
+    public FeedDetailResDto feedDetail(Long feedId) {
+
+        Feed feed = feedRepository.findById(feedId).orElseThrow(() ->
+                new IllegalArgumentException("상세 오류 입니다."));
+
+        return FeedDetailResDto.toDto(feed);
+    }
 }
