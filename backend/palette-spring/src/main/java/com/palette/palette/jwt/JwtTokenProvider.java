@@ -3,6 +3,7 @@ package com.palette.palette.jwt;
 
 import io.jsonwebtoken.*;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,6 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import java.net.http.HttpResponse;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
@@ -144,6 +146,29 @@ public class JwtTokenProvider {
         }catch(JwtException e){
             throw new IllegalArgumentException("토큰 잘못 됨2");
         }
+    }
+
+    /**
+     * 토큰으로 회원 정보 조회
+     */
+    public String getUserEmail(String token){
+        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
+    }
+
+    // 엑세스 토큰 헤더 설정
+    public void setHeaderAccessToken(HttpServletResponse response, String accessToken){
+        response.setHeader("authorization", "Bearer " + accessToken);
+    }
+
+    // 리프레시 토큰 헤더 설정
+    public void setHeaderRefreshToken(HttpServletResponse response, String refreshToken){
+        response.setHeader("refreshToken", "Bearer " + refreshToken);
+    }
+
+    // get authentication by user email
+    public Authentication getAuthenticationByUsername(String email){
+        UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+        return new UsernamePasswordAuthenticationToken(userDetails,"",userDetails.getAuthorities());
     }
 
 }
