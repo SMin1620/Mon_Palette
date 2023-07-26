@@ -1,0 +1,63 @@
+/* LoginForm.css */
+html {
+    font-size: 16px; /* 루트 요소(HTML)의 기본 폰트 크기를 설정합니다. */
+  }
+  
+  .container {
+    margin: 50% auto;
+    width: 18.75rem; /* 300px를 rem 단위로 변환 (300 / 16 = 18.75) */
+    text-align: left;
+  }
+  
+  .form-group {
+    margin-bottom: 0.9375rem; /* 15px를 rem 단위로 변환 (15 / 16 = 0.9375) */
+  }
+  
+  label {
+    display: block;
+    font-weight: bold;
+  }
+  
+  input {
+    width: 100%;
+    padding: 0.625rem; /* 10px를 rem 단위로 변환 (10 / 16 = 0.625) */
+    border: none;
+    border-radius: 0;
+    font-size: 1rem; /* 16px를 rem 단위로 변환 (16 / 16 = 1) */
+    border-bottom: 0.125rem solid #dddddd; /* 2px를 rem 단위로 변환 (2 / 16 = 0.125) */
+  }
+  
+  input:focus {
+    outline: none;
+    border-bottom: 0.125rem solid #e84c8b;
+  }
+  
+  .button-container {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .button-container button {
+    width: 100%;
+    padding: 1.25rem 2.5rem; /* 20px, 40px를 rem 단위로 변환 (20 / 16 = 1.25, 40 / 16 = 2.5) */
+    background-color: #e84c8b;
+    color: #fff;
+    border: none;
+    border-radius: 0.3125rem; /* 5px를 rem 단위로 변환 (5 / 16 = 0.3125) */
+    font-size: 1rem;
+    cursor: pointer;
+    margin-top: 1rem;
+  }
+  
+  .link-container {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .link-container p {
+    margin: 0;
+    margin-right: 0.3125rem; /* 5px를 rem 단위로 변환 (5 / 16 = 0.3125) */
+    font-size: 0.875rem; /* 14px를 rem 단위로 변환 (14 / 16 = 0.875) */
+    color: #666;
+  }
+  
