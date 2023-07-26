@@ -66,11 +66,7 @@ public class Feed {
     }
 
 
-    /**
-     * dto -> entity
-     * @param feedReqDto
-     * @param feedImageReqDtos
-     */
+    //  dto -> entity
     public static Feed toEntity(FeedReqDto feedReqDto, List<FeedImageReqDto> feedImageReqDtos) {
 
         // 피드 생성
@@ -101,34 +97,20 @@ public class Feed {
         return feed;
     }
 
-    /**
-     * feed update
-     */
-    public static Feed update(Long feedId, FeedReqDto feedReqDto) {
+    public static FeedImage toEntity(String imagePath, Feed feed) {
 
-        return Feed.builder()
-                .content(feedReqDto.getContent())
-                .updateAt(LocalDateTime.now())
-                .feedImages(feedReqDto.getFeedImages())
+        // 피드 이미지 생성
+        FeedImage feedImage = FeedImage.builder()
+                .imagePath(imagePath)
+                .feed(feed)
                 .build();
+
+        System.out.println("image toEntity >>> " + feedImage.getImagePath());
+
+        // 피드에 피드 이미지 add
+        feed.addFeedImage(feedImage);
+
+        return feedImage;
     }
-
-//    public static FeedImage toEntity(String imagePath, Feed feed) {
-//
-//        // 피드 이미지 생성
-//        FeedImage feedImage = FeedImage.builder()
-//                .imagePath(imagePath)
-//                .feed(feed)
-//                .build();
-//
-//        System.out.println("image toEntity >>> " + feedImage.getImagePath());
-//
-//        // 피드에 피드 이미지 add
-//        feed.addFeedImage(feedImage);
-//
-//        return feedImage;
-//    }
-
-
 
 }
