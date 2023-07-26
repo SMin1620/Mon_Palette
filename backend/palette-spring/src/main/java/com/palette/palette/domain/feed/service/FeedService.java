@@ -4,10 +4,7 @@ import com.palette.palette.domain.feed.dto.detail.FeedDetailResDto;
 import com.palette.palette.domain.feed.dto.list.FeedReqDto;
 import com.palette.palette.domain.feed.dto.list.FeedResDto;
 import com.palette.palette.domain.feed.dto.image.FeedImageReqDto;
-import com.palette.palette.domain.feed.dto.update.FeedUpdateResDto;
 import com.palette.palette.domain.feed.entity.Feed;
-import com.palette.palette.domain.feed.entity.FeedImage;
-import com.palette.palette.domain.feed.repository.FeedImageRepository;
 import com.palette.palette.domain.feed.repository.FeedRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -24,7 +21,6 @@ import java.util.stream.Collectors;
 public class FeedService {
 
     private final FeedRepository feedRepository;
-    private final FeedImageRepository feedImageRepository;
 
     /**
      * 피드 목록 조회
@@ -65,9 +61,8 @@ public class FeedService {
     public FeedDetailResDto feedDetail(Long feedId) {
 
         Feed feed = feedRepository.findById(feedId).orElseThrow(() ->
-                new IllegalArgumentException("상세 조회 오류 입니다."));
+                new IllegalArgumentException("상세 오류 입니다."));
 
         return FeedDetailResDto.toDto(feed);
     }
-
 }
