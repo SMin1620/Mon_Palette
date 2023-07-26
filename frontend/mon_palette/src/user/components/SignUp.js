@@ -1,14 +1,19 @@
 import React from 'react';
 import './SignUp.css'; // 스타일 파일 임포트
+import { useNavigate } from 'react-router-dom';
 
 const SignUp = () => {
-    
+  const navigate = useNavigate()
+  const handleMoveSignUpFrom = () => {
+    navigate('/signupform')
+  }   
+
     return (
       <div className="container">
         <h2>가입 방식을</h2>
         <h2>선택해주세요</h2>
         <div className="button-container">
-          <button >Sign Up</button>
+          <button onClick={handleMoveSignUpFrom} >Sign Up</button>
         </div>
         <div className="horizontal-line-container">
             <hr />
