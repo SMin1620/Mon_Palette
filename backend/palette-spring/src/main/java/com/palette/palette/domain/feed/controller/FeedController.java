@@ -5,6 +5,7 @@ import com.palette.palette.domain.feed.dto.list.FeedReqDto;
 import com.palette.palette.domain.feed.service.FeedService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -40,7 +41,7 @@ public class FeedController {
     public BaseResponse feedCreate(
             @RequestBody FeedReqDto feedReqDto) {
 
-        System.out.println("피드 생성 로직");
+        System.out.println("피드 생성 컨트롤러");
         return BaseResponse.success(feedService.feedCreate(feedReqDto, feedReqDto.getFeedImages()));
     }
 
@@ -52,7 +53,34 @@ public class FeedController {
     public BaseResponse feedDetail(
             @RequestParam("feedId") Long feedId) {
 
-        System.out.println("피드 상세 조회 로직");
+        System.out.println("피드 상세 조회 컨트롤러");
         return BaseResponse.success(feedService.feedDetail(feedId));
+    }
+
+    /**
+     * 피드 수정
+     */
+    @Operation(summary = "피드 수정")
+    @PutMapping("/{id}")
+    public BaseResponse feedUpdate(
+            @RequestParam("feedId") Long feedId,
+            @RequestBody @Valid FeedReqDto request
+    ) {
+
+        System.out.println("피드 수정 컨트롤러");
+
+        // 사용자가 인증된 상태인지,
+        // 요청자가 작성자가 맞는지 검증하는 로직이 필요.
+
+
+        FeedReqDto feedReqDto = FeedReqDto.builder()
+                .content(request.getContent())
+                .tagContent(request.getTagContent())
+                .build();
+
+
+
+
+        return BaseResponse.success(feedService.feedUpdate(feedId, feedReqDto));
     }
 }
