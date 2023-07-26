@@ -1,12 +1,13 @@
-
-import FollowButton from './Feed/FeedDetail/Header/FollowButton/FollowButton';
-import Profile from './Feed/FeedDetail/Header/Profile/Profile';
+import React from "react";
+import Header from "./Feed/FeedDetail/Header/Header";
+import FeedContent from "./Feed/FeedDetail/FeedContent/FeedContent";
 
 function App() {
   return (
     <div className="App">
-    <Profile />
-    {/* <FollowButton text="follow"/> */}
+      <Header />
+      <FeedContent />
+    
     </div>
   );
 }
