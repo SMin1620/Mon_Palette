@@ -26,7 +26,7 @@ public class FeedService {
      * 피드 목록 조회
      */
     public List<Feed> feedList() {
-        return feedRepository.findAll();
+        return feedRepository.findAllByDelete();
     }
 
     /**
