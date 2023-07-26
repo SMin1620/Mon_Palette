@@ -1,12 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Caveat&family=Finger+Paint&display=swap');
+
 .navigationBar_header {
   display: flex;
   justify-content: space-between;
   left: 0;
   right: 0;
   top: 0;
-  margin-top: 1.5em;
+  padding-top: 1.5em;
   border-bottom: 0.5px solid black;
   background-color: white;
+  /* position: fixed; */
 }
 .navigationBar_left {
   margin-top: auto;
@@ -33,7 +36,8 @@
 
 .navigationBar_center > a > h3{
   margin: 0;
-  color: #D72B67
+  color: #D72B67;
+  font-family: 'Finger Paint', cursive;
 }
 
 .page {
