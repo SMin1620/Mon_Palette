@@ -17,8 +17,8 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@SQLDelete(sql = "UPDATE feeds SET deleteAt = true WHERE feed_id = ?")  // delete 쿼리가 발생하면 해당 쿼리가 대신 실행.
-@Where(clause = "deleteAt = false") // select 쿼리가 발생할 때, 디폴트 값으로 추가되어서 쿼리가 실행.
+@SQLDelete(sql = "UPDATE feeds SET is_delete = true, delete_at = CURRENT_TIMESTAMP WHERE feed_id = ?")  // delete 쿼리가 발생하면 해당 쿼리가 대신 실행.
+@Where(clause = "is_delete = false") // select 쿼리가 발생할 때, 디폴트 값으로 추가되어서 쿼리가 실행.
 @Entity
 @Table(name = "feeds")
 public class Feed {
@@ -52,7 +52,7 @@ public class Feed {
 
     private LocalDateTime updateAt;
 
-    private Boolean isDelete;
+    private Boolean isDelete = Boolean.FALSE;
 
     private LocalDateTime deleteAt;
 
@@ -122,6 +122,14 @@ public class Feed {
             System.out.println("feedImage >>> " + feedImage.getImagePath());
         }
         this.feedImages = feedImageList;
+        this.updateAt = LocalDateTime.now();
+    }
+
+    /**
+     * 피드 소프트 삭제
+     */
+    public void delete() {
+        this.setDeleteAt(LocalDateTime.now());
     }
 
     public static FeedImage toEntity(String imagePath, Feed feed) {

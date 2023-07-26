@@ -84,4 +84,21 @@ public class FeedController {
 
         return BaseResponse.success(feedService.feedUpdate(feedReqDto, feedImages, feedId));
     }
+
+    /**
+     * 피드 삭제
+     */
+    @Operation(summary = "피드 삭제")
+    @DeleteMapping("/{id}")
+    public BaseResponse feedDelete(
+            @RequestParam("feedId") Long feedId
+    ) {
+        try {
+            feedService.feedDelete(feedId);
+            return BaseResponse.success(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return BaseResponse.error("삭제 실패");
+        }
+    }
 }
