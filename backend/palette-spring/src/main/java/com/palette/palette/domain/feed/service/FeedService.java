@@ -8,6 +8,10 @@ import com.palette.palette.domain.feed.entity.FeedImage;
 import com.palette.palette.domain.feed.repository.FeedImageRepository;
 import com.palette.palette.domain.feed.repository.FeedRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,13 +24,13 @@ import java.util.List;
 public class FeedService {
 
     private final FeedRepository feedRepository;
-    private final FeedImageRepository feedImageRepository;
 
     /**
      * 피드 목록 조회
      */
-    public List<Feed> feedList() {
-        return feedRepository.findAllByDelete();
+    public List<Feed> feedList(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return feedRepository.findAllByDelete(pageable).getContent();
     }
 
     /**

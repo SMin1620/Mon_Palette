@@ -27,9 +27,11 @@ public class FeedController {
      */
     @Operation(summary = "피드 목록 조회")
     @GetMapping()
-    public BaseResponse feedList() {
+    public BaseResponse feedList(
+            @RequestParam("page") int page) {
 
-        return BaseResponse.success(feedService.feedList());
+        // size 조절 필요
+        return BaseResponse.success(feedService.feedList(page, 3));
     }
 
     /**
