@@ -1,0 +1,39 @@
+.navigationbar_bottom {
+  display: flex;
+  justify-content: space-between;
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3em;
+  border-top: 0.5px solid black;
+  padding: 0 1rem;
+  background-color: white;
+}
+
+.nav_bottom_icons {
+  position: relative;
+  margin-top: auto;
+  margin-bottom: 0.3rem;
+}
+
+.nav_bottom_icons > a {
+  text-decoration: none;
+  color: black;
+}
+
+.nav_bottom_icons::after {
+  content: "";
+  position: absolute;
+  width: 0px;
+  height: 40px;
+  left: -5px;
+  top: -5px;
+  border-radius: 50%;
+  background-color:#FCE7F1;
+  z-index: -1;
+}
+
+.nav_bottom_icons:hover::after {
+  width: 40px;
+}
