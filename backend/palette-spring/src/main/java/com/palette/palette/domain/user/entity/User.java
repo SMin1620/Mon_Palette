@@ -1,9 +1,11 @@
 package com.palette.palette.domain.user.entity;
 
+import com.palette.palette.domain.feed.entity.Feed;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
@@ -52,4 +54,8 @@ public class User {
     private String personalColor;
     private String profileImage;
     private String backgroundImage;
+
+    // 피드 - 유저 :: 양방향
+    @OneToMany(mappedBy = "user")
+    private List<Feed> feed;
 }
