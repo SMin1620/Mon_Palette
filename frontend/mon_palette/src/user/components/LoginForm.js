@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './LoginForm.css'; // 스타일 파일 임포트
+import { Link } from 'react-router-dom'
 
 const LoginForm = () => {
   const [email, setUsername] = useState('');
@@ -44,7 +45,9 @@ const LoginForm = () => {
         <div className="link-container">
           <p>비밀번호 재설정</p>
           <p>|</p>
-          <p>회원가입</p>
+          <Link to='/SignUp'>
+            <p>회원가입</p>
+          </Link>
         </div>
       </div>
   );
