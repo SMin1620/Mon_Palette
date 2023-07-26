@@ -11,5 +11,9 @@ import java.util.Optional;
 @Repository
 public interface FeedRepository extends JpaRepository<Feed, Long> {
 
+    /**
+     * 피드 목록 조회 :: 삭제 여부 기분 (false)
+     */
+//    List<Feed> findAllByDelete(boolean isDelete, Feed feed);
 
 }
