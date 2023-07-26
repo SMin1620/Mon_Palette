@@ -5,6 +5,8 @@ import com.palette.palette.domain.feed.dto.image.FeedImageReqDto;
 import com.palette.palette.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -15,6 +17,8 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@SQLDelete(sql = "UPDATE feeds SET deleteAt = true WHERE feed_id = ?")  // delete 쿼리가 발생하면 해당 쿼리가 대신 실행.
+@Where(clause = "deleteAt = false") // select 쿼리가 발생할 때, 디폴트 값으로 추가되어서 쿼리가 실행.
 @Entity
 @Table(name = "feeds")
 public class Feed {
