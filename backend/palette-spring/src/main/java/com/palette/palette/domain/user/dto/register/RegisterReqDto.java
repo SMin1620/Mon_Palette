@@ -28,8 +28,8 @@ public class RegisterReqDto {
     String name;
 
     @NotEmpty(message = "생일은 필수 입력입니다.")
-    @Schema(description = "생일", example = "")
-    LocalDateTime birth;
+    @Schema(description = "생일", example = "970830")
+    String birth;
 
     @NotEmpty(message = "휴대폰은 필수 입력입니다.")
     @Pattern(regexp = "^01(?:0|1|[6-9])[.-]?(\\d{3}|\\d{4})[.-]?(\\d{4})$", message = "10 ~ 11 자리의 숫자만 입력 가능합니다.")
