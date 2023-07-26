@@ -1,10 +1,10 @@
 package com.palette.palette.jwt;
 
-import io.lettuce.core.RedisConnectionException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.data.redis.RedisConnectionFailureException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -43,7 +43,7 @@ public class JwtFilter extends OncePerRequestFilter {
                 Authentication auth = jwtTokenProvider.getAuthentication(token);
                 SecurityContextHolder.getContext().setAuthentication(auth);
             }
-        }catch (RedisConnectionException e){
+        }catch (RedisConnectionFailureException e){
             e.printStackTrace();
             SecurityContextHolder.clearContext();
 //            throw new IllegalArgumentException("레디스 잘못 됨");

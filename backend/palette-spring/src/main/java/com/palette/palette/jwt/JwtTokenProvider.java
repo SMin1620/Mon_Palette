@@ -131,6 +131,22 @@ public class JwtTokenProvider {
         }
         return null;
     }
+
+    /**
+     * resolveToken
+     * http 헤더로부터 bearer 토큰을 가져옴.
+     */
+    public String resolveRefreshToken(HttpServletRequest req) {
+        String bearerToken = req.getHeader("refreshToken");
+
+        System.out.println("resolveRefreshToken >>> " + bearerToken);
+        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
+            System.out.println(bearerToken);
+            return bearerToken.substring(7);
+        }
+        return null;
+    }
+
     /**
      * validateToken
      * 토큰 정보 검증
