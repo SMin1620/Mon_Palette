@@ -1,4 +1,4 @@
-package com.palette.palette.domain.feed.dto.feed;
+package com.palette.palette.domain.feed.dto.detail;
 
 import com.palette.palette.domain.feed.entity.Feed;
 import com.palette.palette.domain.feed.entity.FeedImage;
@@ -10,13 +10,12 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class FeedResDto {
+public class FeedDetailResDto {
 
     private Long id;
 
@@ -30,23 +29,24 @@ public class FeedResDto {
 
     private LocalDateTime deleteAt;
 
-    private List<String> feedImages;
+    private List<FeedImage> feedImages;
 
     private User user;
 
     /**
      * entity -> dto
      */
-    public static FeedResDto toDto(Feed feed) {
-        return FeedResDto.builder()
+    public static FeedDetailResDto toDto(Feed feed) {
+        return FeedDetailResDto.builder()
                 .id(feed.getId())
                 .user(feed.getUser())   // 토큰에서 받아와야 함.
                 .content(feed.getContent())
                 .createAt(LocalDateTime.now())
                 .isDelete(false)
-                .feedImages(feed.getFeedImages().stream()
-                        .map(FeedImage::getImagePath)
-                        .collect(Collectors.toList()))
+                .feedImages(feed.getFeedImages())
+//                .feedImages(feed.getFeedImages().stream()
+//                        .map(FeedImage)
+//                        .collect(Collectors.toList()))
                 .build();
     }
 

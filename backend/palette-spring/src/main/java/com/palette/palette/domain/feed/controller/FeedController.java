@@ -1,13 +1,10 @@
 package com.palette.palette.domain.feed.controller;
 
 import com.palette.palette.common.BaseResponse;
-import com.palette.palette.domain.feed.dto.feed.FeedReqDto;
-import com.palette.palette.domain.feed.dto.image.FeedImageReqDto;
-import com.palette.palette.domain.feed.entity.FeedImage;
+import com.palette.palette.domain.feed.dto.list.FeedReqDto;
 import com.palette.palette.domain.feed.service.FeedService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -30,8 +27,8 @@ public class FeedController {
     public BaseResponse feedList(
             @RequestParam("page") int page) {
 
-        // size 조절 필요
-        return BaseResponse.success(feedService.feedList(page, 3));
+        // page -> 0 시작 , size -> 가져올 피드 10개
+        return BaseResponse.success(feedService.feedList(page, 10));
     }
 
     /**
@@ -45,5 +42,17 @@ public class FeedController {
 
         System.out.println("피드 생성 로직");
         return BaseResponse.success(feedService.feedCreate(feedReqDto, feedReqDto.getFeedImages()));
+    }
+
+    /**
+     * 피드 상세 조회
+     */
+    @Operation(summary = "피드 상세 조회")
+    @GetMapping("/{id}")
+    public BaseResponse feedDetail(
+            @RequestParam("feedId") Long feedId) {
+
+        System.out.println("피드 상세 조회 로직");
+        return BaseResponse.success(feedService.feedDetail(feedId));
     }
 }
