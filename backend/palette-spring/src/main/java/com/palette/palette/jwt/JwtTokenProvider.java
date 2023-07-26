@@ -96,7 +96,7 @@ public class JwtTokenProvider {
                 authentication.getName(),
                 refreshToken,
                 refreshExpirationTime,
-                TimeUnit.MICROSECONDS
+                TimeUnit.MILLISECONDS
         );
         return refreshToken;
     }
