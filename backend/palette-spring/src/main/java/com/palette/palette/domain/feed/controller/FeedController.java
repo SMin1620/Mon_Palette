@@ -1,13 +1,17 @@
 package com.palette.palette.domain.feed.controller;
 
 import com.palette.palette.common.BaseResponse;
+import com.palette.palette.domain.feed.dto.image.FeedImageResDto;
 import com.palette.palette.domain.feed.dto.list.FeedReqDto;
+import com.palette.palette.domain.feed.entity.FeedImage;
 import com.palette.palette.domain.feed.service.FeedService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Tag(name = "피드 API")
 @RestController
@@ -54,5 +58,30 @@ public class FeedController {
 
         System.out.println("피드 상세 조회 로직");
         return BaseResponse.success(feedService.feedDetail(feedId));
+    }
+
+    /**
+     * 피드 수정
+     */
+    @Operation(summary = "피드 수정")
+    @PutMapping("/{id}")
+    public BaseResponse feedUpdate(
+            @RequestParam("feedId") Long feedId,
+            @RequestBody FeedReqDto request
+    ) {
+
+        // 사용자 유효성 검사 진행해야함.
+
+
+        FeedReqDto feedReqDto = FeedReqDto.builder()
+                .content(request.getContent())
+                .tagContent(request.getTagContent())
+                .feedImages(request.getFeedImages())
+                .build();
+
+        // DB에 저장되어 있는 파일 가져오기
+        List<FeedImageResDto> feedImages = feedService.findAllByFeed(feedId);
+
+        return BaseResponse.success(feedService.feedUpdate(feedReqDto, feedImages, feedId));
     }
 }

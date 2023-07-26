@@ -97,6 +97,29 @@ public class Feed {
         return feed;
     }
 
+    /**
+     * 피드 수정
+     */
+    public void update(FeedReqDto feedReqDto, List<FeedImageReqDto> feedImages) {
+
+        // 피드 수정
+        this.content = feedReqDto.getContent();
+
+        // 피드 이미지 생성
+        List<FeedImage> feedImageList = new ArrayList<>();
+        for (FeedImageReqDto feedImageReqDto : feedImages) {
+            FeedImage feedImage = FeedImage.builder()
+                    .feed(this)
+                    .imagePath(feedImageReqDto.getFeedImage())
+                    .build();
+
+            feedImageList.add(feedImage);
+
+            System.out.println("feedImage >>> " + feedImage.getImagePath());
+        }
+        this.feedImages = feedImageList;
+    }
+
     public static FeedImage toEntity(String imagePath, Feed feed) {
 
         // 피드 이미지 생성
