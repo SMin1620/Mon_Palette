@@ -19,7 +19,7 @@ const FeedTags = () => {
       <div className="tag-input">
         <textarea
           value={tags}
-          onChange={handleChange}
+          onChange={(e) => setTags(e.target.value)}
           placeholder="태그를 입력하세요..."
         />
         <button onClick={handleAddTag}>Add Tag</button>
