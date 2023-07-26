@@ -1,6 +1,6 @@
 package com.palette.palette.domain.feed.entity;
 
-import com.palette.palette.domain.feed.dto.feed.FeedReqDto;
+import com.palette.palette.domain.feed.dto.list.FeedReqDto;
 import com.palette.palette.domain.feed.dto.image.FeedImageReqDto;
 import com.palette.palette.domain.user.entity.User;
 import jakarta.persistence.*;
@@ -9,7 +9,6 @@ import lombok.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Getter
 @Setter
