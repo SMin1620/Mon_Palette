@@ -9,7 +9,7 @@ import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNone
 import SearchIcon from '@mui/icons-material/Search';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
-function NavigationBarHeader() {
+function NavigationBarHeader(props) {
   const [showPage, setShowPage] = useRecoilState(modalState)
   const handleModal = () => {
     setShowPage(!showPage)
@@ -23,13 +23,15 @@ function NavigationBarHeader() {
 
         <div className="navigationBar_center">
           <Link to='/'>
-            <h3>Mon, Palette</h3>
+            <h3>{props.title}</h3>
           </Link>
         </div>
 
         <div className="navigationBar_right">
           <div className="navigationBar_right_left">
-            <SearchIcon sx={{ fontSize: 30 }} />
+            <Link to='/search/'>
+              <SearchIcon sx={{ fontSize: 30 }} />
+            </Link>
           </div>
 
           <div className="navigationBar_right_right">
