@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -116,5 +117,19 @@ public class FeedService {
         }
 
         return FeedUpdateResDto.toDto(feed);
+    }
+
+    /**
+     * 피드 삭제
+     * @param feedId
+     */
+    @Transactional
+    public void feedDelete(Long feedId) {
+
+        // 사용자 유효성 검사
+
+        Feed feed = feedRepository.findById(feedId).orElseThrow(() -> new IllegalArgumentException("해당 피드기 없습니다."));
+        feedRepository.deleteById(feedId);
+        feed.delete();
     }
 }
