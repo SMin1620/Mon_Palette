@@ -3,6 +3,7 @@ package com.palette.palette.domain.user.controller;
 import com.palette.palette.common.BaseResponse;
 import com.palette.palette.domain.user.dto.login.LoginReqDto;
 import com.palette.palette.domain.user.dto.register.RegisterReqDto;
+import com.palette.palette.domain.user.dto.update.PasswordUpdateReqDto;
 import com.palette.palette.domain.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -49,6 +50,26 @@ public class UserController {
         System.out.println(authorizationHeader);
         return BaseResponse.success(userService.refresh(request, response, authorizationHeader));
     }
+
+    @Operation(summary = "이메일 중복체크")
+    @GetMapping("/idcheck")
+    public BaseResponse idcheck(@RequestParam String email){
+        return BaseResponse.success(userService.emailValidation(email));
+    }
+
+    @Operation(summary = "닉네임 중복체크")
+    @GetMapping("/nicknamecheck")
+    public BaseResponse nicknamecheck(@RequestParam String nickname){
+        return BaseResponse.success(userService.nicknameValidation(nickname));
+    }
+
+    @Operation(summary = "비밀번호 수정")
+    @PutMapping("/password")
+    public BaseResponse passwordUpdate(@RequestBody @Valid PasswordUpdateReqDto password, HttpServletRequest request){
+        System.out.println("비밀번호 수정 요청");
+        return BaseResponse.success(userService.passwordUpdate(password, request));
+    }
+
 
 
 }
