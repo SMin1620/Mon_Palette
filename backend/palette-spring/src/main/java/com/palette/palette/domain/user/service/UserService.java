@@ -4,6 +4,9 @@ import com.palette.palette.domain.user.dto.login.LoginReqDto;
 import com.palette.palette.domain.user.dto.register.RegisterReqDto;
 import com.palette.palette.domain.user.dto.register.RegisterResDto;
 import com.palette.palette.domain.user.dto.token.TokenDto;
+import com.palette.palette.domain.user.dto.update.PasswordUpdateReqDto;
+import com.palette.palette.domain.user.dto.update.UpdateResDto;
+import com.palette.palette.domain.user.dto.validation.ValidationResDto;
 import com.palette.palette.domain.user.entity.User;
 import com.palette.palette.domain.user.repository.UserRepository;
 import com.palette.palette.jwt.JwtTokenProvider;
@@ -142,5 +145,40 @@ public class UserService {
                 .refreshToken(headerRefreshToken)
                 .build();
         return tokenDto;
+    }
+
+    public ValidationResDto emailValidation(String email){
+        Optional<User> emailCheck = userRepository.findByEmail(email);
+        if(emailCheck.isEmpty()){
+            return ValidationResDto.builder().check(true).build();
+        }else{
+            return ValidationResDto.builder().check(false).build();
+        }
+    }
+
+    public ValidationResDto nicknameValidation(String nickname){
+        Optional<User> nicknameCheck = userRepository.findByNickname(nickname);
+        if(nicknameCheck.isEmpty()){
+            return ValidationResDto.builder().check(true).build();
+        }else{
+            return ValidationResDto.builder().check(false).build();
+        }
+    }
+
+    /**
+     *
+     * 비밀번호 수정
+     */
+    @Transactional
+    public UpdateResDto passwordUpdate(PasswordUpdateReqDto passwordUpdateReqDto, HttpServletRequest req){
+
+        String userEmail = jwtTokenProvider.getUserEmail(jwtTokenProvider.resolveToken(req));
+        System.out.println("userEmail = " + userEmail);
+        Optional<User> user = userRepository.findByEmail(userEmail);
+        System.out.println("user = " + user);
+        user.get().updatePwd(passwordEncoder.encode(passwordUpdateReqDto.getPassword()));
+//        userRepository.save(user.get());
+//        userRepository.flush();
+        return UpdateResDto.builder().update(true).build();
     }
 }

@@ -27,13 +27,13 @@ public class User {
     @Column(unique = true, nullable = false)
     private String email;
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String password;
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String name;
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String birth;
 
     @Column(unique = true, nullable = false)
@@ -42,10 +42,13 @@ public class User {
     @Column(nullable = false)
     private String gender;
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private LocalDateTime createAt;
     private LocalDateTime modifiedAt;
+
+    @Column(nullable = false)
     private Boolean isLeave;
+
     private LocalDateTime leaveAt;
 
     @Enumerated(EnumType.STRING)
@@ -78,6 +81,7 @@ public class User {
                 .gender(request.getGender())
                 .createAt(LocalDateTime.now())
                 .role(Role.USER)
+                .isLeave(false)
                 .nickname(request.getNickname())
                 .build();
     }
@@ -91,6 +95,13 @@ public class User {
     
     public void setRefreshToken(String refreshToken) {
         this.refreshToken = refreshToken;
+    }
+
+    /**
+     * 비밀번호 수정
+     */
+    public void updatePwd(String newPwd){
+        this.password = newPwd;
     }
 
 }
