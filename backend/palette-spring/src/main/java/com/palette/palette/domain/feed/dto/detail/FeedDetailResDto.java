@@ -1,5 +1,6 @@
 package com.palette.palette.domain.feed.dto.detail;
 
+import com.palette.palette.domain.feed.dto.list.FeedUserResDto;
 import com.palette.palette.domain.feed.entity.Feed;
 import com.palette.palette.domain.feed.entity.FeedImage;
 import com.palette.palette.domain.user.entity.User;
@@ -31,7 +32,7 @@ public class FeedDetailResDto {
 
     private List<FeedImage> feedImages;
 
-    private User user;
+    private FeedUserResDto user;
 
     /**
      * entity -> dto
@@ -39,7 +40,7 @@ public class FeedDetailResDto {
     public static FeedDetailResDto toDto(Feed feed) {
         return FeedDetailResDto.builder()
                 .id(feed.getId())
-                .user(feed.getUser())   // 토큰에서 받아와야 함.
+                .user(FeedUserResDto.toDto(feed.getUser()))   // 토큰에서 받아와야 함.
                 .content(feed.getContent())
                 .createAt(LocalDateTime.now())
                 .isDelete(false)

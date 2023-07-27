@@ -5,10 +5,18 @@ import com.palette.palette.domain.feed.dto.image.FeedImageResDto;
 import com.palette.palette.domain.feed.dto.list.FeedReqDto;
 import com.palette.palette.domain.feed.entity.FeedImage;
 import com.palette.palette.domain.feed.service.FeedService;
+import com.palette.palette.domain.user.entity.User;
+import com.palette.palette.domain.user.repository.UserRepository;
+import com.palette.palette.jwt.PrincipalDetails;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,6 +29,7 @@ import java.util.List;
 public class FeedController {
 
     private final FeedService feedService;
+    private final UserRepository userRepository;
 
 
     /**
@@ -42,10 +51,25 @@ public class FeedController {
     @Operation(summary = "피드 생성")
     @PostMapping()
     public BaseResponse feedCreate(
-            @RequestBody FeedReqDto feedReqDto) {
+            @RequestBody FeedReqDto feedReqDto,
+            Authentication authentication
+    ) {
 
         System.out.println("피드 생성 로직");
-        return BaseResponse.success(feedService.feedCreate(feedReqDto, feedReqDto.getFeedImages()));
+
+//        // 인가된 사용자 정보
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+
+        System.out.println("Controller userDetails >>> " + userDetails);
+        User user = userRepository.findByEmail(userDetails.getUsername()).get();
+        System.out.println("Controller user >>> " + user);
+//
+//        // 인가된 사용자가 아닌 경우 예외 처리
+//        if (user == null) {
+//            throw new UnauthorizedException("인가된 사용자가 아닙니다.");
+//        }
+
+        return BaseResponse.success(feedService.feedCreate(feedReqDto, feedReqDto.getFeedImages(), user));
     }
 
     /**
@@ -70,9 +94,6 @@ public class FeedController {
             @RequestBody FeedReqDto request
     ) {
 
-        // 사용자 유효성 검사 진행해야함.
-
-
         FeedReqDto feedReqDto = FeedReqDto.builder()
                 .content(request.getContent())
                 .tagContent(request.getTagContent())
@@ -82,7 +103,9 @@ public class FeedController {
         // DB에 저장되어 있는 파일 가져오기
         List<FeedImageResDto> feedImages = feedService.findAllByFeed(feedId);
 
-        return BaseResponse.success(feedService.feedUpdate(feedReqDto, feedImages, feedId));
+        User user = null;   // 바꿔야함.
+
+        return BaseResponse.success(feedService.feedUpdate(feedReqDto, feedImages, feedId, user));
     }
 
     /**
@@ -93,6 +116,7 @@ public class FeedController {
     public BaseResponse feedDelete(
             @RequestParam("feedId") Long feedId
     ) {
+
         try {
             feedService.feedDelete(feedId);
             return BaseResponse.success(true);
@@ -101,4 +125,7 @@ public class FeedController {
             return BaseResponse.error("삭제 실패");
         }
     }
+
+
+
 }

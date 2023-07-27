@@ -31,7 +31,8 @@ public class FeedResDto {
 
     private List<FeedImage> feedImages;
 
-    private User user;
+    private FeedUserResDto user;
+
 
     /**
      * entity -> dto
@@ -39,7 +40,7 @@ public class FeedResDto {
     public static FeedResDto toDto(Feed feed) {
         return FeedResDto.builder()
                 .id(feed.getId())
-                .user(feed.getUser())   // 토큰에서 받아와야 함.
+                .user(FeedUserResDto.toDto(feed.getUser()))
                 .content(feed.getContent())
                 .createAt(LocalDateTime.now())
                 .isDelete(false)
