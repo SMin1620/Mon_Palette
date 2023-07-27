@@ -7,9 +7,13 @@ import Search from './Search/Search2'
 import LoginForm from './user/components/LoginForm'
 import SignUp from './user/components/SignUp'
 import SignUpForm from './user/components/SignUpForm'
+import SearchInput from './Search/SearchInput';
+import ChallengeHome from './Challenge/ChallengeHome'
 
 import { Routes, Route } from 'react-router-dom'
+
 function App() {
+  
 
   return (
     <div className="App">
@@ -25,7 +29,10 @@ function App() {
         <Route path='/signup'  element={[<NavigationBarHeader title='Sign up'/>, <SignUp/>]}/>
 
         <Route path='signupform' element={[<NavigationBarHeader title='Sign up'/>, <SignUpForm/>]}/>
+
+        <Route path='searchResult/:searchInfo' element={[<SearchInput/>, <SearchResult/>, <NavigationBarBottom/>]} />
         
+        <Route path='/challenge' element={[<NavigationBarHeader title="Challenge"/>, <ChallengeHome />, <NavigationBarBottom />]}/>
       </Routes>
     </div>
   );
