@@ -16,7 +16,7 @@ function NavigationBarBottom() {
     <div className="navigationbar_bottom">
       
       <div className="nav_bottom_icons">
-        <Link>
+        <Link to="/challenge">
           <FireIcon sx={{ fontSize: 30 }}/>
         </Link>
       </div>

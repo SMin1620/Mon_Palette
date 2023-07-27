@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './FeedImage.css';
+import styles from './FeedImage.module.css';
 
 const FeedImage = () => {
   const [selectedImages, setSelectedImages] = useState([]);
@@ -14,11 +14,11 @@ const FeedImage = () => {
   };
 
   return (
-    <div className="feed-image">
+    <div className={styles["feed-image"]}>
       <input type="file" accept="image/*" multiple onChange={handleFileChange} />
-      <div className="selected-images">
+      <div className={styles["selected-images"]}>
         {selectedImages.map((image, index) => (
-          <div key={index} className="image-item">
+          <div key={index} className={styles["image-item"]}>
             <img src={URL.createObjectURL(image)} alt={`${index}`} />
             <button onClick={() => handleRemoveImage(index)}>Remove</button>
           </div>
