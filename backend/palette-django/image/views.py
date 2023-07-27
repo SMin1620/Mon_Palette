@@ -10,6 +10,6 @@ class ImageViewSet(mixins.CreateModelMixin,
                    viewsets.GenericViewSet):
     queryset = Color.objects.all()
     serializer_class = ImageSerializer
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
     parser_classes = (MultiPartParser, FormParser)
 
