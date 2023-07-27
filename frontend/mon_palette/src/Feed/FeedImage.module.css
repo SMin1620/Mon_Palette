@@ -1,0 +1,32 @@
+.feed-image {
+    margin-bottom: 20px;
+  }
+  
+  .selected-images {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .image-item {
+    margin: 5px;
+  }
+  
+  img {
+    width: 100px;
+    height: 100px;
+  }
+  
+  button {
+    padding: 5px;
+    margin-top: 5px;
+    background-color: #ff4500;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #cc3700;
+  }
+  
