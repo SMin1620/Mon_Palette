@@ -21,8 +21,9 @@ const FeedTags = () => {
           value={tags}
           onChange={(e) => setTags(e.target.value)}
           placeholder="태그를 입력하세요..."
+          className={styles.textarea}
         />
-        <button onClick={handleAddTag}>Add Tag</button>
+        <button className={styles.button} onClick={handleAddTag}>Add Tag</button>
       </div>
       <div className={styles["tag-list"]}>
         {tagList.map((tag, index) => (
