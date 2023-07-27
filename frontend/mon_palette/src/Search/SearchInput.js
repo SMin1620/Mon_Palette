@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { recentSearchesState } from '../Atom';
 import styles from './SearchInput.module.css'
+import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 
 const SearchInput = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -24,7 +25,7 @@ const SearchInput = () => {
         onChange={(e) => setSearchQuery(e.target.value)}
       />
       <button className={styles['search-btn']} onClick={handleSearch}>
-        <img src="./Search_icon.png" alt="" />
+        <SearchOutlinedIcon />
       </button>
     </div>
   );

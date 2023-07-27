@@ -3,6 +3,7 @@ import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { recentSearchesState } from '../Atom';
 import styles from './RecentSearches.module.css'; 
 
+
 const RecentSearches = () => {
   const recentSearches = useRecoilValue(recentSearchesState);
   const setRecentSearches = useSetRecoilState(recentSearchesState);
