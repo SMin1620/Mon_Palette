@@ -8,7 +8,7 @@
   margin-bottom: 10px;
 }
 
-textarea {
+.textarea {
   flex: 1;
   height: 30px;
   resize: none;
@@ -17,7 +17,7 @@ textarea {
   border-radius: 4px;
 }
 
-button {
+.button {
   margin-left: 10px;
   padding: 5px 10px;
   background-color: #FBCFDF;
@@ -27,7 +27,7 @@ button {
   cursor: pointer;
 }
 
-button:hover {
+.button:hover {
   background-color: #FBCFDF;
 }
 
