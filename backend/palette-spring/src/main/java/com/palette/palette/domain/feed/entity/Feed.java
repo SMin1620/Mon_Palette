@@ -1,5 +1,8 @@
 package com.palette.palette.domain.feed.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.palette.palette.domain.feed.dto.list.FeedReqDto;
 import com.palette.palette.domain.feed.dto.image.FeedImageReqDto;
 import com.palette.palette.domain.user.entity.User;
@@ -38,6 +41,7 @@ public class Feed {
     // 유저 - 피드 :: 양방향
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
+//    @JsonIgnore
     private User user;
 
     // 좋아요 컬럼
@@ -71,12 +75,12 @@ public class Feed {
 
 
     //  dto -> entity
-    public static Feed toEntity(FeedReqDto feedReqDto, List<FeedImageReqDto> feedImageReqDtos) {
+    public static Feed toEntity(FeedReqDto feedReqDto, List<FeedImageReqDto> feedImageReqDtos, User user) {
 
         // 피드 생성
         Feed feed = Feed.builder()
                 .content(feedReqDto.getContent())
-//                .user() // 토큰에서 가져오기
+                .user(user)
 //                .hashtags() // 해시 태그 비즈니스 로직
                 .createAt(LocalDateTime.now())
                 .isDelete(false)
