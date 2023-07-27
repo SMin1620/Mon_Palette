@@ -1,9 +1,8 @@
 package com.palette.palette.domain.feed.dto.detail;
 
-import com.palette.palette.domain.feed.dto.list.FeedUserResDto;
+import com.palette.palette.domain.feed.dto.FeedUserResDto;
 import com.palette.palette.domain.feed.entity.Feed;
 import com.palette.palette.domain.feed.entity.FeedImage;
-import com.palette.palette.domain.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

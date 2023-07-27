@@ -1,4 +1,4 @@
-package com.palette.palette.domain.feed.dto.list;
+package com.palette.palette.domain.feed.dto;
 
 import com.palette.palette.domain.user.entity.User;
 import lombok.AllArgsConstructor;
