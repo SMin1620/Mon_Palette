@@ -66,6 +66,7 @@ function Header() {
                                     </div>
                                     <div className="header_user">
                                         <span>{info.userNickname}</span>
+                                        <br></br>
                                         <span>{feed.createAt}</span>
 
                                         </div>    
