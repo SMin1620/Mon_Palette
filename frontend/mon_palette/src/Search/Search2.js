@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import './Search2.css';
 import { useRecoilState } from 'recoil'; 
 import { recentSearchesState } from '../Atom'; 
 import RecentSearches from './RecentSearches';
 import SearchInput from './SearchInput';
-import styles from 'Search2.module.css'
+import styles from './Search2.module.css'
 
 const Search2 = () => {
   const [searchQuery, setSearchQuery] = useState('');
