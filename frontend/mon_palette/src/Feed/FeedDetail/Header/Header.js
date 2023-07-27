@@ -2,6 +2,26 @@ import React from "react";
 import styles from "./Header.module.css";
 import FollowButton from "./FollowButton/FollowButton";
 
+
+const getTimegap = (createdAt) => {
+    const msgap = Date.now() - new Date(createdAt).getTime();
+    const minutegap = Math.floor(msgap / 60000);
+    const hourgap = Math.floor(msgap / 3600000);
+    const daygap = Math.floor(msgap / 86400000);
+
+    if (msgap < 0) {
+        return <p>0분전</p>;
+    }
+    if (hourgap > 24) {
+        return <p>{daygap}일 전</p>;
+    }
+    if (minutegap > 60) {
+        return <p>{hourgap}시간 전</p>;
+    } else {
+        return <p>{minutegap}분 전</p>;
+    }
+};
+
 function Header() {
     const FeedData = {
         "status": "success",
@@ -51,36 +71,33 @@ function Header() {
     };
     return (
         <div className="header_container">
-                {FeedData.data.map((feed) => (
-                    <div>
-                        {
-                            feed.user.map((info) => (
-                                <div className="header_wrap">
-                                    <div>
-                                    <div className={styles.wrap}>
-                                        <img
-                                        className={styles.profile}
-                                        key = {info.id}
-                                        src={info.profileImage}
-                                        />
-                                    </div>
-                                    <div className="header_user">
-                                        <span>{info.userNickname}</span>
-                                        <br></br>
-                                        <span>{feed.createAt}</span>
+            {
+                FeedData.data.map((feed => {
+                    return <div className={styles.feedTotalInfo} key={feed.id}>
+                        <div className={styles.author_img}>
+                            <img 
+                            className={styles.img}
+                            src={feed.user[0].profileImage} alt="" />
+                        </div>
 
-                                        </div>    
-                                    </div>
-                                    <FollowButton text="Follow"/>
-                                </div>
+                        <div className={styles.author_info}>
+                            <div className={styles.author_info_left}>
+                                <h3
+                                className={styles.h3}
+                                >{feed.user[0].userNickname}</h3>
+                                <p>{getTimegap(feed.createAt)}</p>
+                            
+                        </div>
 
-                            ))
-                        }
+                        <div className={styles.follow}>
+                            <FollowButton text="Follow" />
+                        </div>
                     </div>
-                ))}
-            </div>
-    )
-                    
+                </div>
+                }))
+            }
+        </div>
+ )               
 }
 
 export default Header;
