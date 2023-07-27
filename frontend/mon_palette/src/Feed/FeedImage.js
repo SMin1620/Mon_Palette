@@ -19,8 +19,8 @@ const FeedImage = () => {
       <div className={styles["selected-images"]}>
         {selectedImages.map((image, index) => (
           <div key={index} className={styles["image-item"]}>
-            <img src={URL.createObjectURL(image)} alt={`${index}`} />
-            <button onClick={() => handleRemoveImage(index)}>Remove</button>
+            <img className={styles["feed-img"]} src={URL.createObjectURL(image)} alt={`${index}`} />
+            <button className={styles["feed-button"]} onClick={() => handleRemoveImage(index)}>Remove</button>
           </div>
         ))}
       </div>
