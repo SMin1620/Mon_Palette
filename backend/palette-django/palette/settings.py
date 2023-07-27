@@ -56,6 +56,7 @@ INSTALLED_APPS += [
     'rest_framework_simplejwt',
     'corsheaders',
     'color',
+    'image',
 ]
 
 MIDDLEWARE = [
@@ -121,6 +122,14 @@ DATABASES = {
             'charset': 'utf8mb4',
             'use_unicode': True,
         },
+    }
+}
+
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.redis.RedisCache",
+        # "LOCATION": "redis://127.0.0.1:6379",
+        "LOCATION": "redis://redis:6379",
     }
 }
 

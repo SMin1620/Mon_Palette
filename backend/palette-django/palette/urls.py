@@ -27,7 +27,7 @@ from rest_framework import permissions
 # Swagger
 schema_view = get_schema_view(
     openapi.Info(
-        title='MyTone',
+        title='Mon, Palette',
         default_version='api',
         description='Swagger',
         terms_of_service="https://www.google.com/policies/terms/",
@@ -42,6 +42,7 @@ schema_view = get_schema_view(
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("api/color/", include("color.urls")),
+    path("api/image/", include("image.urls")),
 
 
     # swagger
