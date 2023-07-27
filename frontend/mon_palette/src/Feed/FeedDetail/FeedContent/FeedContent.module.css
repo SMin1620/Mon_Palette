@@ -5,7 +5,7 @@
     
 }
 
-.feed_wrapper {
+/* .feed_wrapper {
     display: flex;
     width: 100%;
     overflow: hidden;
@@ -14,7 +14,7 @@
     -ms-overflow-style: -ms-autohiding-scrollbar;
    
    
-}
+} */
 
 .feed_wrapper::-webkit-scrollbar {
     display: none;

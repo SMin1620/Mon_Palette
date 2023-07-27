@@ -1,6 +1,9 @@
 import React, { useRef,useState, useEffect } from "react";
 import styles from "./FeedContent.module.css"
 import { HeartOutlined, HeartFilled } from '@ant-design/icons';
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import Slider from "react-slick";
 
 
 
@@ -8,25 +11,34 @@ import { HeartOutlined, HeartFilled } from '@ant-design/icons';
 function FeedContent() {
     
     
-    const myRef = useRef();
-    console.log(myRef)
-    const prevClick = () => {
-        const slide = myRef.current;
-        console.log(slide);
-        console.log(myRef);
-        
-        slide.scrollLeft -= slide.offsetWidth;
-        if (slide.scrollLeft <= 0) {
-            slide.scrollLeft = slide.scrollWidth;
-        }
-    };
+    // const myRef = useRef();
+    // console.log(myRef)
+    // const prevClick = () => {
 
-    const nextClick = () => {
-        const slide = myRef.current;
-        slide.scrollLeft += slide.offsetWidth;
-        if (slide.scrollLeft >= slide.scrollWidth - slide.offsetWidth) {
-            slide.scrollLeft = 0;
-        }
+    //     const slide = myRef.current;
+    //     console.log(slide);
+    //     console.log(myRef);
+        
+    //     slide.scrollLeft -= slide.offsetWidth;
+    //     if (slide.scrollLeft <= 0) {
+    //         slide.scrollLeft = slide.scrollWidth;
+    //     }
+    // };
+
+    // const nextClick = () => {
+    //     const slide = myRef.current;
+    //     slide.scrollLeft += slide.offsetWidth;
+    //     if (slide.scrollLeft >= slide.scrollWidth - slide.offsetWidth) {
+    //         slide.scrollLeft = 0;
+    //     }
+    // }
+
+    const settings = {
+        dots: true,
+        infinite: false,
+        speed: 500,
+        slidesToShow: 1,
+        slidesToScroll: 1
     }
 
     const FeedData = {
@@ -92,8 +104,8 @@ function FeedContent() {
         <div>
             {FeedData.data.map((feed) => (
                 <div className={styles.feed} key={feed.id}>
-                    <div className={styles.feed_wrapper}>
-                    
+                    <div className="feed_wrapper">
+                    <Slider {...settings}>
                     {
                       feed.feedImages.map((image) => (
                         <div className={styles.feed_item}>
@@ -105,16 +117,15 @@ function FeedContent() {
                         />
                         </div>
                     ))}
-                     </div>
+                    </Slider>
+                    </div>
+                    <div className="feed_status">
+                        <HeartOutlined />
+                    </div>
                     <p 
                     className={styles.content}>{feed.content}</p>
                     
-                <button className="prev" onClick={prevClick}>
-                    prev
-                </button>
-                <button className="next" onClick={nextClick}>
-                    next
-                </button>
+            
                 </div>
             ))}
         </div>
