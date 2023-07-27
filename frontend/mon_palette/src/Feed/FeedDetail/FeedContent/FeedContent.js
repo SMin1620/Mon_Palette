@@ -1,5 +1,5 @@
-import { Feed } from "@mui/icons-material";
 import React from "react";
+import styles from "./FeedContent.module.css"
 
 
 function FeedContent() {
@@ -65,16 +65,19 @@ function FeedContent() {
     return (
         <div>
             {FeedData.data.map((feed) => (
-                <div className="feed_content_container" key={feed.id}>
-                    <div className="feed_images">
+                <div className={styles.feed} key={feed.id}>
+                    <div className={styles.feed_wrapper}>
                     
                     {
                       feed.feedImages.map((image) => (
+                        <div className={styles.feed_item}>
                         <img
+                        className={styles.img}
                         key = {image.id}
                         src={image.imagePath}
                         alt={`Image ${image.id}`}
                         />
+                        </div>
                     ))}
                      </div>
                     <p>{feed.content}</p>
