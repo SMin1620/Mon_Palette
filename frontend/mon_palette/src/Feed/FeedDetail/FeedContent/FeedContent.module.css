@@ -2,6 +2,7 @@
     width: 100%;
     min-height: 300px;
     position: absolute;
+    
 }
 
 .feed_wrapper {
@@ -11,6 +12,8 @@
     overflow-x: scroll;
     -webkit-overflow-scrolling: touch;
     -ms-overflow-style: -ms-autohiding-scrollbar;
+   
+   
 }
 
 .feed_wrapper::-webkit-scrollbar {
@@ -25,7 +28,12 @@
 
 .img {
     width: 100%;
-    height: 200px;
+    height: 18rem;
     display: block;
     object-fit: cover;
+}
+
+.content {
+    margin-left: 5%;
+    margin-right: 5%;
 }
