@@ -1,5 +1,5 @@
 import React from 'react';
-import './RecentSearches.css'
+import styles from './RecentSearches.module.css'
 
 const RecentSearches = ({ searches, onRemove, onSearchFromRecent }) => {
   const handleSearch = (search) => {
@@ -7,7 +7,7 @@ const RecentSearches = ({ searches, onRemove, onSearchFromRecent }) => {
   };
 
   return (
-    <div className="recent-searches">
+    <div className={styles["recent-searches"]}>
       <h3>최근 검색어</h3>
       <ul>
         {searches.map((search, index) => (
