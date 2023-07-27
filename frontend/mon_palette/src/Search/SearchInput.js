@@ -1,23 +1,31 @@
-import React from 'react';
-import searchIcon from './Search_icon.png';
+// SearchInput.js
+import React, { useState } from 'react';
+import { useRecoilState } from 'recoil';
+import { recentSearchesState } from '../Atom';
 import styles from './SearchInput.module.css'
 
+const SearchInput = () => {
+  const [searchQuery, setSearchQuery] = useState('');
 
-const SearchInput = ({ value, onChange, onSearch }) => {
+  const [recentSearches, setRecentSearches] = useRecoilState(recentSearchesState);
+
+  const handleSearch = () => {
+    if (searchQuery !== '') {
+      setRecentSearches((prevSearches) => [...prevSearches, searchQuery]);
+      setSearchQuery('');
+    }
+  };
+
   return (
-    <div>
-      <div className={styles["input-container"]}>
-        <input
-          type="text"
-          className={styles["search-input"]}
-          value={value}
-          onChange={onChange}
-          placeholder="검색어를 입력하세요"
-        />
-        <button className={styles["search-btn"]} onClick={onSearch}>
-          <img src={searchIcon} alt="Search Icon" />
-        </button>
-      </div>
+    <div className={styles['input-container']}>
+      <input className={styles['search-input']}
+        type="text"
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+      />
+      <button className={styles['search-btn']} onClick={handleSearch}>
+        <img src="./Search_icon.png" alt="" />
+      </button>
     </div>
   );
 };

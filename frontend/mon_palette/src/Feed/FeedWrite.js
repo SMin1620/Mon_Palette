@@ -13,9 +13,9 @@ const FeedWrite = () => {
   return (
     <div className={styles["feed-form"]}>
       <div className={styles.header}>
-        <button>뒤로 가기</button>
+        <button className={styles.button}>뒤로 가기</button>
         <h2>글 작성하기</h2>
-        <button onClick="">업로드</button>
+        <button onClick="" className={styles.button}>업로드</button>
       </div>
 
       <FeedImage />
@@ -24,7 +24,7 @@ const FeedWrite = () => {
         <FeedCaption caption={caption} setCaption={setCaption} />
       </div>
 
-      <hr />
+      <hr className={styles.hr}/>
 
       <div className={styles.tag}>
         <h2># Tag</h2>
