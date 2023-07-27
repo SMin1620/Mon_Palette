@@ -9,7 +9,7 @@
   padding-top: 1.5em;
   border-bottom: 0.5px solid black;
   background-color: white;
-  /* position: fixed; */
+  position: fixed;
 }
 .navigationBar_left {
   margin-top: auto;
