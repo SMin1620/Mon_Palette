@@ -37,9 +37,9 @@ public class JwtTokenProvider {
     @Value("1209600")
     private long accessExpirationTime;
 
-    private final int JWT_EXPIRATION_MS = 60000 * 1;
+    private final long JWT_EXPIRATION_MS = 6000000 * 1;
 
-    @Value("1209600")
+    @Value("12096000")
     private long refreshExpirationTime;
 
     private final UserDetailsServiceImpl userDetailsService;
