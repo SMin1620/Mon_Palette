@@ -8,7 +8,7 @@ import LoginForm from './user/components/LoginForm'
 import SignUp from './user/components/SignUp'
 import SignUpForm from './user/components/SignUpForm'
 import SearchInput from './Search/SearchInput';
-// import ChallengeHome from './Challenge/ChallengeHome'
+import ChallengeHome from './Challenge/ChallengeHome'
 
 import { Routes, Route } from 'react-router-dom'
 
@@ -32,7 +32,7 @@ function App() {
 
         <Route path='searchResult/:searchInfo' element={[<SearchInput/>, <SearchResult/>, <NavigationBarBottom/>]} />
         
-        {/* <Route path='/challenge' element={[<NavigationBarHeader title="Challenge"/>, <ChallengeHome />, <NavigationBarBottom />]}/> */}
+        <Route path='/challenge' element={[<NavigationBarHeader title="Challenge"/>, <ChallengeHome />, <NavigationBarBottom />]}/>
       </Routes>
     </div>
   );
