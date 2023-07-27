@@ -3,7 +3,7 @@ package com.palette.palette.domain.user.controller;
 import com.palette.palette.common.BaseResponse;
 import com.palette.palette.domain.user.dto.login.LoginReqDto;
 import com.palette.palette.domain.user.dto.register.RegisterReqDto;
-import com.palette.palette.domain.user.dto.update.PasswordUpdateReqDto;
+import com.palette.palette.domain.user.dto.update.*;
 import com.palette.palette.domain.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -68,6 +68,36 @@ public class UserController {
     public BaseResponse passwordUpdate(@RequestBody @Valid PasswordUpdateReqDto password, HttpServletRequest request){
         System.out.println("비밀번호 수정 요청");
         return BaseResponse.success(userService.passwordUpdate(password, request));
+    }
+
+    @Operation(summary = "닉네임 수정")
+    @PutMapping("/nickname")
+    public BaseResponse nicknameUpdate(@RequestBody @Valid NicknameUpdateReqDto nickname, HttpServletRequest request){
+        return BaseResponse.success(userService.nicknameUpdate(nickname, request));
+    }
+
+    @Operation(summary = "퍼스널 컬러 수정")
+    @PutMapping("/personal")
+    public BaseResponse personalUpdate(@RequestBody @Valid PersonalUpdateReqDto personal, HttpServletRequest request){
+        return BaseResponse.success(userService.personalColorUpdate(personal, request));
+    }
+
+    @Operation(summary = "배경사진 수정")
+    @PutMapping("/background")
+    public BaseResponse backgroundUpdate(@RequestBody @Valid BackgroundUpdateReqDto background, HttpServletRequest request){
+        return BaseResponse.success(userService.backgroundUpdate(background, request));
+    }
+
+    @Operation(summary = "프로필 사진 수정")
+    @PutMapping("/profile")
+    public BaseResponse profileUpdate(@RequestBody @Valid ProfileUpdateReqDto profile, HttpServletRequest request){
+        return BaseResponse.success(userService.profileUpdate(profile,request));
+    }
+
+    @Operation(summary = "휴대폰번호 수정")
+    @PutMapping("/phone")
+    public BaseResponse phoneUpdate(@RequestBody @Valid PhoneUpdateReqDto phone, HttpServletRequest request){
+        return BaseResponse.success(userService.phoneUpdate(phone, request));
     }
 
 

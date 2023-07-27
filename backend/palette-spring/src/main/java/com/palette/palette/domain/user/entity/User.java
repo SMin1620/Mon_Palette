@@ -104,4 +104,29 @@ public class User {
         this.password = newPwd;
     }
 
+    /**
+     * 닉네임 수정
+     */
+    public void updateNickname(String newNickname){this.nickname = newNickname;}
+
+    /**
+     * 퍼스널 컬러 수정
+     */
+    public void updatePersonalColor(String newPersonalColor) {this.personalColor = newPersonalColor;}
+
+    /**
+     * 전화번호 수정
+     */
+    public void updatePhone(String newPhone){this.phone = newPhone;}
+
+    /**
+     * 배경사진 수정
+     */
+    public void updateBackground(String newBackground) {this.backgroundImage = newBackground;}
+
+    /**
+     * 프로필이미지 수정
+     */
+    public void updateProfile(String newProfile) {this.profileImage = newProfile;}
+
 }
