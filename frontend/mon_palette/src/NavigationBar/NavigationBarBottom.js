@@ -22,13 +22,13 @@ function NavigationBarBottom() {
       </div>
 
       <div className="nav_bottom_icons">
-        <Link to="/feed/">
+        <Link to="/feed">
           <PhotoSizeIcon sx={{ fontSize: 30 }}/>
         </Link>
       </div>
 
       <div className="nav_bottom_icons">
-        <Link>
+        <Link to="/home">
           <HomeOutlinedIcon sx={{ fontSize: 30 }}/>
         </Link>
       </div>

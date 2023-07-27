@@ -20,7 +20,14 @@ function App() {
       <Routes>
         <Route path='/' element={[<NavigationBarHeader title='login'/>, <LoginForm/>]}/>
 
-        <Route path='/feed/' element={[<NavigationBarHeader title='Mon, Palette'/>, <NavigationBarBottom/>, <FeedMain />] }/>
+        <Route path='/feed' element={[<NavigationBarHeader title='Mon, Palette'/>, <NavigationBarBottom/>, <FeedMain />] }/>
+
+        <Route path='/challenge' element={[<NavigationBarHeader title="Mon, Palette"/>, <ChallengeHome />, <NavigationBarBottom />]}/>
+        
+        <Route path='/home' element={[<NavigationBarHeader title="Mon, Palette"/>, <Home />, <NavigationBarBottom />]}/>
+
+
+
 
         {/* path={`/search/${검색결과 변수이름}`} */}
         {/* 네비 헤더 부분 빠지고 검색창의 top 부분 들어가야함 */}
@@ -32,7 +39,6 @@ function App() {
 
         <Route path='searchResult/:searchInfo' element={[<SearchInput/>, <SearchResult/>, <NavigationBarBottom/>]} />
         
-        <Route path='/challenge' element={[<NavigationBarHeader title="Challenge"/>, <ChallengeHome />, <NavigationBarBottom />]}/>
       </Routes>
     </div>
   );

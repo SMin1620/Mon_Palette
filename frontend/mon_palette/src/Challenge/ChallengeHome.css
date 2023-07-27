@@ -1,9 +1,12 @@
+.challengeHome {
+  margin-top: 4.1875em;
+}
+
 .challengeHome_top {
   width: 100%;
   display: flex;
   overflow-x: scroll;
   margin-bottom: 1rem;
-  margin-top: 3em;
 }
 
 .challengeHome_top::-webkit-scrollbar {

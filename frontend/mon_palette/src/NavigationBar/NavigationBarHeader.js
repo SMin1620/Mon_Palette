@@ -14,31 +14,41 @@ function NavigationBarHeader(props) {
   const handleModal = () => {
     setShowPage(!showPage)
   }
+
+  let PageTitle = props.title === 'Mon, Palette'
+
   return (
     <>
       <div className="navigationBar_header">
         <div className="navigationBar_left">
-          <MenuIcon sx={{ fontSize: 30 }} onClick={handleModal}/>
+          {
+            PageTitle ? (<MenuIcon sx={{ fontSize: 30 }} onClick={handleModal}/>) : (<ArrowBackIcon className="mordal_back" sx={{ fontSize: 30 }}/>)
+          }
         </div>  
 
         <div className="navigationBar_center">
+
           <Link to='/'>
             <h3>{props.title}</h3>
           </Link>
         </div>
-
-        <div className="navigationBar_right">
-          <div className="navigationBar_right_left">
-            <Link to='/search/'>
-              <SearchIcon sx={{ fontSize: 30 }} />
-            </Link>
-          </div>
-
-          <div className="navigationBar_right_right">
-            <NotificationsNoneOutlinedIcon sx={{ fontSize: 30 }}/>
-          </div>
-        </div>
+        
+        {
+          PageTitle ? (
+            <div className="navigationBar_right">
+              <div className="navigationBar_right_left">
+                <Link to='/search/'>
+                  <SearchIcon sx={{ fontSize: 30 }} />
+                </Link>
+              </div>
+    
+              <div className="navigationBar_right_right">
+                <NotificationsNoneOutlinedIcon sx={{ fontSize: 30 }}/>
+              </div>
+            </div>) : (<div className="navigationBar_right_none"></div>)
+        }
       </div>
+
       <div className={`page ${showPage ? 'show' : ''}`}>
         <div className="modal_top">
           <div className="modal_left">
