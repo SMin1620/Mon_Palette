@@ -20,7 +20,7 @@
 } 
 
 .search_result_feed_feedImg{
-  width: 100%;
+  width: 100% !important;
   border-radius: 10px;
 }
 
@@ -31,7 +31,7 @@
   margin: 0.5rem 0;
 }
 
-.search_result_feed_userImg {
+.search_result_feed_userImg  {
   border-radius: 50%;
   width: 40px;
   height: 40px;

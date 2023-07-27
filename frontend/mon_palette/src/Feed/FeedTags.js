@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './FeedTags.css';
+import styles from './FeedTags.module.css';
 
 const FeedTags = () => {
   const [tags, setTags] = useState('');
@@ -15,8 +15,8 @@ const FeedTags = () => {
   };
 
   return (
-    <div className="feed-tags">
-      <div className="tag-input">
+    <div className={styles["feed-tags"]}>
+      <div className={styles["tag-input"]}>
         <textarea
           value={tags}
           onChange={(e) => setTags(e.target.value)}
@@ -24,9 +24,9 @@ const FeedTags = () => {
         />
         <button onClick={handleAddTag}>Add Tag</button>
       </div>
-      <div className="tag-list">
+      <div className={styles["tag-list"]}>
         {tagList.map((tag, index) => (
-          <div key={index} className="tag-item">
+          <div key={index} className={styles["tag-item"]}>
             #{tag}
           </div>
         ))}

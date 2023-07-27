@@ -2,10 +2,14 @@ import React, { useState } from 'react';
 import './Search2.css';
 import SearchInput from './SearchInput';
 import RecentSearches from './RecentSearches';
+import { useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom'
 
 const Search2 = () => {
+  const navigate = useNavigate()
   const [searchQuery, setSearchQuery] = useState('');
   const [recentSearches, setRecentSearches] = useState([]);
+  const { searchInfo } = useParams()
 
 
   const handleSearch = () => {
@@ -13,7 +17,8 @@ const Search2 = () => {
     // 백엔드와 통신하여 검색 결과를 가져와서 처리하는 코드를 작성
     if (searchQuery !== '') {
         setRecentSearches((prevSearches) => [...prevSearches, searchQuery]);
-        setSearchQuery('');
+        navigate('/searchResult/:searchInfo')
+        console.log(searchInfo)
     }
   };
 
