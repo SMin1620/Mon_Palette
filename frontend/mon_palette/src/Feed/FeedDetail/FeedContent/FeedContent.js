@@ -1,8 +1,34 @@
-import React from "react";
+import React, { useRef,useState, useEffect } from "react";
 import styles from "./FeedContent.module.css"
+import { HeartOutlined, HeartFilled } from '@ant-design/icons';
+
+
 
 
 function FeedContent() {
+    
+    
+    const myRef = useRef();
+    console.log(myRef)
+    const prevClick = () => {
+        const slide = myRef.current;
+        console.log(slide);
+        console.log(myRef);
+        
+        slide.scrollLeft -= slide.offsetWidth;
+        if (slide.scrollLeft <= 0) {
+            slide.scrollLeft = slide.scrollWidth;
+        }
+    };
+
+    const nextClick = () => {
+        const slide = myRef.current;
+        slide.scrollLeft += slide.offsetWidth;
+        if (slide.scrollLeft >= slide.scrollWidth - slide.offsetWidth) {
+            slide.scrollLeft = 0;
+        }
+    }
+
     const FeedData = {
         "status": "success",
         "message": null,
@@ -75,12 +101,20 @@ function FeedContent() {
                         className={styles.img}
                         key = {image.id}
                         src={image.imagePath}
-                        alt={`Image ${image.id}`}
+                        alt=""
                         />
                         </div>
                     ))}
                      </div>
-                    <p>{feed.content}</p>
+                    <p 
+                    className={styles.content}>{feed.content}</p>
+                    
+                <button className="prev" onClick={prevClick}>
+                    prev
+                </button>
+                <button className="next" onClick={nextClick}>
+                    next
+                </button>
                 </div>
             ))}
         </div>

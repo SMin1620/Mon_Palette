@@ -1,12 +1,26 @@
-.wrap {
-    width: 150px;
-    height: 150px;
-    border-radius: 70%;
-    overflow: hidden;
+.feedTotalInfo {
+    display: flex;
 }
 
-.profile {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+.author_info {
+    display: flex;
+    align-items: center;
+}
+
+.author_info_left {
+    margin-right: 4em;
+}
+
+.h3 {
+    margin-bottom: 0.5em;
+    margin-right: 3em;
+    width: 50px;
+    text-align: center;
+}
+
+.img {
+    border-radius: 50%;
+    margin: 1em;
+    width: 60px;
+    height: 60px;
 }
