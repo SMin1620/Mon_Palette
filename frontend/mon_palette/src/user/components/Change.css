@@ -1,65 +1,62 @@
 html {
-    font-size: 16px; /* 루트 요소(HTML)의 기본 폰트 크기를 설정합니다. */
-  }
-  
-  .container {
-    margin: 50% auto;
-    width: 18.75rem; /* 300px를 rem 단위로 변환 (300 / 16 = 18.75) */
-  }
+	font-size: 16px; /* 루트 요소(HTML)의 기본 폰트 크기를 설정합니다. */
+}
 
-  label {
-    display: block;
-    font-weight: bold;
-    text-align: left;
-  }
-  
-  input {
-    width: 100%;
-    padding: 0.625rem; /* 10px를 rem 단위로 변환 (10 / 16 = 0.625) */
-    border: none;
-    border-radius: 0;
-    font-size: 1rem; /* 16px를 rem 단위로 변환 (16 / 16 = 1) */
-    border-bottom: 0.125rem solid #dddddd; /* 2px를 rem 단위로 변환 (2 / 16 = 0.125) */
-  }
-  
-  input:focus {
-    outline: none;
-    border-bottom: 0.125rem solid #e84c8b;
-  }
-    
-  .input-with-button input{
-    width: 70%;
-    text-align: left;
-  }
+.change_container {
+	margin: 50% auto;
+	width: 18.75rem; /* 300px를 rem 단위로 변환 (300 / 16 = 18.75) */
+}
 
-  .error-message {
-    text-align: left;
-    font-size: 0.7rem;
-    color: red; 
-  }
+.change_label {
+	display: block;
+	font-weight: bold;
+	text-align: left;
+}
 
-.button-container {
-    display: flex;
-    justify-content: center;
-  }
-  
-  .button-container button {
-    width: 100%;
-    padding: 1.25rem 2.5rem; /* 20px, 40px를 rem 단위로 변환 (20 / 16 = 1.25, 40 / 16 = 2.5) */
-    background-color: #e84c8b;
-    color: #fff;
-    border: none;
-    border-radius: 0.3125rem; /* 5px를 rem 단위로 변환 (5 / 16 = 0.3125) */
-    font-size: 1rem;
-    cursor: pointer;
-    margin-top: 1rem;
-  }
-  .duplication-button {
-    background-color: #e84c8b;
-    color: #fff;
-    border: none;
-    border-radius: 0.5rem; /* 5px를 rem 단위로 변환 (5 / 16 = 0.3125) */
-    
-  }
+.change_input {
+	width: 100%;
+	padding: 0.625rem; /* 10px를 rem 단위로 변환 (10 / 16 = 0.625) */
+	border: none;
+	border-radius: 0;
+	font-size: 1rem; /* 16px를 rem 단위로 변환 (16 / 16 = 1) */
+	border-bottom: 0.125rem solid #dddddd; /* 2px를 rem 단위로 변환 (2 / 16 = 0.125) */
+}
 
-  
+.change_input:focus {
+	outline: none;
+	border-bottom: 0.125rem solid #e84c8b;
+}
+
+.change_input-with-button input {
+	width: 70%;
+	text-align: left;
+}
+
+.change_error-message {
+	text-align: left;
+	font-size: 0.7rem;
+	color: red;
+}
+
+.change_button-container {
+	display: flex;
+	justify-content: center;
+}
+
+.change_button-container button {
+	width: 100%;
+	padding: 1.25rem 2.5rem; /* 20px, 40px를 rem 단위로 변환 (20 / 16 = 1.25, 40 / 16 = 2.5) */
+	background-color: #e84c8b;
+	color: #fff;
+	border: none;
+	border-radius: 0.3125rem; /* 5px를 rem 단위로 변환 (5 / 16 = 0.3125) */
+	font-size: 1rem;
+	cursor: pointer;
+	margin-top: 1rem;
+}
+.change_duplication-button {
+	background-color: #e84c8b;
+	color: #fff;
+	border: none;
+	border-radius: 0.5rem; /* 5px를 rem 단위로 변환 (5 / 16 = 0.3125) */
+}
