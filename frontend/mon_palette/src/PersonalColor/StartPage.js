@@ -18,29 +18,45 @@ const StartPage = () => {
     setTimeout(() => {
       setIsLoading(false);
       setShowResultPage(true);
-    }, 3000);
+    }, 300000000);
   };
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
-    console.log(e.target)
     setUploadedImage(file);
   };
 
+  const handleButtonClick = () => {
+    // 버튼을 눌렀을 때 파일 선택 창 열기
+    document.getElementById('file-input').click();
+  };
+
   return (
-    <div className={styles['container']}>
+    <div>
       {!isLoading && !showResultPage && (
         <div className={styles['button-container']}>
           {uploadedImage ? (
-            <img src={URL.createObjectURL(uploadedImage)} alt="Uploaded" style={{ width: '200px', height: '200px', objectFit: 'cover' }}/>
+            <img className={styles.image} src={URL.createObjectURL(uploadedImage)} alt="Uploaded" />
           ) : (
-            <div className={styles['uploaded-image-container']}></div>
+            <div className={styles['text-container']}>      
+              <div className={styles.text}>What's</div>
+              <div className={styles.text}>your</div>
+              <div className={styles.text}>palette?</div>
+            </div>
           )}
-          <label className={styles['upload-btn']}>
-            이미지 업로드
-            <input type="file" accept="image/*" onChange={handleImageUpload} />
-          </label>
-          <button className={styles.button} onClick={handleStartLoading}>검사 시작</button>
+          <button className={styles.button1} onClick={handleButtonClick}>
+            Upload
+          </button>
+          <input
+            id="file-input"
+            type="file"
+            accept="image/*"
+            onChange={handleImageUpload}
+            style={{ display: 'none' }} 
+          />
+          <button className={styles.button2} onClick={handleStartLoading} disabled={!uploadedImage}>
+            Start
+          </button>
         </div>
       )}
       {isLoading && <LoadingPage />}
