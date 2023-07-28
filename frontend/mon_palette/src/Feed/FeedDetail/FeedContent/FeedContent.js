@@ -1,6 +1,6 @@
 import React, { useRef,useState, useEffect } from "react";
 import styles from "./FeedContent.module.css"
-import { HeartOutlined, HeartFilled } from '@ant-design/icons';
+import { HeartOutlined, HeartFilled , CommentOutlined } from '@ant-design/icons';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
@@ -9,30 +9,7 @@ import Slider from "react-slick";
 
 
 function FeedContent() {
-    
-    
-    // const myRef = useRef();
-    // console.log(myRef)
-    // const prevClick = () => {
-
-    //     const slide = myRef.current;
-    //     console.log(slide);
-    //     console.log(myRef);
-        
-    //     slide.scrollLeft -= slide.offsetWidth;
-    //     if (slide.scrollLeft <= 0) {
-    //         slide.scrollLeft = slide.scrollWidth;
-    //     }
-    // };
-
-    // const nextClick = () => {
-    //     const slide = myRef.current;
-    //     slide.scrollLeft += slide.offsetWidth;
-    //     if (slide.scrollLeft >= slide.scrollWidth - slide.offsetWidth) {
-    //         slide.scrollLeft = 0;
-    //     }
-    // }
-
+   
     const settings = {
         dots: true,
         infinite: false,
@@ -41,11 +18,19 @@ function FeedContent() {
         slidesToScroll: 1
     }
 
+    
     const FeedData = {
         "status": "success",
         "message": null,
+        
         "data": [
             {
+                "author": [
+                    {
+                        "id" : 732,
+                        "isfollowed": false 
+                    }
+                ],
                 "id": 1,
                 "content": "쿠로미 귀여웡 귀여웡 쫀귀탱탱",
                 "feedImages": [
@@ -76,39 +61,57 @@ function FeedContent() {
                         "userId": 71,
                         "commentContent": "너무 귀엽쟈나",
                         "createdAt": "2023-07-26T10:10:32.146994"
-
+                        
                     },
                     {
                         "id": 2,
                         "userId": 90,
                         "commentContent": "호엑",
                         "createdAt": "2023-07-26T10:15:32.146994"
-
+                        
                     },
                     {
                         "id": 3,
                         "userId": 89,
                         "commentContent": "쫀귀",
                         "createdAt": "2023-07-26T10:32:32.146994"
-
+                        
                     }
                 ],
                 "createAt": "2023-07-26T10:09:32.146994",
                 "updateAt": null,
                 "isDelete": false,
-                "deleteAt": null
+                "deleteAt": null,
+                "isLiked": false,
+                "countLike": 2
             }
         ]
     };
+
+
+
+    const [feedList, setFeedList] = useState(FeedData.data);
+    console.log(feedList);
+ 
+    const handleLikeClick = (feedId) => {
+        
+        setFeedList((prevFeedList) =>
+          prevFeedList.map((feed) =>
+            feed.id === feedId ? { ...feed, isLiked: !prevFeedList.isLiked } : feed
+          )
+        );
+      };
+      
+
     return (
-        <div>
+        <div className={styles.container}>
             {FeedData.data.map((feed) => (
                 <div className={styles.feed} key={feed.id}>
                     <div className="feed_wrapper">
                     <Slider {...settings}>
                     {
-                      feed.feedImages.map((image) => (
-                        <div className={styles.feed_item}>
+                        feed.feedImages.map((image) => (
+                            <div className={styles.feed_item}>
                         <img
                         className={styles.img}
                         key = {image.id}
@@ -119,8 +122,21 @@ function FeedContent() {
                     ))}
                     </Slider>
                     </div>
+                    <br />
                     <div className="feed_status">
-                        <HeartOutlined />
+                        <span>
+                        {feed.isLiked ? (
+                            <HeartFilled className={styles.heart_filled} onClick={() => handleLikeClick(feed.id)} />
+                        ) : (
+                            <HeartOutlined className={styles.heart} onClick={() => handleLikeClick(feed.id)} />
+                        )}
+                        </span>
+                        <span>
+                            <CommentOutlined
+                            className={styles.comment} />
+                        </span>
+
+
                     </div>
                     <p 
                     className={styles.content}>{feed.content}</p>
@@ -128,6 +144,7 @@ function FeedContent() {
             
                 </div>
             ))}
+            
         </div>
     )
     
