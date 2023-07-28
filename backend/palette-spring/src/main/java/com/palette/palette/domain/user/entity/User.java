@@ -66,11 +66,11 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Feed> feed;
 
-    @OneToMany(mappedBy = "fromUser")
-    private List<Follow> follower;
-
-    @OneToMany(mappedBy = "toUser")
-    private List<Follow> following;
+//    @OneToMany(mappedBy = "fromUser")
+//    private List<Follow> follower;
+//
+//    @OneToMany(mappedBy = "toUser")
+//    private List<Follow> following;
     
     // 리프레시 토큰
     private String refreshToken;
