@@ -1,0 +1,34 @@
+/* RecentSearches.module.css */
+.recent-searches {
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+.recent-searches h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.recent-searches ul {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap; /* 여러 개의 검색 결과가 한 줄에 나오도록 설정 */
+}
+
+.recent-searches li {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* 버튼이 가운데에 배치되도록 설정 */
+  padding: 5px 18px;
+  margin: 15px; 
+  background-color: #f2f2f2;
+  border-radius: 15px;
+}
+
+.recent-searches button {
+  color:red;
+  border: none;
+  cursor: pointer;
+  padding-left: 10px;
+}
