@@ -1,11 +1,8 @@
 package com.palette.palette.domain.feed.dto.update;
 
-import com.palette.palette.domain.feed.dto.detail.FeedDetailResDto;
-import com.palette.palette.domain.feed.dto.image.FeedImageReqDto;
-import com.palette.palette.domain.feed.dto.list.FeedResDto;
+import com.palette.palette.domain.feed.dto.FeedUserResDto;
 import com.palette.palette.domain.feed.entity.Feed;
 import com.palette.palette.domain.feed.entity.FeedImage;
-import com.palette.palette.domain.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -34,7 +31,7 @@ public class FeedUpdateResDto {
 
     private List<FeedImage> feedImages;
 
-    private User user;
+    private FeedUserResDto user;
 
     /**
      * entity -> dto
@@ -42,7 +39,7 @@ public class FeedUpdateResDto {
     public static FeedUpdateResDto toDto(Feed feed) {
         return FeedUpdateResDto.builder()
                 .id(feed.getId())
-                .user(feed.getUser())   // 토큰에서 받아와야 함.
+                .user(FeedUserResDto.toDto(feed.getUser()))   // 토큰에서 받아와야 함.
                 .content(feed.getContent())
                 .updateAt(LocalDateTime.now())
                 .isDelete(false)

@@ -44,6 +44,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 .userdetails
                 .User(user.getEmail(), user.getPassword(), grantedAuthorities);
 
+//        return PrincipalDetails.create(user);
+
 
     }
 

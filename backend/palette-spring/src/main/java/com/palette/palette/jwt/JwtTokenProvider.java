@@ -115,7 +115,12 @@ public class JwtTokenProvider {
                 setSigningKey(secretKey)
                 .parseClaimsJws(token)
                 .getBody().getSubject();
+
+        System.out.println("userPrincipal >>> " + userPrincipal);
+
         UserDetails userDetails = userDetailsService.loadUserByUsername(userPrincipal);
+
+        System.out.println("userDetails >>> " + userDetails);
 
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
