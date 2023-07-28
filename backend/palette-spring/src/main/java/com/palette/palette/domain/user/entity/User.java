@@ -1,6 +1,7 @@
 package com.palette.palette.domain.user.entity;
 
 import com.palette.palette.domain.feed.entity.Feed;
+import com.palette.palette.domain.follow.entity.Follow;
 import com.palette.palette.domain.user.dto.register.RegisterReqDto;
 import jakarta.persistence.*;
 import lombok.*;
@@ -64,9 +65,17 @@ public class User {
     // 피드 - 유저 :: 양방향
     @OneToMany(mappedBy = "user")
     private List<Feed> feed;
+
+    @OneToMany(mappedBy = "fromUser")
+    private List<Follow> follower;
+
+    @OneToMany(mappedBy = "toUser")
+    private List<Follow> following;
     
     // 리프레시 토큰
     private String refreshToken;
+
+    private String address;
 
     /**
      * 회원 가입 로직
@@ -82,6 +91,7 @@ public class User {
                 .createAt(LocalDateTime.now())
                 .role(Role.USER)
                 .isLeave(false)
+                .address(null)
                 .nickname(request.getNickname())
                 .build();
     }

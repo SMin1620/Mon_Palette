@@ -1,6 +1,7 @@
 package com.palette.palette.domain.feed.repository;
 
 import com.palette.palette.domain.feed.entity.Feed;
+import com.palette.palette.domain.user.entity.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,6 +25,8 @@ public interface FeedRepository extends JpaRepository<Feed, Long> {
 
     @Query("SELECT f.user.id FROM Feed f WHERE f.id = :feedId")
     Long findUserIdByFeedId(@Param("feedId") Long feedId);
+
+    List<Feed> findAllByUser(User user);
 
 
 }
