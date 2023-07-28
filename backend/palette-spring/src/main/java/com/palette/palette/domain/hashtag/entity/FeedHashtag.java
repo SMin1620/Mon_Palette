@@ -16,7 +16,7 @@ public class FeedHashtag {
 
     @Id
     @GeneratedValue
-    @Column(name = "feed_hashtag")
+    @Column(name = "feed_hashtag_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)

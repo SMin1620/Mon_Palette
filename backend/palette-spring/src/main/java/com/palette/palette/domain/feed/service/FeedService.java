@@ -11,6 +11,7 @@ import com.palette.palette.domain.feed.entity.Feed;
 import com.palette.palette.domain.feed.entity.FeedImage;
 import com.palette.palette.domain.feed.repository.FeedImageRepository;
 import com.palette.palette.domain.feed.repository.FeedRepository;
+import com.palette.palette.domain.hashtag.entity.FeedHashtag;
 import com.palette.palette.domain.hashtag.entity.Hashtag;
 import com.palette.palette.domain.hashtag.repository.HashtagRepository;
 import com.palette.palette.domain.user.entity.User;
@@ -135,24 +136,45 @@ public class FeedService {
             feed.update(feedReqDto, addImage);
         }
 
-        // 피드 해시태그
-        // 해시태그 검증 로직
-        List<Hashtag> notAlreadyHashTag = new ArrayList<>();
+        // 피드 해시태그 업데이트
+        List<Hashtag> hashtags = new ArrayList<>();
 
-//        feed.setHashtags(notAlreadyHashTag);
+        // 기존 해시태그를 가져와서 유지
+        for (FeedHashtag feedHashtag : feed.getHashtags()) {
+            hashtags.add(feedHashtag.getHashtag());
+        }
 
-//        for (String name : feedReqDto.getHashtags()) {
-//            // 이미 있는 해시태그인지 검사
-//            System.out.println(" findByName >>> " + hashtagRepository.findByName(name));
-//            if (hashtagRepository.findByName(name) == null) {
-//                // 중복이 없다면,
-//                System.out.println("해시 태그 중복아님");
-//                notAlreadyHashTag.add(name);
-//
-//                Hashtag newHashtag = Hashtag.builder().name(name).feed(feed).build();
-//                hashtagRepository.save(newHashtag);
-//            }
-//        }
+        // 새로운 해시태그만 추가
+        for (String hashtagName : feedReqDto.getHashtags()) {
+            boolean isDuplicate = false;
+            for (Hashtag hashtag : hashtags) {
+                if (hashtag.getName().equals(hashtagName)) {
+                    isDuplicate = true;
+                    break;
+                }
+            }
+
+            if (!isDuplicate) {
+                Hashtag hashtag = hashtagRepository.findByName(hashtagName);
+                if (hashtag == null) {
+                    hashtag = Hashtag.builder()
+                            .name(hashtagName)
+                            .build();
+                    hashtagRepository.save(hashtag);
+                }
+                hashtags.add(hashtag);
+            }
+        }
+
+        feed.getHashtags().clear();
+        for (Hashtag hashtag : hashtags) {
+            FeedHashtag feedHashtag = FeedHashtag.builder()
+                    .feed(feed)
+                    .hashtag(hashtag)
+                    .build();
+            feed.getHashtags().add(feedHashtag);
+        }
+
 
         // 피드 업데이트 수행
         feedRepository.save(feed);
