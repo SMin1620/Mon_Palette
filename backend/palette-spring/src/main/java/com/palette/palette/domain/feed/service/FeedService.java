@@ -11,6 +11,7 @@ import com.palette.palette.domain.feed.entity.Feed;
 import com.palette.palette.domain.feed.entity.FeedImage;
 import com.palette.palette.domain.feed.repository.FeedImageRepository;
 import com.palette.palette.domain.feed.repository.FeedRepository;
+import com.palette.palette.domain.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -48,10 +49,10 @@ public class FeedService {
      * 피드 생성
      */
     @Transactional
-    public FeedResDto feedCreate(FeedReqDto feedReqDto, List<FeedImageReqDto> images) {
+    public FeedResDto feedCreate(FeedReqDto feedReqDto, List<FeedImageReqDto> images, User user) {
 
         // 피드 생성
-        Feed feed = Feed.toEntity(feedReqDto, images);
+        Feed feed = Feed.toEntity(feedReqDto, images, user);
 
         System.out.println("feedReqDto >>> " + feedReqDto.getFeedImages());
 
@@ -97,7 +98,7 @@ public class FeedService {
      * @param feedImages
      */
     @Transactional
-    public FeedUpdateResDto feedUpdate(FeedReqDto feedReqDto, List<FeedImageResDto> feedImages, Long feedId) {
+    public FeedUpdateResDto feedUpdate(FeedReqDto feedReqDto, List<FeedImageResDto> feedImages, Long feedId, User user) {
 
         Feed feed = feedRepository.findById(feedId).orElseThrow(() -> new IllegalArgumentException("해당 피드가 없습니다."));
         List<FeedImageReqDto> addImage = new ArrayList<>();
