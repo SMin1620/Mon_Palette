@@ -19,15 +19,13 @@ public class Follow {
     @Column(name = "follow_id")
     private long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn
-    private User toUser;
+    @Column(name = "to_user", insertable = false, updatable = false)
+    private String toUser;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn
-    private User fromUser;
+    @Column(name = "from_user", insertable = false, updatable = false)
+    private String fromUser;
 
-    public Follow(User toUser, User fromUser){
+    public Follow(String toUser, String fromUser){
         this.toUser = toUser;
         this.fromUser = fromUser;
     }

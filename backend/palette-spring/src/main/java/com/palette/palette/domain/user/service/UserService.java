@@ -1,6 +1,11 @@
 package com.palette.palette.domain.user.service;
 
+import com.palette.palette.domain.feed.entity.Feed;
+import com.palette.palette.domain.feed.repository.FeedRepository;
+import com.palette.palette.domain.follow.repository.FollowRepository;
+import com.palette.palette.domain.user.dto.info.Info;
 import com.palette.palette.domain.user.dto.login.LoginReqDto;
+import com.palette.palette.domain.user.dto.mypage.Mypage;
 import com.palette.palette.domain.user.dto.register.RegisterReqDto;
 import com.palette.palette.domain.user.dto.register.RegisterResDto;
 import com.palette.palette.domain.user.dto.token.TokenDto;
@@ -22,6 +27,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -35,6 +41,8 @@ public class UserService {
     private final JwtTokenProvider jwtTokenProvider;
     private final AuthenticationManager authenticationManager;
     private final RedisTemplate<String, String> redisTemplate;
+    private final FollowRepository followRepository;
+    private final FeedRepository feedRepository;
 
     /**
      * 회원 가입 로직
@@ -230,5 +238,42 @@ public class UserService {
         Optional<User> user = userRepository.findByEmail(userEmail);
         user.get().updatePhone(phoneUpdateReqDto.getPhone());
         return UpdateResDto.builder().update(true).build();
+    }
+
+    /**
+     * 개인정보 수정 페이지
+     */
+    public Info userInfo(HttpServletRequest req){
+        String userEmail = jwtTokenProvider.getUserEmail(jwtTokenProvider.resolveToken(req));
+        Optional<User> user = userRepository.findByEmail(userEmail);
+        return Info.builder()
+                .address(user.get().getAddress())
+                .phone(user.get().getPhone())
+                .personalcolr(user.get().getPersonalColor())
+                .nickname(user.get().getNickname())
+                .background(user.get().getBackgroundImage())
+                .profilePhoto(user.get().getProfileImage())
+                .build();
+    }
+    /**
+     * 마이페이지
+     */
+    public Mypage mypage(HttpServletRequest req){
+        String userEmail = jwtTokenProvider.getUserEmail(jwtTokenProvider.resolveToken(req));
+        Optional<User> user = userRepository.findByEmail(userEmail);
+        Long folloingCnt = followRepository.countByFromUser(user.get().getEmail());
+        Long followerCnt = followRepository.countByToUser(user.get().getEmail());
+        List<Feed> feedList = feedRepository.findAllByUser(user.get());
+        return Mypage.builder()
+                .profilePhoto(user.get().getProfileImage())
+                .background(user.get().getBackgroundImage())
+                .nickname(user.get().getNickname())
+                .isInfluence(user.get().getRole())
+                .personalColor(user.get().getPersonalColor())
+                .folloingCnt(folloingCnt)
+                .followerCnt(followerCnt)
+                .feedCnt(feedList.size())
+                .feed(feedList)
+                .build();
     }
 }

@@ -10,8 +10,8 @@ import java.util.Optional;
 public interface FollowRepository extends JpaRepository<Follow, Long> {
 
     Follow findByFromUserAndToUser(User fromUser, User toUser);
-    Long countByFromUser(User fromUser); // follower 수
-    Long countByToUser(User toUser); // following 수
+    Long countByFromUser(String userEmail); // follower 수
+    Long countByToUser(String userEmail); // following 수
 
     List<Follow> findAllByToUser(String userEmail);
     List<Follow> findAllByFromUser(String userEmail);
