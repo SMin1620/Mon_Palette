@@ -4,8 +4,7 @@ import com.palette.palette.domain.user.dto.login.LoginReqDto;
 import com.palette.palette.domain.user.dto.register.RegisterReqDto;
 import com.palette.palette.domain.user.dto.register.RegisterResDto;
 import com.palette.palette.domain.user.dto.token.TokenDto;
-import com.palette.palette.domain.user.dto.update.PasswordUpdateReqDto;
-import com.palette.palette.domain.user.dto.update.UpdateResDto;
+import com.palette.palette.domain.user.dto.update.*;
 import com.palette.palette.domain.user.dto.validation.ValidationResDto;
 import com.palette.palette.domain.user.entity.User;
 import com.palette.palette.domain.user.repository.UserRepository;
@@ -179,6 +178,57 @@ public class UserService {
         user.get().updatePwd(passwordEncoder.encode(passwordUpdateReqDto.getPassword()));
 //        userRepository.save(user.get());
 //        userRepository.flush();
+        return UpdateResDto.builder().update(true).build();
+    }
+    /**
+     * 닉네임 수정
+     */
+    @Transactional
+    public UpdateResDto nicknameUpdate(NicknameUpdateReqDto nicknameUpdateReqDto, HttpServletRequest req){
+        String userEmail = jwtTokenProvider.getUserEmail(jwtTokenProvider.resolveToken(req));
+        Optional<User> user = userRepository.findByEmail(userEmail);
+        user.get().updateNickname(nicknameUpdateReqDto.getNickname());
+        return UpdateResDto.builder().update(true).build();
+    }
+
+    /**
+     * 퍼스널 컬러 수정
+     */
+    @Transactional
+    public UpdateResDto personalColorUpdate(PersonalUpdateReqDto personalUpdateReqDto, HttpServletRequest req){
+        String userEmail = jwtTokenProvider.getUserEmail(jwtTokenProvider.resolveToken(req));
+        Optional<User> user = userRepository.findByEmail(userEmail);
+        user.get().updatePersonalColor(personalUpdateReqDto.getPersonalColor());
+        return UpdateResDto.builder().update(true).build();
+    }
+
+    /**
+     * 배경사진 수정
+     */
+    @Transactional
+    public UpdateResDto backgroundUpdate(BackgroundUpdateReqDto backgroundUpdateReqDto, HttpServletRequest req){
+        String userEmail = jwtTokenProvider.getUserEmail(jwtTokenProvider.resolveToken(req));
+        Optional<User> user = userRepository.findByEmail(userEmail);
+        user.get().updateBackground(backgroundUpdateReqDto.getBackgroundImage());
+        return UpdateResDto.builder().update(true).build();
+    }
+    /**
+     * 프로필사진 수정
+     */
+    @Transactional
+    public UpdateResDto profileUpdate(ProfileUpdateReqDto profileUpdateReqDto, HttpServletRequest req){
+        String userEmail = jwtTokenProvider.getUserEmail(jwtTokenProvider.resolveToken(req));
+        Optional<User> user = userRepository.findByEmail(userEmail);
+        user.get().updateProfile(profileUpdateReqDto.getProfileImage());
+        return UpdateResDto.builder().update(true).build();
+    }
+    /**
+     * 휴대폰번호 수정
+     */
+    public UpdateResDto phoneUpdate(PhoneUpdateReqDto phoneUpdateReqDto, HttpServletRequest req){
+        String userEmail = jwtTokenProvider.getUserEmail(jwtTokenProvider.resolveToken(req));
+        Optional<User> user = userRepository.findByEmail(userEmail);
+        user.get().updatePhone(phoneUpdateReqDto.getPhone());
         return UpdateResDto.builder().update(true).build();
     }
 }
