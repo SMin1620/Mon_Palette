@@ -1,28 +1,47 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import './NavigationBarHeader.css'
-import { useRecoilState } from 'recoil';
-import { modalState } from '../Atom'
 
+// 아이콘
 import MenuIcon from '@mui/icons-material/Menu';
 import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined';
 import SearchIcon from '@mui/icons-material/Search';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 function NavigationBarHeader(props) {
-  const [showPage, setShowPage] = useRecoilState(modalState)
-  const handleModal = () => {
-    setShowPage(!showPage)
-  }
+  const [showPage, setShowPage] = useState(false)
+  const handleModal = () => { setShowPage(!showPage) }
+  
+  const navigate = useNavigate()
+  const handlePageBack = () => { navigate(-1) }
 
-  let PageTitle = props.title === 'Mon, Palette'
+  let PageTitle = props.title
+  let PageCenter = true
+  let PageLeft = true
+  let PageRight = true
+
+  if (PageTitle === 'Mon, Palette') {
+    PageCenter = true;
+    PageLeft = true;
+    PageRight = true;
+
+  } else if (PageTitle === 'login') {
+    PageCenter = false;
+    PageLeft = false;
+    PageRight = false;
+  } else {
+    PageCenter = false;
+    PageLeft = true;
+    PageRight = true;
+  }
+  
 
   return (
     <>
       <div className="navigationBar_header">
         <div className="navigationBar_left">
           {
-            PageTitle ? (<MenuIcon sx={{ fontSize: 30 }} onClick={handleModal}/>) : (<ArrowBackIcon className="mordal_back" sx={{ fontSize: 30 }}/>)
+            PageCenter ? (<MenuIcon sx={{ fontSize: 30 }} onClick={handleModal}/>) : PageLeft ? ((<ArrowBackIcon onClick={handlePageBack} className="mordal_back" sx={{ fontSize: 30 }}/>)) : (<div></div>)
           }
         </div>  
 
@@ -34,7 +53,7 @@ function NavigationBarHeader(props) {
         </div>
         
         {
-          PageTitle ? (
+          PageCenter ? (
             <div className="navigationBar_right">
               <div className="navigationBar_right_left">
                 <Link to='/search/'>
