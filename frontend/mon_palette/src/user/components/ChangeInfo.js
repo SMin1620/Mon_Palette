@@ -1,7 +1,12 @@
+//get요청 uri 수정
+
 import React, { useState, useEffect } from "react";
 import ChevronRightOutlinedIcon from "@mui/icons-material/ChevronRightOutlined";
+import axios from "axios";
+import { Link } from "react-router-dom";
 import "./ChangeInfo.css"; // 스타일 파일 임포트
-
+import { useRecoilValue } from "recoil";
+import { token } from "./Atom";
 const ChangeInfo = () => {
 	const [background, setBackground] = useState("");
 	const [profile, setProfile] = useState("");
@@ -10,16 +15,29 @@ const ChangeInfo = () => {
 	const [password, setPassword] = useState("");
 	const [phone, setPhone] = useState("");
 	const [address, setAddress] = useState("");
+	const Authorization = useRecoilValue(token);
+	const getmapping = () => {
+		axios
+			.get("http://192.168.30.130:8080/api/user/info", {
+				headers: { Authorization: Authorization },
+			})
+			.then((response) => {
+				console.log(response.data);
+				if (response.data !== null) {
+					setBackground(response.data.data.background);
+					setProfile(response.data.data.profile);
+					setNickname(response.data.data.nickname);
+					setPersonalcolor(response.data.data.personalcolor);
+					setPassword(response.data.data.password);
+					setPhone(response.data.data.phone);
+					setAddress(response.data.data.address);
+				}
+			});
+	};
 
 	useEffect(() => {
 		// 초기 값을 설정할 로직을 이곳에 작성합니다.
-		setBackground("/static/image.png");
-		setProfile("/static/image.png");
-		setNickname("은댕");
-		setPersonalcolor("여 름 쿨 톤");
-		setPassword("비 밀 번 호");
-		setPhone("010-1234-5678");
-		setAddress("우리집");
+		getmapping();
 	}, []); // 빈 배열을 넣어서 컴포넌트가 처음 렌더링될 때 한 번만 실행되도록 합니다.
 
 	return (
@@ -49,7 +67,9 @@ const ChangeInfo = () => {
 					</label>
 					<span>{nickname}</span>
 				</div>
-				<ChevronRightOutlinedIcon className="changeInfo_arrow-icon" />
+				<Link to="/changenickname">
+					<ChevronRightOutlinedIcon className="changeInfo_arrow-icon" />
+				</Link>
 			</div>
 			<div className="changeInfo_form-group">
 				<div className="changeInfo_group-left">
@@ -58,16 +78,19 @@ const ChangeInfo = () => {
 					</label>
 					<span>{personalcolor}</span>
 				</div>
-				<ChevronRightOutlinedIcon className="changeInfo_arrow-icon" />
+				<Link to="/changepersonalcolor">
+					<ChevronRightOutlinedIcon className="changeInfo_arrow-icon" />
+				</Link>
 			</div>
 			<div className="changeInfo_form-group">
 				<div className="changeInfo_group-left">
 					<label className="changeInfo_label" htmlFor="password">
 						비밀번호
 					</label>
-					<span>{password}</span>
 				</div>
-				<ChevronRightOutlinedIcon className="changeInfo_arrow-icon" />
+				<Link to="/changepassword">
+					<ChevronRightOutlinedIcon className="changeInfo_arrow-icon" />
+				</Link>
 			</div>
 			<div className="changeInfo_form-group">
 				<div className="changeInfo_group-left">
@@ -76,7 +99,9 @@ const ChangeInfo = () => {
 					</label>
 					<span>{phone}</span>
 				</div>
-				<ChevronRightOutlinedIcon className="changeInfo_arrow-icon" />
+				<Link to="/changephone">
+					<ChevronRightOutlinedIcon className="changeInfo_arrow-icon" />
+				</Link>
 			</div>
 			<div className="changeInfo_form-group">
 				<div className="changeInfo_group-left">
@@ -85,11 +110,16 @@ const ChangeInfo = () => {
 					</label>
 					<span>{address}</span>
 				</div>
-				<ChevronRightOutlinedIcon className="changeInfo_arrow-icon" />
+				<Link to="/changeaddress">
+					<ChevronRightOutlinedIcon className="changeInfo_arrow-icon" />
+				</Link>
 			</div>
 			<div className="changeInfo_form-group">
 				<label className="changeInfo_label">회 원 탈 퇴</label>
-				<ChevronRightOutlinedIcon className="changeInfo_arrow-icon" />
+
+				<Link to="/changepersonalcolor">
+					<ChevronRightOutlinedIcon className="changeInfo_arrow-icon" />
+				</Link>
 			</div>
 		</div>
 	);
