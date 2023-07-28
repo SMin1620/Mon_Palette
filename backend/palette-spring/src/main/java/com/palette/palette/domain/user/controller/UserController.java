@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -63,6 +64,9 @@ public class UserController {
         return BaseResponse.success(userService.nicknameValidation(nickname));
     }
 
+    /**
+     * 예외처리
+     */
     @Operation(summary = "비밀번호 수정")
     @PutMapping("/password")
     public BaseResponse passwordUpdate(@RequestBody @Valid PasswordUpdateReqDto password, HttpServletRequest request){
@@ -100,6 +104,18 @@ public class UserController {
         return BaseResponse.success(userService.phoneUpdate(phone, request));
     }
 
+    @Operation(summary = "개인정보 수정 페이지")
+    @GetMapping("/info")
+    public BaseResponse Info(HttpServletRequest request){
+        System.out.println(userService.userInfo(request));
+        return BaseResponse.success(userService.userInfo(request));
+    }
+
+    @Operation(summary = "마이페이지")
+    @GetMapping("/mypage")
+    public BaseResponse mypage(HttpServletRequest request){
+        return BaseResponse.success(userService.mypage(request));
+    }
 
 
 }
