@@ -98,7 +98,7 @@ public class FeedService {
      * @param feedImages
      */
     @Transactional
-    public FeedUpdateResDto feedUpdate(FeedReqDto feedReqDto, List<FeedImageResDto> feedImages, Long feedId, User user) {
+    public FeedUpdateResDto feedUpdate(FeedReqDto feedReqDto, List<FeedImageResDto> feedImages, Long feedId) {
 
         Feed feed = feedRepository.findById(feedId).orElseThrow(() -> new IllegalArgumentException("해당 피드가 없습니다."));
         List<FeedImageReqDto> addImage = new ArrayList<>();
@@ -132,5 +132,14 @@ public class FeedService {
         Feed feed = feedRepository.findById(feedId).orElseThrow(() -> new IllegalArgumentException("해당 피드기 없습니다."));
         feedRepository.deleteById(feedId);
         feed.delete();
+    }
+
+
+    /**
+     * 피드 작성자 ID 가져오기
+     * @param feedId
+     */
+    public Long getFeedUserId(Long feedId) {
+        return feedRepository.findUserIdByFeedId(feedId);
     }
 }
