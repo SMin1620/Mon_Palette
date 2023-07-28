@@ -4,8 +4,6 @@ import SearchResultShop from './SearchResultShop';
 import SearchResultFeed from './SearchResultFeed';
 import SearchResultChallenge from './SearchResultChallenge';
 
-import { Link } from 'react-router-dom';
-
 function SearchResult() {
   const [resultPage, setResultPage] = useState(<SearchResultShop/>)
 

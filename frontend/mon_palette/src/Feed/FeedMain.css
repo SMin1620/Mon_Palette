@@ -1,0 +1,29 @@
+.feedMain {
+  margin-top: 4.1875em;
+}
+
+.feedMain_body_info {
+  column-count: 2;
+  column-gap: 1em;
+  margin: 0 1em;
+  margin-top: 3em;
+}
+
+.feedMain_body_container {
+  justify-content: center;
+}
+
+.feedMain_body_info_item {
+  display: inline-block;
+  margin-bottom: 1em;
+  border-radius: 10px;
+}
+
+.feedMain_body_info_item img {
+  width: 100%;
+  border-radius: 10px;
+}
+
+.feedMain_body {
+  margin-bottom: 3em;
+}
