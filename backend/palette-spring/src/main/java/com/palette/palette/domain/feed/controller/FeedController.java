@@ -19,6 +19,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.file.attribute.UserPrincipalNotFoundException;
 import java.util.List;
 
 @Tag(name = "피드 API")
@@ -53,21 +54,21 @@ public class FeedController {
     public BaseResponse feedCreate(
             @RequestBody FeedReqDto feedReqDto,
             Authentication authentication
-    ) {
+    ) throws UserPrincipalNotFoundException {
 
         System.out.println("피드 생성 로직");
 
-//        // 인가된 사용자 정보
+        // 인가된 사용자 정보
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 
         System.out.println("Controller userDetails >>> " + userDetails);
         User user = userRepository.findByEmail(userDetails.getUsername()).get();
         System.out.println("Controller user >>> " + user);
-//
-//        // 인가된 사용자가 아닌 경우 예외 처리
-//        if (user == null) {
-//            throw new UnauthorizedException("인가된 사용자가 아닙니다.");
-//        }
+
+        // 유저 예외처리 :: 예외처리 커스텀 필요
+        if (user == null) {
+            throw new UserPrincipalNotFoundException("유효한 사용자가 아닙니다.");
+        }
 
         return BaseResponse.success(feedService.feedCreate(feedReqDto, feedReqDto.getFeedImages(), user));
     }
@@ -78,8 +79,9 @@ public class FeedController {
     @Operation(summary = "피드 상세 조회")
     @GetMapping("/{id}")
     public BaseResponse feedDetail(
-            @RequestParam("feedId") Long feedId) {
-
+            @RequestParam("feedId") Long feedId,
+            Authentication authentication
+    ) {
         System.out.println("피드 상세 조회 로직");
         return BaseResponse.success(feedService.feedDetail(feedId));
     }

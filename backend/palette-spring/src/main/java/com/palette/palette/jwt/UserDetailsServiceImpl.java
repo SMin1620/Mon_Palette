@@ -37,12 +37,19 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 });
 
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
-        return new org
-                .springframework
-                .security
-                .core
-                .userdetails
-                .User(user.getEmail(), user.getPassword(), grantedAuthorities);
+//        return new org
+//                .springframework
+//                .security
+//                .core
+//                .userdetails
+//                .User(user.getEmail(), user.getPassword(), grantedAuthorities);
+
+        return org.springframework.security.core.userdetails.User.builder()
+                .username(email)
+                .password(user.getPassword())
+                .roles("USER")
+                .build();
+
 
 //        return PrincipalDetails.create(user);
 
