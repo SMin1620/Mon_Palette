@@ -1,20 +1,12 @@
 .feed {
     width: 100%;
     min-height: 300px;
-    position: absolute;
     
 }
 
-/* .feed_wrapper {
-    display: flex;
-    width: 100%;
-    overflow: hidden;
-    overflow-x: scroll;
-    -webkit-overflow-scrolling: touch;
-    -ms-overflow-style: -ms-autohiding-scrollbar;
-   
-   
-} */
+.container {
+    border-bottom: solid 1px black;
+}
 
 .feed_wrapper::-webkit-scrollbar {
     display: none;
@@ -36,4 +28,27 @@
 .content {
     margin-left: 5%;
     margin-right: 5%;
+}
+
+.heart_filled {
+    margin-left: 1rem;
+    color: red;
+    font-size: 20px;
+    cursor: pointer;
+    transition: transform 300ms ease;
+}
+
+.heart_filled:hover {
+    transform: scale(1.1);
+}
+
+.heart {
+    margin-left: 1rem;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.comment {
+    font-size: 20px;
+    margin-left: 10px;
 }

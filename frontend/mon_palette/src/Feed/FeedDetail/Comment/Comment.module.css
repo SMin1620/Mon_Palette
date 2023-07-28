@@ -1,0 +1,38 @@
+.img {
+    border-radius: 50%;
+    margin: 0.7em;
+    width: 35px;
+    height: 35px;
+    align-items: center;
+    
+}
+
+.commentInfo {
+    display: flex;
+}
+
+.author_info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    width: 4em;
+    align-items: start;
+}
+
+.author {
+    font-weight: 500;
+}
+
+
+
+.content_wrap {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.content_wrap > p{
+
+    margin-left: 1em;
+}
