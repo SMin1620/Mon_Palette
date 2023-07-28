@@ -8,6 +8,11 @@ import LoginForm from "./user/components/LoginForm";
 import SignUp from "./user/components/SignUp";
 import SignUpForm from "./user/components/SignUpForm";
 import ChangeNickname from "./user/components/ChangeNickname";
+import ChangePassword from "./user/components/ChangePassword";
+import ChangeAddress from "./user/components/ChangeAddress";
+import ChangePhone from "./user/components/ChangePhone";
+import ChangeInfo from "./user/components/ChangeInfo";
+import MyPage from "./user/components/MyPage";
 
 import { Routes, Route } from "react-router-dom";
 function App() {
@@ -50,6 +55,46 @@ function App() {
 						<NavigationBarHeader title="ChangeNickname" />,
 						<ChangeNickname />,
 						<NavigationBarBottom />,
+					]}
+				/>
+				<Route
+					path="/changepassword"
+					element={[
+						<NavigationBarHeader title="ChangePassword" />,
+						<ChangePassword />,
+						<NavigationBarBottom />,
+					]}
+				/>
+				<Route
+					path="/changephone"
+					element={[
+						<NavigationBarHeader title="ChangePhone" />,
+						<ChangePhone />,
+						<NavigationBarBottom />,
+					]}
+				/>
+				<Route
+					path="/changeaddress"
+					element={[
+						<NavigationBarHeader title="ChangeAddress" />,
+						<ChangeAddress />,
+						<NavigationBarBottom />,
+					]}
+				/>
+				<Route
+					path="/changeinfo"
+					element={[
+						<NavigationBarHeader title="Edit profile" />,
+						<NavigationBarBottom />,
+						<ChangeInfo />,
+					]}
+				/>
+				<Route
+					path="/mypage"
+					element={[
+						<NavigationBarHeader title="Mon, Palette" />,
+						<NavigationBarBottom />,
+						<MyPage />,
 					]}
 				/>
 			</Routes>

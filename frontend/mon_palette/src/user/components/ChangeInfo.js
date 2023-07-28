@@ -6,29 +6,72 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import "./ChangeInfo.css"; // 스타일 파일 임포트
 import { useRecoilValue } from "recoil";
-import { token } from "./Atom";
+import { loginState } from "./Atom";
+import { useNavigate } from "react-router-dom";
+import "./Modal.css";
+
 const ChangeInfo = () => {
 	const [background, setBackground] = useState("");
 	const [profile, setProfile] = useState("");
 	const [nickname, setNickname] = useState("");
 	const [personalcolor, setPersonalcolor] = useState("");
-	const [password, setPassword] = useState("");
 	const [phone, setPhone] = useState("");
 	const [address, setAddress] = useState("");
-	const Authorization = useRecoilValue(token);
+	const Authorization = useRecoilValue(loginState);
+
+	const [isModalOpen, setIsModalOpen] = useState(false);
+	const Navigate = useNavigate();
+	const Modal = ({ isOpen, onClose, children }) => {
+		if (!isOpen) return null;
+
+		return (
+			<div className="modal-container">
+				<div className="modal-content">{children}</div>
+				<div className="modal-button-container">
+					<button className="withdraw_modal-button" onClick={Withdraw}>
+						확인
+					</button>
+					<span class="button-gap" />
+					<button className="withdraw_modal-button" onClick={closeModal}>
+						취소
+					</button>
+				</div>
+			</div>
+		);
+	};
+	const closeModal = () => {
+		setIsModalOpen(false);
+	};
+	//회원탈퇴 함수 구현
+	const Withdraw = () => {
+		axios
+			.delete("http://192.168.30.130:8080/api/user", {
+				headers: { Authorization: Authorization },
+			})
+			.then((response) => {
+				setIsModalOpen(false);
+				if (response.data.data.check === true) {
+					Navigate("/");
+				}
+			});
+	};
+	const leave = () => {
+		setIsModalOpen(true);
+	};
+
 	const getmapping = () => {
+		console.log(loginState);
 		axios
 			.get("http://192.168.30.130:8080/api/user/info", {
 				headers: { Authorization: Authorization },
 			})
 			.then((response) => {
 				console.log(response.data);
-				if (response.data !== null) {
+				if (response.data.data !== null) {
 					setBackground(response.data.data.background);
-					setProfile(response.data.data.profile);
+					setProfile(response.data.data.profilePhoto);
 					setNickname(response.data.data.nickname);
 					setPersonalcolor(response.data.data.personalcolor);
-					setPassword(response.data.data.password);
 					setPhone(response.data.data.phone);
 					setAddress(response.data.data.address);
 				}
@@ -37,9 +80,10 @@ const ChangeInfo = () => {
 
 	useEffect(() => {
 		// 초기 값을 설정할 로직을 이곳에 작성합니다.
-		getmapping();
-	}, []); // 빈 배열을 넣어서 컴포넌트가 처음 렌더링될 때 한 번만 실행되도록 합니다.
-
+		if (Authorization) {
+			getmapping();
+		}
+	}, [Authorization]);
 	return (
 		<div className="changeInfo_container">
 			<div className="changeInfo_background-container">
@@ -117,10 +161,14 @@ const ChangeInfo = () => {
 			<div className="changeInfo_form-group">
 				<label className="changeInfo_label">회 원 탈 퇴</label>
 
-				<Link to="/changepersonalcolor">
-					<ChevronRightOutlinedIcon className="changeInfo_arrow-icon" />
-				</Link>
+				<ChevronRightOutlinedIcon
+					className="changeInfo_arrow-icon"
+					onClick={leave}
+				/>
 			</div>
+			<Modal isOpen={isModalOpen} onClose={closeModal}>
+				<h3>진짜 내가 필요없어요? ._.</h3>
+			</Modal>
 		</div>
 	);
 };

@@ -1,20 +1,37 @@
 import React, { useState } from "react";
 import "./Change.css"; // 스타일 파일 임포트
+import axios from "axios";
+import { useRecoilValue } from "recoil";
+import { loginState } from "./Atom";
+import { useNavigate } from "react-router-dom";
 
 const ChangeNickname = () => {
 	const [password, setPassword] = useState("");
-	const [passwordConfirm, setPasswordConfirm] = useState("");
 	const [passwordError, setPasswordError] = useState(false);
-	const [passwordConfirmError, setPasswordConfirmError] = useState(false);
-
+	const Navigate = useNavigate();
+	const Authorization = useRecoilValue(loginState);
+	const change = () => {
+		axios
+			.put(
+				"http://192.168.30.130:8080/api/user/password",
+				{ password: password },
+				{ headers: { Authorization: Authorization } }
+			)
+			.then((response) => {
+				console.log(response);
+				if (response.data !== null) {
+					Navigate("/changeinfo");
+				} else {
+				}
+			})
+			.catch((err) => {
+				console.error("error", err);
+			});
+	};
 	const validatePassword = () => {
 		const passwordRegex =
 			/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,20}$/;
 		setPasswordError(!passwordRegex.test(password));
-	};
-
-	const validatePasswordConfirm = () => {
-		setPasswordConfirmError(password !== passwordConfirm);
 	};
 
 	return (
@@ -44,28 +61,8 @@ const ChangeNickname = () => {
 					</p>
 				)}
 			</div>
-			<div className="change_form-group">
-				<label className="change_label" htmlFor="passwordConfirm">
-					비밀번호 확인
-				</label>
-				<input
-					className="change_input"
-					type="password"
-					id="passwordConfirm"
-					value={passwordConfirm}
-					onChange={(e) => setPasswordConfirm(e.target.value)}
-					onBlur={validatePasswordConfirm}
-					placeholder="6-20자 영문 대소문자, 숫자, 특수문자 조합"
-				/>
-				{passwordConfirmError && (
-					<p className="change_error-message">
-						비밀번호와 비밀번호 확인이 일치하지 않습니다.
-					</p>
-				)}
-			</div>
-			<br />
 			<div className="change_button-container">
-				<button>변경하기</button>
+				<button onClick={change}>변경하기</button>
 			</div>
 		</div>
 	);

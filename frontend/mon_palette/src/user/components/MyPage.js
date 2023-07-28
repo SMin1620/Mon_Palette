@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import "./ChangeInfo.css"; // 스타일 파일 임포트
 import axios from "axios";
+import { Link } from "react-router-dom";
 import { useRecoilValue } from "recoil";
-import { token } from "./Atom";
+import { loginState } from "./Atom";
+import { useNavigate } from "react-router-dom";
 const ChangeInfo = () => {
 	const [background, setBackground] = useState("");
 	const [profile, setProfile] = useState("");
@@ -11,24 +13,35 @@ const ChangeInfo = () => {
 	const [feedcnt, setFeedCnt] = useState("");
 	const [follower, setFollower] = useState("");
 	const [following, setFollowing] = useState("");
-	const Authorization = useRecoilValue(token);
+	const [isinfluence, setIsInfluence] = useState("");
+	const Authorization = useRecoilValue(loginState);
+	const Navigate = useNavigate();
 	const getmapping = () => {
-		axios
-			.get("http://192.168.30.130:8080/api/user/mypage", {
-				headers: { Authorization: Authorization },
-			})
-			.then((response) => {
-				console.log(response.data);
-				if (response.data !== null) {
-					setBackground(response.data.data.background);
-					setProfile(response.data.data.profile);
-					setNickname(response.data.data.nickname);
-					setPersonalcolor(response.data.data.personalcolor);
-					setFeedCnt(response.data.data.feedcnt);
-					setFollower(response.data.data.follower);
-					setFollowing(response.data.data.following);
-				}
-			});
+		// axios
+		// 	.get("http://192.168.30.130:8080/api/user/mypage", {
+		// 		headers: { Authorization: Authorization },
+		// 	})
+		// 	.then((response) => {
+		// 		console.log(response.data);
+		// 		if (response.data !== null) {
+		// 			setBackground(response.data.data.background);
+		// 			setProfile(response.data.data.profile);
+		// 			setNickname(response.data.data.nickname);
+		// 			setPersonalcolor(response.data.data.personalcolor);
+		// 			setFeedCnt(response.data.data.feedcnt);
+		// 			setFollower(response.data.data.follower);
+		// 			setFollowing(response.data.data.following);
+		// 			setIsInfluence(response.data.data.isinfluence);
+		// 		}
+		// 	});
+		setBackground("");
+		setProfile("");
+		setNickname("은정이");
+		setPersonalcolor("여름쿨톤");
+		setFeedCnt(0);
+		setFollower(0);
+		setFollowing(0);
+		setIsInfluence("user");
 	};
 	useEffect(() => {
 		getmapping();
@@ -45,28 +58,83 @@ const ChangeInfo = () => {
 				<img src={profile} alt="profile" className="mypage_profile-picture" />
 			</div>
 			<div className="mypage_form-group">
-				<span>
+				<div>
 					<div className="mypage_group-left">
 						<label className="mypage_label">{nickname}</label>
 					</div>
 					<div className="mypage_group-left">
-						<span className="mypage_span">{personalcolor}</span>
+						<div className="mypage_span">{personalcolor}</div>
 					</div>
-				</span>
-				<span className="mypage_group-left">
+				</div>
+				<div className="mypage_group-left">
 					<div className="mypage_group-left">게시물</div>
 					<div className="mypage_span">{feedcnt}</div>
-				</span>
-				<span className="mypage_group-left">
+				</div>
+				<div className="mypage_group-left">
 					<div className="mypage_group-left">팔로워</div>
 					<div className="mypage_span">{follower}</div>
-				</span>
-				<span className="mypage_group-left">
+				</div>
+				<div className="mypage_group-left">
 					<div className="mypage_group-left">팔로잉</div>
-					<span className="mypage_span">{following}</span>
-				</span>
+					<div className="mypage_span">{following}</div>
+				</div>
 			</div>
-			<div className="mypage_form-group"></div>
+			{isinfluence === "user" ? (
+				<div>
+					<Link to="/changenickname">
+						<div className="mypage_group-left">
+							<div className="mypage_group-left">주문목록</div>
+						</div>
+					</Link>
+					<Link to="/changenickname">
+						<div className="mypage_group-left">
+							<div className="mypage_group-left">장바구니</div>
+						</div>
+					</Link>
+					<Link to="/feedwrite">
+						<div className="mypage_group-left">
+							<div className="mypage_group-left">만들기</div>
+						</div>
+					</Link>
+					<Link to="/changeinfo">
+						<div className="mypage_group-left">
+							<div className="mypage_group-left">정보수정</div>
+						</div>
+					</Link>
+				</div>
+			) : (
+				<div>
+					<div className="mypage_form-group">
+						<Link to="/feedwrite">
+							<div className="mypage_group-left">
+								<div className="mypage_group-left">주문목록</div>
+							</div>
+						</Link>
+						<Link to="/feedwrite">
+							<div className="mypage_group-left">
+								<div className="mypage_group-left">장바구니</div>
+							</div>
+						</Link>
+					</div>
+					<div className="mypage_form-group">
+						<Link to="/feedwrite">
+							<div className="mypage_group-left">
+								<div className="mypage_group-left">상품판매</div>
+							</div>
+						</Link>
+						<Link to="/feedwrite">
+							<div className="mypage_group-left">
+								<div className="mypage_group-left">만들기</div>
+							</div>
+						</Link>
+						<Link to="/changeinfo">
+							<div className="mypage_group-left">
+								<div className="mypage_group-left">정보수정</div>
+							</div>
+						</Link>
+					</div>
+				</div>
+			)}
 		</div>
 	);
 };

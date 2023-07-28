@@ -22,10 +22,11 @@ const SignUpForm = () => {
 	const [duplicationNickname, setDuplicationNickname] = useState(true);
 	const [birth, setBirth] = useState("");
 	const [phone, setPhone] = useState("");
+	const [duplicationPhone, setDuplicationPhone] = useState(true);
+	const [phoneState, setPhoneState] = useState(false);
 	const [isEmailValid, setIsEmailValid] = useState(true);
 	const [gender, setGender] = useState("");
 	const [notduplication, setNotDuplication] = useState("");
-
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const Navigate = useNavigate();
 
@@ -42,11 +43,17 @@ const SignUpForm = () => {
 			setNotDuplication("닉네임");
 			setIsModalOpen(true);
 		}
+		if (duplicationPhone && !phoneState) {
+			setNotDuplication("닉네임");
+			setIsModalOpen(true);
+		}
 		if (
 			emailState &&
 			nicknameState &&
+			phoneState &&
 			duplicationEmail &&
-			duplicationNickname
+			duplicationNickname &&
+			duplicationPhone
 		) {
 			axios
 				.post("http://192.168.30.130:8080/api/user/signup", {
@@ -105,6 +112,23 @@ const SignUpForm = () => {
 			});
 	};
 
+	const possiblePhone = (e) => {
+		axios
+			.get(`http://192.168.30.130:8080/api/user/phonecheck?phone=${phone}`)
+			.then((response) => {
+				if (response.data && response.data.data.check === false) {
+					setDuplicationPhone(false);
+					setPhoneState(false);
+				} else {
+					setDuplicationPhone(true);
+					setPhoneState(true);
+				}
+			})
+			.catch((err) => {
+				console.error("error", err);
+			});
+	};
+
 	const validateEmail = () => {
 		if (email.trim() === "") {
 			setIsEmailValid(true);
@@ -130,6 +154,11 @@ const SignUpForm = () => {
 	const changeEmail = (e) => {
 		setEmail(e.target.value);
 		setEmailState(false);
+	};
+
+	const changePhone = (e) => {
+		setPhone(e.target.value);
+		setPhoneState(false);
 	};
 
 	const changeNickname = (e) => {
@@ -228,13 +257,25 @@ const SignUpForm = () => {
 					연락처
 				</label>
 				<input
-					className="signUpForm_input"
+					className="signUpForm_input-with-button"
 					type="text"
 					id="phone"
 					value={phone}
-					onChange={(e) => setPhone(e.target.value)}
+					onChange={changePhone}
 				/>
+				<button
+					class="signUpForm_duplication-button"
+					onClick={(e) => possiblePhone(e)}
+				>
+					중복확인
+				</button>
 			</div>
+			{!duplicationPhone && (
+				<p className="signUpForm_error-message">이미 가입된 연락처입니다</p>
+			)}
+			{duplicationPhone && phoneState && (
+				<p className="signUpForm_error-message">사용 가능한 연락처입니다</p>
+			)}
 			<div className="signUpForm_form-group">
 				<label className="signUpForm_label" htmlFor="birth">
 					생년월일
