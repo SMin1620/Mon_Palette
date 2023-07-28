@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.palette.palette.domain.feed.dto.list.FeedReqDto;
 import com.palette.palette.domain.feed.dto.image.FeedImageReqDto;
+import com.palette.palette.domain.hashtag.entity.Hashtag;
 import com.palette.palette.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
@@ -41,7 +42,6 @@ public class Feed {
     // 유저 - 피드 :: 양방향
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-//    @JsonIgnore
     private User user;
 
     // 좋아요 컬럼
@@ -49,8 +49,8 @@ public class Feed {
     // 댓글 - 피드 추가해야함.
 
     // 피드 - 해시태그 :: 양방향
-//    @OneToMany(mappedBy = "feed", cascade = CascadeType.ALL)
-//    private List<Hashtag> hashtags;
+    @OneToMany(mappedBy = "feed", cascade = CascadeType.ALL)
+    private List<Hashtag> hashtags;
 
     private LocalDateTime createAt;
 
@@ -81,7 +81,6 @@ public class Feed {
         Feed feed = Feed.builder()
                 .content(feedReqDto.getContent())
                 .user(user)
-//                .hashtags() // 해시 태그 비즈니스 로직
                 .createAt(LocalDateTime.now())
                 .isDelete(false)
                 .build();
@@ -99,8 +98,19 @@ public class Feed {
             System.out.println("feedImage >>> " + feedImage.getImagePath());
 
         }
-
         feed.setFeedImages(feedImageList);
+
+        // 피드 해시태그 생성
+        List<Hashtag> feedHashList = new ArrayList<>();
+        for (String hashTag : feedReqDto.getHashTags()) {
+            Hashtag hashtag = Hashtag.builder()
+                    .name(hashTag)
+                    .feed(feed)
+                    .build();
+
+            feedHashList.add(hashtag);
+        }
+        feed.setHashtags(feedHashList);
 
         return feed;
     }

@@ -21,6 +21,8 @@ public class FeedUpdateResDto {
 
     private String content;
 
+    private List<String> hashtags;
+
     private LocalDateTime createAt;
 
     private LocalDateTime updateAt;
