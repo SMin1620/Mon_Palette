@@ -24,8 +24,8 @@ public class Hashtag {
     @Column(nullable = false, unique = true)
     private String name;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "feed_id")
-    @JsonIgnore
-    private Feed feed;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "feed_id")
+//    @JsonIgnore
+//    private Feed feed;
 }

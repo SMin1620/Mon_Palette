@@ -35,7 +35,6 @@ public class FeedController {
 
     private final FeedService feedService;
     private final UserRepository userRepository;
-    private final FeedRepository feedRepository;
 
 
     /**
@@ -138,7 +137,7 @@ public class FeedController {
             // 데이터의 수정
             FeedReqDto feedReqDto = FeedReqDto.builder()
                     .content(request.getContent())
-                    .hashTags(request.getHashTags())
+                    .hashtags(request.getHashtags())
                     .feedImages(request.getFeedImages())
                     .build();
 
