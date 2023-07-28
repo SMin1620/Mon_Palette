@@ -1,3 +1,7 @@
+//시간 남을때 연락처 생년월일 폼 맞추기
+//성별선택 토글처리
+//axios 매핑 주소 값 IP주소 처리하기
+
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -123,14 +127,6 @@ const SignUpForm = () => {
 		setPasswordConfirmError(password !== passwordConfirm);
 	};
 
-	const handleChange = (e) => {
-		const value = e.target.value;
-		// 생년월일 정규표현식에 맞는지 확인
-		if (/^\d{4}(-|\/)?\d{2}(-|\/)?\d{2}$/.test(value)) {
-			setBirth(value);
-		}
-	};
-
 	const changeEmail = (e) => {
 		setEmail(e.target.value);
 		setEmailState(false);
@@ -250,7 +246,6 @@ const SignUpForm = () => {
 					value={birth}
 					placeholder="YYYY-MM-DD"
 					onChange={(e) => setBirth(e.target.value)}
-					onBlur={handleChange}
 				/>
 			</div>
 			<div className="signUpForm_form-group">
