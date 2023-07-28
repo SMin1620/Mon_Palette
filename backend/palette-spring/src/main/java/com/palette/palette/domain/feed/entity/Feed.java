@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.palette.palette.domain.feed.dto.list.FeedReqDto;
 import com.palette.palette.domain.feed.dto.image.FeedImageReqDto;
+import com.palette.palette.domain.hashtag.entity.FeedHashtag;
 import com.palette.palette.domain.hashtag.entity.Hashtag;
 import com.palette.palette.domain.user.entity.User;
 import jakarta.persistence.*;
@@ -15,6 +16,8 @@ import org.hibernate.annotations.Where;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -49,8 +52,8 @@ public class Feed {
     // 댓글 - 피드 추가해야함.
 
     // 피드 - 해시태그 :: 양방향
-    @OneToMany(mappedBy = "feed", cascade = CascadeType.ALL)
-    private List<Hashtag> hashtags;
+    @OneToMany(mappedBy = "feed", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<FeedHashtag> hashtags;
 
     private LocalDateTime createAt;
 
@@ -66,16 +69,12 @@ public class Feed {
      */
     public void addFeedImage(FeedImage feedImage) {
         System.out.println("add feed image");
-        System.out.println("feedImage >>> " + feedImage.getImagePath());
         feedImages.add(feedImage);
         feedImage.setFeed(this);
-
-        System.out.println("feedImages >>> " + this.feedImages);
     }
 
-
     //  dto -> entity
-    public static Feed toEntity(FeedReqDto feedReqDto, List<FeedImageReqDto> feedImageReqDtos, User user) {
+    public static Feed toEntity(FeedReqDto feedReqDto, List<FeedImageReqDto> feedImageReqDtos, User user, List<Hashtag> hashtags) {
 
         // 피드 생성
         Feed feed = Feed.builder()
@@ -84,6 +83,19 @@ public class Feed {
                 .createAt(LocalDateTime.now())
                 .isDelete(false)
                 .build();
+
+        // 해시태그 생성
+        List<FeedHashtag> feedHashtagList = new ArrayList<>();
+        for (Hashtag hashtag : hashtags) {
+            FeedHashtag feedHashtag = FeedHashtag.builder()
+                    .feed(feed)
+                    .hashtag(hashtag)
+                    .build();
+
+            feedHashtagList.add(feedHashtag);
+        }
+        feed.setHashtags(feedHashtagList); // 생성된 FeedHashtag 데이터를 Feed 엔티티에 설정
+
 
         // 피드 이미지 생성
         List<FeedImage> feedImageList = new ArrayList<>();
@@ -100,17 +112,7 @@ public class Feed {
         }
         feed.setFeedImages(feedImageList);
 
-        // 피드 해시태그 생성
-        List<Hashtag> feedHashList = new ArrayList<>();
-        for (String hashTag : feedReqDto.getHashTags()) {
-            Hashtag hashtag = Hashtag.builder()
-                    .name(hashTag)
-                    .feed(feed)
-                    .build();
-
-            feedHashList.add(hashtag);
-        }
-        feed.setHashtags(feedHashList);
+        System.out.println("feed >>> " + feed.getHashtags());
 
         return feed;
     }
@@ -124,8 +126,10 @@ public class Feed {
         this.content = feedReqDto.getContent();
 
         // 피드 이미지 생성
-        List<FeedImage> feedImageList = new ArrayList<>();
+        List<FeedImage> feedImageList = new ArrayList<>();  // 피드 이미지
         for (FeedImageReqDto feedImageReqDto : feedImages) {
+
+            // 피드 이미지
             FeedImage feedImage = FeedImage.builder()
                     .feed(this)
                     .imagePath(feedImageReqDto.getFeedImage())
@@ -135,7 +139,22 @@ public class Feed {
 
             System.out.println("feedImage >>> " + feedImage.getImagePath());
         }
+
+        // 피드 해시태그 생성
+        List<Hashtag> feedHashtagList = new ArrayList<>();  // 해시태그
+//        for (String name : notAlreadyHashTag) {
+//            Hashtag hashtag = Hashtag.builder()
+//                    .name(name)
+//                    .feed(this)
+//                    .build();
+//
+//            feedHashtagList.add(hashtag);
+//        }
+
+        System.out.println("feedHashtagList >>> " + feedHashtagList);
+
         this.feedImages = feedImageList;
+//        this.hashtags = feedHashtagList;
         this.updateAt = LocalDateTime.now();
     }
 
@@ -146,20 +165,5 @@ public class Feed {
         this.setDeleteAt(LocalDateTime.now());
     }
 
-    public static FeedImage toEntity(String imagePath, Feed feed) {
-
-        // 피드 이미지 생성
-        FeedImage feedImage = FeedImage.builder()
-                .imagePath(imagePath)
-                .feed(feed)
-                .build();
-
-        System.out.println("image toEntity >>> " + feedImage.getImagePath());
-
-        // 피드에 피드 이미지 add
-        feed.addFeedImage(feedImage);
-
-        return feedImage;
-    }
 
 }

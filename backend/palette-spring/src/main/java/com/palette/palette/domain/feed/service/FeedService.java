@@ -11,6 +11,8 @@ import com.palette.palette.domain.feed.entity.Feed;
 import com.palette.palette.domain.feed.entity.FeedImage;
 import com.palette.palette.domain.feed.repository.FeedImageRepository;
 import com.palette.palette.domain.feed.repository.FeedRepository;
+import com.palette.palette.domain.hashtag.entity.Hashtag;
+import com.palette.palette.domain.hashtag.repository.HashtagRepository;
 import com.palette.palette.domain.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -23,6 +25,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,6 +35,7 @@ public class FeedService {
 
     private final FeedRepository feedRepository;
     private final FeedImageRepository feedImageRepository;
+    private final HashtagRepository hashtagRepository;
 
     /**
      * 피드 목록 조회
@@ -51,14 +55,28 @@ public class FeedService {
     @Transactional
     public FeedResDto feedCreate(FeedReqDto feedReqDto, List<FeedImageReqDto> images, User user) {
 
-        // 피드 생성
-        Feed feed = Feed.toEntity(feedReqDto, images, user);
-
         System.out.println("feedReqDto >>> " + feedReqDto.getFeedImages());
 
-        if (feedReqDto.getFeedImages() == null) {
-            System.out.println("null");
+        // 해시태그 생성
+        List<Hashtag> hashtags = new ArrayList<>();
+        for (String name : feedReqDto.getHashtags()) {
+
+            // 해시태그 중복 확인
+            Hashtag existingHashtag = hashtagRepository.findByName(name);
+            if (existingHashtag == null) {
+                Hashtag hashtag = Hashtag.builder()
+                        .name(name)
+                        .build();
+
+                hashtags.add(hashtag);
+                hashtagRepository.save(hashtag);
+            } else {
+                hashtags.add(existingHashtag);
+            }
         }
+
+        // 피드 생성
+        Feed feed = Feed.toEntity(feedReqDto, images, user, hashtags);
 
         feedRepository.save(feed);
 
@@ -116,6 +134,28 @@ public class FeedService {
 
             feed.update(feedReqDto, addImage);
         }
+
+        // 피드 해시태그
+        // 해시태그 검증 로직
+        List<Hashtag> notAlreadyHashTag = new ArrayList<>();
+
+//        feed.setHashtags(notAlreadyHashTag);
+
+//        for (String name : feedReqDto.getHashtags()) {
+//            // 이미 있는 해시태그인지 검사
+//            System.out.println(" findByName >>> " + hashtagRepository.findByName(name));
+//            if (hashtagRepository.findByName(name) == null) {
+//                // 중복이 없다면,
+//                System.out.println("해시 태그 중복아님");
+//                notAlreadyHashTag.add(name);
+//
+//                Hashtag newHashtag = Hashtag.builder().name(name).feed(feed).build();
+//                hashtagRepository.save(newHashtag);
+//            }
+//        }
+
+        // 피드 업데이트 수행
+        feedRepository.save(feed);
 
         return FeedUpdateResDto.toDto(feed);
     }

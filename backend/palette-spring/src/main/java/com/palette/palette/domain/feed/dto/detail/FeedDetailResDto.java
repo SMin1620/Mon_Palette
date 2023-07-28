@@ -3,6 +3,7 @@ package com.palette.palette.domain.feed.dto.detail;
 import com.palette.palette.domain.feed.dto.FeedUserResDto;
 import com.palette.palette.domain.feed.entity.Feed;
 import com.palette.palette.domain.feed.entity.FeedImage;
+import com.palette.palette.domain.hashtag.entity.FeedHashtag;
 import com.palette.palette.domain.hashtag.entity.Hashtag;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,7 +24,7 @@ public class FeedDetailResDto {
 
     private String content;
 
-    private List<String> hashTags;
+    private List<String> hashtags;
 
     private LocalDateTime createAt;
 
@@ -42,23 +43,21 @@ public class FeedDetailResDto {
      */
     public static FeedDetailResDto toDto(Feed feed) {
 
-        List<String> hashTags = new ArrayList<>();
-        for (Hashtag hashtag : feed.getHashtags()) {
-            hashTags.add(hashtag.getName());
-        }
+        // 해시태그
+//        List<String> hashTags = new ArrayList<>();
+//        for (FeedHashtag hashtag : feed.getHashtags()) {
+//            hashTags.add(hashtag.getHashtag().);
+//        }
 
 
         return FeedDetailResDto.builder()
                 .id(feed.getId())
                 .user(FeedUserResDto.toDto(feed.getUser()))   // 토큰에서 받아와야 함.
                 .content(feed.getContent())
-                .hashTags(hashTags)
+//                .hashtags(hashTags)
                 .createAt(LocalDateTime.now())
                 .isDelete(false)
                 .feedImages(feed.getFeedImages())
-//                .feedImages(feed.getFeedImages().stream()
-//                        .map(FeedImage)
-//                        .collect(Collectors.toList()))
                 .build();
     }
 

@@ -19,7 +19,7 @@ public class FeedReqDto {
     private String content;
 
     @Schema(description = "태그")
-    private List<String> hashTags;
+    private List<String> hashtags;
 
     private List<FeedImageReqDto> feedImages;
 
