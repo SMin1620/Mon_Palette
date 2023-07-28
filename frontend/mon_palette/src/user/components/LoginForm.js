@@ -3,8 +3,10 @@
 
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import "./LoginForm.css";
 import axios from "axios";
 import { useRecoilState } from "recoil";
+import { loginState } from "./Atom";
 import Modal from "../../Modal/Modal";
 const LoginForm = () => {
 	const [email, setUsername] = useState("");
@@ -13,7 +15,7 @@ const LoginForm = () => {
 	const [password, setPassword] = useState("");
 	const [isModalOpen, setIsModalOpen] = useState(false);
 
-	const [token, setToken] = useRecoilState(token);
+	const [token, setToken] = useRecoilState(loginState);
 	const Navigate = useNavigate();
 	const closeModal = () => {
 		setIsModalOpen(false);
@@ -27,10 +29,10 @@ const LoginForm = () => {
 				password: password,
 			})
 			.then((response) => {
-				console.log(response);
+				console.log(response.headers.authorization);
 				if (response.data !== null) {
-					setToken(response.data);
-					Navigate("/home");
+					setToken(response.headers.authorization);
+					Navigate("/mypage");
 				} else {
 					setIsModalOpen(true);
 				}
