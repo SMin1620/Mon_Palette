@@ -7,6 +7,7 @@ import com.palette.palette.domain.user.repository.UserRepository;
 import com.palette.palette.domain.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.persistence.PreUpdate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -32,7 +33,8 @@ public class CommentController {
     @Operation(summary = "피드 댓글 목록 조회")
     @GetMapping("/{feedId}/comment")
     public BaseResponse commentList(
-            @RequestParam("feedId") Long feedId,
+            @PathVariable("feedId") Long feedId,
+            @RequestParam("page") int page,
             Authentication authentication
     ) {
         System.out.println("댓글 목록 조회 컨트롤러");
@@ -51,7 +53,7 @@ public class CommentController {
                 throw new UserPrincipalNotFoundException("유효한 사용자가 아닙니다.");
             }
 
-            return BaseResponse.success(commentService.commentList(feedId, 0, 10));
+            return BaseResponse.success(commentService.commentList(feedId, page, 10));
         } catch (Exception e) {
 
             e.printStackTrace();
