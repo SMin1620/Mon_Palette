@@ -26,8 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.webjars.NotFoundException;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -151,44 +150,41 @@ public class FeedService {
         }
 
         // 피드 해시태그 업데이트
-        List<Hashtag> hashtags = new ArrayList<>();
+        Set<String> newHashtags = new HashSet<>(feedReqDto.getHashtags());
 
-        // 기존 해시태그를 가져와서 유지
-        for (FeedHashtag feedHashtag : feed.getHashtags()) {
-            hashtags.add(feedHashtag.getHashtag());
-        }
+        // 기존 해시태그를 가져와서 유지 또는 삭제
+        List<FeedHashtag> existingFeedHashtags = feed.getHashtags();
 
-        // 새로운 해시태그만 추가
-        for (String hashtagName : feedReqDto.getHashtags()) {
-            boolean isDuplicate = false;
-            for (Hashtag hashtag : hashtags) {
-                if (hashtag.getName().equals(hashtagName)) {
-                    isDuplicate = true;
-                    break;
-                }
-            }
+        for (Iterator<FeedHashtag> iterator = existingFeedHashtags.iterator(); iterator.hasNext();) {
+            FeedHashtag feedHashtag = iterator.next();
+            Hashtag hashtag = feedHashtag.getHashtag();
+            String hashtagName = hashtag.getName();
 
-            if (!isDuplicate) {
-                Hashtag hashtag = hashtagRepository.findByName(hashtagName);
-                if (hashtag == null) {
-                    hashtag = Hashtag.builder()
-                            .name(hashtagName)
-                            .build();
-                    hashtagRepository.save(hashtag);
-                }
-                hashtags.add(hashtag);
+            if (newHashtags.contains(hashtagName)) {
+                // 새로운 해시태그에 포함되어 있는 경우 유지
+                newHashtags.remove(hashtagName);
+            } else {
+                // 새로운 해시태그에 포함되어 있지 않은 경우 삭제
+                iterator.remove();
             }
         }
 
-        feed.getHashtags().clear();
-        for (Hashtag hashtag : hashtags) {
+        // 새로운 해시태그 추가
+        for (String hashtagName : newHashtags) {
+            Hashtag hashtag = hashtagRepository.findByName(hashtagName);
+            if (hashtag == null) {
+                hashtag = Hashtag.builder()
+                        .name(hashtagName)
+                        .build();
+                hashtagRepository.save(hashtag);
+            }
+
             FeedHashtag feedHashtag = FeedHashtag.builder()
                     .feed(feed)
                     .hashtag(hashtag)
                     .build();
-            feed.getHashtags().add(feedHashtag);
+            existingFeedHashtags.add(feedHashtag);
         }
-
 
         // 피드 업데이트 수행
         feedRepository.save(feed);
@@ -205,7 +201,7 @@ public class FeedService {
 
         // 사용자 유효성 검사
 
-        Feed feed = feedRepository.findById(feedId).orElseThrow(() -> new IllegalArgumentException("해당 피드기 없습니다."));
+        Feed feed = feedRepository.findById(feedId).orElseThrow(() -> new IllegalArgumentException("해당 피드가 없습니다."));
         feedRepository.deleteById(feedId);
         feed.delete();
     }
