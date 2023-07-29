@@ -44,17 +44,16 @@ public class FeedDetailResDto {
     public static FeedDetailResDto toDto(Feed feed) {
 
         // 해시태그
-//        List<String> hashTags = new ArrayList<>();
-//        for (FeedHashtag hashtag : feed.getHashtags()) {
-//            hashTags.add(hashtag.getHashtag().);
-//        }
-
+        List<String> hashTags = new ArrayList<>();
+        for (FeedHashtag hashtag : feed.getHashtags()) {
+            hashTags.add(hashtag.getHashtag().getName());
+        }
 
         return FeedDetailResDto.builder()
                 .id(feed.getId())
                 .user(FeedUserResDto.toDto(feed.getUser()))   // 토큰에서 받아와야 함.
                 .content(feed.getContent())
-//                .hashtags(hashTags)
+                .hashtags(hashTags)
                 .createAt(LocalDateTime.now())
                 .isDelete(false)
                 .feedImages(feed.getFeedImages())
