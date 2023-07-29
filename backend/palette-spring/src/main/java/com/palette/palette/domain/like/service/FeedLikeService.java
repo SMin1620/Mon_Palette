@@ -51,4 +51,18 @@ public class FeedLikeService {
         feedLikeRepository.save(feedLike);
     }
 
+    @Transactional
+    public void feedUnlike(Long feedId, Long userId) throws Exception {
+
+        // 유저 유효성 검사
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("사용자가 없습니다."));
+
+        // 피드 유효성 검사
+        Feed feed = feedRepository.findById(feedId)
+                .orElseThrow(() -> new NotFoundException("피드가 없습니다."));
+
+        feedLikeRepository.delete(feedLikeRepository.findByFeedAndUser(feed, user)
+                .orElseThrow(() -> new NotFoundException("이미 좋아요를 취소했습니다.")));
+    }
 }
