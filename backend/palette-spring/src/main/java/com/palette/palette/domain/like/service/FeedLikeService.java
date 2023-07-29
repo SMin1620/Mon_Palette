@@ -2,6 +2,7 @@ package com.palette.palette.domain.like.service;
 
 import com.palette.palette.domain.feed.entity.Feed;
 import com.palette.palette.domain.feed.repository.FeedRepository;
+import com.palette.palette.domain.like.dto.list.FeedLikeUserResDto;
 import com.palette.palette.domain.like.entity.FeedLike;
 import com.palette.palette.domain.like.repository.FeedLikeRepository;
 import com.palette.palette.domain.user.entity.User;
@@ -11,6 +12,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.webjars.NotFoundException;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -68,5 +72,23 @@ public class FeedLikeService {
                 .orElseThrow(() -> new NotFoundException("이미 좋아요를 취소했습니다.")));
 
         feed.cancelLike();
+    }
+
+    /**
+     * 피드 좋아요 목록 조회
+     * @param feedId
+     */
+    public List<FeedLikeUserResDto> feedLikeList(Long feedId) {
+
+        // 피드 유효성 검사
+        Feed feed = feedRepository.findById(feedId)
+                .orElseThrow(() -> new NotFoundException("피드가 없습니다."));
+
+        // 피드에 좋아요한 사용자를 리스트로 가져오기
+        List<User> feedLikeUser = feedLikeRepository.findAllByUser(feedId);
+
+        return feedLikeUser.stream()
+                .map(FeedLikeUserResDto::toDto)
+                .collect(Collectors.toList());
     }
 }
