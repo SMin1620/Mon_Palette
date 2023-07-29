@@ -1,0 +1,51 @@
+.modal-container {
+	/* 모달창 크기 */
+	width: 80%;
+	/* 최상단 위치 */
+	z-index: 999;
+
+	/* 중앙 배치 */
+	/* top, bottom, left, right 는 브라우저 기준으로 작동한다. */
+	/* translate는 본인의 크기 기준으로 작동한다. */
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+
+	/* 모달창 디자인 */
+	background-color: white;
+	border: 1px solid black;
+	border-radius: 8px;
+}
+
+/* 모달창 내부 X버튼 */
+.modal-close {
+	position: absolute;
+	right: 10px;
+	top: 10px;
+}
+
+.modal-button-container {
+	display: flex;
+	justify-content: center;
+}
+
+.modal-button {
+	width: 50%;
+	height: 10px;
+	padding: 1.25rem 2.5rem; /* 20px, 40px를 rem 단위로 변환 (20 / 16 = 1.25, 40 / 16 = 2.5) */
+	background-color: #e84c8b;
+	color: #fff;
+	border: none;
+	border-radius: 0.3125rem; /* 5px를 rem 단위로 변환 (5 / 16 = 0.3125) */
+	font-size: 1rem;
+	cursor: pointer;
+	margin-top: 1rem;
+	margin-bottom: 1rem;
+	text-align: center;
+	line-height: 40%;
+}
+
+.modal-content {
+	margin: 2rem 2rem;
+}

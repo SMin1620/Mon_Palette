@@ -46,10 +46,7 @@ function NavigationBarHeader(props) {
         </div>  
 
         <div className="navigationBar_center">
-
-          <Link to='/'>
-            <h3>{props.title}</h3>
-          </Link>
+          <h3>{props.title}</h3>
         </div>
         
         {
