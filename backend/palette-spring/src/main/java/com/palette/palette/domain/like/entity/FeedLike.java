@@ -1,4 +1,4 @@
-package com.palette.palette.domain.feed.like.entity;
+package com.palette.palette.domain.like.entity;
 
 import com.palette.palette.domain.feed.entity.Feed;
 import com.palette.palette.domain.user.entity.User;
@@ -12,7 +12,7 @@ import lombok.*;
 @NoArgsConstructor
 @Entity
 @Table(name = "feed_likes")
-public class Like {
+public class FeedLike {
 
     @Id
     @GeneratedValue
