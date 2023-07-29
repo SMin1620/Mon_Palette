@@ -161,7 +161,6 @@ public class FeedController {
             Authentication authentication
     ) {
         try {
-            feedService.feedDelete(feedId);
 
             // 피드 작성자가 본인인지 확인하는 로직
             // 인가된 사용자 정보
@@ -185,6 +184,8 @@ public class FeedController {
             if (! currentUserId.equals(feedUserId)) {
                 throw new UserPrincipalNotFoundException("작성자와 현재 사용자가 일치하지 않습니다.");
             }
+
+            feedService.feedDelete(feedId);
 
             return BaseResponse.success(true);
         } catch (Exception e) {
