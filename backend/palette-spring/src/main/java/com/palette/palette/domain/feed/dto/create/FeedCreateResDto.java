@@ -1,9 +1,10 @@
-package com.palette.palette.domain.feed.dto.list;
+package com.palette.palette.domain.feed.dto.create;
 
 import com.palette.palette.domain.feed.dto.FeedUserResDto;
+import com.palette.palette.domain.feed.dto.list.FeedResDto;
 import com.palette.palette.domain.feed.entity.Feed;
 import com.palette.palette.domain.feed.entity.FeedImage;
-import com.palette.palette.domain.hashtag.entity.FeedHashtag;
+import com.palette.palette.domain.hashtag.dto.HashTagResDto;
 import com.palette.palette.domain.hashtag.entity.Hashtag;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,20 +12,20 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class FeedResDto {
+public class FeedCreateResDto {
 
     private Long id;
 
     private String content;
 
-    private List<String> hashtags;
+    private List<HashTagResDto> hashtags;
 
     private LocalDateTime createAt;
 
@@ -42,23 +43,17 @@ public class FeedResDto {
     /**
      * entity -> dto
      */
-    public static FeedResDto toDto(Feed feed) {
-
-        // 해시태그
-//        List<String> hashTags = new ArrayList<>();
-//        for (FeedHashtag hashtag : feed.getHashtags()) {
-//            hashTags.add(hashtag.getHashtag().getName());
-//        }
-
-        return FeedResDto.builder()
+    public static FeedCreateResDto toDto(Feed feed) {
+        return FeedCreateResDto.builder()
                 .id(feed.getId())
                 .user(FeedUserResDto.toDto(feed.getUser()))
                 .content(feed.getContent())
-//                .hashtags(hashTags)
+//                .hashtags(feed.getHashtags().stream()
+//                        .map(HashTagResDto::toDto)
+//                        .collect(Collectors.toList()))
                 .createAt(LocalDateTime.now())
                 .isDelete(false)
                 .feedImages(feed.getFeedImages())
                 .build();
     }
-
 }
