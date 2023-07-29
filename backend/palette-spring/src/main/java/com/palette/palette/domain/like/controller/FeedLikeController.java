@@ -81,7 +81,7 @@ public class FeedLikeController {
 
 
             // 좋아요 취소 비즈니스 로직
-
+            feedLikeService.feedUnlike(feedId, currentUserId);
 
 
             return BaseResponse.success(true);
