@@ -28,6 +28,8 @@ public class FeedDetailResDto {
 
     private Boolean isLiked;
 
+    private Integer likeCount;
+
     private LocalDateTime createAt;
 
     private LocalDateTime updateAt;
@@ -57,6 +59,7 @@ public class FeedDetailResDto {
                 .content(feed.getContent())
                 .hashtags(hashTags)
                 .isLiked(isLiked)
+                .likeCount(feed.getLikeCount())
                 .createAt(LocalDateTime.now())
                 .isDelete(false)
                 .feedImages(feed.getFeedImages())

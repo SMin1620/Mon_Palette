@@ -100,11 +100,15 @@ public class FeedService {
         Feed feed = feedRepository.findById(feedId)
                 .orElseThrow(() -> new NotFoundException("피드가 없습니다."));
 
-        Boolean isLiked = false;
         // 사용자가 해당 피드를 좋아요 했는지 체크
+        Boolean isLiked = false;
         if (feedLikeRepository.findByFeedAndUser(feed, user).isPresent()) {
             isLiked = true;
         }
+
+        // 피드 좋아요 개수
+        int feedLikeCount = feedLikeRepository.findAllByFeed(feed).size();
+
 
         return FeedDetailResDto.toDto(feed, isLiked);
     }

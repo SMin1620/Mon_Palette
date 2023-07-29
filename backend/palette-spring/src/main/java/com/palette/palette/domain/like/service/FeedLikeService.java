@@ -49,6 +49,8 @@ public class FeedLikeService {
                 .build();
 
         feedLikeRepository.save(feedLike);
+
+        feed.addLike();
     }
 
     @Transactional
@@ -64,5 +66,7 @@ public class FeedLikeService {
 
         feedLikeRepository.delete(feedLikeRepository.findByFeedAndUser(feed, user)
                 .orElseThrow(() -> new NotFoundException("이미 좋아요를 취소했습니다.")));
+
+        feed.cancelLike();
     }
 }
