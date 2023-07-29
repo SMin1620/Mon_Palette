@@ -35,7 +35,7 @@ public class Mypage {
     private long followerCnt;
 
     @Schema(description = "팔로잉수", example = "9")
-    private long folloingCnt;
+    private long followingCnt;
 
     @Schema(description = "피드 수", example = "10")
     private long feedCnt;
