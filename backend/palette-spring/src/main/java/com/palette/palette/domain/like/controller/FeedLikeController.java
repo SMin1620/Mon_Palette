@@ -30,7 +30,7 @@ public class FeedLikeController {
     @Operation(summary = "좋아요 추가")
     @PostMapping("/{id}/like")
     public BaseResponse feedLike(
-            @RequestParam("feedId") Long feedId,
+            @PathVariable("id") Long feedId,
             Authentication authentication
     ) {
         try {
@@ -62,7 +62,7 @@ public class FeedLikeController {
     @Operation(summary = "좋아요 취소")
     @DeleteMapping("/{id}/like")
     public BaseResponse feedUnLike(
-            @RequestParam("feedId") Long feedId,
+            @PathVariable("id") Long feedId,
             Authentication authentication
     ) {
         try {
