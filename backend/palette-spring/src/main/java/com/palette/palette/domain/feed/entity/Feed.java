@@ -10,6 +10,7 @@ import com.palette.palette.domain.hashtag.entity.Hashtag;
 import com.palette.palette.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
@@ -48,6 +49,8 @@ public class Feed {
     private User user;
 
     // 좋아요 컬럼
+    @Builder.Default()
+    private Integer likeCount = 0;
 
     // 댓글 - 피드 추가해야함.
 
@@ -165,5 +168,18 @@ public class Feed {
         this.setDeleteAt(LocalDateTime.now());
     }
 
+    /**
+     * 피드 좋아요 추가
+     */
+    public void addLike() {
+        this.likeCount += 1;
+    }
+
+    /**
+     * 피드 좋아요 취소
+     */
+    public void cancelLike() {
+        this.likeCount -= 1;
+    }
 
 }
