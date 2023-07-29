@@ -39,21 +39,4 @@ public class FeedCreateResDto {
 
     private FeedUserResDto user;
 
-
-    /**
-     * entity -> dto
-     */
-    public static FeedCreateResDto toDto(Feed feed) {
-        return FeedCreateResDto.builder()
-                .id(feed.getId())
-                .user(FeedUserResDto.toDto(feed.getUser()))
-                .content(feed.getContent())
-//                .hashtags(feed.getHashtags().stream()
-//                        .map(HashTagResDto::toDto)
-//                        .collect(Collectors.toList()))
-                .createAt(LocalDateTime.now())
-                .isDelete(false)
-                .feedImages(feed.getFeedImages())
-                .build();
-    }
 }
