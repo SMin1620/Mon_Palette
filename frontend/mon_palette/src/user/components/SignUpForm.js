@@ -1,54 +1,84 @@
+//시간 남을때 연락처 생년월일 폼 맞추기
+//성별선택 토글처리
+//axios 매핑 주소 값 IP주소 처리하기
+
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Modal from "../../Modal/Modal";
 import "./SignUpForm.css"; // 스타일 파일 임포트
 
 const SignUpForm = () => {
 	const [email, setEmail] = useState("");
+	const [emailState, setEmailState] = useState(false);
+	const [duplicationEmail, setDuplicationEmail] = useState(true);
 	const [password, setPassword] = useState("");
 	const [passwordConfirm, setPasswordConfirm] = useState("");
+	const [passwordError, setPasswordError] = useState(false);
+	const [passwordConfirmError, setPasswordConfirmError] = useState(false);
 	const [name, setName] = useState("");
 	const [nickname, setNickname] = useState("");
+	const [nicknameState, setNicknameState] = useState(false);
+	const [duplicationNickname, setDuplicationNickname] = useState(true);
 	const [birth, setBirth] = useState("");
 	const [phone, setPhone] = useState("");
 	const [isEmailValid, setIsEmailValid] = useState(true);
 	const [gender, setGender] = useState("");
-	const [passwordError, setPasswordError] = useState(false);
-	const [passwordConfirmError, setPasswordConfirmError] = useState(false);
-	const [duplicationEmail, setDuplicationEmail] = useState(false);
-	const [duplicationNickname, setDuplicationNickname] = useState(false);
+	const [notduplication, setNotDuplication] = useState("");
+
+	const [isModalOpen, setIsModalOpen] = useState(false);
 	const Navigate = useNavigate();
 
+	const closeModal = () => {
+		setIsModalOpen(false);
+	};
+
 	const handleSignUp = () => {
-		//while (!duplicationEmail) {}
-		// while (!duplicationNickname) {
-		// }
-		axios
-			.post("http://192.168.30.130:8080/api/user/signup", {
-				email: email,
-				password: password,
-				name: name,
-				birth: birth,
-				phone: phone,
-				gender: gender,
-				nickname: nickname,
-			})
-			.then((response) => {
-				if (response.data.check === true) {
-					Navigate("/");
-				}
-			})
-			.catch((err) => {
-				console.error("error", err);
-			});
+		if (duplicationEmail && !emailState) {
+			setNotDuplication("이메일");
+			setIsModalOpen(true);
+		}
+		if (duplicationNickname && !nicknameState) {
+			setNotDuplication("닉네임");
+			setIsModalOpen(true);
+		}
+		if (
+			emailState &&
+			nicknameState &&
+			duplicationEmail &&
+			duplicationNickname
+		) {
+			axios
+				.post("http://192.168.30.130:8080/api/user/signup", {
+					email: email,
+					password: password,
+					name: name,
+					birth: birth,
+					phone: phone,
+					gender: gender,
+					nickname: nickname,
+				})
+				.then((response) => {
+					if (response.data.data.check === true) {
+						Navigate("/");
+					}
+				})
+				.catch((err) => {
+					console.error("error", err);
+				});
+		}
 	};
 
-	const possibleEmail = () => {
+	const possibleEmail = (e) => {
 		axios
-			.get(`http://192.168.30.130:8080/api/user/idcheck/${email}`)
+			.get(`http://192.168.30.130:8080/api/user/idcheck?email=${email}`)
 			.then((response) => {
-				if (response.data.check === false) {
+				if (response.data && response.data.data.check === false) {
 					setDuplicationEmail(false);
+					setEmailState(false);
+				} else {
+					setDuplicationEmail(true);
+					setEmailState(true);
 				}
 			})
 			.catch((err) => {
@@ -56,12 +86,18 @@ const SignUpForm = () => {
 			});
 	};
 
-	const possibleNickname = () => {
+	const possibleNickname = (e) => {
 		axios
-			.get(`http://192.168.30.130:8080/api/user/nicknamecheck/${nickname}`)
+			.get(
+				`http://192.168.30.130:8080/api/user/nicknamecheck?nickname=${nickname}`
+			)
 			.then((response) => {
-				if (response.data.check === false) {
+				if (response.data && response.data.data.check === false) {
 					setDuplicationNickname(false);
+					setNicknameState(false);
+				} else {
+					setDuplicationNickname(true);
+					setNicknameState(true);
 				}
 			})
 			.catch((err) => {
@@ -91,13 +127,16 @@ const SignUpForm = () => {
 		setPasswordConfirmError(password !== passwordConfirm);
 	};
 
-	const handleChange = (e) => {
-		const value = e.target.value;
-		// 생년월일 정규표현식에 맞는지 확인
-		if (/^\d{4}(-|\/)?\d{2}(-|\/)?\d{2}$/.test(value)) {
-			setBirth(value);
-		}
+	const changeEmail = (e) => {
+		setEmail(e.target.value);
+		setEmailState(false);
 	};
+
+	const changeNickname = (e) => {
+		setNickname(e.target.value);
+		setNicknameState(false);
+	};
+
 	return (
 		<div className="signUpForm_container">
 			<div className="signUpForm_form-group">
@@ -110,11 +149,14 @@ const SignUpForm = () => {
 						type="text"
 						id="email"
 						value={email}
-						onChange={(e) => setEmail(e.target.value)}
+						onChange={changeEmail}
 						onBlur={validateEmail} // 이메일 칸을 벗어날 때 유효성 검사 실행
 						placeholder="이메일 주소를 입력하세요"
-					/>{" "}
-					<button class="signUpForm_duplication-button" onclick={possibleEmail}>
+					/>
+					<button
+						class="signUpForm_duplication-button"
+						onClick={(e) => possibleEmail(e)}
+					>
 						중복확인
 					</button>
 				</div>
@@ -123,8 +165,11 @@ const SignUpForm = () => {
 						유효한 이메일 주소를 입력하세요.
 					</p>
 				)}
-				{!duplicationEmail && email.trim() !== "" && (
+				{!duplicationEmail && (
 					<p className="signUpForm_error-message">이미 가입된이메일입니다</p>
+				)}
+				{duplicationEmail && emailState && (
+					<p className="signUpForm_error-message">사용 가능한 이메일입니다</p>
 				)}
 			</div>
 			<div className="signUpForm_form-group">
@@ -201,7 +246,6 @@ const SignUpForm = () => {
 					value={birth}
 					placeholder="YYYY-MM-DD"
 					onChange={(e) => setBirth(e.target.value)}
-					onBlur={handleChange}
 				/>
 			</div>
 			<div className="signUpForm_form-group">
@@ -214,18 +258,21 @@ const SignUpForm = () => {
 						type="text"
 						id="nickname"
 						value={nickname}
-						onChange={(e) => setNickname(e.target.value)}
+						onChange={changeNickname}
 						placeholder="닉네임을 입력하세요"
 					/>
 					<button
 						class="signUpForm_duplication-button"
-						onclick={possibleNickname}
+						onClick={(e) => possibleNickname(e)}
 					>
 						중복확인
 					</button>
 				</div>
-				{!duplicationNickname && email.trim() !== "" && (
+				{!duplicationNickname && (
 					<p className="signUpForm_error-message">이미 존재하는 닉네임입니다</p>
+				)}
+				{duplicationNickname && nicknameState && (
+					<p className="signUpForm_error-message">사용 가능한 닉네임입니다</p>
 				)}
 			</div>
 			<div className="signUpForm_form-group">
@@ -251,6 +298,13 @@ const SignUpForm = () => {
 			<div className="signUpForm_button-container">
 				<button onClick={handleSignUp}>Sign Up</button>
 			</div>
+			<Modal
+				isOpen={isModalOpen}
+				onClose={closeModal}
+				children={notduplication}
+			>
+				<h3>{notduplication} 중복체크 해주세요 'v'</h3>
+			</Modal>
 		</div>
 	);
 };
