@@ -26,6 +26,8 @@ public class FeedDetailResDto {
 
     private List<String> hashtags;
 
+    private Boolean isLiked;
+
     private LocalDateTime createAt;
 
     private LocalDateTime updateAt;
@@ -41,7 +43,7 @@ public class FeedDetailResDto {
     /**
      * entity -> dto
      */
-    public static FeedDetailResDto toDto(Feed feed) {
+    public static FeedDetailResDto toDto(Feed feed, Boolean isLiked) {
 
         // 해시태그
         List<String> hashTags = new ArrayList<>();
@@ -54,6 +56,7 @@ public class FeedDetailResDto {
                 .user(FeedUserResDto.toDto(feed.getUser()))   // 토큰에서 받아와야 함.
                 .content(feed.getContent())
                 .hashtags(hashTags)
+                .isLiked(isLiked)
                 .createAt(LocalDateTime.now())
                 .isDelete(false)
                 .feedImages(feed.getFeedImages())
