@@ -87,7 +87,7 @@ public class FeedController {
     @Operation(summary = "피드 상세 조회")
     @GetMapping("/{id}")
     public BaseResponse feedDetail(
-            @RequestParam("feedId") Long feedId,
+            @PathVariable("id") Long feedId,
             Authentication authentication
     ) {
         System.out.println("피드 상세 조회 로직");
@@ -120,7 +120,7 @@ public class FeedController {
     @Operation(summary = "피드 수정")
     @PutMapping("/{id}")
     public BaseResponse feedUpdate(
-            @RequestParam("feedId") Long feedId,
+            @PathVariable("id") Long feedId,
             @RequestBody FeedReqDto request,
             Authentication authentication
     ) {
@@ -171,7 +171,7 @@ public class FeedController {
     @Operation(summary = "피드 삭제")
     @DeleteMapping("/{id}")
     public BaseResponse feedDelete(
-            @RequestParam("feedId") Long feedId,
+            @PathVariable("id") Long feedId,
             Authentication authentication
     ) {
         try {

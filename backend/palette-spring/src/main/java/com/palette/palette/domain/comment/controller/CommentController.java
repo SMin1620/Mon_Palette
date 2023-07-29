@@ -31,7 +31,7 @@ public class CommentController {
      * 댓글 목록 조회
      */
     @Operation(summary = "피드 댓글 목록 조회")
-    @GetMapping("/{feedId}/comment")
+    @GetMapping("/feed/{feedId}/comment")
     public BaseResponse commentList(
             @PathVariable("feedId") Long feedId,
             @RequestParam("page") int page,
@@ -65,7 +65,7 @@ public class CommentController {
      * 댓글 생성
      */
     @Operation(summary = "피드 댓글 생성")
-    @PostMapping("/{feedId}/comment")
+    @PostMapping("/feed/{feedId}/comment")
     public BaseResponse commentCreate(
             @RequestParam("feedId") Long feedId,
             @RequestBody CommentCreateReqDto request,
