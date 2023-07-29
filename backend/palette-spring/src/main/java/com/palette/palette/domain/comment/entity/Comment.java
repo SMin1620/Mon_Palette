@@ -1,6 +1,7 @@
 package com.palette.palette.domain.comment.entity;
 
 
+import com.palette.palette.domain.comment.dto.create.CommentCreateReqDto;
 import com.palette.palette.domain.feed.entity.Feed;
 import com.palette.palette.domain.user.entity.User;
 import jakarta.persistence.*;
@@ -43,4 +44,13 @@ public class Comment {
     /**
      * dto -> entity
      */
+    public static Comment toEntity(CommentCreateReqDto commentCreateReqDto, Feed feed, User user) {
+
+        return Comment.builder()
+                .content(commentCreateReqDto.getContent())
+                .createAt(LocalDateTime.now())
+                .feed(feed)
+                .user(user)
+                .build();
+    }
 }
