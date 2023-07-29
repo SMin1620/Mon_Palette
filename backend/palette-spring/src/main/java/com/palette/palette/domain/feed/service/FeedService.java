@@ -11,6 +11,9 @@ import com.palette.palette.domain.feed.entity.Feed;
 import com.palette.palette.domain.feed.entity.FeedImage;
 import com.palette.palette.domain.feed.repository.FeedImageRepository;
 import com.palette.palette.domain.feed.repository.FeedRepository;
+import com.palette.palette.domain.hashtag.entity.FeedHashtag;
+import com.palette.palette.domain.hashtag.entity.Hashtag;
+import com.palette.palette.domain.hashtag.repository.HashtagRepository;
 import com.palette.palette.domain.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -23,6 +26,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,6 +36,7 @@ public class FeedService {
 
     private final FeedRepository feedRepository;
     private final FeedImageRepository feedImageRepository;
+    private final HashtagRepository hashtagRepository;
 
     /**
      * 피드 목록 조회
@@ -51,14 +56,28 @@ public class FeedService {
     @Transactional
     public FeedResDto feedCreate(FeedReqDto feedReqDto, List<FeedImageReqDto> images, User user) {
 
-        // 피드 생성
-        Feed feed = Feed.toEntity(feedReqDto, images, user);
-
         System.out.println("feedReqDto >>> " + feedReqDto.getFeedImages());
 
-        if (feedReqDto.getFeedImages() == null) {
-            System.out.println("null");
+        // 해시태그 생성
+        List<Hashtag> hashtags = new ArrayList<>();
+        for (String name : feedReqDto.getHashtags()) {
+
+            // 해시태그 중복 확인
+            Hashtag existingHashtag = hashtagRepository.findByName(name);
+            if (existingHashtag == null) {
+                Hashtag hashtag = Hashtag.builder()
+                        .name(name)
+                        .build();
+
+                hashtags.add(hashtag);
+                hashtagRepository.save(hashtag);
+            } else {
+                hashtags.add(existingHashtag);
+            }
         }
+
+        // 피드 생성
+        Feed feed = Feed.toEntity(feedReqDto, images, user, hashtags);
 
         feedRepository.save(feed);
 
@@ -116,6 +135,49 @@ public class FeedService {
 
             feed.update(feedReqDto, addImage);
         }
+
+        // 피드 해시태그 업데이트
+        List<Hashtag> hashtags = new ArrayList<>();
+
+        // 기존 해시태그를 가져와서 유지
+        for (FeedHashtag feedHashtag : feed.getHashtags()) {
+            hashtags.add(feedHashtag.getHashtag());
+        }
+
+        // 새로운 해시태그만 추가
+        for (String hashtagName : feedReqDto.getHashtags()) {
+            boolean isDuplicate = false;
+            for (Hashtag hashtag : hashtags) {
+                if (hashtag.getName().equals(hashtagName)) {
+                    isDuplicate = true;
+                    break;
+                }
+            }
+
+            if (!isDuplicate) {
+                Hashtag hashtag = hashtagRepository.findByName(hashtagName);
+                if (hashtag == null) {
+                    hashtag = Hashtag.builder()
+                            .name(hashtagName)
+                            .build();
+                    hashtagRepository.save(hashtag);
+                }
+                hashtags.add(hashtag);
+            }
+        }
+
+        feed.getHashtags().clear();
+        for (Hashtag hashtag : hashtags) {
+            FeedHashtag feedHashtag = FeedHashtag.builder()
+                    .feed(feed)
+                    .hashtag(hashtag)
+                    .build();
+            feed.getHashtags().add(feedHashtag);
+        }
+
+
+        // 피드 업데이트 수행
+        feedRepository.save(feed);
 
         return FeedUpdateResDto.toDto(feed);
     }

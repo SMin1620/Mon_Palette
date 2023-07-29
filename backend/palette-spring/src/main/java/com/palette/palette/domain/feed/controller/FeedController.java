@@ -35,7 +35,6 @@ public class FeedController {
 
     private final FeedService feedService;
     private final UserRepository userRepository;
-    private final FeedRepository feedRepository;
 
 
     /**
@@ -59,7 +58,7 @@ public class FeedController {
     public BaseResponse feedCreate(
             @RequestBody FeedReqDto feedReqDto,
             Authentication authentication
-    ) throws UserPrincipalNotFoundException {
+    ) {
         System.out.println("피드 생성 로직");
 
         try {
@@ -138,7 +137,7 @@ public class FeedController {
             // 데이터의 수정
             FeedReqDto feedReqDto = FeedReqDto.builder()
                     .content(request.getContent())
-                    .tagContent(request.getTagContent())
+                    .hashtags(request.getHashtags())
                     .feedImages(request.getFeedImages())
                     .build();
 

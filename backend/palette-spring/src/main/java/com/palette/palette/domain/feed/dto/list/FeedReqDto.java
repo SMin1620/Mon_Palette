@@ -18,8 +18,8 @@ public class FeedReqDto {
     @Schema(description = "피드 내용", example = "테스트 내용")
     private String content;
 
-    @Schema(description = "태그", example = "#테스트")
-    private String tagContent;
+    @Schema(description = "태그")
+    private List<String> hashtags;
 
     private List<FeedImageReqDto> feedImages;
 
