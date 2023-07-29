@@ -261,7 +261,7 @@ public class UserService {
     public Mypage mypage(HttpServletRequest req){
         String userEmail = jwtTokenProvider.getUserEmail(jwtTokenProvider.resolveToken(req));
         Optional<User> user = userRepository.findByEmail(userEmail);
-        Long folloingCnt = followRepository.countByFromUser(user.get().getEmail());
+        Long followingCnt = followRepository.countByFromUser(user.get().getEmail());
         Long followerCnt = followRepository.countByToUser(user.get().getEmail());
         List<Feed> feedList = feedRepository.findAllByUser(user.get());
         return Mypage.builder()
@@ -270,7 +270,7 @@ public class UserService {
                 .nickname(user.get().getNickname())
                 .isInfluence(user.get().getRole())
                 .personalColor(user.get().getPersonalColor())
-                .folloingCnt(folloingCnt)
+                .followingCnt(followingCnt)
                 .followerCnt(followerCnt)
                 .feedCnt(feedList.size())
                 .feed(feedList)
