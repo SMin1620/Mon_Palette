@@ -87,12 +87,26 @@ public class FeedController {
     @Operation(summary = "피드 상세 조회")
     @GetMapping("/{id}")
     public BaseResponse feedDetail(
-            @RequestParam("feedId") Long feedId
+            @RequestParam("feedId") Long feedId,
+            Authentication authentication
     ) {
         System.out.println("피드 상세 조회 로직");
 
         try {
-            FeedDetailResDto feedDetail = feedService.feedDetail(feedId);
+
+            // 인가된 사용자 정보
+            UserDetails userDetails = ((UserDetails) authentication.getPrincipal());
+
+            System.out.println("Controller userDetails >>> " + userDetails);
+            Long currentUserId = userRepository.findByEmail(userDetails.getUsername()).get().getId();
+            System.out.println("Controller user id>>> " + currentUserId);
+
+            // 유저 예외처리 :: 예외처리 커스텀 필요
+            if (currentUserId == null) {
+                throw new UserPrincipalNotFoundException("유효한 사용자가 아닙니다.");
+            }
+
+            FeedDetailResDto feedDetail = feedService.feedDetail(feedId, currentUserId);
             return BaseResponse.success(feedDetail);
         } catch (Exception e) {
             e.printStackTrace();
