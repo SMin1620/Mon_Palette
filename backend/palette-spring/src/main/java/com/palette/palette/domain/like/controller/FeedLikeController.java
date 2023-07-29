@@ -3,6 +3,7 @@ package com.palette.palette.domain.like.controller;
 
 import com.palette.palette.common.BaseResponse;
 import com.palette.palette.domain.feed.service.FeedService;
+import com.palette.palette.domain.like.service.FeedLikeService;
 import com.palette.palette.domain.user.repository.UserRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -23,11 +24,12 @@ public class FeedLikeController {
 
     private final UserRepository userRepository;
     private final FeedService feedService;
+    private final FeedLikeService feedLikeService;
 
 
     @Operation(summary = "좋아요 추가")
     @PostMapping("/{id}/like")
-    public BaseResponse like(
+    public BaseResponse feedLike(
             @RequestParam("feedId") Long feedId,
             Authentication authentication
     ) {
@@ -44,17 +46,8 @@ public class FeedLikeController {
                 throw new UserPrincipalNotFoundException("유효한 사용자가 아닙니다.");
             }
 
-            // 게시글 작성자의 이메일 가져옴
-            Long feedUserId = feedService.getFeedUserId(feedId);
-
-            System.out.println("feedUserId >>> " + feedUserId);
-
-            // 작성자와 현재 유저가 일치한지 처리하는 로직
-            if (! currentUserId.equals(feedUserId)) {
-                throw new UserPrincipalNotFoundException("작성자와 현재 사용자가 일치하지 않습니다.");
-            }
-
             // 좋아요 비즈니스 로직
+            feedLikeService.feedLike(feedId, currentUserId);
 
 
             return BaseResponse.success(true);
@@ -68,7 +61,7 @@ public class FeedLikeController {
 
     @Operation(summary = "좋아요 취소")
     @DeleteMapping("/{id}/like")
-    public BaseResponse unLike(
+    public BaseResponse feedUnLike(
             @RequestParam("feedId") Long feedId,
             Authentication authentication
     ) {
@@ -86,17 +79,9 @@ public class FeedLikeController {
                 throw new UserPrincipalNotFoundException("유효한 사용자가 아닙니다.");
             }
 
-            // 게시글 작성자의 이메일 가져옴
-            Long feedUserId = feedService.getFeedUserId(feedId);
-
-            System.out.println("feedUserId >>> " + feedUserId);
-
-            // 작성자와 현재 유저가 일치한지 처리하는 로직
-            if (!currentUserId.equals(feedUserId)) {
-                throw new UserPrincipalNotFoundException("작성자와 현재 사용자가 일치하지 않습니다.");
-            }
 
             // 좋아요 취소 비즈니스 로직
+
 
 
             return BaseResponse.success(true);
