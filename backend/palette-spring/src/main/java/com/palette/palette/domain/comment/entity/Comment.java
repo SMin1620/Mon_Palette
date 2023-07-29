@@ -32,11 +32,11 @@ public class Comment {
 
     private LocalDateTime updateAt;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "feed_id")
     private Feed feed;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "user_id")
     private User user;
 
@@ -52,5 +52,14 @@ public class Comment {
                 .feed(feed)
                 .user(user)
                 .build();
+    }
+
+    /**
+     * 수정
+     * @param request
+     */
+    public void update(CommentCreateReqDto request) {
+        this.content = request.getContent();
+        this.updateAt = LocalDateTime.now();
     }
 }

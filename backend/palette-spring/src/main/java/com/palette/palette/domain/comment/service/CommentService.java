@@ -60,4 +60,33 @@ public class CommentService {
         Comment comment = Comment.toEntity(request, feed, user);
         commentRepository.save(comment);
     }
+
+    /**
+     * 댓글 수정
+     * @param request
+     * @param commentId
+     * @param userId
+     */
+    @Transactional
+    public void commentUpdate(CommentCreateReqDto request, Long commentId, Long userId) {
+
+        // 피드가 있는지 없는지도 예외처리를 할까..?
+
+        userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("현재 사용자를 찾을 수 없습니다."));
+
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new NotFoundException("댓글을 찾을 수 없습니다."));
+
+        comment.update(request);
+        commentRepository.save(comment);
+    }
+
+    /**
+     * 댓글 id 로 유저 찾기
+     * @param commentId
+     */
+    public Long getCommentUserId(Long commentId) {
+        return commentRepository.findUserIdByCommentId(commentId);
+    }
 }

@@ -96,4 +96,54 @@ public class CommentController {
             return BaseResponse.error("피드 댓글 생성 실패");
         }
     }
+
+    /**
+     * 댓글 수정
+     */
+    @Operation(summary = "피드 댓글 수정")
+    @PutMapping("/comment/{commentId}")
+    public BaseResponse commentUpdate(
+            @PathVariable("commentId") Long commentId,
+            @RequestBody CommentCreateReqDto request,
+            Authentication authentication
+    ) {
+        System.out.println("댓글 수정 컨트롤러");
+
+        try {
+            // 인가된 사용자 정보
+            UserDetails userDetails = ((UserDetails) authentication.getPrincipal());
+
+            System.out.println("Controller userDetails >>> " + userDetails);
+            Long currentUserId = userRepository.findByEmail(userDetails.getUsername()).get().getId();
+            System.out.println("Controller user id>>> " + currentUserId);
+
+            // 유저 예외처리 :: 예외처리 커스텀 필요
+            if (currentUserId == null) {
+                throw new UserPrincipalNotFoundException("유효한 사용자가 아닙니다.");
+            }
+
+            // 댓글 작성자의 이메일 가져옴
+            Long commentUserId = commentService.getCommentUserId(commentId);
+
+            System.out.println("feedUserId >>> " + commentUserId);
+
+            // 작성자와 현재 유저가 일치한지 처리하는 로직
+            if (! currentUserId.equals(commentUserId)) {
+                throw new UserPrincipalNotFoundException("작성자와 현재 사용자가 일치하지 않습니다.");
+            }
+
+            CommentCreateReqDto commentCreateReqDto = CommentCreateReqDto.builder()
+                            .content(request.getContent())
+                                    .build();
+
+            commentService.commentUpdate(commentCreateReqDto, commentId, currentUserId);
+
+            return BaseResponse.success(true);
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+            return BaseResponse.error("피드 댓글 수정 실패");
+        }
+    }
 }
