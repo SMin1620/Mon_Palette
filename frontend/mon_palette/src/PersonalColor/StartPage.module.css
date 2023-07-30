@@ -37,10 +37,9 @@
 
   .button-container {
     background-image: url('./startbg.png');
-  background-repeat: no-repeat;
-  background-size: 100% 100%; 
-  background-position: center; 
-  display: flex;
+    background-repeat: no-repeat;
+    background-size: 100% 100%; 
+    background-position: center; 
     display: flex;
     gap: 20px;
     flex-direction: column;

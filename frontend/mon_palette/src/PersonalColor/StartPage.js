@@ -18,7 +18,7 @@ const StartPage = () => {
     setTimeout(() => {
       setIsLoading(false);
       setShowResultPage(true);
-    }, 300000000);
+    }, 3000);
   };
 
   const handleImageUpload = (e) => {
