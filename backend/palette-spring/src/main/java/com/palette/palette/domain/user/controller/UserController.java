@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -62,6 +63,12 @@ public class UserController {
     @GetMapping("/nicknamecheck")
     public BaseResponse nicknamecheck(@RequestParam String nickname){
         return BaseResponse.success(userService.nicknameValidation(nickname));
+    }
+
+    @Operation(summary = "휴대폰 중복체크")
+    @GetMapping("/phonecheck")
+    public BaseResponse phonecheck(@RequestParam String phone){
+        return BaseResponse.success(userService.phoneValidation(phone));
     }
 
     /**
@@ -117,5 +124,8 @@ public class UserController {
         return BaseResponse.success(userService.mypage(request));
     }
 
-
+    @GetMapping("/if")
+    public ResponseEntity ifTest() {
+        return ResponseEntity.ok().body("ok");
+    }
 }

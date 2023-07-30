@@ -8,6 +8,6 @@ import lombok.Data;
 @Builder
 public class ValidationResDto {
 
-    @Schema(description = "email or nickname 중복 체크", example = "true")
+    @Schema(description = "email or nickname or phone 중복 체크", example = "true")
     Boolean check;
 }

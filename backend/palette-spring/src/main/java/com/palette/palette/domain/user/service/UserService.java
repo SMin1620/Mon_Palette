@@ -172,6 +172,15 @@ public class UserService {
         }
     }
 
+    public ValidationResDto phoneValidation(String phone){
+        Optional<User> phoneCheck = userRepository.findByPhone(phone);
+        if(phoneCheck.isEmpty()){
+            return ValidationResDto.builder().check(true).build();
+        }else{
+            return ValidationResDto.builder().check(false).build();
+        }
+    }
+
     /**
      *
      * 비밀번호 수정
