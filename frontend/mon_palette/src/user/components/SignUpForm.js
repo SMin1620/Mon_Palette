@@ -1,6 +1,4 @@
 //시간 남을때 연락처 생년월일 폼 맞추기
-//성별선택 토글처리
-//axios 매핑 주소 값 IP주소 처리하기
 
 import React, { useState } from "react";
 import axios from "axios";
@@ -44,7 +42,7 @@ const SignUpForm = () => {
 			setIsModalOpen(true);
 		}
 		if (duplicationPhone && !phoneState) {
-			setNotDuplication("닉네임");
+			setNotDuplication("연락처");
 			setIsModalOpen(true);
 		}
 		if (
@@ -56,7 +54,7 @@ const SignUpForm = () => {
 			duplicationPhone
 		) {
 			axios
-				.post("http://192.168.30.130:8080/api/user/signup", {
+				.post(`${process.env.REACT_APP_API}/api/user/signup`, {
 					email: email,
 					password: password,
 					name: name,
@@ -78,7 +76,7 @@ const SignUpForm = () => {
 
 	const possibleEmail = (e) => {
 		axios
-			.get(`http://192.168.30.130:8080/api/user/idcheck?email=${email}`)
+			.get(`${process.env.REACT_APP_API}/api/user/idcheck?email=${email}`)
 			.then((response) => {
 				if (response.data && response.data.data.check === false) {
 					setDuplicationEmail(false);
@@ -96,7 +94,7 @@ const SignUpForm = () => {
 	const possibleNickname = (e) => {
 		axios
 			.get(
-				`http://192.168.30.130:8080/api/user/nicknamecheck?nickname=${nickname}`
+				`${process.env.REACT_APP_API}/api/user/nicknamecheck?nickname=${nickname}`
 			)
 			.then((response) => {
 				if (response.data && response.data.data.check === false) {
@@ -114,7 +112,7 @@ const SignUpForm = () => {
 
 	const possiblePhone = (e) => {
 		axios
-			.get(`http://192.168.30.130:8080/api/user/phonecheck?phone=${phone}`)
+			.get(`${process.env.REACT_APP_API}/api/user/phonecheck?phone=${phone}`)
 			.then((response) => {
 				if (response.data && response.data.data.check === false) {
 					setDuplicationPhone(false);
@@ -256,12 +254,15 @@ const SignUpForm = () => {
 				<label className="signUpForm_label" htmlFor="phone">
 					연락처
 				</label>
+				<div className="signUpForm_input-with-button">
 				<input
-					className="signUpForm_input-with-button"
+					className="signUpForm_input"
 					type="text"
 					id="phone"
 					value={phone}
+					placeholder="00*-000*-0000"
 					onChange={changePhone}
+					
 				/>
 				<button
 					class="signUpForm_duplication-button"
@@ -269,6 +270,7 @@ const SignUpForm = () => {
 				>
 					중복확인
 				</button>
+				</div>
 			</div>
 			{!duplicationPhone && (
 				<p className="signUpForm_error-message">이미 가입된 연락처입니다</p>

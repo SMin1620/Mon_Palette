@@ -29,36 +29,47 @@ html {
 	justify-content: center; /* 요소들을 가로 방향으로 가운데 정렬합니다. */
 	align-items: center; /* 요소들을 세로 방향으로 가운데 정렬합니다. */
 	width: 100%; /* 원하는 이미지 크기로 설정합니다. */
-	height: 30%; /* 원하는 이미지 크기로 설정합니다. */
-	overflow: hidden; /* 이미지가 컨테이너를 벗어나는 부분은 잘립니다. */
+	height: 13rem; /* 원하는 이미지 크기로 설정합니다. */
 }
 
 /* 이미지를 원형 모양으로 보여줍니다. */
 .changeInfo_background-picture {
+	position: relative;
 	width: 100%; /* 이미지를 컨테이너 크기에 맞게 조정합니다. */
 	height: 100%; /* 이미지를 컨테이너 크기에 맞게 조정합니다. */
+	/* object-fit: cover; 이미지가 비율을 유지하면서 컨테이너를 가득 채우도록 합니다. */
+}
 
-	object-fit: cover; /* 이미지가 비율을 유지하면서 컨테이너를 가득 채우도록 합니다. */
+.changeInfo_background_edit{
+	position: absolute;
+	top:15rem;
+	right:0.4rem;
 }
 
 .changeInfo_profile-container {
-	display: flex;
-	justify-content: center; /* 요소들을 가로 방향으로 가운데 정렬합니다. */
-	width: 7rem; /* 원하는 크기로 조정합니다. */
-	height: 7rem; /* 원하는 크기로 조정합니다. */
-	align-items: center; /* 요소들을 세로 방향으로 가운데 정렬합니다. */
-	border-radius: 50%; /* 50%로 설정하여 이미지를 원형으로 만듭니다. */
-	overflow: hidden; /* 이미지가 컨테이너 영역을 벗어나는 부분은 잘립니다. */
+	display:flex;
+	/* 추가적인 스타일링을 원하면 여기에 작성합니다. */
+}
+
+.changeInfo_profile-content {
+	position:relative;
 	/* 추가적인 스타일링을 원하면 여기에 작성합니다. */
 }
 
 /* 이미지를 원형 모양으로 보여줍니다. */
 .changeInfo_profile-picture {
-	width: 100%; /* 이미지를 컨테이너 크기에 맞게 조정합니다. */
-	height: 100%; /* 이미지를 컨테이너 크기에 맞게 조정합니다. */
+	
+	justify-content: center; /* 요소들을 가로 방향으로 가운데 정렬합니다. */
+	width: 7rem; /* 이미지를 컨테이너 크기에 맞게 조정합니다. */
+	height: 7rem; /* 이미지를 컨테이너 크기에 맞게 조정합니다. */
+	border-radius: 50%; /* 50%로 설정하여 이미지를 원형으로 만듭니다. */
+	overflow: hidden; /* 이미지가 컨테이너 영역을 벗어나는 부분은 잘립니다. */
 	object-fit: cover; /* 이미지가 비율을 유지하면서 컨테이너를 가득 채우도록 합니다. */
 }
-
+.changeInfo_profile_edit{
+	position:absolute;
+	top:5rem;
+}
 .changeInfo_arrow-icon {
 	border-radius: 50%;
 	border: 1px solid black;
@@ -66,4 +77,11 @@ html {
 
 .changeInfo_group-left {
 	display: flex;
+}
+
+.picture-edit-label svg {
+	font-size: 24px;
+  }
+.picture-edit{
+	display: none;
 }

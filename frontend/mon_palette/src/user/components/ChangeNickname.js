@@ -21,7 +21,7 @@ const ChangeNickname = () => {
 	const possibleNickname = (e) => {
 		axios
 			.get(
-				`http://192.168.30.130:8080/api/user/nicknamecheck?nickname=${nickname}`,
+				`${process.env.REACT_APP_API}/api/user/nicknamecheck?nickname=${nickname}`,
 				{
 					headers: { Authorization: Authorization },
 				}
@@ -52,7 +52,7 @@ const ChangeNickname = () => {
 		if (nicknameState && duplicationNickname) {
 			axios
 				.put(
-					"http://192.168.30.130:8080/api/user/nickname",
+					`${process.env.REACT_APP_API}/api/user/nickname`,
 					{ nickname: nickname },
 					{ headers: { Authorization: Authorization } }
 				)
