@@ -1,6 +1,7 @@
 .img {
     border-radius: 50%;
-    margin: 0.7em;
+    margin: 0 0.7em;
+    margin-bottom: 0.7em;
     width: 35px;
     height: 35px;
     align-items: center;
@@ -9,6 +10,8 @@
 
 .commentInfo {
     display: flex;
+    align-items: start;
+    margin-top: 0.7em;
 }
 
 .author_info {
@@ -22,9 +25,12 @@
 
 .author {
     font-weight: 500;
+    font-size: 17px;
 }
 
-
+.time {
+    font-size: 13px;
+}
 
 .content_wrap {
     display: flex;
@@ -33,6 +39,6 @@
 }
 
 .content_wrap > p{
-
+    margin: 0;
     margin-left: 1em;
 }

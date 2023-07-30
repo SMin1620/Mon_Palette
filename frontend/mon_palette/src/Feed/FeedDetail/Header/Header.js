@@ -35,7 +35,8 @@ function Header() {
                         "userId": 23,
                         "userNickname": "ysk",
                         "personalColor": "summer cool",
-                        "profileImage": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcShoVme-PZaEOSY_dTvGc_zpbDUXfcRIyHNoA&usqp=CAU"
+                        "profileImage": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcShoVme-PZaEOSY_dTvGc_zpbDUXfcRIyHNoA&usqp=CAU",
+                        "isFollowed": false
                     }
                 ],
                 "tagContent": "#쿠로미",
@@ -90,7 +91,11 @@ function Header() {
                         </div>
 
                         <div className={styles.follow}>
-                            <FollowButton text="Follow" />
+                            {
+                                feed.user[0].isFollowed ? (<FollowButton text="Following" />) : (
+                            
+                            <FollowButton text="Follow" />)
+                            }
                         </div>
                     </div>
                 </div>

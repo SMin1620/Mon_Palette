@@ -15,7 +15,8 @@ function FeedContent() {
         infinite: false,
         speed: 500,
         slidesToShow: 1,
-        slidesToScroll: 1
+        slidesToScroll: 1,
+        arrow: true
     }
 
     
@@ -83,7 +84,7 @@ function FeedContent() {
                 "isDelete": false,
                 "deleteAt": null,
                 "isLiked": false,
-                "countLike": 2
+                "likeCount": 2
             }
         ]
     };
@@ -97,7 +98,7 @@ function FeedContent() {
         
         setFeedList((prevFeedList) =>
           prevFeedList.map((feed) =>
-            feed.id === feedId ? { ...feed, isLiked: !prevFeedList.isLiked } : feed
+            feed.id === feedId ? { ...feed, isLiked: !prevFeedList.isLiked,  likeCount: feed.isLiked ? feed.likeCount - 1 : feed.likeCount + 1 } : feed
           )
         );
       };
@@ -130,6 +131,8 @@ function FeedContent() {
                         ) : (
                             <HeartOutlined className={styles.heart} onClick={() => handleLikeClick(feed.id)} />
                         )}
+                        {feed.likeCount} 
+                        {/* 좋아요 갯수 표시 */}
                         </span>
                         <span>
                             <CommentOutlined
