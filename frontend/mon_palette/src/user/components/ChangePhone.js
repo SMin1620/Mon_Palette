@@ -17,7 +17,7 @@ const ChangeNickname = () => {
 	};
 	const possiblePhone = (e) => {
 		axios
-			.get(`http://192.168.30.130:8080/api/user/phonecheck?phone=${phone}`)
+			.get(`${process.env.REACT_APP_API}/api/user/phonecheck?phone=${phone}`)
 			.then((response) => {
 				if (response.data && response.data.data.check === false) {
 					setDuplicationPhone(false);
@@ -41,7 +41,7 @@ const ChangeNickname = () => {
 		if (duplicationPhone && phoneState) {
 			axios
 				.put(
-					"http://192.168.30.130:8080/api/user/phone",
+					`${process.env.REACT_APP_API}/api/user/phone`,
 					{ phone: phone },
 					{ headers: { Authorization: Authorization } }
 				)

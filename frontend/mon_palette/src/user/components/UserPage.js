@@ -19,8 +19,6 @@ const ChangeInfo = () => {
 	const [feedcnt, setFeedCnt] = useState("");
 	const [follower, setFollower] = useState("");
 	const [following, setFollowing] = useState("");
-	const [isinfluence, setIsInfluence] = useState("");
-	const [getinfo, setGetInfo] = useState("Feed")
 	const Authorization = useRecoilValue(loginState);
 	const Navigate = useNavigate();
 	const getmapping = () => {
@@ -38,7 +36,6 @@ const ChangeInfo = () => {
 					setFeedCnt(response.data.data.feedCnt);
 					setFollower(response.data.data.followerCnt);
 					setFollowing(response.data.data.followingCnt);
-					setIsInfluence(response.data.data.isInfluence);
 				}
 			});
 	};
@@ -51,7 +48,6 @@ const ChangeInfo = () => {
 		setFeedCnt(0);
 		setFollower(0);
 		setFollowing(0);
-		setIsInfluence("USER");
 
 
 	}, []); // 빈 배열을 넣어서 컴포넌트가 처음 렌더링될 때 한 번만 실행되도록 합니다.
@@ -117,76 +113,6 @@ const ChangeInfo = () => {
 					</div>
 				</div>
 			</div>
-
-			
-			{isinfluence === "USER" ? (
-				<div className="mypage_menu_button">
-					
-					<Link to="/changenickname">
-						<button className="mypage_button1">
-							<AssignmentOutlinedIcon />
-							<div className="mypage_group-left">주문목록</div>
-						</button>
-					</Link>
-					<Link to="/changenickname">
-						<button className="mypage_button2">
-							<ShoppingCartOutlinedIcon />
-							<div className="mypage_group-left">장바구니</div>
-						</button>
-					</Link>
-					
-					<Link to="/feedwrite">
-						<button className="mypage_button3">
-							<AddOutlinedIcon />
-							<div className="mypage_group-left">만들기</div>
-						</button>
-					</Link>
-					<Link to="/changeinfo">
-						<button className="mypage_button4">
-							<SettingsOutlinedIcon />
-							<div className="mypage_group-left">정보수정</div>
-						</button>
-					</Link>
-					
-				</div>
-			) : (
-				<div>
-					<div className="mypage_menu_button">
-						<Link to="/feedwrite">
-							<button className="mypage_button5">
-								<AssignmentOutlinedIcon />
-								<div className="mypage_group-left">주문목록</div>
-							</button>
-						</Link>
-						<Link to="/feedwrite">
-							<button className="mypage_button6">
-								<ShoppingCartOutlinedIcon />
-								<div className="mypage_group-left">장바구니</div>
-							</button>
-						</Link>
-					</div>
-					<div className="mypage_menu_button">
-						<Link to="/feedwrite">
-							<button className="mypage_button7">
-								<AddShoppingCartOutlinedIcon />
-								<div className="mypage_group-left">상품판매</div>
-							</button>
-						</Link>
-						<Link to="/feedwrite">
-							<button className="mypage_button8">
-								<AddOutlinedIcon />
-								<div className="mypage_group-left">만들기</div>
-							</button>
-						</Link>
-						<Link to="/changeinfo">
-							<button className="mypage_button9">
-								<SettingsOutlinedIcon />
-								<div className="mypage_group-left">정보수정</div>
-							</button>
-						</Link>
-					</div>
-				</div>
-			)}
 			<br />
 			<hr className="mypage_hr"/>
 			<div className="mypage_menu_button">
