@@ -95,8 +95,9 @@ public class UserController {
 
     @Operation(summary = "배경사진 수정")
     @PutMapping("/background")
-    public BaseResponse backgroundUpdate(@RequestBody @Valid BackgroundUpdateReqDto background, HttpServletRequest request){
-        return BaseResponse.success(userService.backgroundUpdate(background, request));
+    public BaseResponse backgroundUpdate(@RequestBody @Valid BackgroundUpdateReqDto backgroundImage, HttpServletRequest request){
+        System.out.println("background" + backgroundImage);
+        return BaseResponse.success(userService.backgroundUpdate(backgroundImage, request));
     }
 
     @Operation(summary = "프로필 사진 수정")
@@ -110,6 +111,13 @@ public class UserController {
     public BaseResponse phoneUpdate(@RequestBody @Valid PhoneUpdateReqDto phone, HttpServletRequest request){
         return BaseResponse.success(userService.phoneUpdate(phone, request));
     }
+
+    @Operation(summary = "주소지 수정")
+    @PutMapping("/address")
+    public BaseResponse addressUpdate(@RequestBody @Valid AddressUpdateReqDto address, HttpServletRequest request){
+        return BaseResponse.success(userService.addressUpdate(address, request));
+    }
+
 
     @Operation(summary = "개인정보 수정 페이지")
     @GetMapping("/info")
@@ -128,4 +136,17 @@ public class UserController {
     public ResponseEntity ifTest() {
         return ResponseEntity.ok().body("ok");
     }
+
+    @Operation(summary = "회원탈퇴")
+    @DeleteMapping()
+    public BaseResponse deleteUser(HttpServletRequest request){
+        userService.deleteUser(request);
+        return BaseResponse.success(true);
+    }
+    @Operation(summary = "등업 요청")
+    @PutMapping("/upgrade")
+    public BaseResponse upgradeUser(HttpServletRequest request){
+        return BaseResponse.success(userService.upgradeUser(request));
+    }
+
 }

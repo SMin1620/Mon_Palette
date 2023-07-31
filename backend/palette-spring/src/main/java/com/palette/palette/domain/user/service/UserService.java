@@ -242,10 +242,22 @@ public class UserService {
     /**
      * 휴대폰번호 수정
      */
+    @Transactional
     public UpdateResDto phoneUpdate(PhoneUpdateReqDto phoneUpdateReqDto, HttpServletRequest req){
         String userEmail = jwtTokenProvider.getUserEmail(jwtTokenProvider.resolveToken(req));
         Optional<User> user = userRepository.findByEmail(userEmail);
         user.get().updatePhone(phoneUpdateReqDto.getPhone());
+        return UpdateResDto.builder().update(true).build();
+    }
+
+    /**
+     * 주소지 수정
+     */
+    @Transactional
+    public UpdateResDto addressUpdate(AddressUpdateReqDto addressUpdateReqDto, HttpServletRequest req){
+        String userEmail = jwtTokenProvider.getUserEmail(jwtTokenProvider.resolveToken(req));
+        Optional<User> user = userRepository.findByEmail(userEmail);
+        user.get().updateAddress(addressUpdateReqDto.getAddress());
         return UpdateResDto.builder().update(true).build();
     }
 
@@ -284,5 +296,25 @@ public class UserService {
                 .feedCnt(feedList.size())
                 .feed(feedList)
                 .build();
+    }
+
+    /**
+     * 회원 탈퇴
+     */
+    @Transactional
+    public void deleteUser(HttpServletRequest request){
+        String userEmail = jwtTokenProvider.getUserEmail(jwtTokenProvider.resolveToken(request));
+        Optional<User> user = userRepository.findByEmail(userEmail);
+        userRepository.deleteById(user.get().getId());
+    }
+    @Transactional
+    public UpdateResDto upgradeUser(HttpServletRequest request){
+        String userEmail = jwtTokenProvider.getUserEmail(jwtTokenProvider.resolveToken(request));
+        Long followerCnt = followRepository.countByToUser(userEmail);
+        if(followerCnt >= 3){
+            return UpdateResDto.builder().update(true).build();
+        }else{
+            return UpdateResDto.builder().update(false).build();
+        }
     }
 }
