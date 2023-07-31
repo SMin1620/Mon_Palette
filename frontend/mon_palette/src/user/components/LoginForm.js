@@ -24,15 +24,15 @@ const LoginForm = () => {
 		console.log("이메일:", email);
 		console.log("비밀번호:", password);
 		axios
-			.post("http://192.168.30.130:8080/api/user/login", {
+			.post("http://192.168.30.224:8080/api/user/login", {
 				email: email,
 				password: password,
 			})
 			.then((response) => {
-				console.log(response.headers.authorization.substr(7));
+				console.log(response.headers.authorization);
 				if (response.data !== null) {
-					setToken(response.headers.authorization.substr(7));
-					Navigate("/mypage");
+					setToken(response.headers.authorization);
+					Navigate("/feed/write");
 				} else {
 					setIsModalOpen(true);
 				}
