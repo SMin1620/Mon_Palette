@@ -1,7 +1,19 @@
-.search-container {
-  /* max-width: 400px; */
-  margin: 0 auto;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
+.search-container {   
+  margin: 0;
+  padding-top: 20px;
+  display: flex;
+  align-items: center;
+  /* justify-content: space-evenly; */
+  width: 100%;
+}
+
+.line {
+  width: 390px;
+  flex-shrink: 0;
+  display: inline-block;
+  margin: 3px 0px;
+}
+
+.container {
+  height: 100vh;
 }
