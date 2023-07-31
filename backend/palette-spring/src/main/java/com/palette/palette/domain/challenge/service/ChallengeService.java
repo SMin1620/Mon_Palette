@@ -1,15 +1,18 @@
 package com.palette.palette.domain.challenge.service;
 
 import com.palette.palette.domain.challenge.dto.create.ChallengeCreateReqDto;
+import com.palette.palette.domain.challenge.dto.detail.ChallengeDetailResDto;
 import com.palette.palette.domain.challenge.dto.list.ChallengeResDto;
 import com.palette.palette.domain.challenge.entity.Challenge;
 import com.palette.palette.domain.challenge.repository.ChallengeRepository;
 import com.palette.palette.domain.user.entity.User;
+import com.palette.palette.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.webjars.NotFoundException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,6 +23,7 @@ import java.util.stream.Collectors;
 public class ChallengeService {
 
     private final ChallengeRepository challengeRepository;
+    private final UserRepository userRepository;
 
 
     /**
@@ -47,4 +51,15 @@ public class ChallengeService {
         challengeRepository.save(challenge);
     }
 
+    /**
+     * 챌린지 상세 조회
+     * @param challengeId
+     */
+    public ChallengeDetailResDto detail(Long challengeId, Long currentUserId) {
+
+        Challenge challenge = challengeRepository.findById(challengeId)
+                .orElseThrow(() -> new NotFoundException("해당 챌린지를 찾을 수 없습니다."));
+
+        return ChallengeDetailResDto.toDto(challenge);
+    }
 }
