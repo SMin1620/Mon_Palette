@@ -27,7 +27,7 @@ public class Challenge {
     @Column(name = "challenge_id")
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 2000)
     private String video;
 
     @Column(nullable = false)
