@@ -18,6 +18,6 @@ public interface ChallengeRepository extends JpaRepository<Challenge, Long> {
     @Query("select c from Challenge c where c.isDelete = false order by c.createAt desc")
     Page<Challenge> findAllByDelete(Pageable pageable);
 
-    @Query("select c from Challenge c where c.id = :challengeID")
+    @Query("select c.user.id from Challenge c where c.id = :challengeId")
     Long findByChallengeUserId(@Param("challengeId") Long challengeId);
 }

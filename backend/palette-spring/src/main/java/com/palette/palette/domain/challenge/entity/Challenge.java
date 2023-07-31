@@ -59,4 +59,11 @@ public class Challenge {
                 .build();
     }
 
+    /**
+     * 수정
+     */
+    public void update(ChallengeCreateReqDto dto) {
+        this.video = dto.getVideo();
+        this.content = dto.getContent();
+    }
 }
