@@ -67,7 +67,8 @@ public class SecurityConfig {
                         .requestMatchers(mvcMatcherBuilder.pattern( "/swagger-ui/**")).permitAll()
                         .requestMatchers(mvcMatcherBuilder.pattern( "/swagger-resources/**")).permitAll()
                         .requestMatchers(mvcMatcherBuilder.pattern( "/v3/api-docs/**")).permitAll()
-                        .anyRequest().authenticated()
+//                        .anyRequest().authenticated()
+                        .anyRequest().permitAll()
                 )   // 다음 리퀘스트에 대한 사용권한 체크
 //                .requestMatchers( "/api/user/login","/api/user/signup").permitAll() // 허용된 주소
 //                .requestMatchers(
