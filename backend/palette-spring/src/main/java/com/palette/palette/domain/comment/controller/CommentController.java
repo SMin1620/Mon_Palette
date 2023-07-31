@@ -5,9 +5,11 @@ import com.palette.palette.domain.comment.dto.create.CommentCreateReqDto;
 import com.palette.palette.domain.comment.service.CommentService;
 import com.palette.palette.domain.user.repository.UserRepository;
 import com.palette.palette.domain.user.service.UserService;
+import com.palette.palette.jwt.JwtTokenProvider;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.persistence.PreUpdate;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -25,6 +27,7 @@ public class CommentController {
 
     private final UserRepository userRepository;
     private final CommentService commentService;
+    private final JwtTokenProvider jwtTokenProvider;
 
 
     /**
@@ -35,18 +38,22 @@ public class CommentController {
     public BaseResponse commentList(
             @PathVariable("feedId") Long feedId,
             @RequestParam("page") int page,
-            Authentication authentication
+            HttpServletRequest request
     ) {
         System.out.println("댓글 목록 조회 컨트롤러");
 
         try {
 
-            // 인가된 사용자 정보
-            UserDetails userDetails = ((UserDetails) authentication.getPrincipal());
+            //////////////////////// 토큰으로 인가된 사용자 정보 처리하는 로직
+            String token = jwtTokenProvider.resolveToken(request);
+            jwtTokenProvider.validateToken(token);
 
-            System.out.println("Controller userDetails >>> " + userDetails);
+            System.out.println("token >>> " + token);
+
+            Authentication authentication = jwtTokenProvider.getAuthentication(token);
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+
             Long currentUserId = userRepository.findByEmail(userDetails.getUsername()).get().getId();
-            System.out.println("Controller user id>>> " + currentUserId);
 
             // 유저 예외처리 :: 예외처리 커스텀 필요
             if (currentUserId == null) {
@@ -68,18 +75,22 @@ public class CommentController {
     @PostMapping("/feed/{feedId}/comment")
     public BaseResponse commentCreate(
             @RequestParam("feedId") Long feedId,
-            @RequestBody CommentCreateReqDto request,
-            Authentication authentication
+            @RequestBody CommentCreateReqDto commentCreateReqDto,
+            HttpServletRequest request
     ) {
         System.out.println("댓글 생성 컨트롤러");
 
         try {
-            // 인가된 사용자 정보
-            UserDetails userDetails = ((UserDetails) authentication.getPrincipal());
+            //////////////////////// 토큰으로 인가된 사용자 정보 처리하는 로직
+            String token = jwtTokenProvider.resolveToken(request);
+            jwtTokenProvider.validateToken(token);
 
-            System.out.println("Controller userDetails >>> " + userDetails);
+            System.out.println("token >>> " + token);
+
+            Authentication authentication = jwtTokenProvider.getAuthentication(token);
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+
             Long currentUserId = userRepository.findByEmail(userDetails.getUsername()).get().getId();
-            System.out.println("Controller user id>>> " + currentUserId);
 
             // 유저 예외처리 :: 예외처리 커스텀 필요
             if (currentUserId == null) {
@@ -87,7 +98,7 @@ public class CommentController {
             }
 
             // 피드 생성
-            commentService.commentCreate(request, feedId, currentUserId);
+            commentService.commentCreate(commentCreateReqDto, feedId, currentUserId);
 
             return BaseResponse.success(true);
 
@@ -104,7 +115,7 @@ public class CommentController {
     @PutMapping("/comment/{commentId}")
     public BaseResponse commentUpdate(
             @PathVariable("commentId") Long commentId,
-            @RequestBody CommentCreateReqDto request,
+            @RequestBody CommentCreateReqDto commentCreateReqDto,
             Authentication authentication
     ) {
         System.out.println("댓글 수정 컨트롤러");
@@ -132,11 +143,11 @@ public class CommentController {
                 throw new UserPrincipalNotFoundException("작성자와 현재 사용자가 일치하지 않습니다.");
             }
 
-            CommentCreateReqDto commentCreateReqDto = CommentCreateReqDto.builder()
-                            .content(request.getContent())
+            CommentCreateReqDto dto = CommentCreateReqDto.builder()
+                            .content(commentCreateReqDto.getContent())
                                     .build();
 
-            commentService.commentUpdate(commentCreateReqDto, commentId, currentUserId);
+            commentService.commentUpdate(dto, commentId, currentUserId);
 
             return BaseResponse.success(true);
 

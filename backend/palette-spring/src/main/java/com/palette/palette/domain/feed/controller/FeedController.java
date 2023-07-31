@@ -10,9 +10,11 @@ import com.palette.palette.domain.feed.repository.FeedRepository;
 import com.palette.palette.domain.feed.service.FeedService;
 import com.palette.palette.domain.user.entity.User;
 import com.palette.palette.domain.user.repository.UserRepository;
+import com.palette.palette.jwt.JwtTokenProvider;
 import com.palette.palette.jwt.PrincipalDetails;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -35,6 +37,31 @@ public class FeedController {
 
     private final FeedService feedService;
     private final UserRepository userRepository;
+    private final JwtTokenProvider jwtTokenProvider;
+
+
+    /**
+     * jwt test
+     */
+    @Operation(summary = "jwt test")
+    @GetMapping("/test")
+    public ResponseEntity test(
+            HttpServletRequest request
+    ) {
+        System.out.println("test 컨트롤러");
+        System.out.println("request >>> " + request);
+        String token = jwtTokenProvider.resolveToken(request);
+        System.out.println("token >>> "  + token);
+        Authentication authentication = jwtTokenProvider.getAuthentication(token);
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+
+        System.out.println("Controller userDetails >>> " + userDetails);
+        User user = userRepository.findByEmail(userDetails.getUsername()).get();
+        System.out.println("Controller user >>> " + user.getEmail());
+
+
+        return ResponseEntity.ok().body("ok");
+    }
 
 
     /**
@@ -57,22 +84,28 @@ public class FeedController {
     @PostMapping()
     public BaseResponse feedCreate(
             @RequestBody FeedReqDto feedReqDto,
-            Authentication authentication
+            HttpServletRequest request
+
     ) {
         System.out.println("피드 생성 로직");
 
         try {
-            // 인가된 사용자 정보
+            //////////////////////// 토큰으로 인가된 사용자 정보 처리하는 로직
+            String token = jwtTokenProvider.resolveToken(request);
+            jwtTokenProvider.validateToken(token);
+
+            System.out.println("token >>> " + token);
+
+            Authentication authentication = jwtTokenProvider.getAuthentication(token);
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 
-            System.out.println("Controller userDetails >>> " + userDetails);
             User user = userRepository.findByEmail(userDetails.getUsername()).get();
-            System.out.println("Controller user >>> " + user);
 
             // 유저 예외처리 :: 예외처리 커스텀 필요
             if (user == null) {
                 throw new UserPrincipalNotFoundException("유효한 사용자가 아닙니다.");
             }
+
 
             return BaseResponse.success(feedService.feedCreate(feedReqDto, feedReqDto.getFeedImages(), user));
         } catch (Exception e) {
@@ -88,18 +121,22 @@ public class FeedController {
     @GetMapping("/{id}")
     public BaseResponse feedDetail(
             @PathVariable("id") Long feedId,
-            Authentication authentication
+            HttpServletRequest request
     ) {
         System.out.println("피드 상세 조회 로직");
 
         try {
 
-            // 인가된 사용자 정보
-            UserDetails userDetails = ((UserDetails) authentication.getPrincipal());
+            //////////////////////// 토큰으로 인가된 사용자 정보 처리하는 로직
+            String token = jwtTokenProvider.resolveToken(request);
+            jwtTokenProvider.validateToken(token);
 
-            System.out.println("Controller userDetails >>> " + userDetails);
+            System.out.println("token >>> " + token);
+
+            Authentication authentication = jwtTokenProvider.getAuthentication(token);
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+
             Long currentUserId = userRepository.findByEmail(userDetails.getUsername()).get().getId();
-            System.out.println("Controller user id>>> " + currentUserId);
 
             // 유저 예외처리 :: 예외처리 커스텀 필요
             if (currentUserId == null) {
@@ -121,17 +158,20 @@ public class FeedController {
     @PutMapping("/{id}")
     public BaseResponse feedUpdate(
             @PathVariable("id") Long feedId,
-            @RequestBody FeedReqDto request,
-            Authentication authentication
+            @RequestBody FeedReqDto feedReqDto,
+            HttpServletRequest request
     ) {
         try {
-            // 피드 작성자가 본인인지 확인하는 로직
-            // 인가된 사용자 정보
-            UserDetails userDetails = ((UserDetails) authentication.getPrincipal());
+            //////////////////////// 토큰으로 인가된 사용자 정보 처리하는 로직
+            String token = jwtTokenProvider.resolveToken(request);
+            jwtTokenProvider.validateToken(token);
 
-            System.out.println("Controller userDetails >>> " + userDetails);
+            System.out.println("token >>> " + token);
+
+            Authentication authentication = jwtTokenProvider.getAuthentication(token);
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+
             Long currentUserId = userRepository.findByEmail(userDetails.getUsername()).get().getId();
-            System.out.println("Controller user id>>> " + currentUserId);
 
             // 유저 예외처리 :: 예외처리 커스텀 필요
             if (currentUserId == null) {
@@ -148,17 +188,18 @@ public class FeedController {
                 throw new UserPrincipalNotFoundException("작성자와 현재 사용자가 일치하지 않습니다.");
             }
 
+
             // 데이터의 수정
-            FeedReqDto feedReqDto = FeedReqDto.builder()
-                    .content(request.getContent())
-                    .hashtags(request.getHashtags())
-                    .feedImages(request.getFeedImages())
+            FeedReqDto feedDto = FeedReqDto.builder()
+                    .content(feedReqDto.getContent())
+                    .hashtags(feedReqDto.getHashtags())
+                    .feedImages(feedReqDto.getFeedImages())
                     .build();
 
             // DB에 저장되어 있는 파일 가져오기
             List<FeedImageResDto> feedImages = feedService.findAllByFeed(feedId);
 
-            return BaseResponse.success(feedService.feedUpdate(feedReqDto, feedImages, feedId));
+            return BaseResponse.success(feedService.feedUpdate(feedDto, feedImages, feedId));
         } catch (Exception e) {
             e.printStackTrace();
             return BaseResponse.error("피드 수정 실패");
@@ -172,17 +213,20 @@ public class FeedController {
     @DeleteMapping("/{id}")
     public BaseResponse feedDelete(
             @PathVariable("id") Long feedId,
-            Authentication authentication
+            HttpServletRequest request
     ) {
         try {
 
-            // 피드 작성자가 본인인지 확인하는 로직
-            // 인가된 사용자 정보
-            UserDetails userDetails = ((UserDetails) authentication.getPrincipal());
+            //////////////////////// 토큰으로 인가된 사용자 정보 처리하는 로직
+            String token = jwtTokenProvider.resolveToken(request);
+            jwtTokenProvider.validateToken(token);
 
-            System.out.println("Controller userDetails >>> " + userDetails);
+            System.out.println("token >>> " + token);
+
+            Authentication authentication = jwtTokenProvider.getAuthentication(token);
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+
             Long currentUserId = userRepository.findByEmail(userDetails.getUsername()).get().getId();
-            System.out.println("Controller user id>>> " + currentUserId);
 
             // 유저 예외처리 :: 예외처리 커스텀 필요
             if (currentUserId == null) {
