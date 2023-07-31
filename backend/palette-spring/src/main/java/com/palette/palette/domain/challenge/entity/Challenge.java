@@ -66,4 +66,11 @@ public class Challenge {
         this.video = dto.getVideo();
         this.content = dto.getContent();
     }
+
+    /**
+     * 삭제
+     */
+    public void delete() {
+        this.setDeleteAt(LocalDateTime.now());
+    }
 }

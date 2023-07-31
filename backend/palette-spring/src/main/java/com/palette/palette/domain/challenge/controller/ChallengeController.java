@@ -185,4 +185,45 @@ public class ChallengeController {
             return BaseResponse.error("챌린지 수정 실패");
         }
     }
+
+    @Operation(summary = "챌린지 삭제")
+    @DeleteMapping("{id}")
+    public BaseResponse challengeDelete(
+            @PathVariable("id") Long challengeId,
+            HttpServletRequest request
+    ) {
+        System.out.println("챌린지 삭제 컨트롤러");
+
+        try {
+            //////////////////////// 토큰으로 인가된 사용자 정보 처리하는 로직
+            String token = jwtTokenProvider.resolveToken(request);
+            jwtTokenProvider.validateToken(token);
+
+            System.out.println("token >>> " + token);
+
+            Authentication authentication = jwtTokenProvider.getAuthentication(token);
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+
+            Long currentUserId = userRepository.findByEmail(userDetails.getUsername()).get().getId();
+
+            // 유저 예외처리 :: 예외처리 커스텀 필요
+            if (currentUserId == null) {
+                throw new UserPrincipalNotFoundException("유효한 사용자가 아닙니다.");
+            }
+
+            // 챌린지 작성자의 이메일을 가져옴
+            Long challengeUserId = challengeRepository.findByChallengeUserId(challengeId);
+
+            if (! currentUserId.equals(challengeUserId)) {
+                throw new UserPrincipalNotFoundException("작성자와 현재 사용자가 일치하지 않습니다.");
+            }
+
+            challengeService.delete(challengeId);
+
+            return BaseResponse.success(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return BaseResponse.error("챌린지 삭제 실패");
+        }
+    }
 }

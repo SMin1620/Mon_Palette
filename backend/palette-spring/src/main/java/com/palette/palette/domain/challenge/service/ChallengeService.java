@@ -76,4 +76,17 @@ public class ChallengeService {
         challenge.update(dto);
         challengeRepository.save(challenge);
     }
+
+    /**
+     * 챌린지 삭제
+     * @param challengeId
+     */
+    public void delete(Long challengeId) {
+
+        Challenge challenge = challengeRepository.findById(challengeId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 챌린지를 찾을 수 없습니다."));
+
+        challengeRepository.deleteById(challengeId);
+        challenge.delete();
+    }
 }
