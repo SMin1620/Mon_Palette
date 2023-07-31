@@ -13,6 +13,7 @@ function FeedContent() {
     // const feedId = useParams()
     const feedId = 1
     const [feedData, setFeedData] = useState('')
+    const [isLiked, setIsLiked] = useState('');
 
 
 
@@ -23,11 +24,38 @@ function FeedContent() {
             })
             .then ((response) => {
                 setFeedData(response.data.data)
+                setIsLiked(response.data.isLiked);
             })
             .catch ((err) => {
                 console.log(err)
             })
     },[])
+
+    // 피드를 좋아요 하는 함수
+    const likeFeed = () => {
+        axios.post(`http://192.168.30.224:8080/api/feed/${feedId}/like`)
+            .then((response => {
+                // 좋아요 상태를 true로 변경합니다.
+                setIsLiked(true);
+                console.log('피드를 좋아요했습니다!');
+            }))
+            .catch((err => {
+                console.error('피드 좋아요 오류:', err);
+            }));
+    };
+
+    // 피드 좋아요를 취소하는 함수
+    const unlikeFeed = () => {
+        axios.delete(`http://192.168.30.224:8080/api/feed/${feedId}/like`)
+            .then(response => {
+                // 좋아요 상태를 false로 변경합니다.
+                setIsLiked(false);
+                console.log('피드 좋아요를 취소했습니다!');
+            })
+            .catch(err => {
+                console.error('피드 좋아요 취소 오류:', err);
+            });
+    };
    
     const settings = {
         dots: true,
