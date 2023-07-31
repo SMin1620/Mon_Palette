@@ -62,4 +62,12 @@ public class ChallengeService {
 
         return ChallengeDetailResDto.toDto(challenge);
     }
+
+    /**
+     * 챌린지 수정
+     * @param dto
+     * @param challengeId
+     */
+    public void update(ChallengeCreateReqDto dto, Long challengeId) {
+    }
 }
