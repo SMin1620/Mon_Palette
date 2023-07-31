@@ -9,6 +9,7 @@ import com.palette.palette.domain.user.entity.User;
 import com.palette.palette.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.aspectj.weaver.ast.Not;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.webjars.NotFoundException;
@@ -51,5 +52,24 @@ public class ChallengeLikeService {
         challengeLikeRepository.save(challengeLike);
 
 
+    }
+
+    /**
+     * 챌린지 좋아요 취소
+     * @param challengeId
+     * @param userId
+     */
+    public void unLike(Long challengeId, Long userId) {
+
+        // 유저 유효성 검사
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("사용자가 없습니다."));
+
+        // 챌린지 유효성 검사
+        Challenge challenge = challengeRepository.findById(challengeId)
+                .orElseThrow(() -> new NotFoundException("챌린지가 없습니다."));
+
+        challengeLikeRepository.delete(challengeLikeRepository.findByChallengeAndUser(challenge, user)
+                .orElseThrow(() -> new NotFoundException("이미 좋아요를 취소했습니다.")));
     }
 }
