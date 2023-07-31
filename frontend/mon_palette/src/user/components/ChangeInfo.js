@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import ChevronRightOutlinedIcon from "@mui/icons-material/ChevronRightOutlined";
-import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import "./ChangeInfo.css"; // 스타일 파일 임포트
@@ -8,6 +8,7 @@ import { useRecoilValue } from "recoil";
 import { loginState } from "./Atom";
 import { useNavigate } from "react-router-dom";
 import "./Modal.css";
+import AWS from "aws-sdk";
 
 const ChangeInfo = () => {
 	const [background, setBackground] = useState("");
@@ -16,41 +17,71 @@ const ChangeInfo = () => {
 	const [personalcolor, setPersonalcolor] = useState("");
 	const [phone, setPhone] = useState("");
 	const [address, setAddress] = useState("");
-	const [selectedImage, setSelectedImage] = useState(null);
+	const [check, setCheck] = useState(true);
 
 	const [isModalOpen, setIsModalOpen] = useState(false);
-	
+
 	const Authorization = useRecoilValue(loginState);
 	const Navigate = useNavigate();
-	
+
+	// AWS 연동
+	const ACCESS_KEY = process.env.REACT_APP_AWS_S3_ACCESS_ID;
+	const SECRET_ACCESS_KEY = process.env.REACT_APP_AWS_S3_ACCESS_PW;
+	const REGION = process.env.REACT_APP_AWS_S3_REGION;
+	const BUCKET = process.env.REACT_APP_AWS_S3_BUCKET;
+
+	AWS.config.update({
+		accessKeyId: ACCESS_KEY,
+		secretAccessKey: SECRET_ACCESS_KEY,
+	});
+
+	const myBucket = new AWS.S3({
+		params: { Bucket: BUCKET },
+		region: REGION,
+	});
+
 	useEffect(() => {
-		
 		if (Authorization) {
 			getmapping();
-			
 		}
-	}, [background]);
-	const backgroundmodify = (event) => {
+	}, [check]);
+	const modify_picture = (event, back) => {
 		const file = event.target.files[0]; // 사용자가 선택한 파일 가져오기
 		if (file) {
-		  const imageUrl = URL.createObjectURL(file); // 선택한 파일로부터 이미지 URL 생성
-		  setSelectedImage(imageUrl); // 상태 업데이트
-		  setBackground(imageUrl);
-		  changebackground();
-		  setSelectedImage("");
+			const reader = new FileReader();
+			reader.onload = (e) => {
+				const imageBlob = new Blob([e.target.result], { type: file.type });
+				const params = {
+					ACL: "public-read",
+					Body: imageBlob, // Use the image data (blob) as the Body of the S3 object
+					Bucket: BUCKET,
+					Key: file.name, // Use a valid key for the object, for example, the file name
+				};
+				myBucket.putObject(params, (err, data) => {
+					if (err) {
+						console.error("Error uploading image to S3:", err);
+					} else {
+						if (back === "background") {
+							changebackground(handleImageUrlFromS3(params.Key));
+						} else {
+							changeprofile(handleImageUrlFromS3(params.Key));
+						}
+					}
+				});
+			};
+			reader.readAsArrayBuffer(file); // Read the file data as ArrayBuffer
 		}
-	  };
+	};
 
-	  const profilemodify = (event) => {
-		const file = event.target.files[0]; // 사용자가 선택한 파일 가져오기
-		if (file) {
-		  const imageUrl = URL.createObjectURL(file); // 선택한 파일로부터 이미지 URL 생성
-		  setSelectedImage(imageUrl); // 상태 업데이트
-		  setBackground(imageUrl);
-		  changeprofile();
-		  setSelectedImage("");
-		}
-	  };
+	const handleImageUrlFromS3 = (key) => {
+		const params = {
+			Bucket: BUCKET,
+			Key: key,
+		};
+		const imageUrl = myBucket.getSignedUrl("getObject", params);
+		return imageUrl;
+	};
+
 	const getmapping = () => {
 		console.log(loginState);
 		axios
@@ -64,59 +95,56 @@ const ChangeInfo = () => {
 					setPersonalcolor(response.data.data.personalcolor);
 					setPhone(response.data.data.phone);
 					setAddress(response.data.data.address);
-					console.log(response.data.data.background);
-					console.log(profile);
-					if(response.data.data.profilePhoto === null){
-						setProfile("/static/baseimg.png");
-					}else{
-						setProfile(response.data.data.profilePhoto);
-					}
-					if(response.data.data.background === null){
-						setBackground("/static/background.jpg");
-					}else{
-						setBackground(response.data.data.background);
-					}					
-				}				
- 			});
+					setProfile(response.data.data.profilePhoto);
+					setBackground(response.data.data.background);
+				}
+			});
 	};
 
-	const changebackground = () => {
+	const changebackground = (url) => {
 		axios
-		.put(
-			`${process.env.REACT_APP_API}/api/user/background`,
-			{ background: background },
-			{ headers: { Authorization: Authorization } }
-		)
-		.then((response) => {
-			console.log(response);
-			if (response.data !== null) {
-				Navigate("/changeinfo");
-			} else {
-			}
-		})
-		.catch((err) => {
-			console.error("error", err);
-		});
-	}
+			.put(
+				`${process.env.REACT_APP_API}/api/user/background`,
+				{ backgroundImage: url },
+				{ headers: { Authorization: Authorization } }
+			)
+			.then((response) => {
+				console.log(response);
+				if (response.data !== null) {
+					if (check) {
+						setCheck(false);
+					} else {
+						setCheck(true);
+					}
+				}
+			})
+			.catch((err) => {
+				console.error("error", err);
+			});
+	};
 
-	const changeprofile= () => {
+	const changeprofile = (url) => {
+		console.log("url : " + url);
 		axios
-		.put(
-			`${process.env.REACT_APP_API}/api/user/profile`,
-			{ profile: profile },
-			{ headers: { Authorization: Authorization } }
-		)
-		.then((response) => {
-			console.log(response);
-			if (response.data !== null) {
-				Navigate("/changeinfo");
-			} else {
-			}
-		})
-		.catch((err) => {
-			console.error("error", err);
-		});
-	}
+			.put(
+				`${process.env.REACT_APP_API}/api/user/profile`,
+				{ profileImage: url },
+				{ headers: { Authorization: Authorization } }
+			)
+			.then((response) => {
+				console.log(response);
+				if (response.data !== null) {
+					if (check) {
+						setCheck(false);
+					} else {
+						setCheck(true);
+					}
+				}
+			})
+			.catch((err) => {
+				console.error("error", err);
+			});
+	};
 
 	const leave = () => {
 		setIsModalOpen(true);
@@ -130,7 +158,7 @@ const ChangeInfo = () => {
 			})
 			.then((response) => {
 				setIsModalOpen(false);
-				if (response.data.data.check === true) {
+				if (response.data.data === true) {
 					Navigate("/");
 				}
 			});
@@ -140,7 +168,7 @@ const ChangeInfo = () => {
 	const closeModal = () => {
 		setIsModalOpen(false);
 	};
-	
+
 	const Modal = ({ isOpen, onClose, children }) => {
 		if (!isOpen) return null;
 
@@ -163,49 +191,45 @@ const ChangeInfo = () => {
 	return (
 		<div className="changeInfo_container">
 			<div className="changeInfo_background-container">
-				{selectedImage ? 
-				(<img src={selectedImage} alt="My Image" />):(
-					<img
+				<img
 					src={background}
 					alt="background"
 					className="changeInfo_background-picture"
-					/>
-			    )}
+				/>
 			</div>
 			<div className="changeInfo_background_edit">
-			<label htmlFor="picture-input" className="picture-edit-label">
-        		<EditOutlinedIcon />
-      		</label>
-      		<input
-        		id="picture-input"
-        		className="picture-edit"
-        		type="file"
-        		onChange={backgroundmodify}
-        		accept="image/*"
-      		/>	
+				<label htmlFor="picture-input" className="picture-edit-label">
+					<EditOutlinedIcon />
+				</label>
+				<input
+					id="picture-input"
+					className="picture-edit"
+					type="file"
+					onChange={(event) => modify_picture(event, "background")}
+					accept="image/*"
+				/>
 			</div>
 			<br />
 			<div className="changeInfo_profile-container">
-				<span className="changeInfo_profile-content">
+				<div className="changeInfo_profile-content">
 					<img
 						src={profile}
 						alt="profile"
 						className="changeInfo_profile-picture"
 					/>
-				
-				<span className="changeInfo_profile_edit">
-				<label htmlFor="picture-input" className="picture-edit-label">
-        		<EditOutlinedIcon />
-      		</label>
-      		<input
-        		id="picture-input"
-        		className="picture-edit"
-        		type="file"
-        		onChange={profilemodify}
-        		accept="image/*"
-      		/>	
-				</span>
-				</span>
+					<div className="changeInfo_profile_edit">
+						<label htmlFor="picture-input2" className="picture-edit-label">
+							<EditOutlinedIcon />
+						</label>
+						<input
+							id="picture-input2"
+							className="picture-edit"
+							type="file"
+							onChange={(event) => modify_picture(event, "profile")}
+							accept="image/*"
+						/>
+					</div>
+				</div>
 			</div>
 			<br />
 			<br />

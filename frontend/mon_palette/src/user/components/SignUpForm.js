@@ -110,7 +110,7 @@ const SignUpForm = () => {
 			});
 	};
 
-	const possiblePhone = (e) => {
+	const possiblePhone = () => {
 		axios
 			.get(`${process.env.REACT_APP_API}/api/user/phonecheck?phone=${phone}`)
 			.then((response) => {
@@ -255,29 +255,29 @@ const SignUpForm = () => {
 					연락처
 				</label>
 				<div className="signUpForm_input-with-button">
-				<input
-					className="signUpForm_input"
-					type="text"
-					id="phone"
-					value={phone}
-					placeholder="00*-000*-0000"
-					onChange={changePhone}
-					
-				/>
-				<button
-					class="signUpForm_duplication-button"
-					onClick={(e) => possiblePhone(e)}
-				>
-					중복확인
-				</button>
+					<input
+						className="signUpForm_input"
+						type="text"
+						id="phone"
+						value={phone}
+						placeholder="00*-000*-0000"
+						onChange={changePhone}
+					/>
+					<button
+						class="signUpForm_duplication-button"
+						onClick={(e) => possiblePhone(e)}
+					>
+						중복확인
+					</button>
 				</div>
+				{!duplicationPhone && (
+					<p className="signUpForm_error-message">이미 가입된 연락처입니다</p>
+				)}
+				{duplicationPhone && phoneState && (
+					<p className="signUpForm_error-message">사용 가능한 연락처입니다</p>
+				)}
 			</div>
-			{!duplicationPhone && (
-				<p className="signUpForm_error-message">이미 가입된 연락처입니다</p>
-			)}
-			{duplicationPhone && phoneState && (
-				<p className="signUpForm_error-message">사용 가능한 연락처입니다</p>
-			)}
+
 			<div className="signUpForm_form-group">
 				<label className="signUpForm_label" htmlFor="birth">
 					생년월일
@@ -306,7 +306,7 @@ const SignUpForm = () => {
 					/>
 					<button
 						class="signUpForm_duplication-button"
-						onClick={(e) => possibleNickname(e)}
+						onClick={possibleNickname()}
 					>
 						중복확인
 					</button>

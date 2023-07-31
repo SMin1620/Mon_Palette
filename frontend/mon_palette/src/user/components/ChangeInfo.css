@@ -40,25 +40,24 @@ html {
 	/* object-fit: cover; 이미지가 비율을 유지하면서 컨테이너를 가득 채우도록 합니다. */
 }
 
-.changeInfo_background_edit{
+.changeInfo_background_edit {
 	position: absolute;
-	top:15rem;
-	right:0.4rem;
+	top: 15rem;
+	right: 0.4rem;
 }
 
 .changeInfo_profile-container {
-	display:flex;
+	display: flex;
 	/* 추가적인 스타일링을 원하면 여기에 작성합니다. */
 }
 
 .changeInfo_profile-content {
-	position:relative;
+	position: relative;
 	/* 추가적인 스타일링을 원하면 여기에 작성합니다. */
 }
 
 /* 이미지를 원형 모양으로 보여줍니다. */
 .changeInfo_profile-picture {
-	
 	justify-content: center; /* 요소들을 가로 방향으로 가운데 정렬합니다. */
 	width: 7rem; /* 이미지를 컨테이너 크기에 맞게 조정합니다. */
 	height: 7rem; /* 이미지를 컨테이너 크기에 맞게 조정합니다. */
@@ -66,9 +65,10 @@ html {
 	overflow: hidden; /* 이미지가 컨테이너 영역을 벗어나는 부분은 잘립니다. */
 	object-fit: cover; /* 이미지가 비율을 유지하면서 컨테이너를 가득 채우도록 합니다. */
 }
-.changeInfo_profile_edit{
-	position:absolute;
-	top:5rem;
+.changeInfo_profile_edit {
+	position: absolute;
+	top: 5rem;
+	left: 6rem;
 }
 .changeInfo_arrow-icon {
 	border-radius: 50%;
@@ -81,7 +81,7 @@ html {
 
 .picture-edit-label svg {
 	font-size: 24px;
-  }
-.picture-edit{
+}
+.picture-edit {
 	display: none;
 }
