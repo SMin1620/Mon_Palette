@@ -1,7 +1,10 @@
 package com.palette.palette.domain.challenge.service;
 
+import com.palette.palette.domain.challenge.dto.create.ChallengeCreateReqDto;
 import com.palette.palette.domain.challenge.dto.list.ChallengeResDto;
+import com.palette.palette.domain.challenge.entity.Challenge;
 import com.palette.palette.domain.challenge.repository.ChallengeRepository;
+import com.palette.palette.domain.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
@@ -34,7 +37,14 @@ public class ChallengeService {
 
     /**
      * 챌린지 생성
+     * @param challengeCreateReqDto
+     * @param user
      */
-//    public
+    public void create(ChallengeCreateReqDto challengeCreateReqDto, User user) {
+
+        Challenge challenge = Challenge.toEntity(challengeCreateReqDto, user);
+
+        challengeRepository.save(challenge);
+    }
 
 }

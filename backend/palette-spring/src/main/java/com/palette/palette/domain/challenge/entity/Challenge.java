@@ -1,5 +1,7 @@
 package com.palette.palette.domain.challenge.entity;
 
+import com.palette.palette.domain.challenge.dto.create.ChallengeCreateReqDto;
+import com.palette.palette.domain.challenge.dto.list.ChallengeResDto;
 import com.palette.palette.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
@@ -42,5 +44,19 @@ public class Challenge {
     private LocalDateTime createAt;
 
     private LocalDateTime updateAt;
+
+    /**
+     * dto -> entity
+     */
+    public static Challenge toEntity(ChallengeCreateReqDto challengeCreateReqDto, User user) {
+
+        return Challenge.builder()
+                .video(challengeCreateReqDto.getVideo())
+                .content(challengeCreateReqDto.getContent())
+                .user(user)
+                .isDelete(false)
+                .createAt(LocalDateTime.now())
+                .build();
+    }
 
 }

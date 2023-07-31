@@ -69,31 +69,33 @@ public class ChallengeController {
     /**
      * 챌린지 생성
      */
-//    @Operation(summary = "챌린지 생성")
-//    @PostMapping()
-//    public BaseResponse challangeCreate(
-//            @RequestBody ChallengeCreateReqDto request,
-//            Authentication authentication
-//            ) {
-//        System.out.println("챌린지 생성 컨트롤러");
-//
-//        try {
-//            // 인가된 사용자 정보
-//            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-//
-//            System.out.println("Controller userDetails >>> " + userDetails);
-//            User user = userRepository.findByEmail(userDetails.getUsername()).get();
-//            System.out.println("Controller user >>> " + user);
-//
-//            // 유저 예외처리 :: 예외처리 커스텀 필요
-//            if (user == null) {
-//                throw new UserPrincipalNotFoundException("유효한 사용자가 아닙니다.");
-//            }
-//
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return BaseResponse.error("error");
-//        }
-//    }
+    @Operation(summary = "챌린지 생성")
+    @PostMapping()
+    public BaseResponse challengeCreate(
+            @RequestBody ChallengeCreateReqDto challengeCreateReqDto,
+            HttpServletRequest request
+            ) {
+        System.out.println("챌린지 생성 컨트롤러");
+
+        try {
+            //////////////////////// 토큰으로 인가된 사용자 정보 처리하는 로직
+            String token = jwtTokenProvider.resolveToken(request);
+            jwtTokenProvider.validateToken(token);
+
+            System.out.println("token >>> " + token);
+
+            Authentication authentication = jwtTokenProvider.getAuthentication(token);
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+
+            User user = userRepository.findByEmail(userDetails.getUsername()).get();
+
+            challengeService.create(challengeCreateReqDto, user);
+
+            return BaseResponse.success(true);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return BaseResponse.error("error");
+        }
+    }
 }
