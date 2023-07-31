@@ -21,6 +21,8 @@ public class ChallengeResDto {
 
     private String content;
 
+    private Integer likeCount;
+
     private LocalDateTime createAt;
 
     private BaseUserResDto user;
@@ -35,6 +37,7 @@ public class ChallengeResDto {
                 .id(challenge.getId())
                 .video(challenge.getVideo())
                 .content(challenge.getContent())
+                .likeCount(challenge.getLikeCount())
                 .createAt(challenge.getCreateAt())
                 .user(BaseUserResDto.toDto(challenge.getUser()))
                 .build();

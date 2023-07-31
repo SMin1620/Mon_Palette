@@ -43,6 +43,17 @@ public class ChallengeService {
                 .collect(Collectors.toList());
     }
 
+
+    /**
+     * 챌린지 인기 조회
+     */
+    public List<ChallengeResDto> best() {
+        return challengeRepository.findAllByBest().stream()
+                .map(ChallengeResDto::toDto)
+                .collect(Collectors.toList());
+    }
+
+
     /**
      * 챌린지 생성
      * @param challengeCreateReqDto
