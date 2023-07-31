@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.webjars.NotFoundException;
 
 import java.util.List;
@@ -19,6 +20,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 @Slf4j
 public class ChallengeService {
 
@@ -44,6 +46,7 @@ public class ChallengeService {
      * @param challengeCreateReqDto
      * @param user
      */
+    @Transactional
     public void create(ChallengeCreateReqDto challengeCreateReqDto, User user) {
 
         Challenge challenge = Challenge.toEntity(challengeCreateReqDto, user);
@@ -68,6 +71,7 @@ public class ChallengeService {
      * @param dto
      * @param challengeId
      */
+    @Transactional
     public void update(ChallengeCreateReqDto dto, Long challengeId) {
 
         Challenge challenge = challengeRepository.findById(challengeId)
@@ -81,6 +85,7 @@ public class ChallengeService {
      * 챌린지 삭제
      * @param challengeId
      */
+    @Transactional
     public void delete(Long challengeId) {
 
         Challenge challenge = challengeRepository.findById(challengeId)
