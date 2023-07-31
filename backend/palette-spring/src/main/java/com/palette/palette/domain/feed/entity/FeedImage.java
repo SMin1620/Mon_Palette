@@ -20,7 +20,7 @@ public class FeedImage {
     private Long id;
 
     // 이미지 저장 경로
-    @Column(nullable = false)
+    @Column(nullable = false, length = 2000)
     private String imagePath;
 
     // 피드 - 피드 이미지

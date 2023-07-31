@@ -31,4 +31,10 @@ public class ChallengeService {
                 .map(ChallengeResDto::toDto)
                 .collect(Collectors.toList());
     }
+
+    /**
+     * 챌린지 생성
+     */
+//    public
+
 }
