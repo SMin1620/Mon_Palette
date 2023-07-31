@@ -1,5 +1,6 @@
 package com.palette.palette.domain.challenge.entity;
 
+import com.palette.palette.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.SQLDelete;
@@ -30,6 +31,10 @@ public class Challenge {
     @Column(nullable = false)
     private String content;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
     private Boolean isDelete;
 
     private LocalDateTime deleteAt;
@@ -37,6 +42,5 @@ public class Challenge {
     private LocalDateTime createAt;
 
     private LocalDateTime updateAt;
-
 
 }
