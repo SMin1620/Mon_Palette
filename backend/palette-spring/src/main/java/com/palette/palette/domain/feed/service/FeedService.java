@@ -106,10 +106,6 @@ public class FeedService {
             isLiked = true;
         }
 
-        // 피드 좋아요 개수
-        int feedLikeCount = feedLikeRepository.findAllByFeed(feed).size();
-
-
         return FeedDetailResDto.toDto(feed, isLiked);
     }
 

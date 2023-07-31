@@ -51,7 +51,7 @@ public class ChallengeLikeService {
 
         challengeLikeRepository.save(challengeLike);
 
-
+        challenge.addLike();
     }
 
     /**
@@ -59,6 +59,7 @@ public class ChallengeLikeService {
      * @param challengeId
      * @param userId
      */
+    @Transactional
     public void unLike(Long challengeId, Long userId) {
 
         // 유저 유효성 검사
@@ -71,5 +72,7 @@ public class ChallengeLikeService {
 
         challengeLikeRepository.delete(challengeLikeRepository.findByChallengeAndUser(challenge, user)
                 .orElseThrow(() -> new NotFoundException("이미 좋아요를 취소했습니다.")));
+
+        challenge.cancelLike();
     }
 }

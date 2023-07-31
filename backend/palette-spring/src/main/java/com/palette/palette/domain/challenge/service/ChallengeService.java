@@ -5,6 +5,7 @@ import com.palette.palette.domain.challenge.dto.detail.ChallengeDetailResDto;
 import com.palette.palette.domain.challenge.dto.list.ChallengeResDto;
 import com.palette.palette.domain.challenge.entity.Challenge;
 import com.palette.palette.domain.challenge.repository.ChallengeRepository;
+import com.palette.palette.domain.like.repository.ChallengeLikeRepository;
 import com.palette.palette.domain.user.entity.User;
 import com.palette.palette.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,7 @@ import java.util.stream.Collectors;
 public class ChallengeService {
 
     private final ChallengeRepository challengeRepository;
+    private final ChallengeLikeRepository challengeLikeRepository;
     private final UserRepository userRepository;
 
 
@@ -58,12 +60,22 @@ public class ChallengeService {
      * 챌린지 상세 조회
      * @param challengeId
      */
-    public ChallengeDetailResDto detail(Long challengeId, Long currentUserId) {
+    public ChallengeDetailResDto detail(Long challengeId, Long userId) {
+
+        // 유저 유효성 검사
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("사용자가 없습니다."));
 
         Challenge challenge = challengeRepository.findById(challengeId)
                 .orElseThrow(() -> new NotFoundException("해당 챌린지를 찾을 수 없습니다."));
 
-        return ChallengeDetailResDto.toDto(challenge);
+        // 사용자가 해당 피드를 좋아요 했는지 체크
+        Boolean isLiked = false;
+        if (challengeLikeRepository.findByChallengeAndUser(challenge, user).isPresent()) {
+            isLiked = true;
+        }
+
+        return ChallengeDetailResDto.toDto(challenge, isLiked);
     }
 
     /**
