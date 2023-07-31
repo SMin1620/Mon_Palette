@@ -69,5 +69,11 @@ public class ChallengeService {
      * @param challengeId
      */
     public void update(ChallengeCreateReqDto dto, Long challengeId) {
+
+        Challenge challenge = challengeRepository.findById(challengeId)
+                .orElseThrow(() -> new NotFoundException("해당 챌린지가 없습니다."));
+
+        challenge.update(dto);
+        challengeRepository.save(challenge);
     }
 }
