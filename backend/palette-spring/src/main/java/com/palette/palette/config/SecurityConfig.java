@@ -60,6 +60,7 @@ public class SecurityConfig {
                         .requestMatchers(mvcMatcherBuilder.pattern("/api/user/signup")).permitAll()
                         .requestMatchers(mvcMatcherBuilder.pattern("/api/user/idcheck")).permitAll()
                         .requestMatchers(mvcMatcherBuilder.pattern("/api/user/nicknamecheck")).permitAll()
+                        .requestMatchers(mvcMatcherBuilder.pattern("/api/user/phonecheck")).permitAll()
                         .requestMatchers(mvcMatcherBuilder.pattern("/api/user/login")).permitAll()
                         .requestMatchers(mvcMatcherBuilder.pattern( "/h2-console/**")).permitAll()
                         .requestMatchers(mvcMatcherBuilder.pattern( "/favicon.ico")).permitAll()
