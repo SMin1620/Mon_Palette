@@ -65,6 +65,7 @@ public class Challenge {
     public void update(ChallengeCreateReqDto dto) {
         this.video = dto.getVideo();
         this.content = dto.getContent();
+        this.updateAt = LocalDateTime.now();
     }
 
     /**
