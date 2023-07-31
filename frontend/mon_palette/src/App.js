@@ -9,9 +9,11 @@ import SignUp from './user/components/SignUp'
 import SignUpForm from './user/components/SignUpForm'
 import SearchInput from './Search/SearchInput';
 import ChallengeHome from './Challenge/ChallengeHome'
+import FeedWrite from './Feed/FeedWrite'
 
 import { Routes, Route } from 'react-router-dom'
 import ChangeNickname from "./user/components/ChangeNickname";
+import FeedEdit from './Feed/FeedEdit';
 
 function App() {
 	return (
@@ -36,6 +38,11 @@ function App() {
 				<Route path="signupform" element={[<NavigationBarHeader title="Sign up" />, <SignUpForm />]}/>
 
 				<Route path="/changenickname" element={[<NavigationBarHeader title="ChangeNickname" />,<ChangeNickname />,<NavigationBarBottom />]}/>
+
+				<Route path="/feed/write" element={[<FeedWrite />,<NavigationBarBottom />]}/>
+
+				<Route path="/feed/edit/:feedDetail" element={[<FeedEdit />,<NavigationBarBottom />]}/>
+
 			</Routes>
 		</div>
 	);

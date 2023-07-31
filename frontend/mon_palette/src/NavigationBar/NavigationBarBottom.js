@@ -18,33 +18,33 @@ function NavigationBarBottom() {
   return (
     <div className="navigationbar_bottom">
       
-      <div className="nav_bottom_icons" onClick={ScrollToTop}>
+      <div className="nav_bottom_icons" >
         <Link to="/challenge">
-          <FireIcon sx={{ fontSize: 30 }}/>
+          <FireIcon sx={{ fontSize: 30 }} onClick={ScrollToTop}/>
         </Link>
       </div>
 
-      <div className="nav_bottom_icons" onClick={ScrollToTop}>
+      <div className="nav_bottom_icons" >
         <Link to="/feed">
-          <PhotoSizeIcon sx={{ fontSize: 30 }}/>
+          <PhotoSizeIcon sx={{ fontSize: 30 }} onClick={ScrollToTop}/>
         </Link>
       </div>
 
-      <div className="nav_bottom_icons" onClick={ScrollToTop}>
+      <div className="nav_bottom_icons" >
         <Link to="/home">
-          <HomeOutlinedIcon sx={{ fontSize: 30 }}/>
+          <HomeOutlinedIcon sx={{ fontSize: 30 }} onClick={ScrollToTop}/>
         </Link>
       </div>
 
-      <div className="nav_bottom_icons" onClick={ScrollToTop}>
+      <div className="nav_bottom_icons" >
         <Link>
-          <LocalMallOutlinedIcon sx={{ fontSize: 30 }}/>
+          <LocalMallOutlinedIcon sx={{ fontSize: 30 }} onClick={ScrollToTop}/>
         </Link>
       </div>
 
-      <div className="nav_bottom_icons" onClick={ScrollToTop}>
+      <div className="nav_bottom_icons" >
         <Link>
-          <PermIdentityOutlinedIcon sx={{ fontSize: 30 }}/>
+          <PermIdentityOutlinedIcon sx={{ fontSize: 30 }} onClick={ScrollToTop}/>
         </Link>
       </div>
     </div>
