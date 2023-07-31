@@ -10,7 +10,7 @@
 
 .commentInfo {
     display: flex;
-    align-items: start;
+    align-items: flex-start;
     margin-top: 0.7em;
 }
 
@@ -19,13 +19,15 @@
     flex-direction: column;
     justify-content: center;
     text-align: center;
-    width: 4em;
-    align-items: start;
+    /* width: 4em; */
+    align-items: flex-start;
+    margin-right: 7px;
 }
 
 .author {
     font-weight: 500;
     font-size: 17px;
+    margin-bottom: 0.2em;
 }
 
 .time {
@@ -40,5 +42,7 @@
 
 .content_wrap > p{
     margin: 0;
-    margin-left: 1em;
+    /* 줄바꿈 */
+    word-break: break-all;  
+    margin-right: 10px;
 }

@@ -62,7 +62,7 @@ function Comment(props) {
                         "userId": 57,
                         "nickname": "kuromiClon",
                         "profileImage": "https://i.namu.wiki/i/l9JWhPivO-KKFbsrt4fEwBh-KCMDLsmA1f93kmd_lJLNnPxmZHmU7GoARSDXJJ4atDBU_dDKQcM8s93h-H_PxQ.svg",
-                        "commentContent": "test양",
+                        "commentContent": "test양안녕1test양안녕2test양안녕3test양안녕4test양안녕5test양안녕6test양안녕7test양안녕8test양안녕9test양안녕10아아아아아아아아아아아아아아아아아아아아아아아아",
                         "createdAt": "2023-07-29T20:10:32.146994"
 
 
