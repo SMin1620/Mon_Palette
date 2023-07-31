@@ -1,11 +1,16 @@
-.container {
-    background-image: url('./startbg.png');
+.div {
+    overflow: scroll;
+    scroll-snap-type: y mandatory;
+    height: 100vh;
+} 
+
+  .container {
+    margin-top: 0px;
+    background-image: url('../startbg.png');
     background-repeat: no-repeat;
     background-size: 100% 100%;
     background-position: center;
-    height: 100vh;
-    overflow-y: scroll;
-    scroll-snap-type: y mandatory;
+    scroll-padding: 200px;
   }
   
   .page1 {
@@ -13,7 +18,7 @@
   }
 
   .text-container {
-    margin-top: 100px;
+    /* margin-top: 100px; */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -29,6 +34,15 @@
     font-weight: 600;
     line-height: normal;
     text-align: center;
+  }
+  .text1 {
+    color: #000;
+    font-size: 50px;
+    font-style: italic;
+    font-weight: 600;
+    line-height: normal;
+    text-align: center;
+    margin-top: 100px;
   }
   
   .backend-response-container {
@@ -53,9 +67,11 @@
   
   .result-description {
     padding: 50px;
+    /* word-break: break-all;  */
+  }
+  .description {
     word-wrap: break-word; 
     white-space: pre-wrap; 
-    /* word-break: break-all;  */
   }
   
   .backend-response-scroll {
@@ -86,4 +102,15 @@
     justify-content: center;
     align-items: center;
     text-decoration: none;
+    scroll-snap-align: end;
+  }
+
+  .image {
+    background-image: url('./summer_cool.png');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-position: center;
+    height: 180px;
+    margin-top: 20px;
+    padding: 20px;
   }
