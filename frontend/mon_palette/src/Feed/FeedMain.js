@@ -39,7 +39,6 @@ function FeedMain() {
                 AllChallengeImage.map((challengeInfo, index) => {
                   return <div className="feedMain_body_info_item" key={index}>
                     <img src={challengeInfo} alt="" />
-
                   </div>
                 })
               }
