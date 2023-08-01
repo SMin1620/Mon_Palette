@@ -15,6 +15,8 @@ import ChangeInfo from "./user/components/ChangeInfo";
 import MyPage from "./user/components/MyPage";
 
 import { Routes, Route } from "react-router-dom";
+
+
 function App() {
 	return (
 		<div className="App">
