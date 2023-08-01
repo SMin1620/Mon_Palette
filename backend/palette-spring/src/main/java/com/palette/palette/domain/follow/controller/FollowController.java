@@ -34,12 +34,22 @@ public class FollowController {
     @Operation(summary = "해당 유저의 팔로워 유저 목록 조회")
     @GetMapping("/follower/{id}")
     public BaseResponse getFollowerList(@PathVariable("id") Long userId){
-        return BaseResponse.success(followService.getFollowerList(userId));
+        try{
+            return BaseResponse.success(followService.getFollowerList(userId));
+        }catch (Exception e){
+            e.printStackTrace();
+            return BaseResponse.error("팔로워 유저 목록 조회 실패");
+        }
     }
     @Operation(summary = "해당 유저의 팔로잉 유저 목록 조회")
     @GetMapping("/following/{id}")
     public BaseResponse getFollowingList(@PathVariable("id") Long userId){
-        return BaseResponse.success(followService.getFollowingList(userId));
+        try{
+            return BaseResponse.success(followService.getFollowingList(userId));
+        }catch (Exception e){
+            e.printStackTrace();
+            return BaseResponse.error("팔로잉 유저 목록 조회 실패");
+        }
     }
 
 
