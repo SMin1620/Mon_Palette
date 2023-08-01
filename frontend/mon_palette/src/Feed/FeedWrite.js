@@ -163,12 +163,16 @@ const FeedWrite = () => {
       <div className={styles.header}>
         <button className={styles.button}>뒤로 가기</button>
         <h2>글 작성하기</h2>
+<<<<<<< HEAD
         <button 
           className={styles.button}
           onClick={() => {
             handleCreate(selectedImages)}
           }
         >업로드</button>
+=======
+        <button onClick="" className={styles.button}>업로드</button>
+>>>>>>> 1417b950bf00c8f7c0cc62341cbaf9467fbd9339
       </div>
 
 
@@ -204,8 +208,12 @@ const FeedWrite = () => {
       </div>
 
       <hr className={styles.hr}/>
+<<<<<<< HEAD
       
       {/* feed 해시태그 부분 */}
+=======
+
+>>>>>>> 1417b950bf00c8f7c0cc62341cbaf9467fbd9339
       <div className={styles.tag}>
         <h2># Tag</h2>
         <textarea 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
-import { recentSearchesState } from '../Atom';
+import { recentSearchesState } from './Atom';
 import styles from './RecentSearches.module.css'; 
 
 const RecentSearches = () => {
@@ -20,8 +20,8 @@ const RecentSearches = () => {
       <h3>최근 검색어</h3>
       <ul>
         {recentSearches.map((search, index) => (
-          <li key={index} onClick={() => handleSearchFromRecent(search)}>
-            {search}
+          <li key={index} className={styles.li}>
+            <span onClick={() => handleSearchFromRecent(search)} >{search}</span>
             <button onClick={() => handleRemoveRecentSearch(index)}>X</button>
           </li>
         ))}

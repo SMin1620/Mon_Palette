@@ -2,26 +2,34 @@
     display: flex; 
     align-items: center; 
     justify-content: center;
+    margin: 0px 15px 0px 15px;
+    width: 100%;
+    margin-left: 15px;
   }
   
 .search-input {
-    padding: 8px; 
+    /* padding: 8px;  */
     font-size: 16px; 
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    margin-right: 8px; 
+    border: none;
+    width: 100%;
+    margin-left: 15px;
 }
 
 .search-btn {
-    padding: 8px 8px 12px 8px;
     background: none;
     border: none;
     cursor: pointer;    
-    margin: 0px;
-}
-
-.search-btn img {
-    height: 16px; 
-    width: 16px; 
+    margin: 0px; 
 }
   
+.image {
+    height: 30px; 
+    width: 30px; 
+    margin-top: 2px;
+}
+
+.back {
+    height: 30px;
+    width: 30px;
+    margin-bottom: 2px;
+}
