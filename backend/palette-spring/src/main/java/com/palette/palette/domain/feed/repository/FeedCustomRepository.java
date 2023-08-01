@@ -6,6 +6,6 @@ import org.springframework.data.domain.Pageable;
 
 public interface FeedCustomRepository {
 
-    Page<Feed> findBySearchOption(Pageable pageable, String content);
+    Page<Feed> findBySearchOption(Pageable pageable, String content, String orderBy, String color);
 
 }

@@ -40,7 +40,9 @@ public class SearchController {
     public BaseResponse feedSearch(
             @RequestParam("page") int page,
             @RequestParam("type") String type,
-            @RequestParam("content") String content,
+            @RequestParam(value = "keyword", required = false) String content,
+            @RequestParam(value = "orderBy", required = false) String orderBy,
+            @RequestParam(value = "color", required = false) String color,
             HttpServletRequest request
     ) {
 
@@ -64,12 +66,12 @@ public class SearchController {
             }
 
             if (type.equals("feed")) {
-                return BaseResponse.success(searchService.feedSearch(page, 10, content));
+                return BaseResponse.success(searchService.feedSearch(page, 10, content, orderBy, color));
             }
             else if (type.equals("challenge")) {
 //                return BaseResponse.success(searchService.challengeSearch(page, 10, content));
             }
-            return BaseResponse.success(searchService.feedSearch(page, 10, content));
+            return BaseResponse.success(searchService.feedSearch(page, 10, content, orderBy, color));
         } catch (Exception e) {
 
             e.printStackTrace();

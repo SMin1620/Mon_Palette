@@ -23,10 +23,10 @@ public class SearchService {
     /**
      * 피드 검색 목록 조회
      */
-    public List<FeedResDto> feedSearch(int page, int size, String content) {
+    public List<FeedResDto> feedSearch(int page, int size, String content, String orderBy, String color) {
         Pageable pageable = PageRequest.of(page, size);
 
-        return feedRepository.findBySearchOption(pageable, content).getContent().stream()
+        return feedRepository.findBySearchOption(pageable, content, orderBy, color).getContent().stream()
                 .map(FeedResDto::toDto)
                 .collect(Collectors.toList());
     }
