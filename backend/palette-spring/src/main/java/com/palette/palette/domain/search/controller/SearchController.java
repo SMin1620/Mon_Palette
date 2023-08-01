@@ -35,7 +35,7 @@ public class SearchController {
     /**
      * QueryDsl 을 이용한 검색 동적 쿼리
      */
-    @Operation(summary = "피드 검색 QueryDSL")
+    @Operation(summary = "검색 QueryDSL")
     @GetMapping("/search")
     public BaseResponse feedSearch(
             @RequestParam("page") int page,
@@ -69,7 +69,7 @@ public class SearchController {
                 return BaseResponse.success(searchService.feedSearch(page, 10, content, orderBy, color));
             }
             else if (type.equals("challenge")) {
-//                return BaseResponse.success(searchService.challengeSearch(page, 10, content));
+                return BaseResponse.success(searchService.challengeSearch(page, 10, content, orderBy, color));
             }
             return BaseResponse.success(searchService.feedSearch(page, 10, content, orderBy, color));
         } catch (Exception e) {
