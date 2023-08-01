@@ -126,10 +126,10 @@ public class UserController {
         return BaseResponse.success(userService.userInfo(request));
     }
 
-    @Operation(summary = "마이페이지")
-    @GetMapping("/mypage")
-    public BaseResponse mypage(HttpServletRequest request){
-        return BaseResponse.success(userService.mypage(request));
+    @Operation(summary = "유저페이지")
+    @GetMapping("/userpage/{id}")
+    public BaseResponse userPage(HttpServletRequest request, @PathVariable("id") Long userId){
+        return BaseResponse.success(userService.userPage(request, userId));
     }
 
     @GetMapping("/if")

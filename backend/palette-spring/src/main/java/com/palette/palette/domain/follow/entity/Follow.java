@@ -17,12 +17,12 @@ public class Follow {
     @Id
     @GeneratedValue
     @Column(name = "follow_id")
-    private long id;
+    private Long id;
 
-    @Column(name = "to_user", insertable = false, updatable = false)
+    @Column(name = "to_user")
     private String toUser;
 
-    @Column(name = "from_user", insertable = false, updatable = false)
+    @Column(name = "from_user")
     private String fromUser;
 
     public Follow(String toUser, String fromUser){
