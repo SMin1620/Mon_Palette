@@ -33,6 +33,9 @@ public class Challenge {
     @Column(nullable = false)
     private String content;
 
+    @Builder.Default()
+    private Integer likeCount = 0;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
@@ -73,5 +76,19 @@ public class Challenge {
      */
     public void delete() {
         this.setDeleteAt(LocalDateTime.now());
+    }
+
+    /**
+     * 챌린지 좋아요 추가
+     */
+    public void addLike() {
+        this.likeCount += 1;
+    }
+
+    /**
+     * 챌린지 좋아요 취소
+     */
+    public void cancelLike() {
+        this.likeCount -= 1;
     }
 }
