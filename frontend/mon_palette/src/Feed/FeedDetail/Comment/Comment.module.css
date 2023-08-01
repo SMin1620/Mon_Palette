@@ -1,0 +1,48 @@
+.img {
+    border-radius: 50%;
+    margin: 0 0.7em;
+    margin-bottom: 0.7em;
+    width: 35px;
+    height: 35px;
+    align-items: center;
+    
+}
+
+.commentInfo {
+    display: flex;
+    align-items: flex-start;
+    margin-top: 0.7em;
+}
+
+.author_info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    /* width: 4em; */
+    align-items: flex-start;
+    margin-right: 7px;
+}
+
+.author {
+    font-weight: 500;
+    font-size: 17px;
+    margin-bottom: 0.2em;
+}
+
+.time {
+    font-size: 13px;
+}
+
+.content_wrap {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.content_wrap > p{
+    margin: 0;
+    /* 줄바꿈 */
+    word-break: break-all;  
+    margin-right: 10px;
+}
