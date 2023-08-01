@@ -36,7 +36,7 @@ public class SearchController {
      * QueryDsl 을 이용한 검색 동적 쿼리
      */
     @Operation(summary = "검색 QueryDSL")
-    @GetMapping("/search")
+    @GetMapping()
     public BaseResponse feedSearch(
             @RequestParam("page") int page,
             @RequestParam("type") String type,
