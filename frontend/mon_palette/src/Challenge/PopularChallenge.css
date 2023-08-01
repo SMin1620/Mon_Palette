@@ -1,0 +1,31 @@
+.popularChallenge_label {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 1rem;
+  align-items: center;
+}
+
+.popularChallenge_wrap {
+  width: 100%;
+  display: flex;
+  overflow-x: scroll;
+  margin-bottom: 1rem;
+}
+
+.popularChallenge_container {
+  display: flex;
+  margin-top: 1rem;
+  margin-left: 1rem;
+}
+
+.popularChallenge_item img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 4px;
+  margin-right: 1rem;
+}
+
+.popularChallenge_wrap::-webkit-scrollbar {
+  display: none;
+}
