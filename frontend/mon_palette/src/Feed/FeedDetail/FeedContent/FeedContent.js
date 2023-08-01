@@ -13,7 +13,7 @@ function FeedContent() {
     // const feedId = useParams()
     const feedId = 1
     const [feedData, setFeedData] = useState('')
-    const [isLiked, setIsLiked] = useState('');
+    const [isLiked, setIsLiked] = useState('false');
 
 
 
@@ -37,7 +37,8 @@ function FeedContent() {
             .then((response => {
                 // 좋아요 상태를 true로 변경합니다.
                 setIsLiked(true);
-                console.log('피드를 좋아요했습니다!');
+                
+                console.log('피드 좋아요');
             }))
             .catch((err => {
                 console.error('피드 좋아요 오류:', err);
@@ -50,7 +51,7 @@ function FeedContent() {
             .then(response => {
                 // 좋아요 상태를 false로 변경합니다.
                 setIsLiked(false);
-                console.log('피드 좋아요를 취소했습니다!');
+                console.log('피드 좋아요 취소');
             })
             .catch(err => {
                 console.error('피드 좋아요 취소 오류:', err);
@@ -138,15 +139,14 @@ function FeedContent() {
 
 
 
-    const [feedList, setFeedList] = useState("");
-    console.log(feedList, "feed");
-    console.log(feedList);
+    // const [feedList, setFeedList] = useState("");
+    // console.log(feedList, "feed");
+    // console.log(feedList);
  
     const handleLikeClick = (feedId) => {
-     
+        
         setFeedData((prev) =>
         
-    //       prevFeedList.map((feed) =>
             feedData.id === feedId ? { ...feedData, isLiked: !prev.isLiked,  likeCount: feedData.isLiked ? feedData.likeCount - 1 : feedData.likeCount + 1 } : feedData
           )
     
@@ -154,7 +154,6 @@ function FeedContent() {
      console.log(feedData);
     return (
         <div className={styles.container}>
-            {/* {feedData.feedImages.map((feed, index) => ( */}
                 <div className={styles.feed}>
                     <div className="feed_wrapper">
                     <Slider {...settings}>
