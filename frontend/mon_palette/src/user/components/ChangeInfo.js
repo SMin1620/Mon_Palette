@@ -7,7 +7,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import "./ChangeInfo.css"; // 스타일 파일 임포트
 import { useRecoilValue } from "recoil";
-import { loginState } from "./Atom";
+import { loginState } from "./Atom/Atom";
 import { useNavigate } from "react-router-dom";
 import "./Modal.css";
 import AWS from "aws-sdk";

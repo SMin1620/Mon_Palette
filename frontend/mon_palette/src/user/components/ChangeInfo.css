@@ -4,7 +4,7 @@ html {
 .changeInfo_container {
 	display: flex;
 	flex-direction: column; /* 요소들을 세로 방향으로 정렬합니다. */
-	margin: 0 auto;
+	margin: 4.3rem auto;
 	align-items: center; /* 요소들을 가운데 정렬합니다. */
 	text-align: left;
 }
