@@ -40,28 +40,8 @@ public class FeedController {
     private final JwtTokenProvider jwtTokenProvider;
 
 
-    /**
-     * jwt test
-     */
-    @Operation(summary = "jwt test")
-    @GetMapping("/test")
-    public ResponseEntity test(
-            HttpServletRequest request
-    ) {
-        System.out.println("test 컨트롤러");
-        System.out.println("request >>> " + request);
-        String token = jwtTokenProvider.resolveToken(request);
-        System.out.println("token >>> "  + token);
-        Authentication authentication = jwtTokenProvider.getAuthentication(token);
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-
-        System.out.println("Controller userDetails >>> " + userDetails);
-        User user = userRepository.findByEmail(userDetails.getUsername()).get();
-        System.out.println("Controller user >>> " + user.getEmail());
 
 
-        return ResponseEntity.ok().body("ok");
-    }
 
 
     /**
@@ -70,7 +50,8 @@ public class FeedController {
     @Operation(summary = "피드 목록 조회")
     @GetMapping()
     public BaseResponse feedList(
-            @RequestParam("page") int page) {
+            @RequestParam("page") int page
+    ) {
 
         // page -> 0 시작 , size -> 가져올 피드 10개
         return BaseResponse.success(feedService.feedList(page, 10));
