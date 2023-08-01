@@ -19,12 +19,23 @@
   margin-left: 1rem;
 }
 
+.challengeHome_top_image_item {
+  margin-right: 1rem;
+  width: 80px;
+  justify-content: center;
+  align-items: center;
+}
+
 .challengeHome_top_image_item img {
-  width: 70px;
-  height: 70px;
+  margin: auto;
+  width: 100%;
+  height: 80px;
   object-fit: cover;
   border-radius: 50%;
-  margin-right: 1rem;
+}
+
+.challengeHome_top_image_item p {
+  text-align: center;
 }
 
 .challenge_mid_label {

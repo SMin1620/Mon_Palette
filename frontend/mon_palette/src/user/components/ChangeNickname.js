@@ -21,7 +21,10 @@ const ChangeNickname = () => {
 	const possibleNickname = (e) => {
 		axios
 			.get(
-				`http://192.168.30.130:8080/api/user/nicknamecheck?nickname=${nickname}`
+				`${process.env.REACT_APP_API}/api/user/nicknamecheck?nickname=${nickname}`,
+				{
+					headers: { Authorization: Authorization },
+				}
 			)
 			.then((response) => {
 				if (response.data && response.data.data.check === false) {
@@ -49,7 +52,7 @@ const ChangeNickname = () => {
 		if (nicknameState && duplicationNickname) {
 			axios
 				.put(
-					"http://192.168.30.130:8080/api/user/nickname",
+					`${process.env.REACT_APP_API}/api/user/nickname`,
 					{ nickname: nickname },
 					{ headers: { Authorization: Authorization } }
 				)
@@ -87,7 +90,7 @@ const ChangeNickname = () => {
 						onChange={changeNickname}
 						placeholder="닉네임을 입력하세요"
 					/>
-					<button onclick={possibleNickname} class="change_duplication-button">
+					<button onClick={possibleNickname} class="change_duplication-button">
 						중복확인
 					</button>
 				</div>
@@ -100,7 +103,7 @@ const ChangeNickname = () => {
 			</div>
 			<br />
 			<div className="change_button-container">
-				<button onclick={change}>변경하기</button>
+				<button onClick={change}>변경하기</button>
 			</div>
 			<Modal isOpen={isModalOpen} onClose={closeModal}>
 				<h3>닉네임 중복체크 해주세요 'v'</h3>

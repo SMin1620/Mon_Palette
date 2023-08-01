@@ -1,34 +1,54 @@
 /* RecentSearches.module.css */
 .recent-searches {
   padding: 10px;
-  border: 1px solid #ddd;
+  min-height: 250px;
 }
 
 .recent-searches h3 {
-  font-size: 18px;
-  margin-bottom: 10px;
+  color: #000;
+  text-align: start;
+  font-size: 17px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  margin-left: 10px;
+  margin-bottom: 8px;
 }
+
+.trending-searches {
+  padding: 10px;
+}
+
 
 .recent-searches ul {
   list-style: none;
   padding: 0;
   display: flex;
-  flex-wrap: wrap; /* 여러 개의 검색 결과가 한 줄에 나오도록 설정 */
+  flex-wrap: wrap; 
 }
 
 .recent-searches li {
   display: flex;
   align-items: center;
-  justify-content: center; /* 버튼이 가운데에 배치되도록 설정 */
-  padding: 5px 18px;
-  margin: 15px; 
-  background-color: #f2f2f2;
+  justify-content: center; 
+  padding: 2px 10px;
+  margin: 15px 8px; 
+  background-color: #d9d9d9;
   border-radius: 15px;
+  font-size: 14px;
 }
 
 .recent-searches button {
-  color:red;
+  color:black;
+  background-color: #d9d9d9;
   border: none;
   cursor: pointer;
-  padding-left: 10px;
+  margin: 2px 0px 0px 0px;
+  padding: 0px;
+  font-weight: 700;
 }
+
+.recent-searches span {
+  margin-right: 20px;
+}
+

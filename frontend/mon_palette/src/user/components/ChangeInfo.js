@@ -2,12 +2,16 @@
 
 import React, { useState, useEffect } from "react";
 import ChevronRightOutlinedIcon from "@mui/icons-material/ChevronRightOutlined";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import "./ChangeInfo.css"; // 스타일 파일 임포트
 import { useRecoilValue } from "recoil";
 import { loginState } from "./Atom";
 import { useNavigate } from "react-router-dom";
+import "./Modal.css";
+import AWS from "aws-sdk";
+
 const ChangeInfo = () => {
 	const [background, setBackground] = useState("");
 	const [profile, setProfile] = useState("");
@@ -15,33 +19,176 @@ const ChangeInfo = () => {
 	const [personalcolor, setPersonalcolor] = useState("");
 	const [phone, setPhone] = useState("");
 	const [address, setAddress] = useState("");
-	const Navigate = useNavigate();
+	const [check, setCheck] = useState(true);
+
+	const [isModalOpen, setIsModalOpen] = useState(false);
+
 	const Authorization = useRecoilValue(loginState);
+	const Navigate = useNavigate();
+
+	// AWS 연동
+	const ACCESS_KEY = process.env.REACT_APP_AWS_S3_ACCESS_ID;
+	const SECRET_ACCESS_KEY = process.env.REACT_APP_AWS_S3_ACCESS_PW;
+	const REGION = process.env.REACT_APP_AWS_S3_REGION;
+	const BUCKET = process.env.REACT_APP_AWS_S3_BUCKET;
+
+	AWS.config.update({
+		accessKeyId: ACCESS_KEY,
+		secretAccessKey: SECRET_ACCESS_KEY,
+	});
+
+	const myBucket = new AWS.S3({
+		params: { Bucket: BUCKET },
+		region: REGION,
+	});
+
+	useEffect(() => {
+		if (Authorization) {
+			getmapping();
+		}
+	}, [check]);
+	const modify_picture = (event, back) => {
+		const file = event.target.files[0]; // 사용자가 선택한 파일 가져오기
+		if (file) {
+			const reader = new FileReader();
+			reader.onload = (e) => {
+				const imageBlob = new Blob([e.target.result], { type: file.type });
+				const params = {
+					ACL: "public-read",
+					Body: imageBlob, // Use the image data (blob) as the Body of the S3 object
+					Bucket: BUCKET,
+					Key: file.name, // Use a valid key for the object, for example, the file name
+				};
+				myBucket.putObject(params, (err, data) => {
+					if (err) {
+						console.error("Error uploading image to S3:", err);
+					} else {
+						if (back === "background") {
+							changebackground(handleImageUrlFromS3(params.Key));
+						} else {
+							changeprofile(handleImageUrlFromS3(params.Key));
+						}
+					}
+				});
+			};
+			reader.readAsArrayBuffer(file); // Read the file data as ArrayBuffer
+		}
+	};
+
+	const handleImageUrlFromS3 = (key) => {
+		const params = {
+			Bucket: BUCKET,
+			Key: key,
+		};
+		const imageUrl = myBucket.getSignedUrl("getObject", params);
+		return imageUrl;
+	};
+
 	const getmapping = () => {
-		console.log(Authorization);
+		console.log(loginState);
 		axios
-			.get("http://192.168.30.130:8080/api/user/info", {
-				headers: { Authorization: loginState },
+			.get(`${process.env.REACT_APP_API}/api/user/info`, {
+				headers: { Authorization: Authorization },
 			})
 			.then((response) => {
 				console.log(response.data);
-				// if (response.data.data !== null) {
-				// 	setBackground(response.data.data.background);
-				// 	setProfile(response.data.data.profile);
-				// 	setNickname(response.data.data.nickname);
-				// 	setPersonalcolor(response.data.data.personalcolor);
-				// 	setPhone(response.data.data.phone);
-				// 	setAddress(response.data.data.address);
-				// }
+				if (response.data.data !== null) {
+					setNickname(response.data.data.nickname);
+					setPersonalcolor(response.data.data.personalcolor);
+					setPhone(response.data.data.phone);
+					setAddress(response.data.data.address);
+					setProfile(response.data.data.profilePhoto);
+					setBackground(response.data.data.background);
+				}
 			});
 	};
 
-	useEffect(() => {
-		// 초기 값을 설정할 로직을 이곳에 작성합니다.
-		if (loginState) {
-			getmapping();
-		}
-	}, [loginState]); // 빈 배열을 넣어서 컴포넌트가 처음 렌더링될 때 한 번만 실행되도록 합니다.
+	const changebackground = (url) => {
+		axios
+			.put(
+				`${process.env.REACT_APP_API}/api/user/background`,
+				{ backgroundImage: url },
+				{ headers: { Authorization: Authorization } }
+			)
+			.then((response) => {
+				console.log(response);
+				if (response.data !== null) {
+					if (check) {
+						setCheck(false);
+					} else {
+						setCheck(true);
+					}
+				}
+			})
+			.catch((err) => {
+				console.error("error", err);
+			});
+	};
+
+	const changeprofile = (url) => {
+		console.log("url : " + url);
+		axios
+			.put(
+				`${process.env.REACT_APP_API}/api/user/profile`,
+				{ profileImage: url },
+				{ headers: { Authorization: Authorization } }
+			)
+			.then((response) => {
+				console.log(response);
+				if (response.data !== null) {
+					if (check) {
+						setCheck(false);
+					} else {
+						setCheck(true);
+					}
+				}
+			})
+			.catch((err) => {
+				console.error("error", err);
+			});
+	};
+
+	const leave = () => {
+		setIsModalOpen(true);
+	};
+
+	//회원탈퇴 함수 구현
+	const Withdraw = () => {
+		axios
+			.delete(`${process.env.REACT_APP_API}/api/user`, {
+				headers: { Authorization: Authorization },
+			})
+			.then((response) => {
+				setIsModalOpen(false);
+				if (response.data.data === true) {
+					Navigate("/");
+				}
+			});
+	};
+
+	//회원탈퇴 모달창
+	const closeModal = () => {
+		setIsModalOpen(false);
+	};
+
+	const Modal = ({ isOpen, onClose, children }) => {
+		if (!isOpen) return null;
+
+		return (
+			<div className="modal-container">
+				<div className="modal-content">{children}</div>
+				<div className="modal-button-container">
+					<button className="withdraw_modal-button" onClick={Withdraw}>
+						확인
+					</button>
+					<span class="button-gap" />
+					<button className="withdraw_modal-button" onClick={closeModal}>
+						취소
+					</button>
+				</div>
+			</div>
+		);
+	};
 
 	return (
 		<div className="changeInfo_container">
@@ -52,13 +199,39 @@ const ChangeInfo = () => {
 					className="changeInfo_background-picture"
 				/>
 			</div>
+			<div className="changeInfo_background_edit">
+				<label htmlFor="picture-input" className="picture-edit-label">
+					<EditOutlinedIcon />
+				</label>
+				<input
+					id="picture-input"
+					className="picture-edit"
+					type="file"
+					onChange={(event) => modify_picture(event, "background")}
+					accept="image/*"
+				/>
+			</div>
 			<br />
 			<div className="changeInfo_profile-container">
-				<img
-					src={profile}
-					alt="profile"
-					className="changeInfo_profile-picture"
-				/>
+				<div className="changeInfo_profile-content">
+					<img
+						src={profile}
+						alt="profile"
+						className="changeInfo_profile-picture"
+					/>
+					<div className="changeInfo_profile_edit">
+						<label htmlFor="picture-input2" className="picture-edit-label">
+							<EditOutlinedIcon />
+						</label>
+						<input
+							id="picture-input2"
+							className="picture-edit"
+							type="file"
+							onChange={(event) => modify_picture(event, "profile")}
+							accept="image/*"
+						/>
+					</div>
+				</div>
 			</div>
 			<br />
 			<br />
@@ -120,10 +293,14 @@ const ChangeInfo = () => {
 			<div className="changeInfo_form-group">
 				<label className="changeInfo_label">회 원 탈 퇴</label>
 
-				<Link to="/changepersonalcolor">
-					<ChevronRightOutlinedIcon className="changeInfo_arrow-icon" />
-				</Link>
+				<ChevronRightOutlinedIcon
+					className="changeInfo_arrow-icon"
+					onClick={leave}
+				/>
 			</div>
+			<Modal isOpen={isModalOpen} onClose={closeModal}>
+				<h3>진짜 내가 필요없어요? ._.</h3>
+			</Modal>
 		</div>
 	);
 };

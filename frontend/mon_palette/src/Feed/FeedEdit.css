@@ -1,0 +1,19 @@
+.feed_edit_top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 2em;
+  margin-top: 2em;
+}
+
+.feed_edit_back {
+  border: 1px solid black;
+  border-radius: 50%;
+}
+
+.feed_edit_image_item img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  margin: 1em;
+}
