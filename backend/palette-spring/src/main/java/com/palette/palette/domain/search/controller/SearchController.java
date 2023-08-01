@@ -78,4 +78,23 @@ public class SearchController {
             return BaseResponse.error("검색 실패");
         }
     }
+
+
+    /**
+     * 인기 검색어 10위 까지의 목록 조회
+     */
+    @Operation(summary = "인기검색어 목록 조회")
+    @GetMapping("/ranking")
+    public BaseResponse rankList(
+            HttpServletRequest request
+    ) {
+        System.out.println("인기 검색어 목록 조회 컨트롤러");
+
+        try {
+            return BaseResponse.success(searchService.rankList());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return BaseResponse.error("인기 검색어 목록 조회 실패");
+        }
+    }
 }
