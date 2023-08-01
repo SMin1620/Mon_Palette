@@ -12,7 +12,7 @@ const ChangeNickname = () => {
 	const change = () => {
 		axios
 			.put(
-				"http://192.168.30.130:8080/api/user/address",
+				`${process.env.REACT_APP_API}/api/user/address`,
 				{ address: address },
 				{ headers: { Authorization: Authorization } }
 			)
