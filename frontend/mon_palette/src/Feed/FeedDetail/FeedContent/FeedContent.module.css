@@ -52,3 +52,25 @@
     font-size: 20px;
     margin-left: 10px;
 }
+
+.like_count {
+    margin-left: 1rem;
+    font-size: 13px;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.page {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    right: 200%;
+    background-color: white;
+    transition: right 0.8s ease;
+    z-index: 100; 
+}
+
+.open {
+    right: 0;
+}
