@@ -6,7 +6,8 @@ import { Link, useNavigate } from "react-router-dom";
 import "./LoginForm.css";
 import axios from "axios";
 import { useRecoilState } from "recoil";
-import { loginState } from "./Atom";
+import { userId } from "./Atom/UserId";
+import { loginState } from "./Atom/Atom";
 import Modal from "../../Modal/Modal";
 const LoginForm = () => {
 	const [email, setUsername] = useState("");
@@ -15,6 +16,7 @@ const LoginForm = () => {
 	const [password, setPassword] = useState("");
 	const [isModalOpen, setIsModalOpen] = useState(false);
 
+	const [id, setId] = useRecoilState(userId);
 	const [token, setToken] = useRecoilState(loginState);
 	const Navigate = useNavigate();
 	const closeModal = () => {
@@ -29,10 +31,12 @@ const LoginForm = () => {
 				password: password,
 			})
 			.then((response) => {
-				console.log(response.headers.authorization);
 				if (response.data !== null) {
+					console.log(response);
 					setToken(response.headers.authorization);
-					Navigate("/mypage");
+					setId(response.data.data.userId);
+					console.log(response.data.data.userId);
+					Navigate(`/feed`);
 				} else {
 					setIsModalOpen(true);
 				}
