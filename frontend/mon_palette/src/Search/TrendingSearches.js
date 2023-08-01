@@ -5,7 +5,7 @@ const TrendingSearches = () => {
     const handleSearchFromTrending = (search) => {
         console.log(`검색어 "${search}"로 검색을 수행합니다.`);
       };
-    const TrendingWords = ['아이섀도우', '블러셔', '립스틱', '파운데이션', '마스카라', '틴트', '아이라이너', '아이브로우', '틴트', '로션']
+    const TrendingWords = ['아이섀도우', '블러셔', '립스틱', '파운데이션', '마스카라', '틴트', '아이라이너', '아이브로우', '바디워시', '로션']
     return (
         <div>
             <div className={styles['trending-searches']}>

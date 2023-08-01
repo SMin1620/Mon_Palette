@@ -12,6 +12,7 @@ const SearchInput = () => {
 
   const handleSearch = () => {
     if (searchQuery !== '') {
+      console.log(`${searchQuery}로 검색을 수행합니다.`)
       setRecentSearches((prevSearches) => [...prevSearches, searchQuery]);
       setSearchQuery('');
     }
