@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@ant-design/icons": "^5.1.4",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.14.1",
@@ -19,6 +20,10 @@
     "react-uuid": "^2.0.0",
     "recoil": "^0.7.7",
     "recoil-persist": "^5.1.0",
+    "react-icons": "^4.10.1",
+    "react-slick": "^0.29.0",
+    "react-window": "^1.8.9",
+    "slick-carousel": "^1.8.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
