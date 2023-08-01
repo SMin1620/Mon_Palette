@@ -1,6 +1,9 @@
 package com.palette.palette.domain.search.service;
 
 
+import com.palette.palette.domain.challenge.dto.list.ChallengeResDto;
+import com.palette.palette.domain.challenge.entity.Challenge;
+import com.palette.palette.domain.challenge.repository.ChallengeRepository;
 import com.palette.palette.domain.feed.dto.list.FeedResDto;
 import com.palette.palette.domain.feed.repository.FeedRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,10 +21,11 @@ import java.util.stream.Collectors;
 public class SearchService {
 
     private final FeedRepository feedRepository;
+    private final ChallengeRepository challengeRepository;
 
 
     /**
-     * 피드 검색 목록 조회
+     * 피드 검색 필터 목록 조회
      */
     public List<FeedResDto> feedSearch(int page, int size, String content, String orderBy, String color) {
         Pageable pageable = PageRequest.of(page, size);
@@ -32,4 +36,14 @@ public class SearchService {
     }
 
 
+    /**
+     * 챌린지 검색 필터 목록 조회
+     */
+    public Object challengeSearch(int page, int size, String content, String orderBy, String color) {
+        Pageable pageable = PageRequest.of(page, size);
+
+        return challengeRepository.findBySearchOption(pageable, content, orderBy, color).getContent().stream()
+                .map(ChallengeResDto::toDto)
+                .collect(Collectors.toList());
+    }
 }
