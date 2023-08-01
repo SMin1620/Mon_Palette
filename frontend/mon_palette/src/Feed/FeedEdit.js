@@ -34,7 +34,9 @@ function FeedEdit(props) {
       .put(`http://192.168.30.224:8080/api/feed/${feedId}`)
   },[])
 
-
+const handleImageUpload = () => {
+  
+}
 
 
   return (
