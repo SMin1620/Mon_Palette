@@ -1,0 +1,102 @@
+/* .container {
+  background-image: url('./startbg.png');
+  background-repeat: no-repeat;
+  background-size: 100% 100%; 
+  background-position: center; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+} */
+
+  .button1 {
+    margin-top: 10px;
+    padding: 10px 20px;
+    background-color: #FAD0E4;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    color: #000;
+    font-family: Inter;
+    font-size: 30px;
+    font-weight: 600;
+    width: 150px;
+  }
+  .button2 {
+    margin-bottom: 10px;
+    padding: 10px 20px;
+    background-color: #F5719B;
+    color: black;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    font-family: Inter;
+    font-size: 30px;
+    font-weight: 600;
+    width: 150px;
+  }
+
+  .button-container {
+    background-image: url('./startbg.png');
+    background-repeat: no-repeat;
+    background-size: 100% 100%; 
+    background-position: center; 
+    display: flex;
+    gap: 20px;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .upload-btn {
+    display: inline-block; 
+    margin-top: 10px;
+    padding: 10px 20px;
+    background-color: #fbcfdf;
+    color: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .upload-btn input[type="file"] {
+    display: none;
+  }
+  
+  /* .uploaded-image-container {
+    margin-top: 20px;
+    width: 200px;
+    height: 200px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    overflow: hidden;
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    /* border: hidden; */
+  /* } */
+
+  .div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  
+  .text {
+    color: #000;
+    font-size: 50px;
+    font-style: italic;
+    font-weight: 600;
+    line-height: normal;
+    text-align: center;
+  } 
+  .text-container {
+    margin-top: 200px;
+    margin-bottom: 70px;
+  }
+
+  .image {
+    width: 300px;
+    height: 300px;
+    margin-top: 160px;
+    margin-bottom: 10px;
+  }

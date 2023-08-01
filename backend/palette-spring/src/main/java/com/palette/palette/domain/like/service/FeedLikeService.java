@@ -81,7 +81,7 @@ public class FeedLikeService {
     public List<FeedLikeUserResDto> feedLikeList(Long feedId) {
 
         // 피드 유효성 검사
-        Feed feed = feedRepository.findById(feedId)
+        feedRepository.findById(feedId)
                 .orElseThrow(() -> new NotFoundException("피드가 없습니다."));
 
         // 피드에 좋아요한 사용자를 리스트로 가져오기

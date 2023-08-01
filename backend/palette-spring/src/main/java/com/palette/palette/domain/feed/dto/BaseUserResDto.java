@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class FeedUserResDto {
+public class BaseUserResDto {
 
     private Long id;
 
@@ -26,8 +26,8 @@ public class FeedUserResDto {
 
     private String backgroundImage;
 
-    public static FeedUserResDto toDto(User user) {
-        return FeedUserResDto.builder()
+    public static BaseUserResDto toDto(User user) {
+        return BaseUserResDto.builder()
                 .id(user.getId())
                 .email(user.getEmail())
                 .name(user.getName())
