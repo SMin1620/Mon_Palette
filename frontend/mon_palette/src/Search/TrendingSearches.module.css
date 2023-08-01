@@ -1,0 +1,28 @@
+.li {
+    list-style: none;
+    display: inline;
+    font-size: 14px;
+}
+
+.ul {
+    list-style: none;
+    padding: 0px 0px 0px 10px;
+    column-count: 2;
+}
+
+.span {
+    font-weight: 500;
+    display: inline-block;
+    padding: 8px 4px 8px 10px;
+}
+
+.trending-searches h3 {
+    color: #000;
+    text-align: start;
+    font-size: 17px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    margin: 0px 0px 20px 10px;
+    padding-left: 8px;
+  } 
