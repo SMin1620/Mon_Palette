@@ -28,7 +28,13 @@ public class UserController {
     public BaseResponse signup(
             @RequestBody @Valid RegisterReqDto request
             ){
-        return BaseResponse.success(userService.signup(request));
+        try{
+            return BaseResponse.success(userService.signup(request));
+        }catch (Exception e){
+            e.printStackTrace();
+            return BaseResponse.error("회원가입 실패");
+        }
+
     }
 
     @Operation(summary = "로그인")
