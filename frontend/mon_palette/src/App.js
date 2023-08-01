@@ -13,6 +13,7 @@ import ChangeAddress from "./user/components/ChangeAddress";
 import ChangePhone from "./user/components/ChangePhone";
 import ChangeInfo from "./user/components/ChangeInfo";
 import MyPage from "./user/components/MyPage";
+import FeedDetail from "./Feed/FeedDetail/FeedDetail";
 
 import { Routes, Route } from "react-router-dom";
 function App() {
@@ -95,6 +96,12 @@ function App() {
 						<NavigationBarHeader title="Mon, Palette" />,
 						<NavigationBarBottom />,
 						<MyPage />,
+					]}
+				/>
+				<Route
+					path="/feed/:feedId"
+					element={[
+						<FeedDetail />
 					]}
 				/>
 			</Routes>
