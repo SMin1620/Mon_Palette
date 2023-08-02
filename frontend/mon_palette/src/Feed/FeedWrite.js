@@ -8,8 +8,10 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import AWS from 'aws-sdk'
 import uuid from 'react-uuid'
 import { useRecoilValue } from 'recoil';
+import { useNavigate } from 'react-router-dom';
 
 const FeedWrite = () => {
+  const navigate = useNavigate()
 
   // 로그인 정보
   const token = useRecoilValue(loginState)
@@ -162,6 +164,8 @@ const FeedWrite = () => {
         })
         .then((response) => {
           console.log(response)
+          const feedId = response.data.data.id
+          navigate(`/feed/${feedId}`)
         })
         .catch((error) => {
           console.error(error)
