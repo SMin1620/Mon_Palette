@@ -22,6 +22,8 @@ public class ChallengeDetailResDto {
 
     private Integer likeCount;
 
+    private Boolean isFollow;
+
     private Boolean isDelete;
 
     private LocalDateTime deleteAt;
@@ -35,7 +37,7 @@ public class ChallengeDetailResDto {
     /**
      * entity -> dto
      */
-    public static ChallengeDetailResDto toDto(Challenge challenge, Boolean isLiked) {
+    public static ChallengeDetailResDto toDto(Challenge challenge, Boolean isLiked, Boolean isFollow) {
 
         return ChallengeDetailResDto.builder()
                 .id(challenge.getId())
@@ -43,6 +45,7 @@ public class ChallengeDetailResDto {
                 .content(challenge.getContent())
                 .isLiked(isLiked)
                 .likeCount(challenge.getLikeCount())
+                .isFollow(isFollow)
                 .isDelete(challenge.getIsDelete())
                 .deleteAt(challenge.getDeleteAt())
                 .createAt(challenge.getCreateAt())
