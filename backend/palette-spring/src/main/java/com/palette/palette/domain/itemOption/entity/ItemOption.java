@@ -23,6 +23,9 @@ public class ItemOption {
     @Column(name = "option_id")
     private Long id;
 
+    @Column(name = "option_id", nullable = false)
+    private String optionId;
+
     @Column(nullable = false)
     private Integer stock = 0;
 

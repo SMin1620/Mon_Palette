@@ -6,6 +6,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -16,7 +19,46 @@ public class ItemReqDto {
     private String itemaName;
 
     @Schema(description = "가격", example = "10000")
-    private int price;
+    private Integer price;
 
+    private Integer discount;
 
+    private String content;
+
+    private String manufact;
+
+    private Integer deliveryFee;
+
+    private String thumbnail;
+
+    private Integer maximum;
+
+    private LocalDateTime createAt;
+
+    private LocalDateTime endAt;
+
+    /**
+     * 상품 옵션
+     */
+
+    private String optionId;
+
+    private Integer stock;
+
+    /**
+     * 상품설명 이미지
+     */
+
+    private List<String> itemDetailImage;
+
+    /**
+     * 상품 이미지
+     */
+    private List<String> itemPhoto;
+
+    /**
+     * 카테고리
+     */
+    private String categoryName;
+    private Long categoryParentId;
 }
