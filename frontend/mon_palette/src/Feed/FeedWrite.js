@@ -149,7 +149,7 @@ const FeedWrite = () => {
       alert('설명을 입력하세요')
     } else {
       axios
-        .post(`${process.env.REACT_APP_API_URL}/api/feed`, {
+        .post(`${process.env.REACT_APP_API}/api/feed`, {
         content: caption,
         hashtags: tagList,
         feedImages: imageUrlList
@@ -238,7 +238,7 @@ const FeedWrite = () => {
             tagList.map((tag, index) => {
               return <div className="feed_write_bottom_hashtag_item" key={index}># {tag}
               
-              <button className="feed_write_bottom_hashtah_button" onClick={() => handleRemoveHashTag(index)}>-</button>
+              <button className="feed_write_bottom_hashtag_button" onClick={() => handleRemoveHashTag(index)}>-</button>
               </div>
             })
           }

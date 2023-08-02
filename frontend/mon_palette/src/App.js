@@ -16,6 +16,7 @@ import MyPage from "./user/components/MyPage";
 import FeedWrite from './Feed/FeedWrite';
 import FeedEdit from './Feed/FeedEdit';
 import ChallengeHome from './Challenge/ChallengeHome';
+import FeedDetail from "./Feed/FeedDetail/FeedDetail";
 
 import { Routes, Route } from "react-router-dom";
 function App() {
@@ -98,6 +99,7 @@ function App() {
 					]}
 				/>
 				<Route
+
 					path="/feed/write"
 					element={[
 						<NavigationBarBottom />,
@@ -116,7 +118,13 @@ function App() {
 					path="/feed/edit/:id"
 					element={[
 						<NavigationBarBottom />,
-						<FeedEdit />,
+						<FeedEdit />,]}
+				/>
+
+				<Route
+					path="/feed/:feedId"
+					element={[
+						<FeedDetail />
 					]}
 				/>
 			</Routes>

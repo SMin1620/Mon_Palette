@@ -1,18 +1,22 @@
-import React, { useState, useEffect, useParams } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios'
 import { loginState } from '../user/components/Atom';
 import { useRecoilValue } from 'recoil';
 import AWS from 'aws-sdk'
 import uuid from 'react-uuid'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams, useLocation} from 'react-router-dom';
+import './FeedEdit.css'
 
 
 function FeedEdit(props) {
   const navigate = useNavigate()
-  // const feedId = useParams()
+
+  const location = useLocation()
+  console.log('location',location)
+
   // 피드정보 props 받아서 id 값 뽑아오고 해당 id 로 put 요청 보내기
-  const feedId = props.feedData.id
+  const feedId = useParams()
   const token = useRecoilValue(loginState)
   const [feedData, setFeedData] = useState('')
   // 프랍받은 이미지 저장하기
@@ -75,21 +79,21 @@ function FeedEdit(props) {
   };
 
   useEffect(() => {
-    // 프랍받은 이미지 넣기 + 복사본 만들기
-    props.feedData.feedImages.map(image => {
-      setPropsFeedImages((prevImg) => [...prevImg, image])
-      setUserSelectedImages((prevImg) => [...prevImg, image])
-    })
-
-    // 캡션저장
-    setCaption(props.feedData.content)
-
-    // 태그저장
-    props.feedData.hashtags.map(hashtag => {
-      setTagList((prevtag) => [...prevtag, hashtag])
-    })
+    setFeedData(location.state.feedData)
   },[])
 
+  useEffect(() => {
+    // 프랍받은 이미지 넣기 + 복사본 만들기
+    feedData&&feedData.feedImages.map(image => {
+      console.log("돌아간다")
+      setPropsFeedImages((prevImg) => [...prevImg, image])
+      setUserSelectedImages((prevImg) => [...prevImg, image])
+      setCaption(feedData.content)
+    })
+    feedData&&feedData.hashtags.map(hashtag => {
+      setTagList((prevtag) => [...prevtag, hashtag])
+    })
+  },[feedData])
 
   useEffect(() => {
     if (update === true) {
@@ -163,6 +167,10 @@ function FeedEdit(props) {
     }
   }
 
+  const handleRemoveHashTag = (tagindex) => {
+    setTagList((prev) => prev.filter((_, index) => index !== tagindex))
+  }
+
   const handleNewimageList = async () => {
     await setNewImages(
       userSelectedImages.filter(newImage => !propsFeedImages.includes(newImage))
@@ -209,32 +217,35 @@ function FeedEdit(props) {
     <div className="feed_edit">
       <div className="feed_edit_top">
         <ArrowBackIcon sx={{ fontSize: 20 }}className="feed_write_top_back"/>
-        <h3>Edit Profile</h3>
-        <button onClick={handleUpload}>edit</button>
+        <h2>Edit Profile</h2>
+        <button onClick={handleUpload} className="feed_edit_top_upload_select">edit</button>
       </div>
 
       <hr className="feed_edit_top_header_hr"/>
 
       <div className="feed_edit_top_image">
         <div className="feed_edit_top_image_upload">
-          <label for="fileUpload" className="feed_write_top_image_label">Up load</label>
+          <label for="fileUpload" className="feed_edit_top_image_label">Up load</label>
           <input 
             className="feed_edit_top_image_upload"
             type="file"
             accept="image/*"
             id="fileUpload"
             onChange={handleImageUpload} 
+            multiple
           />
         </div>
 
         <div className="feed_edit_top_image_wrap">
           {
-            userSelectedImages.map((image, index) => {
-              return <div key={index} className="feed_edit_top_image_container">
-                <img src={image} alt={index}/>
-                <button onCliCk={() => handleRemoveImage(index)}>-</button>
+            userSelectedImages&&userSelectedImages.map((image, index) => (
+              <div key={index} className="feed_edit_top_image_container">
+                <div className="feed_edit_top_image_item">
+                  <img src={image.imagePath} alt={index}/>
+                  <button onClick={() => handleRemoveImage(index)}>-</button>
+                </div>
               </div>
-            })
+            ))
           }
         </div>
       </div>
@@ -249,7 +260,7 @@ function FeedEdit(props) {
 
       <hr className="feed_edit_mid_bottom_hr"/>
       
-      <h2># Tag</h2>
+      <h2 className="feed_edit_bottom_h2"># Tag</h2>
       <div className="feed_edit_bottom">
         <textarea 
           className="feed_edit_bottom_hashtag_textarea"
@@ -262,8 +273,11 @@ function FeedEdit(props) {
 
         <div className="feed_write_bottom_hashtag_area">
           {
-            tagList.map((tag, index) => {
-              return <div className="feed_write_bottom_hashtag_item" key={index}># {tag}</div>
+            tagList&&tagList.map((tag, index) => {
+              return <div className="feed_write_bottom_hashtag_item" key={index}># {tag}
+
+              <button className="feed_edit_bottom_hashtag_button" onClick={() => handleRemoveHashTag(index)}>-</button>
+              </div>
             })
           }
         </div>
