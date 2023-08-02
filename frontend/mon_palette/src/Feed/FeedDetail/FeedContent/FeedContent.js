@@ -5,9 +5,10 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
 import axios from "axios"
-import Modal from "../../../Modal/Modal";
 import { useRecoilValue } from "recoil";
 import { loginState } from "../../../user/components/Atom";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import FollowButton from "../Header/FollowButton/FollowButton"
 
 
 
@@ -43,7 +44,7 @@ function FeedContent() {
         setLikeList ( prevLikeList => !prevLikeList
         )
     }
-    console.log('likelist', likeList);
+ 
 
     useEffect(() => {
         if (likeList) {
@@ -98,22 +99,59 @@ function FeedContent() {
         slidesToScroll: 1,
         arrow: true
     }
+
+    const feedDat = {
+        "likeList" : [
+            {
+                "id": 1,
+                "nickname": "한글이얌",
+                "profileImage": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTSuim68sxj9smYW0K3bwHrrEM-I67IqLjQUQ&usqp=CAU",
+                "isFollow": false
+            },
+            {
+                "id": 2,
+                "nickname": "한글을 사랑하쟈",
+                "profileImage": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSOyO06UpMnfv0Qcs5GT5PnUiUynm8JQ-T99jch48u04fCqENASi8_oBvSNktYzJs4TfME&usqp=CAU://encrypted-tbn0.gstatic.com/images?q=tbn:https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTbmqip9wCHyLZ9apnq7d2BnK4rnpEZWNP1Mg&usqp=CAU&usqp=CAU",
+                "isFollow": true
+            },
+            {
+                "id": 3,
+                "nickname": "안뇽뇽뇽뇽",
+                "profileImage": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTSuim68sxj9smYW0K3bwHrrEM-I67IqLjQUQ&usqp=CAU",
+                "isFollow": false
+            },
+            {
+                "id": 4,
+                "nickname": "kitty",
+                "profileImage": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSDW7giQem6if7NhnjuDsdzvjL8Bxs9aJjKbQ&usqp=CAU",
+                "isFollow": false
+            },
+            {
+                "id": 5,
+                "nickname": "roll",
+                "profileImage": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGAUJ4McVJQ1XoHlNX9cQqzWAGZK7KGv-5IQ&usqp=CAU",
+                "isFollow": false
+            },
+
+
+        ]
+    }
  
-    const handleLikeClick = (feedId) => {
+    // const handleLikeClick = (feedId) => {
         
-        setFeedData((prev) =>
+    //     setFeedData((prev) =>
         
-            feedData.id === feedId ? { ...feedData, isLiked: !prev.isLiked,  likeCount: feedData.isLiked ? feedData.likeCount - 1 : feedData.likeCount + 1 } : feedData
-          )
+    //         feedData.id === feedId ? { ...feedData, isLiked: !prev.isLiked,  likeCount: feedData.isLiked ? feedData.likeCount - 1 : feedData.likeCount + 1 } : feedData
+    //       )
     
-      };
+    //   };
     return (
         <div className={styles.container}>
                 <div className={styles.feed}>
                     <div className="feed_wrapper">
                     <Slider {...settings}>
                     {
-                        feedData&& feedData.feedImages.map((image, index) => (
+                        feedData && feedData.feedImages.map((image, index) => (
                             <div className={styles.feed_item} key={index}>
                         <img
                         className={styles.img}
@@ -152,12 +190,52 @@ function FeedContent() {
                     className={styles.content}>{feedData.content}</p>
                     
             
-                 </div>
-                 <div className={`${styles.page} ${likeList ? styles.open : ''}`}>
-                            좋아요 누른 유저 보여줄 창
-                            유저목록
-                            map 써서 반복시켜서 아래로 쭉 보여줄거
+                </div>
+                {/* 좋아요 리스트 모달창 */}
+                <div className={`${styles.page} ${likeList ? styles.open : ''}`}>
+                    <div className={styles.modal_header}>
+                        <div>
+                            <ArrowBackIcon sx={{ fontSize: 20 }}
+                            onClick = {likeCount}
+                            className = {styles.back_btn} />
                         </div>
+
+                        <div className={styles.header_name}>
+                            Liked List
+                        </div>
+
+                        <div className={styles.temp_div}>
+
+                        </div>
+                    </div>
+                   {
+                    feedDat.likeList.map((user, index) => (
+                        <div className={styles.user_wrap} key={index}>
+                            <div
+                            className={styles.like_list}>
+                                <div>
+                                    <img
+                                    className={styles.profile_img}
+                                    src = {user.profileImage}
+                                    alt = ""
+                                    />
+                                </div>
+                                <div
+                                className= {styles.nickname}>
+                                    {user.nickname}
+                                </div>
+                            </div>
+                            <div className={styles.follow_button}>
+                                {user.isFollow ? (
+                                    <FollowButton text={"Following"} />
+                                ) : (
+                                    <FollowButton text={"Follow"} />
+                                )}
+                            </div>
+                        </div>
+                    ))
+                   }        
+                </div>
 
             
          </div>
