@@ -5,6 +5,8 @@ import com.palette.palette.domain.challenge.dto.detail.ChallengeDetailResDto;
 import com.palette.palette.domain.challenge.dto.list.ChallengeResDto;
 import com.palette.palette.domain.challenge.entity.Challenge;
 import com.palette.palette.domain.challenge.repository.ChallengeRepository;
+import com.palette.palette.domain.follow.entity.Follow;
+import com.palette.palette.domain.follow.repository.FollowRepository;
 import com.palette.palette.domain.like.repository.ChallengeLikeRepository;
 import com.palette.palette.domain.user.entity.User;
 import com.palette.palette.domain.user.repository.UserRepository;
@@ -28,6 +30,7 @@ public class ChallengeService {
     private final ChallengeRepository challengeRepository;
     private final ChallengeLikeRepository challengeLikeRepository;
     private final UserRepository userRepository;
+    private final FollowRepository followRepository;
 
 
     /**
@@ -86,7 +89,19 @@ public class ChallengeService {
             isLiked = true;
         }
 
-        return ChallengeDetailResDto.toDto(challenge, isLiked);
+        // 사용자가 피드 작성자를 팔로우 했는지 체크
+        Boolean isFollowingAuthor = false;
+        if (challenge.getUser().getId().equals(userId)) {
+            // If the feed's author is the same as the current user, consider them as following themselves
+            isFollowingAuthor = true;
+        } else {
+            List<Follow> currentUserFollowers = followRepository.findByFromUser(user.getEmail());
+            if (currentUserFollowers.stream().anyMatch(follow -> follow.getToUser().equals(challenge.getUser().getEmail()))) {
+                isFollowingAuthor = true;
+            }
+        }
+
+        return ChallengeDetailResDto.toDto(challenge, isLiked, isFollowingAuthor);
     }
 
     /**
