@@ -5,7 +5,7 @@ import SearchResultFeed from './SearchResultFeed';
 import SearchResultChallenge from './SearchResultChallenge';
 
 function SearchResult() {
-  const [resultPage, setResultPage] = useState(<SearchResultShop/>)
+  const [resultPage, setResultPage] = useState(<SearchResultFeed/>)
 
   return (
     <div className="search_result">

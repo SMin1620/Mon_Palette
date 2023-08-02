@@ -3,7 +3,7 @@ import NavigationBarBottom from "./NavigationBar/NavigationBarBottom";
 import FeedMain from "./Feed/FeedMain";
 import SearchResult from "./SearchResult/SearchResult";
 import Home from "./Home";
-import Search from "./Search/Search2";
+import Search2 from "./Search/Search2";
 import LoginForm from "./user/components/LoginForm";
 import SignUp from "./user/components/SignUp";
 import SignUpForm from "./user/components/SignUpForm";
@@ -15,6 +15,8 @@ import ChangeInfo from "./user/components/ChangeInfo";
 import MyPage from "./user/components/MyPage";
 
 import { Routes, Route } from "react-router-dom";
+
+
 function App() {
 	return (
 		<div className="App">
@@ -37,7 +39,12 @@ function App() {
 				{/* 네비 헤더 부분 빠지고 검색창의 top 부분 들어가야함 */}
 				<Route
 					path="/search/"
-					element={[<NavigationBarBottom />, <Search />]}
+					element={[<NavigationBarBottom />, <Search2 />]}
+				/>
+
+				<Route
+					path="/result"
+					element={[<NavigationBarBottom />, <SearchResult />]}
 				/>
 
 				<Route

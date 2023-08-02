@@ -5,6 +5,8 @@ import SummerCool from './Result/SummerCool';
 import AutumnWarm from './Result/AutumnWarm';
 import WinterCool from './Result/WinterCool';
 import styles from './StartPage.module.css';
+import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
+import { Link } from 'react-router-dom';
 
 const StartPage = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -18,11 +20,10 @@ const StartPage = () => {
     }
     setIsLoading(true);
     // 여기서 나중에 백엔드와 통신하는 코드를 수행
-    // 통신이 완료된 후 결과를 받아올 것이라고 가정하겠습니다.
-    // 이 결과로 'season' 값을 결정하고 'showResultPage' 상태를 설정합니다.
-    const responseFromBackend = 'summer'; // 실제 API 응답값으로 대체해야 합니다.
+    // 통신이 완료된 후 결과로 'season' 값 받아온다 가정
+    const responseFromBackend = 'winter'; // 실제 API 응답값으로 대체 예정
 
-    // 통신이 완료되었으므로 결과값을 활용하여 상태를 업데이트합니다.
+    // 통신 완료 -> 상태 업데이트
     setSeason(responseFromBackend);
     setIsLoading(false);
     setShowResultPage(true);
@@ -41,6 +42,7 @@ const StartPage = () => {
     <div>
       {!isLoading && !showResultPage && (
         <div className={styles['button-container']}>
+          <Link to="/"><CloseOutlinedIcon className={styles.exit} /></Link>
           {uploadedImage ? (
             <img className={styles.image} src={URL.createObjectURL(uploadedImage)} alt="Uploaded" />
           ) : (
