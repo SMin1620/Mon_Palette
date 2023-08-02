@@ -1,5 +1,6 @@
 package com.palette.palette.domain.follow.repository;
 
+import com.palette.palette.domain.follow.dto.FollowerListDto;
 import com.palette.palette.domain.follow.entity.Follow;
 import com.palette.palette.domain.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -7,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 public interface FollowRepository extends JpaRepository<Follow, Long> {

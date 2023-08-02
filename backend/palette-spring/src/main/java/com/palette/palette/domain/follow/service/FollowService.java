@@ -1,6 +1,7 @@
 package com.palette.palette.domain.follow.service;
 
 import com.palette.palette.domain.follow.dto.FollowCntDto;
+import com.palette.palette.domain.follow.dto.FollowerListDto;
 import com.palette.palette.domain.follow.entity.Follow;
 import com.palette.palette.domain.follow.repository.FollowRepository;
 import com.palette.palette.domain.user.entity.User;
@@ -12,8 +13,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Transactional(readOnly = true)
@@ -50,16 +54,46 @@ public class FollowService {
             return "팔로우 취소";
         }
     }
-    public List<User> getFollowerList(Long userId){
+    public List<FollowerListDto> getFollowerList(HttpServletRequest req, Long userId){
         Optional<User> user = userRepository.findById(userId);
-        List<User> followerList = followRepository.findAllByToUser(user.get().getEmail());
+
+        String meEmail = jwtTokenProvider.getUserEmail(jwtTokenProvider.resolveToken(req));
+
+
+        List<User> followerListDto = followRepository.findAllByToUser(user.get().getEmail());
+        List<FollowerListDto> followerList = new ArrayList<>();
+        for(User u : followerListDto){
+            Boolean isme = meEmail.equals(u.getEmail());
+            Boolean checkFollow = followRepository.existsByFromUserAndToUser(u.getEmail(),meEmail);
+            String isfollow;
+            if(checkFollow == true){
+                isfollow = "팔로우 취소";
+            }else{
+                isfollow = "팔로우";
+            }
+            followerList.add(FollowerListDto.toDto(u, isme, isfollow));
+        }
         return followerList;
     }
 
-    public List<User> getFollowingList(Long userId){
+    public List<FollowerListDto> getFollowingList(HttpServletRequest req, Long userId){
         Optional<User> user = userRepository.findById(userId);
-        List<User> followingList = followRepository.findAllByFromUser(user.get().getEmail());
-        return followingList;
+
+        String meEmail = jwtTokenProvider.getUserEmail(jwtTokenProvider.resolveToken(req));
+        List<User> followerListDto = followRepository.findAllByFromUser(user.get().getEmail());
+        List<FollowerListDto> followerList = new ArrayList<>();
+        for(User u : followerListDto){
+            Boolean isme = meEmail.equals(u.getEmail());
+            Boolean checkFollow = followRepository.existsByFromUserAndToUser(meEmail, u.getEmail());
+            String isfollow;
+            if(checkFollow == true){
+                isfollow = "팔로우 취소";
+            }else{
+                isfollow = "팔로우";
+            }
+            followerList.add(FollowerListDto.toDto(u, isme, isfollow));
+        }
+        return followerList;
     }
 
     public FollowCntDto followCnt(String userId){

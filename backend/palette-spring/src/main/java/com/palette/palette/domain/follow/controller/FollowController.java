@@ -33,9 +33,9 @@ public class FollowController {
 
     @Operation(summary = "해당 유저의 팔로워 유저 목록 조회")
     @GetMapping("/follower/{id}")
-    public BaseResponse getFollowerList(@PathVariable("id") Long userId){
+    public BaseResponse getFollowerList(HttpServletRequest request, @PathVariable("id") Long userId){
         try{
-            return BaseResponse.success(followService.getFollowerList(userId));
+            return BaseResponse.success(followService.getFollowerList(request, userId));
         }catch (Exception e){
             e.printStackTrace();
             return BaseResponse.error("팔로워 유저 목록 조회 실패");
@@ -43,9 +43,9 @@ public class FollowController {
     }
     @Operation(summary = "해당 유저의 팔로잉 유저 목록 조회")
     @GetMapping("/following/{id}")
-    public BaseResponse getFollowingList(@PathVariable("id") Long userId){
+    public BaseResponse getFollowingList(HttpServletRequest request, @PathVariable("id") Long userId){
         try{
-            return BaseResponse.success(followService.getFollowingList(userId));
+            return BaseResponse.success(followService.getFollowingList(request, userId));
         }catch (Exception e){
             e.printStackTrace();
             return BaseResponse.error("팔로잉 유저 목록 조회 실패");
