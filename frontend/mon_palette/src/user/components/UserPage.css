@@ -61,9 +61,14 @@ html {
 	margin-left: auto;
 }
 
+.mypage_personal_info_feed > a {
+	text-decoration: none;
+	color: black;
+}
+
 .mypage_label {
 	font-weight: bold;
-	font-size: 1.5rem;
+	font-size: 1rem;
 	width: 8rem;
 }
 

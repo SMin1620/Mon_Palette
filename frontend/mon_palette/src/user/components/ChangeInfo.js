@@ -7,7 +7,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import "./ChangeInfo.css"; // 스타일 파일 임포트
 import { useRecoilValue } from "recoil";
-import { loginState } from "./Atom/Atom";
+import { loginState } from "./Atom/loginState";
 import { useNavigate } from "react-router-dom";
 import "./Modal.css";
 import AWS from "aws-sdk";
@@ -64,9 +64,13 @@ const ChangeInfo = () => {
 						console.error("Error uploading image to S3:", err);
 					} else {
 						if (back === "background") {
-							changebackground(handleImageUrlFromS3(params.Key));
+							handleImageUrlFromS3(params.Key).then((imageUrl) => {
+								changebackground(imageUrl);
+							});
 						} else {
-							changeprofile(handleImageUrlFromS3(params.Key));
+							handleImageUrlFromS3(params.Key).then((imageUrl) => {
+								changeprofile(imageUrl);
+							});
 						}
 					}
 				});
@@ -75,23 +79,33 @@ const ChangeInfo = () => {
 		}
 	};
 
-	const handleImageUrlFromS3 = (key) => {
+	const handleImageUrlFromS3 = async (key) => {
 		const params = {
 			Bucket: BUCKET,
 			Key: key,
 		};
-		const imageUrl = myBucket.getSignedUrl("getObject", params);
-		return imageUrl;
+
+		try {
+			if (params.Key.includes(" ")) {
+				const replaceFileName = params.Key.replace(/\s/g, "+");
+				const imageUrl = `https://${BUCKET}.s3.ap-northeast-2.amazonaws.com/${replaceFileName}`;
+				return imageUrl;
+			} else {
+				const imageUrl = `https://${BUCKET}.s3.ap-northeast-2.amazonaws.com/${params.Key}`;
+				return imageUrl;
+			}
+		} catch (error) {
+			console.log(error);
+			return null;
+		}
 	};
 
 	const getmapping = () => {
-		console.log(loginState);
 		axios
 			.get(`${process.env.REACT_APP_API}/api/user/info`, {
 				headers: { Authorization: Authorization },
 			})
 			.then((response) => {
-				console.log(response.data);
 				if (response.data.data !== null) {
 					setNickname(response.data.data.nickname);
 					setPersonalcolor(response.data.data.personalcolor);
@@ -111,7 +125,6 @@ const ChangeInfo = () => {
 				{ headers: { Authorization: Authorization } }
 			)
 			.then((response) => {
-				console.log(response);
 				if (response.data !== null) {
 					if (check) {
 						setCheck(false);
@@ -126,7 +139,6 @@ const ChangeInfo = () => {
 	};
 
 	const changeprofile = (url) => {
-		console.log("url : " + url);
 		axios
 			.put(
 				`${process.env.REACT_APP_API}/api/user/profile`,
@@ -134,7 +146,6 @@ const ChangeInfo = () => {
 				{ headers: { Authorization: Authorization } }
 			)
 			.then((response) => {
-				console.log(response);
 				if (response.data !== null) {
 					if (check) {
 						setCheck(false);

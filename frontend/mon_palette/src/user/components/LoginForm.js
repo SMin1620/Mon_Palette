@@ -7,7 +7,7 @@ import "./LoginForm.css";
 import axios from "axios";
 import { useRecoilState } from "recoil";
 import { userId } from "./Atom/UserId";
-import { loginState } from "./Atom/Atom";
+import { loginState } from "./Atom/loginState";
 import Modal from "../../Modal/Modal";
 const LoginForm = () => {
 	const [email, setUsername] = useState("");
