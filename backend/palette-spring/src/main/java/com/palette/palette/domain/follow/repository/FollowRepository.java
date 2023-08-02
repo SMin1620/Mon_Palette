@@ -29,5 +29,6 @@ public interface FollowRepository extends JpaRepository<Follow, Long> {
 
 
 
+    List<Follow> findByFromUser(String fromUser);
 
 }
