@@ -58,6 +58,8 @@
     font-size: 13px;
     cursor: pointer;
     display: inline-block;
+    margin-bottom: 1rem;
+    margin-top: 0.5rem;
 }
 
 .page {
@@ -73,4 +75,64 @@
 
 .open {
     right: 0;
+}
+
+.profile_img {
+    border-radius: 50%;
+    margin: 0.8em;
+    /* margin-bottom: 0.7em; */
+    width: 50px;
+    height:50px;
+    align-items: center;
+    margin-right: 30px;
+    
+    
+}
+
+.like_list {
+    display: flex;
+    align-items: center;
+    
+    
+}
+
+.nickname {
+    font-weight: 700;
+}
+
+.user_wrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* border-bottom: 1px solid #ccc; */
+}
+
+.follow_button {
+    margin-right: 1rem;
+}
+
+.back_btn {
+    border: 1px solid black;  
+    border-radius: 50%;
+    margin-left: 1rem;
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.modal_header {
+    border-bottom: 1px solid black;
+    display: flex;
+    justify-content: space-between;
+
+}
+
+
+.header_name {
+    display: flex;
+    align-items: center;
+    font-weight: 700;
+}
+
+.temp_div {
+    width: 37.6px;
 }
