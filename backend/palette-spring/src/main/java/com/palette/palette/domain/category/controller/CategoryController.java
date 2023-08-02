@@ -20,7 +20,7 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @Operation(summary = "모든 카테고리 조회")
-    @GetMapping("/All")
+    @GetMapping("/all")
     public BaseResponse readAll(HttpServletRequest request){
         try{
             return BaseResponse.success(categoryService.readAll());
