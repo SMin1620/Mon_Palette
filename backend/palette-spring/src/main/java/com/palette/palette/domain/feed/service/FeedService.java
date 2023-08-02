@@ -11,6 +11,8 @@ import com.palette.palette.domain.feed.entity.Feed;
 import com.palette.palette.domain.feed.entity.FeedImage;
 import com.palette.palette.domain.feed.repository.FeedImageRepository;
 import com.palette.palette.domain.feed.repository.FeedRepository;
+import com.palette.palette.domain.follow.entity.Follow;
+import com.palette.palette.domain.follow.repository.FollowRepository;
 import com.palette.palette.domain.hashtag.entity.FeedHashtag;
 import com.palette.palette.domain.hashtag.entity.Hashtag;
 import com.palette.palette.domain.hashtag.repository.HashtagRepository;
@@ -39,6 +41,7 @@ public class FeedService {
     private final HashtagRepository hashtagRepository;
     private final FeedLikeRepository feedLikeRepository;
     private final UserRepository userRepository;
+    private final FollowRepository followRepository;
 
     /**
      * 피드 목록 조회
@@ -106,7 +109,19 @@ public class FeedService {
             isLiked = true;
         }
 
-        return FeedDetailResDto.toDto(feed, isLiked);
+        // 사용자가 피드 작성자를 팔로우 했는지 체크
+        Boolean isFollowingAuthor = false;
+        if (feed.getUser().getId().equals(userId)) {
+            // If the feed's author is the same as the current user, consider them as following themselves
+            isFollowingAuthor = true;
+        } else {
+            List<Follow> currentUserFollowers = followRepository.findByFromUser(user.getEmail());
+            if (currentUserFollowers.stream().anyMatch(follow -> follow.getToUser().equals(feed.getUser().getEmail()))) {
+                isFollowingAuthor = true;
+            }
+        }
+
+        return FeedDetailResDto.toDto(feed, isLiked, isFollowingAuthor);
     }
 
     /**
