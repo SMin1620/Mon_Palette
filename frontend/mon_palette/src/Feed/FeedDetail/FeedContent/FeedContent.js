@@ -185,6 +185,7 @@ function FeedContent() {
                                 {feedData.likeCount} 개
                                 {/* 좋아요 갯수 표시 */}
                             </div>
+                            <div onClick={() => navigate(`/feed/edit/${feedId}`, {state: {feedData}})}>...</div>
                         </div>
 
                     </div>
