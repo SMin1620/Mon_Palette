@@ -1,6 +1,10 @@
-import React from "react";
+import React, { useRef, useState, useEffect} from "react";
 import styles from "./Header.module.css";
 import FollowButton from "./FollowButton/FollowButton";
+import axios from "axios"
+import { useRecoilValue } from "recoil";
+import { loginState } from "../../../user/components/Atom";
+import { useParams } from 'react-router-dom';
 
 
 const getTimegap = (createdAt) => {
@@ -24,6 +28,28 @@ const getTimegap = (createdAt) => {
 };
 
 function Header() {
+
+    const {feedId} = useParams()
+    const token = useRecoilValue(loginState)
+    const [feedData, setFeedData] = useState('')
+
+    useEffect(() => {
+        axios
+            .get(`http://192.168.30.224:8080/api/feed/${feedId}`,{
+                headers: { Authorization: token },
+
+            })
+            .then ((response) => {
+                console.log(response.data.data, "response")
+                console.log("아아아아아살려죠");
+                setFeedData(response.data.data)
+            })
+            .catch ((err) => {
+                console.log(err)
+            })
+    },[])
+
+
     const FeedData = {
         "status": "success",
         "message": null,

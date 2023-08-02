@@ -1,4 +1,4 @@
-import React, { useRef,useState, useEffect, useParams } from "react";
+import React, { useRef,useState, useEffect } from "react";
 import styles from "./FeedContent.module.css"
 import { HeartOutlined, HeartFilled , CommentOutlined } from '@ant-design/icons';
 import "slick-carousel/slick/slick.css";
@@ -9,14 +9,16 @@ import { useRecoilValue } from "recoil";
 import { loginState } from "../../../user/components/Atom";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import FollowButton from "../Header/FollowButton/FollowButton"
+import { useParams } from 'react-router-dom';
 
 
 
 
 
 function FeedContent() {
-    // const feedId = useParams()
-    const feedId = 1
+
+    const {feedId} = useParams()
+
     const [feedData, setFeedData] = useState('')
     const [feedLike, setfeedLike] = useState(feedData.isLiked);
     const [likeList, setLikeList] = useState(false)
