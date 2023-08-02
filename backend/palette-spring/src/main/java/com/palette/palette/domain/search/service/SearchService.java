@@ -3,6 +3,7 @@ package com.palette.palette.domain.search.service;
 
 import com.palette.palette.domain.challenge.dto.list.ChallengeResDto;
 import com.palette.palette.domain.challenge.repository.ChallengeRepository;
+import com.palette.palette.domain.feed.dto.BaseUserResDto;
 import com.palette.palette.domain.feed.dto.list.FeedResDto;
 import com.palette.palette.domain.feed.entity.Feed;
 import com.palette.palette.domain.feed.repository.FeedRepository;
@@ -14,10 +15,7 @@ import com.palette.palette.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.redis.core.HashOperations;
-import org.springframework.data.redis.core.ListOperations;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.ZSetOperations;
+import org.springframework.data.redis.core.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.webjars.NotFoundException;
@@ -26,7 +24,9 @@ import java.sql.Date;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Service
@@ -44,7 +44,7 @@ public class SearchService {
      */
     private static final String SEARCH_KEY = "USER_NAME";
     private static final String ASTERISK  = "*";
-    private static final int TIME_LIMIT = 10;
+    private static final int TIME_LIMIT = 5;
 
 
     /**
@@ -60,16 +60,33 @@ public class SearchService {
             saveRecentKeyword(userId, content);
         }
 
-        List<FeedResDto> feeds = feedRepository.findBySearchOption(pageable, content, orderBy, color).getContent().stream()
-                    .map(FeedResDto::toDto)
+        List<BaseUserResDto> users = null;
+        List<ChallengeResDto> challenges = null;
+        List<FeedResDto> feeds = null;
+
+        if (type.equals("user")) {
+            users = userRepository.findBySearchOption(pageable, content, orderBy, color).getContent().stream()
+                    .map(BaseUserResDto::toDto)
                     .collect(Collectors.toList());
 
-        List<ChallengeResDto> challenges = challengeRepository.findBySearchOption(pageable, content, orderBy, color).getContent().stream()
+        }
+        else if (type.equals("challenge")) {
+            challenges = challengeRepository.findBySearchOption(pageable, content, orderBy, color).getContent().stream()
                     .map(ChallengeResDto::toDto)
                     .collect(Collectors.toList());
+        }
+        else {
+            feeds = feedRepository.findBySearchOption(pageable, content, orderBy, color).getContent().stream()
+                    .map(FeedResDto::toDto)
+                    .collect(Collectors.toList());
+        }
 
 
-        return new SearchFeedChallengeUserDto(null, feeds, challenges);
+
+
+
+
+        return new SearchFeedChallengeUserDto(users, feeds, challenges);
     }
 
 
@@ -194,12 +211,31 @@ public class SearchService {
     /**
      * 검색어 입력시 자동완성
      */
-//    public List<String> getSearchList(String keyword) {
-//
-//        HashOperations<String,String,Long> hashOperations= redisTemplate.opsForHash();
-//
-//        if(redisTemplate.getExpire(SEARCH_KEY) < 0) {
-//            List<Feed>
-//        }
-//    }
+    public List<String> getSearchList(String keyword) {
+        ZSetOperations<String, String> zSetOperations = redisTemplate.opsForZSet();
+
+        if (redisTemplate.getExpire(SEARCH_KEY) < 0) {
+            List<User> userList = userRepository.findAll();
+            Set<String> searchKeywords = userList.stream()
+                    .map(User::getName)
+                    .collect(Collectors.toSet());
+
+            // Add search keywords to Redis Sorted Set
+            for (String searchKeyword : searchKeywords) {
+                zSetOperations.add(SEARCH_KEY, searchKeyword, 0);
+            }
+            // Set expiration time for the Redis key
+            redisTemplate.expire(SEARCH_KEY, TIME_LIMIT, TimeUnit.SECONDS);
+        }
+
+        // Retrieve search keywords using ZREVRANGEBYSCORE from Redis Sorted Set
+        Set<String> searchList = zSetOperations.reverseRangeByScore(SEARCH_KEY, 0, 10);
+
+        // Filter the search results based on the input keyword
+        List<String> filteredSearchList = searchList.stream()
+                .filter(searchKeyword -> searchKeyword.contains(keyword))
+                .collect(Collectors.toList());
+
+        return filteredSearchList;
+    }
 }
