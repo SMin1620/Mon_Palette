@@ -4,6 +4,7 @@ import { FixedSizeGrid as Grid } from 'react-window';
 import { useRecoilValue } from "recoil";
 import { loginState } from "../../../user/components/Atom";
 import { useParams } from 'react-router-dom';
+import axios from "axios"
 // import InfiniteLoader from 'react-window-infinite-loader';
 
 // 댓글 작성시간 구하는 함수
@@ -43,8 +44,9 @@ const getTimegap = (createdAt) => {
 // };
 
 
-function Comment(props) {
+function Comment() {
 
+    const [comments, setComments] = useState([])
     const feedId = useParams()
     const token = useRecoilValue(loginState)
 
@@ -258,13 +260,19 @@ function Comment(props) {
           ))}
           <div>
             
-            <div onSubmit={onSubmit}>
-                <form>
+            <div 
+            onSubmit={onSubmit}
+            className={styles.input_wrap}>
+            
+                <form
+                className={styles.form}>
                     <input
                     type="text"
-                    placeholder="댓글달기..."
+                    placeholder="Write your comment..."
+                    className={styles.input}
                     />
-                    <button>submit</button>
+                    <button
+                    className={styles.btn}>submit</button>
                 </form>
             </div>
 
