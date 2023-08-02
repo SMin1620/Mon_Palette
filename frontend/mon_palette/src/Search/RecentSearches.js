@@ -10,9 +10,9 @@ import { Link } from 'react-router-dom';
 const RecentSearches = () => {
   const [results, setResults] = useRecoilState(resultsState);
   const [history, setHistory] = useState([])
-
   const Authorization = useRecoilValue(loginState);
   // const setRecentSearches = useSetRecoilState(recentSearchesState);
+
   const recentSearches = () => {
     axios.get(`${process.env.REACT_APP_API}/api/search/recent`, {
       headers: { Authorization: Authorization}
@@ -40,18 +40,17 @@ const RecentSearches = () => {
       keyword: `${keyword}`
     })
     .then((response)=>{
-      console.log(response.data)
+      console.log(response.data.data)
       recentSearches()
       })
     return 
   };
 
-  const handleSearchFromRecent = (search) => {
-    console.log(`검색어 "${search}"로 검색을 수행합니다.`); 
+  const handleSearchFromRecent = (keyword) => {
+    console.log(`검색어 "${keyword}"로 검색을 수행합니다.`); 
     setResults({});
-    // console.log(`${search}로 검색을 수행합니다.`)
     axios.get(
-      `${process.env.REACT_APP_API}/api/search?page=0&type=feed&keyword=${search}`,
+      `${process.env.REACT_APP_API}/api/search?page=0&type=feed&keyword=${keyword}`,
       {
         headers: { Authorization: Authorization}
       }

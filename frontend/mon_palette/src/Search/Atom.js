@@ -9,3 +9,8 @@ export const resultsState = atom({
   key: 'resultsState',
   default: [],
 });
+
+export const searchQueryState = atom({
+  key: 'searchQuery',
+  default: '',
+});
