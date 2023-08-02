@@ -9,6 +9,7 @@
   border-top: 0.5px solid black;
   padding: 0 1rem;
   background-color: white;
+  z-index: 10;
 }
 
 .nav_bottom_icons {
