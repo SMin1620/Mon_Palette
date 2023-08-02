@@ -12,7 +12,9 @@ import ChangePassword from "./user/components/ChangePassword";
 import ChangeAddress from "./user/components/ChangeAddress";
 import ChangePhone from "./user/components/ChangePhone";
 import ChangeInfo from "./user/components/ChangeInfo";
-import MyPage from "./user/components/MyPage";
+import UserPage from "./user/components/UserPage";
+import FollowingList from "./user/components/FollowingList";
+import FollowerList from "./user/components/FollowerList";
 
 import { Routes, Route } from "react-router-dom";
 function App() {
@@ -90,11 +92,29 @@ function App() {
 					]}
 				/>
 				<Route
-					path="/mypage"
+					path="/userpage/:id"
 					element={[
 						<NavigationBarHeader title="Mon, Palette" />,
 						<NavigationBarBottom />,
-						<MyPage />,
+						<UserPage />,
+					]}
+				/>
+
+				<Route
+					path="/userpage/following/:id"
+					element={[
+						<NavigationBarHeader title="following" />,
+						<NavigationBarBottom />,
+						<FollowingList />,
+					]}
+				/>
+
+				<Route
+					path="/userpage/follower/:id"
+					element={[
+						<NavigationBarHeader title="follower" />,
+						<NavigationBarBottom />,
+						<FollowerList />,
 					]}
 				/>
 			</Routes>
