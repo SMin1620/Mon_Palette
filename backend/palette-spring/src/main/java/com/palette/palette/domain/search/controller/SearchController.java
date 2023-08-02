@@ -66,12 +66,12 @@ public class SearchController {
             }
 
             if (type.equals("feed")) {
-                return BaseResponse.success(searchService.feedSearch(page, 10, content, orderBy, color));
+                return BaseResponse.success(searchService.feedSearch(page, 10, content, orderBy, color, user.getId()));
             }
             else if (type.equals("challenge")) {
-                return BaseResponse.success(searchService.challengeSearch(page, 10, content, orderBy, color));
+                return BaseResponse.success(searchService.challengeSearch(page, 10, content, orderBy, color, user.getId()));
             }
-            return BaseResponse.success(searchService.feedSearch(page, 10, content, orderBy, color));
+            return BaseResponse.success(searchService.feedSearch(page, 10, content, orderBy, color, user.getId()));
         } catch (Exception e) {
 
             e.printStackTrace();
@@ -95,6 +95,41 @@ public class SearchController {
         } catch (Exception e) {
             e.printStackTrace();
             return BaseResponse.error("인기 검색어 목록 조회 실패");
+        }
+    }
+
+
+    /**
+     * 최근 검색어 목록 조회
+     */
+    @Operation(summary = "최근 검색어 목록 조회")
+    @GetMapping("/recent")
+    public BaseResponse recentList(
+            HttpServletRequest request
+    ) {
+        System.out.println("최근 검색어 목록 조회 컨트롤러");
+
+        try {
+            //////////////////////// 토큰으로 인가된 사용자 정보 처리하는 로직
+            String token = jwtTokenProvider.resolveToken(request);
+            jwtTokenProvider.validateToken(token);
+
+            System.out.println("token >>> " + token);
+
+            Authentication authentication = jwtTokenProvider.getAuthentication(token);
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+
+            User user = userRepository.findByEmail(userDetails.getUsername()).get();
+
+            // 유저 예외처리 :: 예외처리 커스텀 필요
+            if (user == null) {
+                throw new UserPrincipalNotFoundException("유효한 사용자가 아닙니다.");
+            }
+
+            return BaseResponse.success(searchService.recentList(user.getId()));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return BaseResponse.error("최근 검색어 목록 조회 실패");
         }
     }
 }
