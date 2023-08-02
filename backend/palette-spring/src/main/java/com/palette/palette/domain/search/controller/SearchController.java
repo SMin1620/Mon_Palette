@@ -13,10 +13,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.nio.file.attribute.UserPrincipalNotFoundException;
 
@@ -131,5 +128,42 @@ public class SearchController {
             e.printStackTrace();
             return BaseResponse.error("최근 검색어 목록 조회 실패");
         }
+    }
+
+
+    /**
+     * 최근 검색어 삭제
+     */
+    @Operation(summary = "최근 검색어 삭제")
+    @DeleteMapping("/recent")
+    public BaseResponse deleteRecent(
+            @RequestParam String keyword,
+            HttpServletRequest request
+    ) {
+        try {
+            //////////////////////// 토큰으로 인가된 사용자 정보 처리하는 로직
+            String token = jwtTokenProvider.resolveToken(request);
+            jwtTokenProvider.validateToken(token);
+
+            System.out.println("token >>> " + token);
+
+            Authentication authentication = jwtTokenProvider.getAuthentication(token);
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+
+            User user = userRepository.findByEmail(userDetails.getUsername()).get();
+
+            // 유저 예외처리 :: 예외처리 커스텀 필요
+            if (user == null) {
+                throw new UserPrincipalNotFoundException("유효한 사용자가 아닙니다.");
+            }
+
+            searchService.removeRecentKeyword(user.getId(), keyword);
+
+            return BaseResponse.success(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return BaseResponse.error("최근 검색어 삭제 실패");
+        }
+
     }
 }

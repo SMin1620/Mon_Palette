@@ -125,6 +125,10 @@ public class SearchService {
     }
 
 
+    /**
+     * 최근 검색어 목록
+     * @param userId
+     */
     public List<SearchRecentResDto> recentList(Long userId) {
 
         ListOperations<String, String> listOperations = redisTemplate.opsForList();
@@ -137,5 +141,16 @@ public class SearchService {
                 .map(SearchRecentResDto::toDto)
                 .collect(Collectors.toList());
         return collect;
+    }
+
+
+    /**
+     * 최근 검색어 삭제
+     */
+    @Transactional
+    public void removeRecentKeyword(Long userId, String keyword) {
+        ListOperations<String, String> listOperations = redisTemplate.opsForList();
+        String key = "userId::" + userId;
+        listOperations.remove(key, 0, keyword);
     }
 }
