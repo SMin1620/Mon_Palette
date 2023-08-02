@@ -121,11 +121,15 @@ function FeedEdit(props) {
 
   const handleImageUpload = (e) => {
     const files = e.target.files[0]
-    if (userSelectedImages.length > 9) {
-      alert('최대 10장까지 등록 가능합니다.')
-      document.querySelector("#fileUpload").disabled = true
+    if (!files) {
+      setUserSelectedImages(userSelectedImages)
     } else {
-      setUserSelectedImages((prevImg) => [...prevImg, files])
+      if (userSelectedImages.length > 9) {
+        alert('최대 10장까지 등록 가능합니다.')
+        document.querySelector("#fileUpload").disabled = true
+      } else {
+        setUserSelectedImages((prevImg) => [...prevImg, files])
+      }
     }
   }
   
