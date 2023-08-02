@@ -7,6 +7,7 @@ import com.palette.palette.domain.feed.dto.BaseUserResDto;
 import com.palette.palette.domain.feed.dto.list.FeedResDto;
 import com.palette.palette.domain.feed.entity.Feed;
 import com.palette.palette.domain.feed.repository.FeedRepository;
+import com.palette.palette.domain.search.dto.SearchAutoResDto;
 import com.palette.palette.domain.search.dto.SearchFeedChallengeUserDto;
 import com.palette.palette.domain.search.dto.SearchRankResDto;
 import com.palette.palette.domain.search.dto.SearchRecentResDto;
@@ -211,18 +212,14 @@ public class SearchService {
     /**
      * 검색어 입력시 자동완성
      */
-    public List<String> getSearchList(String keyword) {
+    public List<SearchAutoResDto> getSearchList(String keyword) {
         ZSetOperations<String, String> zSetOperations = redisTemplate.opsForZSet();
 
         if (redisTemplate.getExpire(SEARCH_KEY) < 0) {
             List<User> userList = userRepository.findAll();
-            Set<String> searchKeywords = userList.stream()
-                    .map(User::getName)
-                    .collect(Collectors.toSet());
-
-            // Add search keywords to Redis Sorted Set
-            for (String searchKeyword : searchKeywords) {
-                zSetOperations.add(SEARCH_KEY, searchKeyword, 0);
+            for (User user : userList) {
+                String idWithKeyword = user.getId() + ":" + user.getName() + ":" + user.getEmail();
+                zSetOperations.add(SEARCH_KEY, idWithKeyword, 0);
             }
             // Set expiration time for the Redis key
             redisTemplate.expire(SEARCH_KEY, TIME_LIMIT, TimeUnit.SECONDS);
@@ -231,9 +228,25 @@ public class SearchService {
         // Retrieve search keywords using ZREVRANGEBYSCORE from Redis Sorted Set
         Set<String> searchList = zSetOperations.reverseRangeByScore(SEARCH_KEY, 0, 10);
 
-        // Filter the search results based on the input keyword
-        List<String> filteredSearchList = searchList.stream()
-                .filter(searchKeyword -> searchKeyword.contains(keyword))
+        // Filter the search results based on the input keyword and convert to SearchAutoResDto
+        List<SearchAutoResDto> filteredSearchList = searchList.stream()
+                .filter(searchKeyword -> {
+                    String[] fields = searchKeyword.split(":");
+                    // We are only checking if the keyword exists in the name field.
+                    // You can include other fields in the filter as needed.
+                    return fields[1].contains(keyword);
+                })
+                .map(searchKeyword -> {
+                    String[] fields = searchKeyword.split(":");
+                    Long id = Long.parseLong(fields[0]);
+                    String nickname = fields[1];
+                    String email = fields[2];
+                    return SearchAutoResDto.builder()
+                            .id(id)
+                            .nickname(nickname)
+                            .email(email)
+                            .build();
+                })
                 .collect(Collectors.toList());
 
         return filteredSearchList;
