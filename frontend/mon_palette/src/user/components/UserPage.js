@@ -3,7 +3,7 @@ import "./UserPage.css"; // 스타일 파일 임포트
 import axios from "axios";
 import { Link, useParams } from "react-router-dom";
 import { useRecoilValue } from "recoil";
-import { loginState } from "./Atom/Atom";
+import { loginState } from "./Atom/loginState";
 import { useNavigate } from "react-router-dom";
 import AssignmentOutlinedIcon from "@mui/icons-material/AssignmentOutlined";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
@@ -29,6 +29,8 @@ const ChangeInfo = () => {
 	console.log(id);
 
 	const followreq = () => {
+		console.log("here");
+		console.log(id);
 		axios
 			.post(
 				`${process.env.REACT_APP_API}/api/follow/${id}`,
@@ -38,7 +40,7 @@ const ChangeInfo = () => {
 				}
 			)
 			.then((response) => {
-				console.log(response.data.data);
+				console.log(response.data);
 				if (response.data != null) {
 					if (response.data.data === "팔로우 성공") {
 						setButtonText("팔로우취소");
@@ -89,7 +91,7 @@ const ChangeInfo = () => {
 		// setFollower(0);
 		// setFollowing(0);
 		// setIsInfluence("USER");
-	}); // 빈 배열을 넣어서 컴포넌트가 처음 렌더링될 때 한 번만 실행되도록 합니다.
+	}, [buttonText]); // 빈 배열을 넣어서 컴포넌트가 처음 렌더링될 때 한 번만 실행되도록 합니다.
 	const AllChallengeImage = [
 		"https://cdn.autotribune.co.kr/news/photo/202304/8017_43246_1529.jpg",
 		"https://cdn.autotribune.co.kr/news/photo/202304/8017_43246_1529.jpg",
@@ -139,30 +141,30 @@ const ChangeInfo = () => {
 					</div>
 					<div className="mypage_personal_info_feed">
 						<div className="mypage_group-left">
-							<div className="mypage_group-left">게시물</div>
+							<div className="mypage_group-left">Post</div>
 							<div className="mypage_cnt">{feedcnt}</div>
 						</div>
 						<span className="mypage_gap"></span>
 
-						<Link to={`/follower/${id}`}>
+						<Link to={`/userpage/follower/${id}`}>
 							<div className="mypage_group-left">
-								<div className="mypage_group-left">팔로워</div>
+								<div className="mypage_group-left">Follower</div>
 								<div className="mypage_cnt">{follower}</div>
 							</div>
 						</Link>
 						<span className="mypage_gap"></span>
 
-						<Link to={`/following/${id}`}>
+						<Link to={`/userpage/following/${id}`}>
 							<div className="mypage_group-left">
-								<div className="mypage_group-left">팔로잉</div>
+								<div className="mypage_group-left">Following</div>
 								<div className="mypage_cnt">{following}</div>
 							</div>
 						</Link>
 						<span className="mypage_gap"></span>
-						<span className="mypage_gap"></span>
 					</div>
 				</div>
 			</div>
+
 			{isMe ? (
 				<>
 					{isInfluence === "USER" ? (
@@ -170,25 +172,25 @@ const ChangeInfo = () => {
 							<Link to="/changenickname">
 								<button className="mypage_button1">
 									<AssignmentOutlinedIcon />
-									<div className="mypage_group-left">주문목록</div>
+									<div className="mypage_group-left">list</div>
 								</button>
 							</Link>
 							<Link to="/changenickname">
 								<button className="mypage_button2">
 									<ShoppingCartOutlinedIcon />
-									<div className="mypage_group-left">장바구니</div>
+									<div className="mypage_group-left">cart</div>
 								</button>
 							</Link>
 							<Link to="/feedwrite">
 								<button className="mypage_button3">
 									<AddOutlinedIcon />
-									<div className="mypage_group-left">만들기</div>
+									<div className="mypage_group-left">write</div>
 								</button>
 							</Link>
 							<Link to="/changeinfo">
 								<button className="mypage_button4">
 									<SettingsOutlinedIcon />
-									<div className="mypage_group-left">정보수정</div>
+									<div className="mypage_group-left">info</div>
 								</button>
 							</Link>
 						</div>
@@ -234,6 +236,7 @@ const ChangeInfo = () => {
 			) : (
 				<br />
 			)}
+
 			<br />
 			<hr className="mypage_hr" />
 			<div className="mypage_menu_button">
