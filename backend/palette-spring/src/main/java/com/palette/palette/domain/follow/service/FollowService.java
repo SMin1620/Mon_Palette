@@ -67,9 +67,9 @@ public class FollowService {
             Boolean checkFollow = followRepository.existsByFromUserAndToUser(u.getEmail(),meEmail);
             String isfollow;
             if(checkFollow == true){
-                isfollow = "팔로우 취소";
+                isfollow = "unfollow";
             }else{
-                isfollow = "팔로우";
+                isfollow = "follow";
             }
             followerList.add(FollowerListDto.toDto(u, isme, isfollow));
         }
@@ -87,9 +87,9 @@ public class FollowService {
             Boolean checkFollow = followRepository.existsByFromUserAndToUser(meEmail, u.getEmail());
             String isfollow;
             if(checkFollow == true){
-                isfollow = "팔로우 취소";
+                isfollow = "unfollow";
             }else{
-                isfollow = "팔로우";
+                isfollow = "follow";
             }
             followerList.add(FollowerListDto.toDto(u, isme, isfollow));
         }
