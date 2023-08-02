@@ -60,6 +60,8 @@ const LoginForm = () => {
 		setPasswordError(!passwordRegex.test(password));
 	};
 
+	console.log(process.env)
+
 	return (
 		<div className="loginForm_container">
 			<div className="loginForm_form-group">
