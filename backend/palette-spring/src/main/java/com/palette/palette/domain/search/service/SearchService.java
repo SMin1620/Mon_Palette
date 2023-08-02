@@ -2,10 +2,11 @@ package com.palette.palette.domain.search.service;
 
 
 import com.palette.palette.domain.challenge.dto.list.ChallengeResDto;
-import com.palette.palette.domain.challenge.entity.Challenge;
 import com.palette.palette.domain.challenge.repository.ChallengeRepository;
 import com.palette.palette.domain.feed.dto.list.FeedResDto;
+import com.palette.palette.domain.feed.entity.Feed;
 import com.palette.palette.domain.feed.repository.FeedRepository;
+import com.palette.palette.domain.search.dto.SearchFeedChallengeUserDto;
 import com.palette.palette.domain.search.dto.SearchRankResDto;
 import com.palette.palette.domain.search.dto.SearchRecentResDto;
 import com.palette.palette.domain.user.entity.User;
@@ -13,6 +14,7 @@ import com.palette.palette.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.ListOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
@@ -22,6 +24,7 @@ import org.webjars.NotFoundException;
 
 import java.sql.Date;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -35,6 +38,39 @@ public class SearchService {
     private final ChallengeRepository challengeRepository;
     private final RedisTemplate<String, String> redisTemplate;
     private final UserRepository userRepository;
+
+    /**
+     * 검색어 자동완성 변수
+     */
+    private static final String SEARCH_KEY = "USER_NAME";
+    private static final String ASTERISK  = "*";
+    private static final int TIME_LIMIT = 10;
+
+
+    /**
+     * 검색 목록 조회 (유저 + 피드 + 챌린지)
+     */
+    public SearchFeedChallengeUserDto search(
+            int page, int size, String type, String content, String orderBy, String color, Long userId
+    ) {
+        Pageable pageable = PageRequest.of(page, size);
+
+        if (content != null) {
+            ranking(content);
+            saveRecentKeyword(userId, content);
+        }
+
+        List<FeedResDto> feeds = feedRepository.findBySearchOption(pageable, content, orderBy, color).getContent().stream()
+                    .map(FeedResDto::toDto)
+                    .collect(Collectors.toList());
+
+        List<ChallengeResDto> challenges = challengeRepository.findBySearchOption(pageable, content, orderBy, color).getContent().stream()
+                    .map(ChallengeResDto::toDto)
+                    .collect(Collectors.toList());
+
+
+        return new SearchFeedChallengeUserDto(null, feeds, challenges);
+    }
 
 
     /**
@@ -153,4 +189,17 @@ public class SearchService {
         String key = "userId::" + userId;
         listOperations.remove(key, 0, keyword);
     }
+
+
+    /**
+     * 검색어 입력시 자동완성
+     */
+//    public List<String> getSearchList(String keyword) {
+//
+//        HashOperations<String,String,Long> hashOperations= redisTemplate.opsForHash();
+//
+//        if(redisTemplate.getExpire(SEARCH_KEY) < 0) {
+//            List<Feed>
+//        }
+//    }
 }

@@ -36,7 +36,7 @@ public class SearchController {
     @GetMapping()
     public BaseResponse feedSearch(
             @RequestParam("page") int page,
-            @RequestParam("type") String type,
+            @RequestParam(value = "type", required = false) String type,
             @RequestParam(value = "keyword", required = false) String content,
             @RequestParam(value = "orderBy", required = false) String orderBy,
             @RequestParam(value = "color", required = false) String color,
@@ -62,13 +62,14 @@ public class SearchController {
                 throw new UserPrincipalNotFoundException("유효한 사용자가 아닙니다.");
             }
 
-            if (type.equals("feed")) {
-                return BaseResponse.success(searchService.feedSearch(page, 10, content, orderBy, color, user.getId()));
-            }
-            else if (type.equals("challenge")) {
-                return BaseResponse.success(searchService.challengeSearch(page, 10, content, orderBy, color, user.getId()));
-            }
-            return BaseResponse.success(searchService.feedSearch(page, 10, content, orderBy, color, user.getId()));
+//            if (type.equals("feed")) {
+//                return BaseResponse.success(searchService.feedSearch(page, 10, content, orderBy, color, user.getId()));
+//            }
+//            else if (type.equals("challenge")) {
+//                return BaseResponse.success(searchService.challengeSearch(page, 10, content, orderBy, color, user.getId()));
+//            }
+//            return BaseResponse.success(searchService.feedSearch(page, 10, content, orderBy, color, user.getId()));
+            return BaseResponse.success(searchService.search(page, 10, type, content, orderBy, color, user.getId()));
         } catch (Exception e) {
 
             e.printStackTrace();
@@ -137,7 +138,7 @@ public class SearchController {
     @Operation(summary = "최근 검색어 삭제")
     @DeleteMapping("/recent")
     public BaseResponse deleteRecent(
-            @RequestParam String keyword,
+            @RequestBody String keyword,
             HttpServletRequest request
     ) {
         try {
