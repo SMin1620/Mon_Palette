@@ -36,7 +36,7 @@ public class SearchController {
     @GetMapping()
     public BaseResponse feedSearch(
             @RequestParam("page") int page,
-            @RequestParam(value = "type", required = false) String type,
+            @RequestParam(value = "type") String type,
             @RequestParam(value = "keyword", required = false) String content,
             @RequestParam(value = "orderBy", required = false) String orderBy,
             @RequestParam(value = "color", required = false) String color,
@@ -62,14 +62,52 @@ public class SearchController {
                 throw new UserPrincipalNotFoundException("유효한 사용자가 아닙니다.");
             }
 
-//            if (type.equals("feed")) {
-//                return BaseResponse.success(searchService.feedSearch(page, 10, content, orderBy, color, user.getId()));
-//            }
-//            else if (type.equals("challenge")) {
-//                return BaseResponse.success(searchService.challengeSearch(page, 10, content, orderBy, color, user.getId()));
-//            }
-//            return BaseResponse.success(searchService.feedSearch(page, 10, content, orderBy, color, user.getId()));
             return BaseResponse.success(searchService.search(page, 10, type, content, orderBy, color, user.getId()));
+        } catch (Exception e) {
+
+            e.printStackTrace();
+            return BaseResponse.error("검색 실패");
+        }
+    }
+
+
+    @Operation(summary = "필터 QueryDSL")
+    @GetMapping("/filter")
+    public BaseResponse searchFilter(
+            @RequestParam("page") int page,
+            @RequestParam(value = "type") String type,
+            @RequestParam(value = "keyword", required = false) String content,
+            @RequestParam(value = "orderBy", required = false) String orderBy,
+            @RequestParam(value = "color", required = false) String color,
+            HttpServletRequest request
+    ) {
+
+        System.out.println("검색 기능 컨트롤러");
+
+        try {
+            //////////////////////// 토큰으로 인가된 사용자 정보 처리하는 로직
+            String token = jwtTokenProvider.resolveToken(request);
+            jwtTokenProvider.validateToken(token);
+
+            System.out.println("token >>> " + token);
+
+            Authentication authentication = jwtTokenProvider.getAuthentication(token);
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+
+            User user = userRepository.findByEmail(userDetails.getUsername()).get();
+
+            // 유저 예외처리 :: 예외처리 커스텀 필요
+            if (user == null) {
+                throw new UserPrincipalNotFoundException("유효한 사용자가 아닙니다.");
+            }
+
+            if (type.equals("feed")) {
+                return BaseResponse.success(searchService.feedSearch(page, 10, content, orderBy, color, user.getId()));
+            }
+            else if (type.equals("challenge")) {
+                return BaseResponse.success(searchService.challengeSearch(page, 10, content, orderBy, color, user.getId()));
+            }
+            return BaseResponse.success(searchService.feedSearch(page, 10, content, orderBy, color, user.getId()));
         } catch (Exception e) {
 
             e.printStackTrace();
@@ -165,6 +203,16 @@ public class SearchController {
             e.printStackTrace();
             return BaseResponse.error("최근 검색어 삭제 실패");
         }
+    }
 
+    /**
+     * 검색어 자동완성
+     */
+    @Operation(summary = "검색어 자동완성")
+    @GetMapping("/auto")
+    public BaseResponse autoSearch(
+            @RequestParam String keyword
+    ) {
+        return BaseResponse.success(searchService.getSearchList(keyword));
     }
 }
