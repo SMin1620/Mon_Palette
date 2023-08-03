@@ -6,24 +6,56 @@ import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
 import axios from "axios"
 import { useRecoilValue } from "recoil";
-import { loginState } from "../../../user/components/Atom";
+import { loginState } from "../../../user/components/Atom/loginState";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import FollowButton from "../Header/FollowButton/FollowButton"
-import { useNavigate, useParams } from 'react-router-dom'
-
-
+import { useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 
 
 function FeedContent() {
+
+    console.log("feedcontent");
+
     const navigate = useNavigate()
-    // const feedId = useParams()
-    const {feedId} = useParams()
-    console.log(feedId)
+
+    const { feedId } = useParams()
+    // const { followingId } = useParams()
+
     const [feedData, setFeedData] = useState('')
     const [feedLike, setfeedLike] = useState(feedData.isLiked);
     const [likeList, setLikeList] = useState(false)
+    const [likeListData, setLikeListData] = useState([])
+
     const token = useRecoilValue(loginState)
+
+    console.log(feedData);
+
+    const following = (idid) => {
+        axios.post(`http://192.168.30.224:8080/api/follow/${idid}`, {} ,{
+            headers: { Authorization: token },
+        })
+            .then((response => {
+                console.log(response);
+                axios.get(`http://192.168.30.224:8080/api/feed/${feedId}/like`, {
+                    headers: { Authorization: token },
+                })
+                .then((response) => {
+                    console.log(response.data.data);
+                    setLikeListData(response.data.data);
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+                
+                
+            }))
+            .catch((err => {
+                console.log(err);
+            }))
+    }
+
 
     useEffect(() => {
         axios
@@ -41,6 +73,26 @@ function FeedContent() {
             })
     },[feedLike])
 
+
+    // 좋아요 리스트 
+    useEffect(() => {
+        if (likeList) {
+            axios
+                .get(`http://192.168.30.224:8080/api/feed/${feedId}/like`, {
+                    headers: { Authorization: token },
+                })
+                .then((response) => {
+                    console.log(response.data.data);
+                    setLikeListData(response.data.data)
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        }
+    }, [likeList]);
+
+    
+
     
     // 좋아요 리스트 띄우는 모달창 flag
     const likeCount = () => {
@@ -57,7 +109,7 @@ function FeedContent() {
 
     // 피드를 좋아요 하는 함수
     const likeFeed = () => {
-        axios.post(`http://192.168.30.224:8080/api/feed/${feedId}/like`, {},{
+        axios.post(`http://192.168.30.224:8080/api/feed/${feedId}/like`, {} ,{
             headers: { Authorization: token },
         })
             .then((response => {
@@ -103,42 +155,42 @@ function FeedContent() {
         arrow: true
     }
 
-    const feedDat = {
-        "likeList" : [
-            {
-                "id": 1,
-                "nickname": "한글이얌",
-                "profileImage": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTSuim68sxj9smYW0K3bwHrrEM-I67IqLjQUQ&usqp=CAU",
-                "isFollow": false
-            },
-            {
-                "id": 2,
-                "nickname": "한글을 사랑하쟈",
-                "profileImage": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSOyO06UpMnfv0Qcs5GT5PnUiUynm8JQ-T99jch48u04fCqENASi8_oBvSNktYzJs4TfME&usqp=CAU://encrypted-tbn0.gstatic.com/images?q=tbn:https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTbmqip9wCHyLZ9apnq7d2BnK4rnpEZWNP1Mg&usqp=CAU&usqp=CAU",
-                "isFollow": true
-            },
-            {
-                "id": 3,
-                "nickname": "안뇽뇽뇽뇽",
-                "profileImage": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTSuim68sxj9smYW0K3bwHrrEM-I67IqLjQUQ&usqp=CAU",
-                "isFollow": false
-            },
-            {
-                "id": 4,
-                "nickname": "kitty",
-                "profileImage": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSDW7giQem6if7NhnjuDsdzvjL8Bxs9aJjKbQ&usqp=CAU",
-                "isFollow": false
-            },
-            {
-                "id": 5,
-                "nickname": "roll",
-                "profileImage": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGAUJ4McVJQ1XoHlNX9cQqzWAGZK7KGv-5IQ&usqp=CAU",
-                "isFollow": false
-            },
+    // const feedDat = {
+    //     "likeList" : [
+    //         {
+    //             "id": 1,
+    //             "nickname": "한글이얌",
+    //             "profileImage": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTSuim68sxj9smYW0K3bwHrrEM-I67IqLjQUQ&usqp=CAU",
+    //             "isFollow": false
+    //         },
+    //         {
+    //             "id": 2,
+    //             "nickname": "한글을 사랑하쟈",
+    //             "profileImage": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSOyO06UpMnfv0Qcs5GT5PnUiUynm8JQ-T99jch48u04fCqENASi8_oBvSNktYzJs4TfME&usqp=CAU://encrypted-tbn0.gstatic.com/images?q=tbn:https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTbmqip9wCHyLZ9apnq7d2BnK4rnpEZWNP1Mg&usqp=CAU&usqp=CAU",
+    //             "isFollow": true
+    //         },
+    //         {
+    //             "id": 3,
+    //             "nickname": "안뇽뇽뇽뇽",
+    //             "profileImage": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTSuim68sxj9smYW0K3bwHrrEM-I67IqLjQUQ&usqp=CAU",
+    //             "isFollow": false
+    //         },
+    //         {
+    //             "id": 4,
+    //             "nickname": "kitty",
+    //             "profileImage": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSDW7giQem6if7NhnjuDsdzvjL8Bxs9aJjKbQ&usqp=CAU",
+    //             "isFollow": false
+    //         },
+    //         {
+    //             "id": 5,
+    //             "nickname": "roll",
+    //             "profileImage": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGAUJ4McVJQ1XoHlNX9cQqzWAGZK7KGv-5IQ&usqp=CAU",
+    //             "isFollow": false
+    //         },
 
 
-        ]
-    }
+    //     ]
+    // }
  
     // const handleLikeClick = (feedId) => {
         
@@ -213,7 +265,7 @@ function FeedContent() {
                         </div>
                     </div>
                    {
-                    feedDat.likeList.map((user, index) => (
+                    likeListData.map((user, index) => (
                         <div className={styles.user_wrap} key={index}>
                             <div
                             className={styles.like_list}>
@@ -225,15 +277,22 @@ function FeedContent() {
                                     />
                                 </div>
                                 <div
-                                className= {styles.nickname}>
-                                    {user.nickname}
+                                className= {styles.nickname}
+                                >
+                                    {user.nickname} 
                                 </div>
                             </div>
                             <div className={styles.follow_button}>
                                 {user.isFollow ? (
-                                    <FollowButton text={"Following"} />
+                                    <div onClick = {() => following(user.id)}>
+                                    <FollowButton text={"Following"}
+                                    />
+                                    </div>
                                 ) : (
-                                    <FollowButton text={"Follow"} />
+                                    <div onClick = {following(user.id)}>
+                                    <FollowButton text={"Follow"}
+                                    />
+                                    </div>
                                 )}
                             </div>
                         </div>

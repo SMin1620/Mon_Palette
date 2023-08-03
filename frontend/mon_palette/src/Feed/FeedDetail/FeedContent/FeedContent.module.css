@@ -26,8 +26,7 @@
 }
 
 .content {
-    margin-left: 5%;
-    margin-right: 5%;
+    margin: 5%;
 }
 
 .heart_filled {
@@ -120,7 +119,7 @@
 }
 
 .modal_header {
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid #fbcfdf;
     display: flex;
     justify-content: space-between;
 
@@ -131,6 +130,7 @@
     display: flex;
     align-items: center;
     font-weight: 700;
+    color: #fbcfdf;
 }
 
 .temp_div {

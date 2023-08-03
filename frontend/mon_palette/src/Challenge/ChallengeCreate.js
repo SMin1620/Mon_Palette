@@ -1,7 +1,7 @@
 import React, { useState, useEffect} from 'react';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useRecoilValue } from 'recoil';
-import { loginState } from '../user/components/Atom';
+import { loginState } from '../user/components/Atom/loginState';
 
 
 function ChallengeCreate() {

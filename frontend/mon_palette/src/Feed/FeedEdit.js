@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios'
-import { loginState } from '../user/components/Atom';
+import { loginState } from '../user/components/Atom/loginState';
 import { useRecoilValue } from 'recoil';
 import AWS from 'aws-sdk'
 import uuid from 'react-uuid'

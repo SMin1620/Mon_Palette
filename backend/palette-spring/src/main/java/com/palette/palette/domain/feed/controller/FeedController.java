@@ -41,40 +41,63 @@ public class FeedController {
 
 
     /**
-     * jwt test
+     * 메인 피드 목록 조회
      */
-    @Operation(summary = "jwt test")
-    @GetMapping("/test")
-    public ResponseEntity test(
+    @Operation(summary = "메인 피드 목록 조회")
+    @GetMapping("/main")
+    public BaseResponse mainFeedList(
+            @RequestParam("page") int page,
             HttpServletRequest request
     ) {
-        System.out.println("test 컨트롤러");
-        System.out.println("request >>> " + request);
-        String token = jwtTokenProvider.resolveToken(request);
-        System.out.println("token >>> "  + token);
-        Authentication authentication = jwtTokenProvider.getAuthentication(token);
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 
-        System.out.println("Controller userDetails >>> " + userDetails);
-        User user = userRepository.findByEmail(userDetails.getUsername()).get();
-        System.out.println("Controller user >>> " + user.getEmail());
+        System.out.println("메인 피드 목록 조회 컨트롤러");
+        
+        try {
+            /////////////////////// 토큰으로 인가된 사용자 정보 처리하는 로직
+            String token = jwtTokenProvider.resolveToken(request);
+            jwtTokenProvider.validateToken(token);
 
+            System.out.println("token >>> " + token);
 
-        return ResponseEntity.ok().body("ok");
+            Authentication authentication = jwtTokenProvider.getAuthentication(token);
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+
+            User user = userRepository.findByEmail(userDetails.getUsername()).get();
+
+            // 유저 예외처리 :: 예외처리 커스텀 필요
+            if (user == null) {
+                throw new UserPrincipalNotFoundException("유효한 사용자가 아닙니다.");
+            }
+
+            return BaseResponse.success(feedService.mainFeedList(page, 10, user));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return BaseResponse.error("메인 피드 목록 조회 실패");
+        }
     }
-
 
     /**
      * 피드 목록 조회
      */
-    @Operation(summary = "피드 목록 조회")
+    @Operation(summary = "일반 피드 목록 조회")
     @GetMapping()
     public BaseResponse feedList(
-            @RequestParam("page") int page) {
+            @RequestParam("page") int page,
+            @RequestParam(value = "color", required = false) String color,
+            @RequestParam(value = "orderBy", required = false) String orderBy,
+            HttpServletRequest request
+    ) {
 
-        // page -> 0 시작 , size -> 가져올 피드 10개
-        return BaseResponse.success(feedService.feedList(page, 10));
+        System.out.println("메인 피드 목록 조회 컨트롤러");
+
+        try {
+            return BaseResponse.success(feedService.feedList(page, 10, color, orderBy));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return BaseResponse.error("메인 피드 목록 조회 실패");
+        }
     }
+
 
     /**
      * 피드 생성

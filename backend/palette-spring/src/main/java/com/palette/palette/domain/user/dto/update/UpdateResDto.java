@@ -9,5 +9,5 @@ import lombok.Data;
 public class UpdateResDto {
 
     @Schema(description = "업데이트 성공 여부", example = "true")
-    private boolean update;
+    private Boolean update;
 }

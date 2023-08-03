@@ -5,7 +5,7 @@ import com.palette.palette.domain.feed.repository.FeedRepository;
 import com.palette.palette.domain.follow.repository.FollowRepository;
 import com.palette.palette.domain.user.dto.info.Info;
 import com.palette.palette.domain.user.dto.login.LoginReqDto;
-import com.palette.palette.domain.user.dto.mypage.Mypage;
+import com.palette.palette.domain.user.dto.userpage.UserPage;
 import com.palette.palette.domain.user.dto.register.RegisterReqDto;
 import com.palette.palette.domain.user.dto.register.RegisterResDto;
 import com.palette.palette.domain.user.dto.token.TokenDto;
@@ -83,9 +83,12 @@ public class UserService {
             String accessToken = jwtTokenProvider.createAccessToken(authentication);
             String refreshToken = jwtTokenProvider.createRefreshToken(authentication);
 
+            Optional<User> user = userRepository.findByEmail(loginReqDto.getEmail());
+
             TokenDto tokenDto =TokenDto.builder()
                     .accessToken(accessToken)
                     .refreshToken(refreshToken)
+                    .userId(user.get().getId())
                     .build();
             // 헤더에 토큰 담기
             jwtTokenProvider.setHeaderAccessToken(response, accessToken);
@@ -172,6 +175,15 @@ public class UserService {
         }
     }
 
+    public ValidationResDto phoneValidation(String phone){
+        Optional<User> phoneCheck = userRepository.findByPhone(phone);
+        if(phoneCheck.isEmpty()){
+            return ValidationResDto.builder().check(true).build();
+        }else{
+            return ValidationResDto.builder().check(false).build();
+        }
+    }
+
     /**
      *
      * 비밀번호 수정
@@ -233,10 +245,22 @@ public class UserService {
     /**
      * 휴대폰번호 수정
      */
+    @Transactional
     public UpdateResDto phoneUpdate(PhoneUpdateReqDto phoneUpdateReqDto, HttpServletRequest req){
         String userEmail = jwtTokenProvider.getUserEmail(jwtTokenProvider.resolveToken(req));
         Optional<User> user = userRepository.findByEmail(userEmail);
         user.get().updatePhone(phoneUpdateReqDto.getPhone());
+        return UpdateResDto.builder().update(true).build();
+    }
+
+    /**
+     * 주소지 수정
+     */
+    @Transactional
+    public UpdateResDto addressUpdate(AddressUpdateReqDto addressUpdateReqDto, HttpServletRequest req){
+        String userEmail = jwtTokenProvider.getUserEmail(jwtTokenProvider.resolveToken(req));
+        Optional<User> user = userRepository.findByEmail(userEmail);
+        user.get().updateAddress(addressUpdateReqDto.getAddress());
         return UpdateResDto.builder().update(true).build();
     }
 
@@ -256,24 +280,73 @@ public class UserService {
                 .build();
     }
     /**
-     * 마이페이지
+     * 유저페이지
      */
-    public Mypage mypage(HttpServletRequest req){
+    public UserPage userPage(HttpServletRequest req, Long pathUserId){
         String userEmail = jwtTokenProvider.getUserEmail(jwtTokenProvider.resolveToken(req));
         Optional<User> user = userRepository.findByEmail(userEmail);
-        Long followingCnt = followRepository.countByFromUser(user.get().getEmail());
-        Long followerCnt = followRepository.countByToUser(user.get().getEmail());
-        List<Feed> feedList = feedRepository.findAllByUser(user.get());
-        return Mypage.builder()
-                .profilePhoto(user.get().getProfileImage())
-                .background(user.get().getBackgroundImage())
-                .nickname(user.get().getNickname())
-                .isInfluence(user.get().getRole())
-                .personalColor(user.get().getPersonalColor())
-                .followingCnt(followingCnt)
-                .followerCnt(followerCnt)
-                .feedCnt(feedList.size())
-                .feed(feedList)
-                .build();
+
+        Optional<User> user2 = userRepository.findById(pathUserId);
+
+        String followingCnt = followRepository.countByFromUser(user2.get().getEmail());
+        String followerCnt = followRepository.countByToUser(user2.get().getEmail());
+        List<Feed> feedList = feedRepository.findAllByUser(user2.get());
+        if(user.get().getId().equals(pathUserId)){
+            return UserPage.builder()
+                    .isMe(true)
+                    .isFollow(false)
+                    .email(user2.get().getEmail())
+                    .profilePhoto(user2.get().getProfileImage())
+                    .background(user2.get().getBackgroundImage())
+                    .nickname(user2.get().getNickname())
+                    .isInfluence(user2.get().getRole())
+                    .personalColor(user2.get().getPersonalColor())
+                    .followingCnt(followingCnt)
+                    .followerCnt(followerCnt)
+                    .feedCnt(feedList.size())
+                    .feed(feedList)
+                    .build();
+        }else{
+            return UserPage.builder()
+                    .isMe(false)
+                    .isFollow(followRepository.existsByFromUserAndToUser(userEmail, user2.get().getEmail()))
+                    .email(user2.get().getEmail())
+                    .profilePhoto(user2.get().getProfileImage())
+                    .background(user2.get().getBackgroundImage())
+                    .nickname(user2.get().getNickname())
+                    .isInfluence(user2.get().getRole())
+                    .personalColor(user2.get().getPersonalColor())
+                    .followingCnt(followingCnt)
+                    .followerCnt(followerCnt)
+                    .feedCnt(feedList.size())
+                    .feed(feedList)
+                    .build();
+        }
+
+
+    }
+
+
+
+    /**
+     * 회원 탈퇴
+     */
+    @Transactional
+    public void deleteUser(HttpServletRequest request){
+        String userEmail = jwtTokenProvider.getUserEmail(jwtTokenProvider.resolveToken(request));
+        Optional<User> user = userRepository.findByEmail(userEmail);
+        followRepository.deleteAllByToUser(user.get().getEmail());
+        followRepository.deleteAllByFromUser(user.get().getEmail());
+        userRepository.deleteById(user.get().getId());
+    }
+    @Transactional
+    public UpdateResDto upgradeUser(HttpServletRequest request){
+        String userEmail = jwtTokenProvider.getUserEmail(jwtTokenProvider.resolveToken(request));
+        String followerCnt = followRepository.countByToUser(userEmail);
+        if(Integer.parseInt(followerCnt) >= 3){
+            return UpdateResDto.builder().update(true).build();
+        }else{
+            return UpdateResDto.builder().update(false).build();
+        }
     }
 }

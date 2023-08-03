@@ -3,7 +3,7 @@ import NavigationBarBottom from "./NavigationBar/NavigationBarBottom";
 import FeedMain from "./Feed/FeedMain";
 import SearchResult from "./SearchResult/SearchResult";
 import Home from "./Home";
-import Search from "./Search/Search2";
+import Search2 from "./Search/Search2";
 import LoginForm from "./user/components/LoginForm";
 import SignUp from "./user/components/SignUp";
 import SignUpForm from "./user/components/SignUpForm";
@@ -12,7 +12,9 @@ import ChangePassword from "./user/components/ChangePassword";
 import ChangeAddress from "./user/components/ChangeAddress";
 import ChangePhone from "./user/components/ChangePhone";
 import ChangeInfo from "./user/components/ChangeInfo";
-import MyPage from "./user/components/MyPage";
+import UserPage from "./user/components/UserPage";
+import FollowingList from "./user/components/FollowingList";
+import FollowerList from "./user/components/FollowerList";
 import FeedWrite from './Feed/FeedWrite';
 import FeedEdit from './Feed/FeedEdit';
 import ChallengeHome from './Challenge/ChallengeHome';
@@ -20,6 +22,8 @@ import FeedDetail from "./Feed/FeedDetail/FeedDetail";
 import ChallengeCreate from "./Challenge/ChallengeCreate";
 
 import { Routes, Route } from "react-router-dom";
+
+
 function App() {
 	return (
 		<div className="App">
@@ -41,7 +45,12 @@ function App() {
 				{/* 네비 헤더 부분 빠지고 검색창의 top 부분 들어가야함 */}
 				<Route
 					path="/search/"
-					element={[<NavigationBarBottom />, <Search />]}
+					element={[<NavigationBarBottom />, <Search2 />]}
+				/>
+
+				<Route
+					path="/result"
+					element={[<NavigationBarBottom />, <SearchResult />]}
 				/>
 				<Route
 					path="/signup"
@@ -92,11 +101,29 @@ function App() {
 					]}
 				/>
 				<Route
-					path="/mypage"
+					path="/userpage/:id"
 					element={[
 						<NavigationBarHeader title="Mon, Palette" />,
 						<NavigationBarBottom />,
-						<MyPage />,
+						<UserPage />,
+					]}
+				/>
+
+				<Route
+					path="/userpage/following/:id"
+					element={[
+						<NavigationBarHeader title="following" />,
+						<NavigationBarBottom />,
+						<FollowingList />,
+					]}
+				/>
+
+				<Route
+					path="/userpage/follower/:id"
+					element={[
+						<NavigationBarHeader title="follower" />,
+						<NavigationBarBottom />,
+						<FollowerList />,
 					]}
 				/>
 				<Route
