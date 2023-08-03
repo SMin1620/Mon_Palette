@@ -155,42 +155,7 @@ function FeedContent() {
         arrow: true
     }
 
-    // const feedDat = {
-    //     "likeList" : [
-    //         {
-    //             "id": 1,
-    //             "nickname": "한글이얌",
-    //             "profileImage": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTSuim68sxj9smYW0K3bwHrrEM-I67IqLjQUQ&usqp=CAU",
-    //             "isFollow": false
-    //         },
-    //         {
-    //             "id": 2,
-    //             "nickname": "한글을 사랑하쟈",
-    //             "profileImage": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSOyO06UpMnfv0Qcs5GT5PnUiUynm8JQ-T99jch48u04fCqENASi8_oBvSNktYzJs4TfME&usqp=CAU://encrypted-tbn0.gstatic.com/images?q=tbn:https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTbmqip9wCHyLZ9apnq7d2BnK4rnpEZWNP1Mg&usqp=CAU&usqp=CAU",
-    //             "isFollow": true
-    //         },
-    //         {
-    //             "id": 3,
-    //             "nickname": "안뇽뇽뇽뇽",
-    //             "profileImage": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTSuim68sxj9smYW0K3bwHrrEM-I67IqLjQUQ&usqp=CAU",
-    //             "isFollow": false
-    //         },
-    //         {
-    //             "id": 4,
-    //             "nickname": "kitty",
-    //             "profileImage": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSDW7giQem6if7NhnjuDsdzvjL8Bxs9aJjKbQ&usqp=CAU",
-    //             "isFollow": false
-    //         },
-    //         {
-    //             "id": 5,
-    //             "nickname": "roll",
-    //             "profileImage": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGAUJ4McVJQ1XoHlNX9cQqzWAGZK7KGv-5IQ&usqp=CAU",
-    //             "isFollow": false
-    //         },
 
-
-    //     ]
-    // }
  
     // const handleLikeClick = (feedId) => {
         
