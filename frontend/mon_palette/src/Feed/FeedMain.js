@@ -48,7 +48,8 @@ function FeedMain() {
       });
 
       // 새로운 데이터를 기존 데이터와 합치기 위해 spread 연산자 사용
-      setFeedInfo((prevFeedInfo) => [...prevFeedInfo, ...response.data.data]);
+      console.log(response.data.data.feeds)
+      setFeedInfo((prevFeedInfo) => [...prevFeedInfo, ...response.data.data.feeds]);
       console.log(typeof(response.data.data))
     } catch (error) {
       console.error(error);

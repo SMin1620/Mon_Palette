@@ -17,6 +17,7 @@ import FeedWrite from './Feed/FeedWrite';
 import FeedEdit from './Feed/FeedEdit';
 import ChallengeHome from './Challenge/ChallengeHome';
 import FeedDetail from "./Feed/FeedDetail/FeedDetail";
+import ChallengeCreate from "./Challenge/ChallengeCreate";
 
 import { Routes, Route } from "react-router-dom";
 function App() {
@@ -125,6 +126,14 @@ function App() {
 					path="/feed/:feedId"
 					element={[
 						<FeedDetail />
+					]}
+				/>
+
+				<Route
+					path="/challenge/create"
+					element={[
+						<NavigationBarBottom />,
+						<ChallengeCreate />
 					]}
 				/>
 			</Routes>
