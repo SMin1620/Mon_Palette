@@ -32,6 +32,10 @@ function Header() {
     const {feedId} = useParams()
     const token = useRecoilValue(loginState)
     const [feedData, setFeedData] = useState('')
+    const [base, setBase] = useState("https://ssafy9-monpalette.s3.ap-northeast-2.amazonaws.com/%EC%8B%A0%EC%A7%B1%EA%B5%AC.png");
+    console.log(feedData, "header");
+    console.log(feedData.createAt);
+    console.log(feedData.likeCount);
 
     useEffect(() => {
         axios
@@ -41,93 +45,96 @@ function Header() {
             })
             .then ((response) => {
                 console.log(response.data.data, "response")
-                console.log("아아아아아살려죠");
                 setFeedData(response.data.data)
+                
             })
             .catch ((err) => {
                 console.log(err)
             })
     },[])
 
+    console.log('feedData', feedData)
 
-    const FeedData = {
-        "status": "success",
-        "message": null,
-        "data": [
-            {
-                "id": 1,
-                "content": "쿠로미 귀여웡 귀여웡 쫀귀탱탱",
-                "user": [
-                    {
-                        "userId": 23,
-                        "userNickname": "ysk",
-                        "personalColor": "summer cool",
-                        "profileImage": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcShoVme-PZaEOSY_dTvGc_zpbDUXfcRIyHNoA&usqp=CAU",
-                        "isFollowed": false
-                    }
-                ],
-                "tagContent": "#쿠로미",
-                "comment": [
-                    {
-                        "id": 1,
-                        "userId": 71,
-                        "commentContent": "너무 귀엽쟈나",
-                        "createdAt": "2023-07-26T10:10:32.146994"
 
-                    },
-                    {
-                        "id": 2,
-                        "userId": 90,
-                        "commentContent": "호엑",
-                        "createdAt": "2023-07-26T10:15:32.146994"
+    // const FeedData = {
+    //     "status": "success",
+    //     "message": null,
+    //     "data": [
+    //         {
+    //             "id": 1,
+    //             "content": "쿠로미 귀여웡 귀여웡 쫀귀탱탱",
+    //             "user": [
+    //                 {
+    //                     "userId": 23,
+    //                     "userNickname": "ysk",
+    //                     "personalColor": "summer cool",
+    //                     "profileImage": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcShoVme-PZaEOSY_dTvGc_zpbDUXfcRIyHNoA&usqp=CAU",
+    //                     "isFollowed": false
+    //                 }
+    //             ],
+    //             "tagContent": "#쿠로미",
+    //             "comment": [
+    //                 {
+    //                     "id": 1,
+    //                     "userId": 71,
+    //                     "commentContent": "너무 귀엽쟈나",
+    //                     "createdAt": "2023-07-26T10:10:32.146994"
 
-                    },
-                    {
-                        "id": 3,
-                        "userId": 89,
-                        "commentContent": "쫀귀",
-                        "createdAt": "2023-07-26T10:32:32.146994"
+    //                 },
+    //                 {
+    //                     "id": 2,
+    //                     "userId": 90,
+    //                     "commentContent": "호엑",
+    //                     "createdAt": "2023-07-26T10:15:32.146994"
 
-                    }
-                ],
-                "createAt": "2023-07-26T10:09:32.146994",
-                "updateAt": null,
-                "isDelete": false,
-                "deleteAt": null
-            }
-        ]
-    };
+    //                 },
+    //                 {
+    //                     "id": 3,
+    //                     "userId": 89,
+    //                     "commentContent": "쫀귀",
+    //                     "createdAt": "2023-07-26T10:32:32.146994"
+
+    //                 }
+    //             ],
+    //             "createAt": "2023-07-26T10:09:32.146994",
+    //             "updateAt": null,
+    //             "isDelete": false,
+    //             "deleteAt": null
+    //         }
+    //     ]
+    // };
+    console.log(feedData)
     return (
-        <div className="header_container">
-            {
-                FeedData.data.map((feed => {
-                    return <div className={styles.feedTotalInfo} key={feed.id}>
+       feedData && <div className="header_container">
+            
+                
+                    <div className={styles.feedTotalInfo}>
                         <div className={styles.author_img}>
                             <img 
                             className={styles.img}
-                            src={feed.user[0].profileImage} alt="" />
+                            src={feedData.user.profileImage === null? base: feedData.user.profileImage} alt="aaaaa" />
                         </div>
 
                         <div className={styles.author_info}>
                             <div className={styles.author_info_left}>
                                 <h3
                                 className={styles.h3}
-                                >{feed.user[0].userNickname}</h3>
-                                <p>{getTimegap(feed.createAt)}</p>
+                                >{feedData.user.nickname}</h3>
+                                <p>{getTimegap(feedData.createAt)}</p>
                             
                         </div>
 
                         <div className={styles.follow}>
                             {
-                                feed.user[0].isFollowed ? (<FollowButton text="Following" />) : (
+                                feedData.isFollow ? (<FollowButton text="Following" />) : (
                             
                             <FollowButton text="Follow" />)
                             }
                         </div>
                     </div>
                 </div>
-                }))
-            }
+                
+            
         </div>
  )               
 }

@@ -51,6 +51,8 @@
     /* display: flex; */
     justify-content: center;
     align-items: center;
+    border-top: 1px solid #fbcfdf;
+    margin-top: 10px;
 }
 
 .input {
@@ -62,6 +64,7 @@
     /* flex: 1; */
     border: none;
     background-color: #fdf2f7;
+    margin: 15px;
 
 }
 
