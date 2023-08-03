@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
@@ -45,6 +46,18 @@ public class ItemController {
             e.printStackTrace();
             return BaseResponse.error("아이템 조회에 실패했습니다.");
         }
+    }
+
+    @Operation(summary = "상품 수정")
+    @PutMapping("/{id}")
+    public BaseResponse updateItem(HttpServletRequest requst, @PathVariable("id") Long id){
+        try{
+            return BaseResponse.success(true);
+        }catch (Exception e){
+            e.printStackTrace();
+            return BaseResponse.error("상품 수정이 실패하였습니다.");
+        }
+
     }
 
 

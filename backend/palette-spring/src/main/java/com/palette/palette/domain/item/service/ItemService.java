@@ -2,6 +2,8 @@ package com.palette.palette.domain.item.service;
 
 import com.palette.palette.domain.category.entity.Category;
 import com.palette.palette.domain.category.repository.CategoryRepository;
+import com.palette.palette.domain.categoryitemlist.entity.CategoryProductList;
+import com.palette.palette.domain.categoryitemlist.repository.CategoryProductListRepository;
 import com.palette.palette.domain.item.dto.ItemAddReqDto;
 import com.palette.palette.domain.item.dto.ItemGetResDto;
 import com.palette.palette.domain.item.dto.ItemOptionAddReqDto;
@@ -42,6 +44,7 @@ public class ItemService {
     private final ItemOptionRepository itemOptionRepository;
     private final ItemPhotoRepository itemPhotoRepository;
     private final CategoryRepository categoryRepository;
+    private final CategoryProductListRepository categoryProductListRepository;
 
     @Transactional
     public Boolean registItem(HttpServletRequest request, ItemAddReqDto itemAddReqDto){
@@ -51,8 +54,10 @@ public class ItemService {
         itemRepository.save(item);
 
         Optional<Category> category = categoryRepository.findById(itemAddReqDto.getCategoryParentId());
-        categoryRepository.save(Category.toEntity(itemAddReqDto.getCategoryName(), category.get()));
+        Category itemCategory = Category.toEntity(itemAddReqDto.getCategoryName(), category.get());
+        categoryRepository.save(itemCategory);
 
+        categoryProductListRepository.save(CategoryProductList.toEntity(itemCategory, item));
 
         List<ItemOption> itemOptionList = new ArrayList<>();
         for(ItemOptionAddReqDto iard : itemAddReqDto.getItemOptionList()){
@@ -87,4 +92,42 @@ public class ItemService {
                 .collect(Collectors.toList());
         return items;
     }
+
+    @Transactional
+    public Boolean updateItem(HttpServletRequest request, Long id){
+        String userEmail = jwtTokenProvider.getUserEmail(jwtTokenProvider.resolveToken(request));
+        Optional<User> user = userRepository.findByEmail(userEmail);
+        Optional<Item> item = itemRepository.findById(id);
+
+
+//        Optional<Category> category = categoryRepository.findById(itemAddReqDto.getCategoryParentId());
+//        Category itemCategory = Category.toEntity(itemAddReqDto.getCategoryName(), category.get());
+//        categoryRepository.save(itemCategory);
+//
+//        categoryProductListRepository.save(CategoryProductList.toEntity(itemCategory, item));
+//
+//        List<ItemOption> itemOptionList = new ArrayList<>();
+//        for(ItemOptionAddReqDto iard : itemAddReqDto.getItemOptionList()){
+//            ItemOption itemOption = ItemOption.toEntity(iard, item);
+//            itemOptionList.add(itemOption);
+//        }
+//        itemOptionRepository.saveAll(itemOptionList);
+//
+//        List<ItemDetailPhoto> itemDetailPhotoList = new ArrayList<>();
+//        for(String s : itemAddReqDto.getItemDetailImageList()){
+//            ItemDetailPhoto itemDetailPhoto = ItemDetailPhoto.toEntity(s, item);
+//            itemDetailPhotoList.add(itemDetailPhoto);
+//        }
+//        itemDetailPhotoRepository.saveAll(itemDetailPhotoList);
+//
+//        List<ItemPhoto> itemPhotoList = new ArrayList<>();
+//        for(String s : itemAddReqDto.getItemPhotoList()){
+//            ItemPhoto itemPhoto = ItemPhoto.toEntity(s, item);
+//            itemPhotoList.add(itemPhoto);
+//        }
+//        itemPhotoRepository.saveAll(itemPhotoList);
+
+        return true;
+    }
+
 }
