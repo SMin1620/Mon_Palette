@@ -5,10 +5,13 @@ import com.palette.palette.domain.follow.entity.Follow;
 import com.palette.palette.domain.user.dto.register.RegisterReqDto;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 
 @Entity
@@ -16,6 +19,8 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@SQLDelete(sql = "UPDATE users SET is_leave = true, leave_at = CURRENT_TIMESTAMP where user_id = ? ") // delete 쿼리가 발생하면 해당 쿼리가 대신 실행
+@Where(clause = "is_leave = false") // select 쿼리가 발생할 때, 디폴트 값으로 추가되어서 쿼리가 실행.
 @Builder
 @Table(name = "users")
 public class User {
@@ -25,8 +30,11 @@ public class User {
     @Column(name = "user_id")
     private Long id;
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String email;
+
+
+
 
     @Column(nullable = false)
     private String password;
@@ -37,7 +45,7 @@ public class User {
     @Column(nullable = false)
     private String birth;
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String phone;
 
     @Column(nullable = false)
@@ -56,10 +64,12 @@ public class User {
     @Column(nullable = false)
     private Role role;
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String nickname;
     private String personalColor;
+    @Column(length = 5000)
     private String profileImage;
+    @Column(length = 5000)
     private String backgroundImage;
 
     // 피드 - 유저 :: 양방향
@@ -93,6 +103,8 @@ public class User {
                 .isLeave(false)
                 .address(null)
                 .nickname(request.getNickname())
+                .backgroundImage("https://ssafy9-monpalette.s3.ap-northeast-2.amazonaws.com/background.jpg")
+                .profileImage("https://ssafy9-monpalette.s3.ap-northeast-2.amazonaws.com/baseimg.png")
                 .build();
     }
     /**
@@ -138,5 +150,11 @@ public class User {
      * 프로필이미지 수정
      */
     public void updateProfile(String newProfile) {this.profileImage = newProfile;}
+
+    /**
+     * 주소지 수정
+     */
+    public void updateAddress(String newAddress){this.address = newAddress;}
+
 
 }

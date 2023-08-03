@@ -19,13 +19,16 @@ public class FeedLikeUserResDto {
 
     private String backgroundImage;
 
-    public static FeedLikeUserResDto toDto(User user) {
+    private Boolean isFollow;
+
+    public static FeedLikeUserResDto toDto(User user, Boolean isFollow) {
         return FeedLikeUserResDto.builder()
                 .id(user.getId())
                 .nickname(user.getNickname())
                 .personalColor(user.getPersonalColor())
                 .profileImage(user.getProfileImage())
                 .backgroundImage(user.getBackgroundImage())
+                .isFollow(isFollow)
                 .build();
     }
 }
