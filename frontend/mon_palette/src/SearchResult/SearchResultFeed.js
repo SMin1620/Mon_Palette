@@ -1,5 +1,5 @@
 import React from 'react';
-import './SearchResultFeed.css'
+import styles from './SearchResultFeed.module.css'
 import { resultsState } from '../Search/Atom';
 import { useRecoilValue } from 'recoil';
 
@@ -44,6 +44,11 @@ function SearchResultFeed() {
   },]
 
   const results = useRecoilValue(resultsState);
+  // console.log(results, typeof results)
+
+  const goDetail = () => {
+    return
+  }
 
   return (
     // <div className="search_result_feed_wrap">
@@ -66,16 +71,15 @@ function SearchResultFeed() {
     //   </div>
     // </div>
     <div>
-      {
-        results.map((data, index) => {
-          return <div key={index}>
-            <img src={data.feedImages.imagePath} />
-            {data.content}
-          </div>
-        })
-      }
-    </div>
-  );  
-}
+    {results && results.length > 0 && results.map((data, index) => (
+      <ul className={styles.ul} key={index}>
+        <li onClick={ () => goDetail(data.keyword) } className={styles.li}>
+          <img src={data.feedImages[0].imagePath} alt="Feed" />
+          {data.content}
+        </li>
+      </ul>
+    ))}
+  </div>
+  )}  
 
 export default SearchResultFeed;
