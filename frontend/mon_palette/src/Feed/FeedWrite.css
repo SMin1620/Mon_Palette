@@ -1,9 +1,9 @@
-.feed_edit {
+.feed_write {
   margin-top: 3rem;
   width: 100%;
 }
 
-.feed_edit_top {
+.feed_write_top {
   position: fixed;
   width: 100%;
   background-color: white;
@@ -15,37 +15,37 @@
   border-bottom: 1px solid black;
 }
 
-.feed_edit_top h2 {
+.feed_write_top h2 {
   margin-left: 0.6rem;
 }
 
-.feed_edit_top_back {
+.feed_write_top_back {
   border: 1px solid black;
   border-radius: 50%;
   padding: 0.3rem;
 }
 
-.feed_edit_top_upload {
+.feed_write_top_upload {
   margin: 0;
   background-color: none;
   padding: 0.2rem 0.5rem;
   font-weight: 500;
 }
 
-.feed_edit_top_image {
+.feed_write_top_image {
   width: 100%;
   height: 50%;
   justify-content: center;
   margin-top: 3rem;
 }
 
-.feed_edit_top_image_upload {
+.feed_write_top_image_upload {
   display: flex;
   justify-content: center;
 }
 
 
-.feed_edit_top_image_input {
+.feed_write_top_image_input {
   position: absolute;
   width: 1px;
   height: 1px;
@@ -56,7 +56,7 @@
   border: 0;
 }
 
-.feed_edit_top_image_label {
+.feed_write_top_image_label {
   width: 80%;
   text-align: center;
   margin: 0 0.5rem;
@@ -72,13 +72,13 @@
   border-radius: 10px;
 }
 
-.feed_edit_top_image_wrap {
+.feed_write_top_image_wrap {
   display: flex;
   flex-wrap: wrap;
   margin-bottom: 1rem;
 }
 
-.feed_edit_top_image_container {
+.feed_write_top_image_container {
   width: 20%;
   max-width: 20%;
   box-sizing: border-box;
@@ -86,21 +86,21 @@
   margin: 5px;
 }
 
-.feed_edit_top_image_item {
+.feed_write_top_image_item {
   border: 1px solid lightgray;
   background-color: lightgray;
   border-radius: 5px;
   position: relative;
 }
 
-.feed_edit_top_image_item img {
+.feed_write_top_image_item img {
   width: 100%;
   height: 3.75rem;
   border-radius: 5px;
   object-fit: cover;
 }
 
-.feed_edit_top_image_item button {
+.feed_write_top_image_item button {
   padding: 0.1rem 0.5rem;
   position: absolute;
   top: -10px;
@@ -112,13 +112,13 @@
   font-size: 16px;
 }
 
-.feed_edit_mid {
+.feed_write_mid {
   width: 100%;
   display: flex;
   justify-content: center;
 }
 
-.feed_edit_mid_caption_textarea {
+.feed_write_mid_caption_textarea {
   width: 100%;
   height: 10rem;
   border: none;
@@ -126,14 +126,14 @@
   padding: 10px;
 }
 
-.feed_edit_mid_bottom_hr {
+.feed_write_mid_bottom_hr {
   border: 0;
   height: 0.5px;
   background-color: black;
   margin-bottom: 1rem;
 }
 
-.feed_edit_bottom {
+.feed_write_bottom {
   width: 100%;
   display: flex;
   align-items: center;
@@ -141,7 +141,7 @@
   padding: 0 0.5rem;
 }
 
-.feed_edit_bottom_hashtag_textarea {
+.feed_write_bottom_hashtag_textarea {
   margin-top: 1rem;
   width: 100%;
   height: 2rem;
@@ -150,14 +150,14 @@
   padding: 10px;
 }
 
-.feed_edit_bottom_hashtag_area {
+.feed_write_bottom_hashtag_area {
   display: flex;
   flex-wrap: wrap;
   position: relative;
   margin-top: 1rem;
 }
 
-.feed_edit_bottom_hashtag_item {
+.feed_write_bottom_hashtag_item {
   padding: 5px 10px;
   margin: 5px;
   background-color: #f2f2f2;
@@ -166,7 +166,7 @@
   display: inline-block;
 }
 
-.feed_edit_bottom_hashtag_button {
+.feed_write_bottom_hashtag_button {
   padding: 0.1rem 0.5rem;
   position: absolute;
   top: -10px;
@@ -178,6 +178,6 @@
   font-size: 16px;
 }
 
-.feed_edit_bottom_h2 {
+.feed_write_bottom_h2 {
   padding: 0 0.5rem;
 }

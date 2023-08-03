@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styles from './TrendingSearches.module.css';
 import axios from "axios";
-import { loginState } from '../user/components/Atom';
+import { loginState } from '../user/components/Atom/loginState';
 import { useRecoilValue, useRecoilState } from "recoil";
 import { resultsState, searchQueryState } from './Atom';
 import { useNavigate } from 'react-router-dom';

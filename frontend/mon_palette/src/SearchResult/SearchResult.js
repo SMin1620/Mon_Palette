@@ -6,7 +6,7 @@ import SearchResultFeed from './SearchResultFeed';
 import SearchResultChallenge from './SearchResultChallenge';
 import SearchResultUser from './SearchResultUser'
 import { resultsState } from '../Search/Atom'
-import { loginState } from '../user/components/Atom';
+import { loginState } from '../user/components/Atom/loginState';
 import { searchQueryState } from '../Search/Atom';
 import SearchInput from '../Search/SearchInput'
 import axios from 'axios';

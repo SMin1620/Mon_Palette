@@ -36,7 +36,7 @@ const LoginForm = () => {
 					setToken(response.headers.authorization);
 					setId(response.data.data.userId);
 					console.log(response.data.data.userId);
-					Navigate(`/feed`);
+					Navigate(`/home`);
 				} else {
 					setIsModalOpen(true);
 				}
@@ -63,6 +63,8 @@ const LoginForm = () => {
 			/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,20}$/;
 		setPasswordError(!passwordRegex.test(password));
 	};
+
+	console.log(process.env)
 
 	return (
 		<div className="loginForm_container">
