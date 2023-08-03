@@ -46,9 +46,10 @@ public class FeedService {
     /**
      * 피드 목록 조회
      */
-    public List<FeedResDto> feedList(int page, int size) {
+    public List<FeedResDto> feedList(int page, int size, String color) {
         Pageable pageable = PageRequest.of(page, size);
-        List<FeedResDto> feeds = feedRepository.findAllByDelete(pageable).getContent().stream()
+
+        List<FeedResDto> feeds = feedRepository.findByMainFeed(pageable, color).getContent().stream()
                 .map(FeedResDto::toDto)
                 .collect(Collectors.toList());
 

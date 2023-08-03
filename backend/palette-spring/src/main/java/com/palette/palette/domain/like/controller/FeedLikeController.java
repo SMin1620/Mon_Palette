@@ -109,7 +109,7 @@ public class FeedLikeController {
     @Operation(summary = "좋아요 목록 조회")
     @GetMapping("/{id}/like")
     public BaseResponse feedLikeList(
-            @RequestParam("feedId") Long feedId,
+            @PathVariable("id") Long feedId,
             HttpServletRequest request
     ) {
         try {

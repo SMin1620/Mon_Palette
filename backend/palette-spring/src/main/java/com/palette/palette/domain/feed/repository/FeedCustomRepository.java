@@ -8,4 +8,6 @@ public interface FeedCustomRepository {
 
     Page<Feed> findBySearchOption(Pageable pageable, String content, String orderBy, String color);
 
+    Page<Feed> findByMainFeed(Pageable pageable, String color);
+
 }

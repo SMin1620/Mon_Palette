@@ -40,22 +40,27 @@ public class FeedController {
     private final JwtTokenProvider jwtTokenProvider;
 
 
-
-
-
-
     /**
      * 피드 목록 조회
      */
-    @Operation(summary = "피드 목록 조회")
+    @Operation(summary = "메인 피드 목록 조회")
     @GetMapping()
     public BaseResponse feedList(
-            @RequestParam("page") int page
+            @RequestParam("page") int page,
+            @RequestParam(value = "color", required = false) String color,
+            HttpServletRequest request
     ) {
 
-        // page -> 0 시작 , size -> 가져올 피드 10개
-        return BaseResponse.success(feedService.feedList(page, 10));
+        System.out.println("메인 피드 목록 조회 컨트롤러");
+        
+        try {
+            return BaseResponse.success(feedService.feedList(page, 10, color));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return BaseResponse.error("메인 피드 목록 조회 실패");
+        }
     }
+
 
     /**
      * 피드 생성
