@@ -2,6 +2,8 @@ package com.palette.palette.domain.order.entity;
 
 
 import com.palette.palette.domain.item.entity.Item;
+import com.palette.palette.domain.itemOption.entity.ItemOption;
+import com.palette.palette.domain.order.dto.create.OrderItemReqDto;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -27,8 +29,21 @@ public class OrderItem {
     @JoinColumn(name = "order_id")
     private Order order;
 
-    private Integer orderPrice;
+    private Integer price;
 
     private Integer count;
+
+
+    /**
+     * dto -> entity
+     */
+    public static OrderItem toEntity(OrderItemReqDto orderItemReqDto, Order order, Item item) {
+
+        return OrderItem.builder()
+                .item(item)
+                .order(order)
+                .count(orderItemReqDto.getCount())
+                .build();
+    }
 
 }

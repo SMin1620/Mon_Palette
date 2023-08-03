@@ -145,14 +145,6 @@ public class Feed {
 
         // 피드 해시태그 생성
         List<Hashtag> feedHashtagList = new ArrayList<>();  // 해시태그
-//        for (String name : notAlreadyHashTag) {
-//            Hashtag hashtag = Hashtag.builder()
-//                    .name(name)
-//                    .feed(this)
-//                    .build();
-//
-//            feedHashtagList.add(hashtag);
-//        }
 
         System.out.println("feedHashtagList >>> " + feedHashtagList);
 
