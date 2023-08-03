@@ -41,8 +41,8 @@ schema_view = get_schema_view(
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("api/color/", include("color.urls")),
-    path("api/image/", include("image.urls")),
+    path('api/color', include("color.urls")),
+    path('api/image/', include("image.urls")),
 
 
     # swagger
