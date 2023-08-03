@@ -1,6 +1,8 @@
 package com.palette.palette.domain.item.entity;
 
 
+import com.palette.palette.domain.item.dto.ItemAddReqDto;
+import com.palette.palette.domain.itemPhoto.entity.ItemPhoto;
 import com.palette.palette.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
@@ -52,6 +54,7 @@ public class Item {
 
     private LocalDateTime updateAt;
 
+    @Builder.Default
     private Boolean isDelete = Boolean.FALSE;
 
     private LocalDateTime deleteAt;
@@ -61,5 +64,21 @@ public class Item {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
+
+    public static Item toEntity(ItemAddReqDto req, User user){
+        return Item.builder()
+                .name(req.getItemaName())
+                .price(req.getPrice())
+                .discount(req.getDiscount())
+                .content(req.getContent())
+                .manufact(req.getManufact())
+                .deliveryFee(req.getDeliveryFee())
+                .thumbnail(req.getThumbnail())
+                .maximum(req.getMaximum())
+                .createAt(req.getCreateAt())
+                .endAt(req.getEndAt())
+                .user(user)
+                .build();
+    }
 
 }
