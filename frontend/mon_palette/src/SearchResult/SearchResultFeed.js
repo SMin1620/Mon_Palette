@@ -1,5 +1,8 @@
 import React from 'react';
-import './SearchResultFeed.css'
+import styles from './SearchResultFeed.module.css'
+import { resultsState } from '../Search/Atom';
+import { useRecoilValue } from 'recoil';
+
 
 function SearchResultFeed() {
   const FeedData = [{
@@ -39,27 +42,44 @@ function SearchResultFeed() {
     personalColor: '봄 웜톤',
     userImg: 'https://cdnimg.melon.co.kr/cm2/artistcrop/images/002/61/143/261143_20210325180240_500.jpg?61e575e8653e5920470a38d1482d7312/melon/resize/416/quality/80/optimize'
   },]
+
+  const results = useRecoilValue(resultsState);
+  // console.log(results, typeof results)
+
+  const goDetail = () => {
+    return
+  }
+
   return (
-    <div className="search_result_feed_wrap">
-      <div className="search_result_feed_container">
-        {
-          FeedData.map((data, index) => {
-            return <div className="search_result_feed_item" key={index}>
-              <img src={data.feedImg} alt="" className="search_result_feed_feedImg"/>
-              <div className="search_result_feed_user">
-                <div className="search_result_feed_user_left">
-                  <img src={data.userImg} alt="" className="search_result_feed_userImg" />
-                  <p>{data.userId}</p>
-                </div>
-                <p>{data.personalColor}</p>
-              </div>
-              <p>{data.description.slice(0, 10)} <span>...</span></p>
-            </div>
-          })
-        }
-      </div>
-    </div>
-  );
-}
+    // <div className="search_result_feed_wrap">
+    //   <div className="search_result_feed_container">
+    //     {
+    //       FeedData.map((data, index) => {
+    //         return <div className="search_result_feed_item" key={index}>
+    //           <img src={data.feedImg} alt="" className="search_result_feed_feedImg"/>
+    //           <div className="search_result_feed_user">
+    //             <div className="search_result_feed_user_left">
+    //               <img src={data.userImg} alt="" className="search_result_feed_userImg" />
+    //               <p>{data.userId}</p>
+    //             </div>
+    //             <p>{data.personalColor}</p>
+    //           </div>
+    //           <p>{data.description.slice(0, 10)} <span>...</span></p>
+    //         </div>
+    //       })
+    //     }
+    //   </div>
+    // </div>
+    <div>
+    {results && results.length > 0 && results.map((data, index) => (
+      <ul className={styles.ul} key={index}>
+        <li onClick={ () => goDetail(data.keyword) } className={styles.li}>
+          <img src={data.feedImages[0].imagePath} alt="Feed" />
+          {data.content}
+        </li>
+      </ul>
+    ))}
+  </div>
+  )}  
 
 export default SearchResultFeed;

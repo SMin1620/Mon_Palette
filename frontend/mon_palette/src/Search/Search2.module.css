@@ -1,17 +1,21 @@
-.search-container {   
+:root {
+  font-size: 16px;
+}
+
+.search-container {
   margin: 0;
-  padding-top: 20px;
+  padding-top: 1.25rem;
   display: flex;
+  justify-content: center;
   align-items: center;
-  /* justify-content: space-evenly; */
   width: 100%;
 }
 
 .line {
-  width: 390px;
+  width: 100%; 
   flex-shrink: 0;
   display: inline-block;
-  margin: 3px 0px;
+  margin: 0.188rem 0px; 
 }
 
 .container {

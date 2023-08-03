@@ -1,7 +1,10 @@
 import React from 'react';
 import './SearchResultShop.css'
+import { resultsState } from '../Search/Atom';
+import { useRecoilValue } from 'recoil';
 
 function SearchResultShop() {
+  const Results = useRecoilValue(resultsState);
   const ShopData = [{
     imgSrc: 'https://image.zdnet.co.kr/2021/10/28/c0f21e0abf1b83f3c1d9e0702aede342.jpg',
     title: 'title',
@@ -33,6 +36,8 @@ function SearchResultShop() {
     description: '설명설명설명설명설명설명설명설명설명',
     cost: '1470000'
   },]
+  
+
   return (
     <div className="search_result_shop_wrap">
       {

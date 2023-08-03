@@ -1,4 +1,4 @@
-package com.palette.palette.domain.user.dto.mypage;
+package com.palette.palette.domain.user.dto.userpage;
 
 import com.palette.palette.domain.feed.entity.Feed;
 import com.palette.palette.domain.user.entity.Role;
@@ -14,7 +14,16 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Mypage {
+public class UserPage {
+
+    @Schema(description = "나인지 아닌지", example = "true")
+    private Boolean isMe;
+
+    @Schema(description = "팔로우 여부", example = "true")
+    private Boolean isFollow;
+
+    @Schema(description = "이메일", example = "이메일")
+    private String email;
 
     @Schema(description = "프로필 사진", example = "프로필사진url")
     private String profilePhoto;
@@ -32,13 +41,13 @@ public class Mypage {
     private String personalColor;
 
     @Schema(description = "팔로워수", example = "8")
-    private long followerCnt;
+    private String followerCnt;
 
     @Schema(description = "팔로잉수", example = "9")
-    private long followingCnt;
+    private String followingCnt;
 
     @Schema(description = "피드 수", example = "10")
-    private long feedCnt;
+    private Integer feedCnt;
 
     @Schema(description = "피드", example = "피드 리스트")
     private List<Feed> feed;
