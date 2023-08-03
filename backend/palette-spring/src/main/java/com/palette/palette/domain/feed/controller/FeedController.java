@@ -41,20 +41,57 @@ public class FeedController {
 
 
     /**
-     * 피드 목록 조회
+     * 메인 피드 목록 조회
      */
     @Operation(summary = "메인 피드 목록 조회")
-    @GetMapping()
-    public BaseResponse feedList(
+    @GetMapping("/main")
+    public BaseResponse mainFeedList(
             @RequestParam("page") int page,
-            @RequestParam(value = "color", required = false) String color,
             HttpServletRequest request
     ) {
 
         System.out.println("메인 피드 목록 조회 컨트롤러");
         
         try {
-            return BaseResponse.success(feedService.feedList(page, 10, color));
+            /////////////////////// 토큰으로 인가된 사용자 정보 처리하는 로직
+            String token = jwtTokenProvider.resolveToken(request);
+            jwtTokenProvider.validateToken(token);
+
+            System.out.println("token >>> " + token);
+
+            Authentication authentication = jwtTokenProvider.getAuthentication(token);
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+
+            User user = userRepository.findByEmail(userDetails.getUsername()).get();
+
+            // 유저 예외처리 :: 예외처리 커스텀 필요
+            if (user == null) {
+                throw new UserPrincipalNotFoundException("유효한 사용자가 아닙니다.");
+            }
+
+            return BaseResponse.success(feedService.mainFeedList(page, 10, user));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return BaseResponse.error("메인 피드 목록 조회 실패");
+        }
+    }
+
+    /**
+     * 피드 목록 조회
+     */
+    @Operation(summary = "일반 피드 목록 조회")
+    @GetMapping()
+    public BaseResponse feedList(
+            @RequestParam("page") int page,
+            @RequestParam(value = "color", required = false) String color,
+            @RequestParam(value = "orderBy", required = false) String orderBy,
+            HttpServletRequest request
+    ) {
+
+        System.out.println("메인 피드 목록 조회 컨트롤러");
+
+        try {
+            return BaseResponse.success(feedService.feedList(page, 10, color, orderBy));
         } catch (Exception e) {
             e.printStackTrace();
             return BaseResponse.error("메인 피드 목록 조회 실패");

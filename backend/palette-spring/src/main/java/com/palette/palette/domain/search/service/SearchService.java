@@ -123,6 +123,44 @@ public class SearchService {
 
 
     /**
+     * 인기 해시태그 레디스 저장
+     */
+    public void tags(String keyword) {
+
+        Double score = 0.0;
+
+        try {
+            // 검색을하면 해당검색어를 value에 저장하고, score를 1 준다
+            redisTemplate.opsForZSet().incrementScore("tags", keyword, 1);
+            Date.from(ZonedDateTime.now().plusDays(7).toInstant()); // 최근 검색어가 7일동안 유지.
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // 검색을하면 해당검색어를 value에 저장하고, score를 1 준다
+//        redisTemplate.opsForZSet().incrementScore("tags", keyword, score);
+//
+    }
+
+    /**
+     * 인기 해시태그 목록 조회
+     */
+    public List<SearchRankResDto> tagList() {
+
+        String key = "tags";
+        ZSetOperations<String, String> ZSetOperations = redisTemplate.opsForZSet();
+        Set<ZSetOperations.TypedTuple<String>> typedTuples = ZSetOperations.reverseRangeWithScores(key, 0, 9);  //score순으로 10개 보여줌
+
+        return typedTuples.stream()
+                .map(typedTuple -> SearchRankResDto.builder()
+                        .keyword(typedTuple.getValue())
+                        .score(typedTuple.getScore().intValue())
+                        .build())
+                .collect(Collectors.toList());
+    }
+
+
+    /**
      * 인기 검색어 레디스 저장
      */
     public void ranking(String keyword) {
