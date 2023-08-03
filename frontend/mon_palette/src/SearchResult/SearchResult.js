@@ -49,8 +49,10 @@ function SearchResult() {
   }, []); 
 
   return (
-    <div>
+    <div >
+      <div className={styles['search-container']}>
       <SearchInput/>
+      </div>
     <div className={styles["search_result"]}>
       <div className={styles["search_result_top"]}>
         <div className={styles["search_result_page"]} onClick={() => {
@@ -78,9 +80,9 @@ function SearchResult() {
         </div>
       </div>
 
-      <div className={styles["search_result_body"]}>
+      {/* <div className={styles["search_result_body"]}> */}
         {resultPage}
-      </div>
+      {/* </div> */}
     </div>
     </div>
   );
