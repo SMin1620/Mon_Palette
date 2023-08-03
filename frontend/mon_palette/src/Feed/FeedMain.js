@@ -34,6 +34,7 @@ function FeedMain() {
 
   // 무한스크롤 구현해서 피드에서 내려갈때마다 axios 요청 보내자
   const handleObs = (entries) => {
+
     const target = entries[0];
     if (!endRef.current && target.isIntersecting) {
       // 스크롤 바닥에 도달하면 페이지 번호를 증가시키고 데이터를 가져옴
@@ -48,7 +49,7 @@ function FeedMain() {
       });
 
       // 새로운 데이터를 기존 데이터와 합치기 위해 spread 연산자 사용
-      setFeedInfo((prevFeedInfo) => [...prevFeedInfo, ...response.data.data]);
+      setFeedInfo((prevFeedInfo) => [...prevFeedInfo, ...response.data.data.feeds]);
       console.log(typeof(response.data.data))
     } catch (error) {
       console.error(error);
