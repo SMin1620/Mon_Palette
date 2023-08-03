@@ -8,18 +8,19 @@ const getTimegap = (createdAt) => {
     const minutegap = Math.floor(msgap / 60000);
     const hourgap = Math.floor(msgap / 3600000);
     const daygap = Math.floor(msgap / 86400000);
+    const weekgap = Math.floor(msgap / (86400000 * 7));
 
     if (msgap < 0) {
-        return <p>0분전</p>;
-    }
-    if (hourgap > 24) {
-        return <p>{daygap}일 전</p>;
-    }
-    if (minutegap > 60) {
-        return <p>{hourgap}시간 전</p>;
-    } else {
-        return <p>{minutegap}분 전</p>;
-    }
+        return <span>0분전</span>;
+      } else if (weekgap > 0) {
+        return <span>{weekgap}주 전</span>;
+      } else if (daygap > 0) {
+        return <span>{daygap}일 전</span>;
+      } else if (hourgap > 0) {
+        return <span>{hourgap}시간 전</span>;
+      } else {
+        return <span>{minutegap}분 전</span>;
+      }
 };
 
 function Header() {

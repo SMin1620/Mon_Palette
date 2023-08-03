@@ -36,7 +36,6 @@ const FeedWrite = () => {
   const [selectedImages, setSelectedImages] = useState([]);
   const [imageUrlList, setImageUrlList] = useState([])
   const [update, setUpdate] = useState(false)
-  const [btnClass, setBtnClass] = useState(false)
 
   // feed 설명
   const [caption, setCaption] = useState('');
@@ -71,19 +70,10 @@ const FeedWrite = () => {
       Bucket: BUCKET,
       Key: key,
     };
-
     try {
-      if (params.Key.includes(' ')) {
-        const replaceFileName = params.Key.replace(/\s/g,'+')
-        console.log(replaceFileName)
-        const imageUrl = `https://${BUCKET}.s3.ap-northeast-2.amazonaws.com/${replaceFileName}`
-        console.log(imageUrl)
-        return imageUrl;
-      } else {
-        const imageUrl = `https://${BUCKET}.s3.ap-northeast-2.amazonaws.com/${params.Key}`
-        console.log(imageUrl)
-        return imageUrl
-      }
+      const imageUrl = `https://${BUCKET}.s3.ap-northeast-2.amazonaws.com/${params.Key}`
+      console.log(imageUrl)
+      return imageUrl
     } catch (error) {
       console.log(error)
       return null
@@ -102,11 +92,12 @@ const FeedWrite = () => {
       try {
         await Promise.all(
           imageFileList.map(async (imageFile) => {
+            const replaceFileName = imageFile.name.includes(" ") ? imageFile.name.replace(/\s/g, "") : imageFile.name;
             const params = {
               ACL: "public-read",
               Body: imageFile,
               Bucket: BUCKET,
-              Key: uuid() + imageFile.name,
+              Key: uuid() + replaceFileName,
             };
 
             try {
@@ -118,7 +109,6 @@ const FeedWrite = () => {
             }
           })
         )
-        setBtnClass(true)
         setUpdate(true)
       } catch (error) {
         console.log(error);
@@ -144,7 +134,6 @@ const FeedWrite = () => {
       handlePostFeed()
     }
     setUpdate(false)
-    setBtnClass(false)
   },[update])
 
   // axios 함수
@@ -165,7 +154,8 @@ const FeedWrite = () => {
         .then((response) => {
           console.log(response)
           const feedId = response.data.data.id
-          navigate(`/feed/${feedId}`)
+          // navigate(`/feed/${feedId}`)
+          console.log('imageUrlList',imageUrlList)
         })
         .catch((error) => {
           console.error(error)
@@ -179,7 +169,7 @@ const FeedWrite = () => {
         <ArrowBackIcon sx={{ fontSize: 20 }}className="feed_write_top_back"/>
         <h2>write</h2>
         <div 
-          className={btnClass ? "feed_write_top_upload_select" : "feed_write_top_upload"}
+          className="feed_write_top_upload"
           onClick={() => {
             handleCreate(selectedImages)}
           }

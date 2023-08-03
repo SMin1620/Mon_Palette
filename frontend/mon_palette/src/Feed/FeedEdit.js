@@ -11,33 +11,34 @@ import './FeedEdit.css'
 
 function FeedEdit(props) {
   const navigate = useNavigate()
-
   const location = useLocation()
-  console.log('location',location)
-
-  // 피드정보 props 받아서 id 값 뽑아오고 해당 id 로 put 요청 보내기
   const feedId = useParams()
   const token = useRecoilValue(loginState)
-  const [feedData, setFeedData] = useState('')
-  // 프랍받은 이미지 저장하기
-  const [propsFeedImages, setPropsFeedImages] = useState([])
-  // 유저가 올린 이미지 저장하기
-  const [userSelectedImages, setUserSelectedImages] = useState([])
-  // AWS에 저장할 이미지
-  const [newImages, setNewImages] = useState([]) 
-  // AWS에서 삭제할 이미지
-  const [deleteImage, setDeleteImage] = useState([])
-  // 이미지 url
-  const [imageUrlList, setImageUrlList] = useState([])
-  // 피드 설명
-  const [caption, setCaption] = useState('')
-  // 피드 태그
-  const [tags, setTags] = useState('')
-  const [tagList, setTagList] = useState([])
-  // axios 실행시킬 useEffect
-  const [update, setUpdate] = useState(false)
 
-  // AWS 연동
+  // location 데이터 저장하기
+  const [feedData, setFeedData] = useState('')
+
+  useEffect (() => {
+    setFeedData(location.state.feedData)
+  },[])
+
+  // location 데이터 저장하기
+  const [feedImages, setFeedImages] = useState([])
+  const [caption, setCaption] = useState('')
+  const [tagList, setTagList] = useState([])
+  const [tags, setTags] = useState('')
+
+  useEffect(() => {  
+    feedData&&feedData.feedImages.map(image => {
+      setFeedImages((prevImg) => [...prevImg, image.imagePath])
+      setCaption(feedData.content)
+    })
+    feedData&&feedData.hashtags.map(hashtag => {
+      setTagList((prevtag) => [...prevtag, hashtag])
+    })
+  },[feedData])
+  
+  // AWS 통신하며 이미지 저장
   const ACCESS_KEY = process.env.REACT_APP_AWS_S3_ACCESS_ID
   const SECRET_ACCESS_KEY = process.env.REACT_APP_AWS_S3_ACCESS_PW
   const REGION = process.env.REACT_APP_AWS_S3_REGION
@@ -53,114 +54,53 @@ function FeedEdit(props) {
     region: REGION,
   })
 
-  // AWS에서 url 가져오기
+  const handleImageUpload = (e) => {
+    const files = e.target.files[0]
+    if (!files) {
+      setFeedImages(feedImages)
+    } else {
+      // AWS에 저장 후 url 가져와서 다시 저장
+      handleImageUploadToS3(files)
+    }
+  }
+
+  // AWS 에서 URL 가져오기
   const handleImageUrlFromS3 = async (key) => {
     const params = {
       Bucket: BUCKET,
-      Key: key,
-    };
-
+      Key: key
+    }
     try {
-      if (params.Key.includes(' ')) {
-        const replaceFileName = params.Key.replace(/\s/g,'+')
-        console.log(replaceFileName)
-        const imageUrl = `https://${BUCKET}.s3.ap-northeast-2.amazonaws.com/${replaceFileName}`
-        console.log(imageUrl)
-        return imageUrl;
-      } else {
-        const imageUrl = `https://${BUCKET}.s3.ap-northeast-2.amazonaws.com/${params.Key}`
-        console.log(imageUrl)
-        return imageUrl
-      }
+      const imageUrl = `https://${BUCKET}.s3.ap-northeast-2.amazonaws.com/${params.Key}`
+      return imageUrl
     } catch (error) {
       console.log(error)
       return null
     }
-  };
+  }
 
-  useEffect(() => {
-    setFeedData(location.state.feedData)
-  },[])
-
-  useEffect(() => {
-    // 프랍받은 이미지 넣기 + 복사본 만들기
-    feedData&&feedData.feedImages.map(image => {
-      console.log("돌아간다")
-      setPropsFeedImages((prevImg) => [...prevImg, image])
-      setUserSelectedImages((prevImg) => [...prevImg, image])
-      setCaption(feedData.content)
-    })
-    feedData&&feedData.hashtags.map(hashtag => {
-      setTagList((prevtag) => [...prevtag, hashtag])
-    })
-  },[feedData])
-
-  useEffect(() => {
-    if (update === true) {
-      axios
-        .put(`http://192.168.30.224:8080/api/feed/${feedId}`, {
-          content: caption,
-          hashtag: tagList,
-          feedImages: imageUrlList
-        },{
-          headers: { Authorization: token}
-        })
-        .then((response) => {
-          console.log(response)
-          navigate(-1)
-          // 수정된 디테일 페이지롱 이동
-        })
-        .catch((error) => {
-          console.log(error)
-        })
-      
-        handleRemove()
+  // AWS에 이미지 저장 및 URL 리스트에 저장
+  const handleImageUploadToS3 = async (imageFile) => {
+    const replaceFileName = imageFile.name.includes(" ") ? imageFile.name.replace(/\s/g, "") : imageFile.name;
+    const params = {
+      ACL: "public-read",
+      Body: imageFile,
+      Bucket: BUCKET,
+      Key: uuid() + replaceFileName
     }
-    setUpdate(false)
-  },[update])
-
-  const handleImageUpload = (e) => {
-    const files = e.target.files[0]
-    if (!files) {
-      setUserSelectedImages(userSelectedImages)
-    } else {
-      if (userSelectedImages.length > 9) {
-        alert('최대 10장까지 등록 가능합니다.')
-        document.querySelector("#fileUpload").disabled = true
-      } else {
-        setUserSelectedImages((prevImg) => [...prevImg, files])
-      }
+    try {
+      const _temp = await myBucket.putObject(params).promise()
+      const S3Url = await handleImageUrlFromS3(params.Key)
+      setFeedImages((prev) => [...prev, S3Url])
+    } catch (error) {
+      console.log(error)
     }
   }
-  
+
+  // 이미지 삭제 
   const handleRemoveImage = (imageIndex) => {
     document.querySelector("#fileUpload").disabled = false
-    setUserSelectedImages((prevImg) =>{
-      const removedImage = prevImg[imageIndex]
-      const updatedImages = prevImg.filter((_, index) => index !== imageIndex)
-      setDeleteImage((prevRemovedImage) => [...prevRemovedImage, removedImage])
-      return updatedImages
-    }) 
-  };
-
-  // aws에 삭제보내는 함수
-  const handleRemove = async () => {
-    const handleDeleteImageList = await deleteImage.filter(delImage => propsFeedImages.includes(delImage))
-    handleDeleteImageList.map(delImgUrl => {
-      const fileUrlParts = delImgUrl.split('/')
-      const objectKey = decodeURIComponent(fileUrlParts[fileUrlParts.length-1])
-      const params = {
-        Bucket: BUCKET,
-        Key: objectKey
-      }
-
-      try {
-        myBucket.deleteObject(params)
-        console.log('삭제완료')
-      } catch (error) {
-        console.log('error', error)
-      }
-    })
+    setFeedImages((prevImg) => prevImg.filter((_, index) => index !== imageIndex))
   }
 
   // hashTag 부분
@@ -175,46 +115,22 @@ function FeedEdit(props) {
     setTagList((prev) => prev.filter((_, index) => index !== tagindex))
   }
 
-  const handleNewimageList = async () => {
-    await setNewImages(
-      userSelectedImages.filter(newImage => !propsFeedImages.includes(newImage))
-    )
-  }
-
-  // 업로드
-  const handleUpload = async () => {
-    if (userSelectedImages.length === 0) {
-      alert("사진을 선택하세요!!")
-      return
-    } else if (!caption) {
-      alert("내용을 입력하세요!!")
-      return
-    } else {
-      await handleNewimageList()
-      try {
-        await Promise.all(
-          newImages.map(async (imageFile) => {
-            const params = {
-              ACL: "public-read",
-              Body: imageFile,
-              Bucket: BUCKET,
-              Key: uuid() + imageFile.name
-            }
-            
-            try {
-              const _temp = await myBucket.putObject(params).promise()
-              const S3Url = await handleImageUrlFromS3(params.key)
-              setImageUrlList((prev) => [...prev, S3Url])
-            } catch (error) {
-              console.log(error)
-            }
-          })
-        )
-        setUpdate(true)
-      } catch (error) {
-        console.log(error)
-      }
-    }
+  const handleUpload = () => {
+    axios
+      .put(`${process.env.REACT_APP_API}/api/feed/${feedId.id}`, {
+        content: caption,
+        hashtags: tagList,
+        feedImages: feedImages
+      }, {
+        headers: {Authorization: token}
+      })
+      .then((response) => {
+        console.log(response)
+        window.location.href = `/feed/${feedId.id}`;
+      })
+      .catch((error) => {
+        console.error(error)
+      })
   }
 
   return (
@@ -222,7 +138,7 @@ function FeedEdit(props) {
       <div className="feed_edit_top">
         <ArrowBackIcon sx={{ fontSize: 20 }}className="feed_write_top_back"/>
         <h2>Edit Profile</h2>
-        <button onClick={handleUpload} className="feed_edit_top_upload_select">edit</button>
+        <div onClick={handleUpload} className="feed_edit_top_upload">edit</div>
       </div>
 
       <hr className="feed_edit_top_header_hr"/>
@@ -231,7 +147,7 @@ function FeedEdit(props) {
         <div className="feed_edit_top_image_upload">
           <label for="fileUpload" className="feed_edit_top_image_label">Up load</label>
           <input 
-            className="feed_edit_top_image_upload"
+            className="feed_edit_top_image_input"
             type="file"
             accept="image/*"
             id="fileUpload"
@@ -242,10 +158,10 @@ function FeedEdit(props) {
 
         <div className="feed_edit_top_image_wrap">
           {
-            userSelectedImages&&userSelectedImages.map((image, index) => (
+            feedImages&&feedImages.map((image, index) => (
               <div key={index} className="feed_edit_top_image_container">
                 <div className="feed_edit_top_image_item">
-                  <img src={image.imagePath} alt={index}/>
+                  <img src={image} alt={index}/>
                   <button onClick={() => handleRemoveImage(index)}>-</button>
                 </div>
               </div>
