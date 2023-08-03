@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './ChallengeHome.css'
+import { useRecoilValue } from 'recoil';
 // import FollowChallenge from './FollowChallenge'
+import { loginState } from './../user/components/Atom';
+import axios from 'axios';
 
 function ChallengeHome() {
 
@@ -139,6 +142,21 @@ function ChallengeHome() {
 const AllChallengeImage = [
   'https://cdn.autotribune.co.kr/news/photo/202304/8017_43246_1529.jpg',
 ]
+  const token = useRecoilValue(loginState)
+  const [challengeList, setChallengeList] = useState([])
+
+  useEffect(() => {
+    axios
+      .get(`${process.env.REACT_APP_API}`, {
+        headers: {Authorization: loginState}
+      })
+      .then((response) => {
+        setChallengeList(response.data.data)
+      })
+      .catch((error) => {
+        console.error(error)
+      })
+  },[])
 
 
   return (
@@ -188,7 +206,7 @@ const AllChallengeImage = [
         <div className="challengeHome_bottom_challengeInfo">
             <div className="challengeHome_bottom_container">
               {
-                AllChallengeImage.map((challengeInfo, index) => {
+                challengeList.map((challengeInfo, index) => {
                   return <div className="challengeHome_bottom_info_item" key={index}>
                     <img src={challengeInfo} alt="" />
                     {index}
