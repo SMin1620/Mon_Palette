@@ -5,7 +5,7 @@ import styles from './SearchInput.module.css'
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import ArrowCircleLeftOutlinedIcon from '@mui/icons-material/ArrowCircleLeftOutlined';
 import axios from 'axios';
-import { loginState } from '../user/components/Atom';
+import { loginState } from '../user/components/Atom/loginState';
 import { resultsState } from './Atom';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Autocomplete from './AutoComplete';

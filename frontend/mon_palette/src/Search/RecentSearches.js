@@ -3,7 +3,7 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 // import { recentSearchesState } from './Atom';
 import styles from './RecentSearches.module.css'; 
 import axios from "axios";
-import { loginState } from '../user/components/Atom';
+import { loginState } from '../user/components/Atom/loginState';
 import { resultsState, searchQueryState } from './Atom';
 import { Link } from 'react-router-dom';
 

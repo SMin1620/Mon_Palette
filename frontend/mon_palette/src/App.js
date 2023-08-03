@@ -15,6 +15,10 @@ import ChangeInfo from "./user/components/ChangeInfo";
 import UserPage from "./user/components/UserPage";
 import FollowingList from "./user/components/FollowingList";
 import FollowerList from "./user/components/FollowerList";
+import FeedWrite from './Feed/FeedWrite';
+import FeedEdit from './Feed/FeedEdit';
+import ChallengeHome from './Challenge/ChallengeHome';
+import FeedDetail from "./Feed/FeedDetail/FeedDetail";
 
 import { Routes, Route } from "react-router-dom";
 
@@ -36,7 +40,6 @@ function App() {
 						<FeedMain />,
 					]}
 				/>
-
 				{/* path={`/search/${검색결과 변수이름}`} */}
 				{/* 네비 헤더 부분 빠지고 검색창의 top 부분 들어가야함 */}
 				<Route
@@ -48,12 +51,10 @@ function App() {
 					path="/result"
 					element={[<NavigationBarBottom />, <SearchResult />]}
 				/>
-
 				<Route
 					path="/signup"
 					element={[<NavigationBarHeader title="Sign up" />, <SignUp />]}
 				/>
-
 				<Route
 					path="signupform"
 					element={[<NavigationBarHeader title="Sign up" />, <SignUpForm />]}
@@ -122,6 +123,35 @@ function App() {
 						<NavigationBarHeader title="follower" />,
 						<NavigationBarBottom />,
 						<FollowerList />,
+					]}
+				/>
+				<Route
+
+					path="/feed/write"
+					element={[
+						<NavigationBarBottom />,
+						<FeedWrite />,
+					]}
+				/>
+				<Route
+					path="/challenge"
+					element={[
+						<NavigationBarHeader title="Mon, Palette" />,
+						<NavigationBarBottom />,
+						<ChallengeHome />,
+					]}
+				/>
+				<Route
+					path="/feed/edit/:id"
+					element={[
+						<NavigationBarBottom />,
+						<FeedEdit />,]}
+				/>
+
+				<Route
+					path="/feed/:feedId"
+					element={[
+						<FeedDetail />
 					]}
 				/>
 			</Routes>

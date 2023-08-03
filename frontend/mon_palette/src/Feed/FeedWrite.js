@@ -1,15 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import styles from './FeedWrite.module.css';
+import './FeedWrite.css'
 import axios from 'axios';
-import { loginState } from '../user/components/Atom';
+import { loginState } from '../user/components/Atom/loginState';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 // AWS
 import AWS from 'aws-sdk'
 import uuid from 'react-uuid'
 import { useRecoilValue } from 'recoil';
+import { useNavigate } from 'react-router-dom';
 
 const FeedWrite = () => {
+  const navigate = useNavigate()
 
+  // 로그인 정보
   const token = useRecoilValue(loginState)
 
   // AWS 연동
@@ -40,15 +44,18 @@ const FeedWrite = () => {
   const [tags, setTags] = useState('');
   const [tagList, setTagList] = useState([]);
 
-  
-
+  // 이미지 미리보기 올리기 및 제거
   const handleImageUpload = (e) => {
     const files = e.target.files[0]
-    if (selectedImages.length > 9) {
-      alert('최대 10장까지 등록 가능합니다.')
-      document.querySelector("#fileUpload").disabled = true
+    if (!files) {
+      setSelectedImages(selectedImages)
     } else {
-      setSelectedImages((prevImages) => [...prevImages, files]);
+      if (selectedImages.length > 9) {
+        alert('최대 10장까지 등록 가능합니다.')
+        document.querySelector("#fileUpload").disabled = true
+      } else {
+        setSelectedImages((prevImages) => [...prevImages, files]);
+      }
     }
   };
 
@@ -63,19 +70,10 @@ const FeedWrite = () => {
       Bucket: BUCKET,
       Key: key,
     };
-
     try {
-      if (params.Key.includes(' ')) {
-        const replaceFileName = params.Key.replace(/\s/g,'+')
-        console.log(replaceFileName)
-        const imageUrl = `https://${BUCKET}.s3.ap-northeast-2.amazonaws.com/${replaceFileName}`
-        console.log(imageUrl)
-        return imageUrl;
-      } else {
-        const imageUrl = `https://${BUCKET}.s3.ap-northeast-2.amazonaws.com/${params.Key}`
-        console.log(imageUrl)
-        return imageUrl
-      }
+      const imageUrl = `https://${BUCKET}.s3.ap-northeast-2.amazonaws.com/${params.Key}`
+      console.log(imageUrl)
+      return imageUrl
     } catch (error) {
       console.log(error)
       return null
@@ -94,16 +92,16 @@ const FeedWrite = () => {
       try {
         await Promise.all(
           imageFileList.map(async (imageFile) => {
+            const replaceFileName = imageFile.name.includes(" ") ? imageFile.name.replace(/\s/g, "") : imageFile.name;
             const params = {
               ACL: "public-read",
               Body: imageFile,
               Bucket: BUCKET,
-              Key: uuid() + imageFile.name,
+              Key: uuid() + replaceFileName,
             };
-    
+
             try {
-              const data = await myBucket.putObject(params).promise();
-    
+              const _temp = await myBucket.putObject(params).promise();
               const S3Url = await handleImageUrlFromS3(params.Key);
               setImageUrlList((prev) => [...prev, S3Url]);
             } catch (error) {
@@ -119,9 +117,15 @@ const FeedWrite = () => {
   };
 
   // hashTag 부분
-  const handleAddTag = () => {
-    setTagList((prev) => [...prev, tags])
-    setTags('')
+  const handleAddTag = (e) => {
+    if (e.key === "Enter") {
+      setTagList((prev) => [...prev, tags])
+      setTags("")
+    }
+  }
+
+  const handleRemoveHashTag = (tagindex) => {
+    setTagList((prev) => prev.filter((_, index) => index !== tagindex));
   }
 
   // axios 요청 보내기
@@ -140,7 +144,7 @@ const FeedWrite = () => {
       alert('설명을 입력하세요')
     } else {
       axios
-        .post('http://192.168.30.224:8080/api/feed', {
+        .post(`${process.env.REACT_APP_API}/api/feed`, {
         content: caption,
         hashtags: tagList,
         feedImages: imageUrlList
@@ -149,76 +153,91 @@ const FeedWrite = () => {
         })
         .then((response) => {
           console.log(response)
+          const feedId = response.data.data.id
+          // navigate(`/feed/${feedId}`)
+          console.log('imageUrlList',imageUrlList)
         })
         .catch((error) => {
           console.error(error)
         })
     }
   }
-  console.log('imageUrlList',imageUrlList)
 
   return (
-    <div className={styles["feed-form"]}>
-      <div className={styles.header}>
-        <button className={styles.button}>뒤로 가기</button>
-        <h2>글 작성하기</h2>
-        <button 
-          className={styles.button}
+    <div className="feed_write">
+      <div className="feed_write_top">
+        <ArrowBackIcon sx={{ fontSize: 20 }}className="feed_write_top_back"/>
+        <h2>write</h2>
+        <div 
+          className="feed_write_top_upload"
           onClick={() => {
             handleCreate(selectedImages)}
           }
-        >업로드</button>
+        >upload</div>
       </div>
+
+      <hr className="feed_write_top_header_hr"/>
 
 
       {/* feed 이미지 부분 */}
-      <div className={styles["feed-image"]}>
-        <input 
-          accept="image/*"
-          multiple
-          type="file" 
-          onChange={handleImageUpload}
-          id="fileUpload"
-        />
+      <div className="feed_write_top_image">
+        <div className="feed_write_top_image_upload">
+          <label for="fileUpload" className="feed_write_top_image_label">Up load</label>
+          <input 
+            className="feed_write_top_image_input"
+            accept="image/*"
+            multiple
+            type="file" 
+            onChange={handleImageUpload}
+            id="fileUpload"
+          />
+        </div>
       
-        <div className={styles["selected-images"]}>
-          {selectedImages.map((image, index) => (
-            <div key={index} className={styles["image-item"]}>
-              <img className={styles["feed-img"]} src={URL.createObjectURL(image)} alt={index} />
-              <button className={styles["feed-button"]} onClick={() => handleRemoveImage(index)}>Remove</button>
-            </div>
-          ))}
+        <div className="feed_write_top_image_wrap">
+          {
+            selectedImages.map((image, index) => (
+              <div key={index} className="feed_write_top_image_container">
+                <div className="feed_write_top_image_item">
+                  <img src={URL.createObjectURL(image)} alt={index} />
+                  <button onClick={() => handleRemoveImage(index)}>-</button>
+                </div>
+              </div>
+            ))
+          }
         </div>
       </div>
 
       {/* feed caption 부분 */}
-      <div className={styles.caption}>
-        <div className="feed-caption">
-          <textarea
-            value={caption}
-            onChange={(e) => setCaption(e.target.value)}
-            placeholder="피드에 추가할 캡션을 입력하세요..."
-          />
-        </div>
+      <div className="feed_write_mid">
+        <textarea
+          className="feed_write_mid_caption_textarea"
+          value={caption}
+          onChange={(e) => setCaption(e.target.value)}
+          placeholder="문구 입력..."
+        />
       </div>
 
-      <hr className={styles.hr}/>
+      <hr className="feed_write_mid_bottom_hr"/>
       
       {/* feed 해시태그 부분 */}
-      <div className={styles.tag}>
-        <h2># Tag</h2>
+      <h2 className="feed_write_bottom_h2"># Tag</h2>
+      <div className="feed_write_bottom">
         <textarea 
-          className={styles.textarea}
+          className="feed_write_bottom_hashtag_textarea"
           value={tags}
           onChange={(e) => setTags(e.target.value)}
-          placeholder="태그를 입력하세요..." 
+          placeholder="# 단어를 입력해서 나만의 tag를 만들어보세요!"
+          maxLength={20}
+          onKeyUp={handleAddTag}
         />
-        <button className={styles.button} onClick={handleAddTag}>Add Tag</button>
 
-        <div>
+        <div className="feed_write_bottom_hashtag_area">
           {
             tagList.map((tag, index) => {
-              return <div key={index}>#{tag}</div>
+              return <div className="feed_write_bottom_hashtag_item" key={index}># {tag}
+              
+              <button className="feed_write_bottom_hashtag_button" onClick={() => handleRemoveHashTag(index)}>-</button>
+              </div>
             })
           }
         </div>
