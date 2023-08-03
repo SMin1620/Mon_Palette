@@ -154,6 +154,12 @@ function App() {
 						<FeedDetail />
 					]}
 				/>
+				<Route
+					path="/feed/:feedId"
+					element={[
+						<FeedDetail />
+					]}
+				/>
 			</Routes>
 		</div>
 	);

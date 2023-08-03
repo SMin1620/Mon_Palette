@@ -1,9 +1,13 @@
 import React, { useState } from "react";
 import styles from "./Comment.module.css"
 import { FixedSizeGrid as Grid } from 'react-window';
+import { useRecoilValue } from "recoil";
+import { loginState } from "../../../user/components/Atom/loginState";
+import { useParams } from 'react-router-dom';
+import axios from "axios"
 // import InfiniteLoader from 'react-window-infinite-loader';
 
-
+// 댓글 작성시간 구하는 함수
 const getTimegap = (createdAt) => {
     const msgap = Date.now() - new Date(createdAt).getTime();
     const minutegap = Math.floor(msgap / 60000);
@@ -39,19 +43,13 @@ const getTimegap = (createdAt) => {
 //     setCommentArray('');
 // };
 
-// <div onSubmit={onSubmit}>
-//     <form>
-//         <input
-//         type="text"
-//         placeholder="댓글달기..."
-//         value={comment}
-//         onChange={onChange}
-//         />
-//         <button>게시</button>
-//     </form>
-// </div>
 
-function Comment(props) {
+function Comment() {
+
+    const [comments, setComments] = useState([])
+    const feedId = useParams()
+    const token = useRecoilValue(loginState)
+
 
     const FeedData = {
 
@@ -222,6 +220,9 @@ function Comment(props) {
 
     }
 
+    const onSubmit = () => {
+
+    }
     
 
     // let commentArray = props.commentArray;
@@ -257,6 +258,25 @@ function Comment(props) {
               </div>
             </div>
           ))}
+          <div>
+            
+            <div 
+            onSubmit={onSubmit}
+            className={styles.input_wrap}>
+            
+                <form
+                className={styles.form}>
+                    <input
+                    type="text"
+                    placeholder="Write your comment..."
+                    className={styles.input}
+                    />
+                    <button
+                    className={styles.btn}>submit</button>
+                </form>
+            </div>
+
+          </div>
         </div>
       );
       
