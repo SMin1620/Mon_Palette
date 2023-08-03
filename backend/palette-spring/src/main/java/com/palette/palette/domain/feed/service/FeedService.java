@@ -3,6 +3,8 @@ package com.palette.palette.domain.feed.service;
 import com.palette.palette.common.BaseResponse;
 import com.palette.palette.domain.feed.dto.detail.FeedDetailResDto;
 import com.palette.palette.domain.feed.dto.image.FeedImageResDto;
+import com.palette.palette.domain.feed.dto.list.FeedBaseDto;
+import com.palette.palette.domain.feed.dto.list.FeedMainResDto;
 import com.palette.palette.domain.feed.dto.list.FeedReqDto;
 import com.palette.palette.domain.feed.dto.list.FeedResDto;
 import com.palette.palette.domain.feed.dto.image.FeedImageReqDto;
@@ -18,6 +20,8 @@ import com.palette.palette.domain.hashtag.entity.Hashtag;
 import com.palette.palette.domain.hashtag.repository.HashtagRepository;
 import com.palette.palette.domain.like.entity.FeedLike;
 import com.palette.palette.domain.like.repository.FeedLikeRepository;
+import com.palette.palette.domain.search.dto.SearchRankResDto;
+import com.palette.palette.domain.search.service.SearchService;
 import com.palette.palette.domain.user.entity.User;
 import com.palette.palette.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -42,18 +46,39 @@ public class FeedService {
     private final FeedLikeRepository feedLikeRepository;
     private final UserRepository userRepository;
     private final FollowRepository followRepository;
+    private final SearchService searchService;
+
+    /**
+     * 메인 피드 목록 조회
+     */
+    public List<FeedMainResDto> mainFeedList(int page, int size, User user) {
+        Pageable pageable = PageRequest.of(page, size);
+
+        List<FeedMainResDto> feeds = feedRepository.findByMainFeed(pageable, user).getContent().stream()
+                .map(FeedMainResDto::toDto)
+                .collect(Collectors.toList());
+
+        return feeds;
+    }
+
 
     /**
      * 피드 목록 조회
      */
-    public List<FeedResDto> feedList(int page, int size, String color) {
+    public FeedBaseDto feedList(int page, int size, String color, String orderBy) {
         Pageable pageable = PageRequest.of(page, size);
 
-        List<FeedResDto> feeds = feedRepository.findByMainFeed(pageable, color).getContent().stream()
+        // 인기 해시태그 목록 조회
+        List<SearchRankResDto> searchRankResDtos = searchService.tagList();
+
+        List<FeedResDto> feeds = feedRepository.findByFeedList(pageable, color, orderBy).getContent().stream()
                 .map(FeedResDto::toDto)
                 .collect(Collectors.toList());
 
-        return feeds;
+        return FeedBaseDto.builder()
+                .tagRanking(searchRankResDtos)
+                .feeds(feeds)
+                .build();
     }
 
     /**
@@ -68,6 +93,9 @@ public class FeedService {
         List<Hashtag> hashtags = new ArrayList<>();
         for (String name : feedReqDto.getHashtags()) {
 
+            // 해시태그 랭킹에 반영
+            searchService.tags(name);
+
             // 해시태그 중복 확인
             Hashtag existingHashtag = hashtagRepository.findByName(name);
             if (existingHashtag == null) {
@@ -77,6 +105,7 @@ public class FeedService {
 
                 hashtags.add(hashtag);
                 hashtagRepository.save(hashtag);
+
             } else {
                 hashtags.add(existingHashtag);
             }
@@ -193,6 +222,9 @@ public class FeedService {
                         .name(hashtagName)
                         .build();
                 hashtagRepository.save(hashtag);
+
+                // 해시태그 랭킹에 반영
+                searchService.tags(hashtag.getName());
             }
 
             FeedHashtag feedHashtag = FeedHashtag.builder()
