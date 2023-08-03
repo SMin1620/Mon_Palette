@@ -2,6 +2,7 @@ package com.palette.palette.domain.feed.repository;
 
 import com.palette.palette.domain.feed.entity.Feed;
 import com.palette.palette.domain.feed.repository.FeedCustomRepository;
+import com.palette.palette.domain.user.entity.User;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -33,6 +34,38 @@ public class FeedRepositoryImpl extends QuerydslRepositorySupport implements Fee
 
         JPAQuery<Feed> query = jpaQueryFactory.selectFrom(feed)
                 .where(containContent(content), eqColor(color));
+
+
+        // 정렬 기준
+        if (orderBy == null || orderBy.isEmpty()) query.orderBy(feed.createAt.desc());
+        else if (orderBy.equals("popular")) query.orderBy(feed.likeCount.desc());
+        else query.orderBy(feed.createAt.desc());
+
+        List<Feed> feeds = this.getQuerydsl().applyPagination(pageable, query).fetch();
+        return new PageImpl<Feed>(feeds, pageable, query.fetchCount());
+    }
+
+    /**
+     * 메인 피드 목록 조회
+     */
+    @Override
+    public Page<Feed> findByMainFeed(Pageable pageable, User user) {
+        JPAQuery<Feed> query = jpaQueryFactory.selectFrom(feed)
+                .where(eqColor(user.getPersonalColor()))
+                .orderBy(feed.createAt.desc());
+
+
+        List<Feed> feeds = this.getQuerydsl().applyPagination(pageable, query).fetch();
+        return new PageImpl<Feed>(feeds, pageable, query.fetchCount());
+    }
+
+
+    @Override
+    public Page<Feed> findByFeedList(Pageable pageable, String orderBy, String color) {
+
+
+        JPAQuery<Feed> query = jpaQueryFactory.selectFrom(feed)
+                .where(eqColor(color));
 
 
         // 정렬 기준
