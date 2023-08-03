@@ -1,5 +1,6 @@
 package com.palette.palette.domain.item.dto;
 
+import com.palette.palette.domain.itemOption.entity.ItemOption;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,7 +14,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ItemReqDto {
+public class ItemAddReqDto {
 
     @Schema(description = "상품 이름", example = "상품 이름")
     private String itemaName;
@@ -41,24 +42,22 @@ public class ItemReqDto {
      * 상품 옵션
      */
 
-    private String optionId;
-
-    private Integer stock;
+    private List<ItemOptionAddReqDto> itemOptionList;
 
     /**
      * 상품설명 이미지
      */
 
-    private List<String> itemDetailImage;
+    private List<String> itemDetailImageList;
 
     /**
      * 상품 이미지
      */
-    private List<String> itemPhoto;
+    private List<String> itemPhotoList;
 
     /**
      * 카테고리
      */
     private String categoryName;
-    private Long categoryParentId;
+    private Long categoryParentId = 1L;
 }

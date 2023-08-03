@@ -2,12 +2,10 @@ package com.palette.palette.domain.itemPhoto.entity;
 
 import com.palette.palette.domain.item.entity.Item;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -21,7 +19,15 @@ public class ItemPhoto {
     @Column(nullable = false)
     private String itemImage;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "item_id")
     private Item item;
+
+    public static ItemPhoto toEntity(String itemImage, Item item){
+        return ItemPhoto.builder()
+                .itemImage(itemImage)
+                .item(item)
+                .build();
+    }
+
 }

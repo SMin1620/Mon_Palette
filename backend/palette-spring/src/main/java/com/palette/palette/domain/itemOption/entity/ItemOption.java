@@ -1,6 +1,7 @@
 package com.palette.palette.domain.itemOption.entity;
 
 
+import com.palette.palette.domain.item.dto.ItemOptionAddReqDto;
 import com.palette.palette.domain.item.entity.Item;
 import jakarta.persistence.*;
 import lombok.*;
@@ -23,14 +24,22 @@ public class ItemOption {
     @Column(name = "option_id")
     private Long id;
 
-    @Column(name = "option_id", nullable = false)
-    private String optionId;
+    @Column(name = "option_name", nullable = false)
+    private String optionName;
 
     @Column(nullable = false)
     private Integer stock = 0;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "item_id")
     private Item item;
+
+    public static ItemOption toEntity(ItemOptionAddReqDto itemOptionAddReqDto, Item item){
+        return ItemOption.builder()
+                .item(item)
+                .optionName(itemOptionAddReqDto.getOptionName())
+                .stock(itemOptionAddReqDto.getStock())
+                .build();
+    }
 
 }
