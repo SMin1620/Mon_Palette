@@ -1,0 +1,57 @@
+version: "3"
+services:
+    db:
+        image: mariadb:10.5
+#        platform: linux/amd64
+        container_name: db
+        volumes:
+          - ./:/app/server/mysql/
+        env_file:
+          - ./.env.db
+        ports:
+           - "3306:3306"
+        command:
+          - --character-set-server=utf8mb4
+          - --collation-server=utf8mb4_unicode_ci
+        restart: always
+
+    django:
+        build: .
+        container_name: django
+        command:
+          - bash
+          - -c
+          - |
+            python manage.py migrate
+            python manage.py runserver 0.0.0.0:8000
+        volumes:
+          - ./:/app/server/palette/
+        ports:
+          - "8000:8000"
+        expose:
+          - 8000
+        env_file:
+          - ./.env
+        depends_on:
+          - db
+        restart: always
+
+
+    nginx:
+        image: nginx:latest
+        container_name: nginx
+        ports:
+            - "80:80"
+            - "443:443"
+        volumes:
+            - ./staticfiles/:/static
+            - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+            - ./nginx/certs/:/etc/nginx/certs/
+            - ./nginx/certs/django.crt:/etc/nginx/certs/django.crt
+        networks:
+            - docker
+        depends_on:
+            - django
+
+networks:
+    docker:
