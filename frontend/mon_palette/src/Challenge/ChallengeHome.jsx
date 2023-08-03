@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './ChallengeHome.css'
 import { useRecoilValue } from 'recoil';
 // import FollowChallenge from './FollowChallenge'
-import { loginState } from './../user/components/Atom';
+import { loginState } from './../user/components/Atom/loginState';
 import axios from 'axios';
 
 function ChallengeHome() {

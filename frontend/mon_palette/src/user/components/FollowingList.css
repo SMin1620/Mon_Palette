@@ -1,0 +1,58 @@
+html {
+	font-size: 16px; /* 루트 요소(HTML)의 기본 폰트 크기를 설정합니다. */
+}
+.following_container {
+	display: flex;
+	flex-direction: column; /* 요소들을 세로 방향으로 정렬합니다. */
+	margin: 5rem auto;
+	text-align: left;
+	justify-content: center;
+	align-items: center;
+}
+
+.following_profile-picture {
+	left: 3rem;
+	width: 2.8rem; /* 이미지를 컨테이너 크기에 맞게 조정합니다. */
+	height: 2.8rem; /* 이미지를 컨테이너 크기에 맞게 조정합니다. */
+	border-radius: 50%; /* 50%로 설정하여 이미지를 원형으로 만듭니다. */
+	overflow: hidden; /* 이미지가 컨테이너 영역을 벗어나는 부분은 잘립니다. */
+	object-fit: cover; /* 이미지가 비율을 유지하면서 컨테이너를 가득 채우도록 합니다. */
+}
+
+.following_list {
+	justify-content: space-between;
+	display: flex;
+	width: 90%;
+	padding: 0.625rem; /* 10px를 rem 단위로 변환 (10 / 16 = 0.625) */
+	border: none;
+	border-radius: 0;
+	border-bottom: 0.05rem solid #dddddd; /* 2px를 rem 단위로 변환 (2 / 16 = 0.125) */
+	align-items: center;
+}
+.following_object {
+	display: flex;
+	align-items: center;
+}
+.following_nickname {
+	font-weight: bold;
+	font-size: 1rem;
+}
+
+.following_gap {
+	margin-right: 1rem;
+}
+
+.following_list > a {
+	text-decoration: none;
+	color: black;
+}
+
+.following_follow-button {
+	top: 14rem;
+	width: 4.5rem; /* 이미지를 컨테이너 크기에 맞게 조정합니다. */
+	height: 2rem; /* 이미지를 컨테이너 크기에 맞게 조정합니다. */
+	background-color: #e84c8b;
+	color: #fff;
+	border: none;
+	border-radius: 0.5rem;
+}

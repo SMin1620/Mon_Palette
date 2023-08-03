@@ -1,54 +1,50 @@
-import React from 'react';
-import './NavigationBarBottom.css'
-import { Link } from 'react-router-dom';
+import React from "react";
+import "./NavigationBarBottom.css";
+import { Link } from "react-router-dom";
+import { useRecoilValue } from "recoil";
+import { userId } from "src/user/components/Atom/UserId";
 
-
-import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
-import FireIcon from '@mui/icons-material/LocalFireDepartmentOutlined';
-import PhotoSizeIcon from '@mui/icons-material/PhotoSizeSelectActualOutlined';
-import LocalMallOutlinedIcon from '@mui/icons-material/LocalMallOutlined';
-import PermIdentityOutlinedIcon from '@mui/icons-material/PermIdentityOutlined';
-
-
+import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
+import FireIcon from "@mui/icons-material/LocalFireDepartmentOutlined";
+import PhotoSizeIcon from "@mui/icons-material/PhotoSizeSelectActualOutlined";
+import LocalMallOutlinedIcon from "@mui/icons-material/LocalMallOutlined";
+import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined";
 
 function NavigationBarBottom() {
-  const ScrollToTop = () => {
-    window.scrollTo({top: 0, behavior: "smooth"})
-  }
-  return (
-    <div className="navigationbar_bottom">
-      
-      <div className="nav_bottom_icons" >
-        <Link to="/challenge">
-          <FireIcon sx={{ fontSize: 30 }} onClick={ScrollToTop}/>
-        </Link>
-      </div>
+	const id = useRecoilValue(userId);
+	return (
+		<div className="navigationbar_bottom">
+			<div className="nav_bottom_icons">
+				<Link>
+					<FireIcon sx={{ fontSize: 30 }} />
+				</Link>
+			</div>
 
-      <div className="nav_bottom_icons" >
-        <Link to="/feed">
-          <PhotoSizeIcon sx={{ fontSize: 30 }} onClick={ScrollToTop}/>
-        </Link>
-      </div>
+			<div className="nav_bottom_icons">
+				<Link to="/feed/">
+					<PhotoSizeIcon sx={{ fontSize: 30 }} />
+				</Link>
+			</div>
 
-      <div className="nav_bottom_icons" >
-        <Link to="/home">
-          <HomeOutlinedIcon sx={{ fontSize: 30 }} onClick={ScrollToTop}/>
-        </Link>
-      </div>
+			<div className="nav_bottom_icons">
+				<Link>
+					<HomeOutlinedIcon sx={{ fontSize: 30 }} />
+				</Link>
+			</div>
 
-      <div className="nav_bottom_icons" >
-        <Link>
-          <LocalMallOutlinedIcon sx={{ fontSize: 30 }} onClick={ScrollToTop}/>
-        </Link>
-      </div>
+			<div className="nav_bottom_icons">
+				<Link>
+					<LocalMallOutlinedIcon sx={{ fontSize: 30 }} />
+				</Link>
+			</div>
 
-      <div className="nav_bottom_icons" >
-        <Link>
-          <PermIdentityOutlinedIcon sx={{ fontSize: 30 }} onClick={ScrollToTop}/>
-        </Link>
-      </div>
-    </div>
-  );
+			<div className="nav_bottom_icons">
+				<Link to={`/userpage/${id}`}>
+					<PermIdentityOutlinedIcon sx={{ fontSize: 30 }} />
+				</Link>
+			</div>
+		</div>
+	);
 }
 
 export default NavigationBarBottom;

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useRecoilValue } from "recoil";
-import { loginState } from "./Atom";
+import { loginState } from "./Atom/loginState";
 import { useNavigate } from "react-router-dom";
 import "./Change.css"; // 스타일 파일 임포트
 

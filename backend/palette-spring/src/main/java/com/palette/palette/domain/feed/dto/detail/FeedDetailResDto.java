@@ -29,6 +29,8 @@ public class FeedDetailResDto {
 
     private Integer likeCount;
 
+    private Boolean isFollow;
+
     private LocalDateTime createAt;
 
     private LocalDateTime updateAt;
@@ -44,7 +46,7 @@ public class FeedDetailResDto {
     /**
      * entity -> dto
      */
-    public static FeedDetailResDto toDto(Feed feed, Boolean isLiked) {
+    public static FeedDetailResDto toDto(Feed feed, Boolean isLiked, Boolean isFollow) {
 
         // 해시태그
         List<String> hashTags = new ArrayList<>();
@@ -59,6 +61,7 @@ public class FeedDetailResDto {
                 .hashtags(hashTags)
                 .isLiked(isLiked)
                 .likeCount(feed.getLikeCount())
+                .isFollow(isFollow)
                 .createAt(LocalDateTime.now())
                 .isDelete(false)
                 .feedImages(feed.getFeedImages())

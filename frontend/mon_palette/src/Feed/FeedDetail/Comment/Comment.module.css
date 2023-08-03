@@ -46,3 +46,43 @@
     word-break: break-all;  
     margin-right: 10px;
 }
+
+.input_wrap {
+    /* display: flex; */
+    justify-content: center;
+    align-items: center;
+    border-top: 1px solid #fbcfdf;
+    margin-top: 10px;
+}
+
+.input {
+    width: 70%;
+    border-radius: 10px;
+    margin-right: 10px;
+    /* margin-left: 10px; */
+    padding-left: 10px;
+    /* flex: 1; */
+    border: none;
+    background-color: #fdf2f7;
+    margin: 15px;
+
+}
+
+.input:focus {
+    outline: #fbcfdf;
+}
+
+.form {
+    /* display: flex; */
+    margin-left: 1rem;
+    margin-right: 1rem;
+    
+}
+
+.btn {
+    border-radius: 10px;
+    border: none;
+    background-color: #fbcfdf;
+    /* flex: 1; */
+    /* margin-right: 1rem; */
+}

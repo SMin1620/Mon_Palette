@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './FeedWrite.css'
 import axios from 'axios';
-import { loginState } from '../user/components/Atom';
+import { loginState } from '../user/components/Atom/loginState';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 // AWS

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ser.Serializers;
 import com.palette.palette.common.BaseResponse;
 import com.palette.palette.domain.feed.service.FeedService;
 import com.palette.palette.domain.like.service.FeedLikeService;
+import com.palette.palette.domain.user.entity.User;
 import com.palette.palette.domain.user.repository.UserRepository;
 import com.palette.palette.jwt.JwtTokenProvider;
 import io.swagger.v3.oas.annotations.Operation;
@@ -15,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+import org.webjars.NotFoundException;
 
 import java.nio.file.attribute.UserPrincipalNotFoundException;
 
@@ -107,7 +109,7 @@ public class FeedLikeController {
     @Operation(summary = "좋아요 목록 조회")
     @GetMapping("/{id}/like")
     public BaseResponse feedLikeList(
-            @RequestParam("feedId") Long feedId,
+            @PathVariable("id") Long feedId,
             HttpServletRequest request
     ) {
         try {
@@ -121,14 +123,15 @@ public class FeedLikeController {
             Authentication authentication = jwtTokenProvider.getAuthentication(token);
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 
-            Long currentUserId = userRepository.findByEmail(userDetails.getUsername()).get().getId();
+            User user = userRepository.findByEmail(userDetails.getUsername())
+                    .orElseThrow(() -> new NotFoundException("사용자가 없습니다."));
 
             // 유저 예외처리 :: 예외처리 커스텀 필요
-            if (currentUserId == null) {
+            if (user.getId() == null) {
                 throw new UserPrincipalNotFoundException("유효한 사용자가 아닙니다.");
             }
 
-            return BaseResponse.success(feedLikeService.feedLikeList(feedId));
+            return BaseResponse.success(feedLikeService.feedLikeList(feedId, user));
         } catch (Exception e) {
 
             e.printStackTrace();

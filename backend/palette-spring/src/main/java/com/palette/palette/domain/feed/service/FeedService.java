@@ -3,6 +3,8 @@ package com.palette.palette.domain.feed.service;
 import com.palette.palette.common.BaseResponse;
 import com.palette.palette.domain.feed.dto.detail.FeedDetailResDto;
 import com.palette.palette.domain.feed.dto.image.FeedImageResDto;
+import com.palette.palette.domain.feed.dto.list.FeedBaseDto;
+import com.palette.palette.domain.feed.dto.list.FeedMainResDto;
 import com.palette.palette.domain.feed.dto.list.FeedReqDto;
 import com.palette.palette.domain.feed.dto.list.FeedResDto;
 import com.palette.palette.domain.feed.dto.image.FeedImageReqDto;
@@ -11,11 +13,15 @@ import com.palette.palette.domain.feed.entity.Feed;
 import com.palette.palette.domain.feed.entity.FeedImage;
 import com.palette.palette.domain.feed.repository.FeedImageRepository;
 import com.palette.palette.domain.feed.repository.FeedRepository;
+import com.palette.palette.domain.follow.entity.Follow;
+import com.palette.palette.domain.follow.repository.FollowRepository;
 import com.palette.palette.domain.hashtag.entity.FeedHashtag;
 import com.palette.palette.domain.hashtag.entity.Hashtag;
 import com.palette.palette.domain.hashtag.repository.HashtagRepository;
 import com.palette.palette.domain.like.entity.FeedLike;
 import com.palette.palette.domain.like.repository.FeedLikeRepository;
+import com.palette.palette.domain.search.dto.SearchRankResDto;
+import com.palette.palette.domain.search.service.SearchService;
 import com.palette.palette.domain.user.entity.User;
 import com.palette.palette.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -39,17 +45,40 @@ public class FeedService {
     private final HashtagRepository hashtagRepository;
     private final FeedLikeRepository feedLikeRepository;
     private final UserRepository userRepository;
+    private final FollowRepository followRepository;
+    private final SearchService searchService;
+
+    /**
+     * 메인 피드 목록 조회
+     */
+    public List<FeedMainResDto> mainFeedList(int page, int size, User user) {
+        Pageable pageable = PageRequest.of(page, size);
+
+        List<FeedMainResDto> feeds = feedRepository.findByMainFeed(pageable, user).getContent().stream()
+                .map(FeedMainResDto::toDto)
+                .collect(Collectors.toList());
+
+        return feeds;
+    }
+
 
     /**
      * 피드 목록 조회
      */
-    public List<FeedResDto> feedList(int page, int size) {
+    public FeedBaseDto feedList(int page, int size, String color, String orderBy) {
         Pageable pageable = PageRequest.of(page, size);
-        List<FeedResDto> feeds = feedRepository.findAllByDelete(pageable).getContent().stream()
+
+        // 인기 해시태그 목록 조회
+        List<SearchRankResDto> searchRankResDtos = searchService.tagList();
+
+        List<FeedResDto> feeds = feedRepository.findByFeedList(pageable, color, orderBy).getContent().stream()
                 .map(FeedResDto::toDto)
                 .collect(Collectors.toList());
 
-        return feeds;
+        return FeedBaseDto.builder()
+                .tagRanking(searchRankResDtos)
+                .feeds(feeds)
+                .build();
     }
 
     /**
@@ -64,6 +93,9 @@ public class FeedService {
         List<Hashtag> hashtags = new ArrayList<>();
         for (String name : feedReqDto.getHashtags()) {
 
+            // 해시태그 랭킹에 반영
+            searchService.tags(name);
+
             // 해시태그 중복 확인
             Hashtag existingHashtag = hashtagRepository.findByName(name);
             if (existingHashtag == null) {
@@ -73,6 +105,7 @@ public class FeedService {
 
                 hashtags.add(hashtag);
                 hashtagRepository.save(hashtag);
+
             } else {
                 hashtags.add(existingHashtag);
             }
@@ -106,7 +139,19 @@ public class FeedService {
             isLiked = true;
         }
 
-        return FeedDetailResDto.toDto(feed, isLiked);
+        // 사용자가 피드 작성자를 팔로우 했는지 체크
+        Boolean isFollowingAuthor = false;
+        if (feed.getUser().getId().equals(userId)) {
+            // If the feed's author is the same as the current user, consider them as following themselves
+            isFollowingAuthor = true;
+        } else {
+            List<Follow> currentUserFollowers = followRepository.findByFromUser(user.getEmail());
+            if (currentUserFollowers.stream().anyMatch(follow -> follow.getToUser().equals(feed.getUser().getEmail()))) {
+                isFollowingAuthor = true;
+            }
+        }
+
+        return FeedDetailResDto.toDto(feed, isLiked, isFollowingAuthor);
     }
 
     /**
@@ -177,6 +222,9 @@ public class FeedService {
                         .name(hashtagName)
                         .build();
                 hashtagRepository.save(hashtag);
+
+                // 해시태그 랭킹에 반영
+                searchService.tags(hashtag.getName());
             }
 
             FeedHashtag feedHashtag = FeedHashtag.builder()
