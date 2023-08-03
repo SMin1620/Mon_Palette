@@ -203,16 +203,6 @@ function Comment() {
                         "createdAt": "2023-07-27T10:32:32.146994"
                         
                     },
-                    {
-                        "id": 1,
-                        "userId": 57,
-                        "nickname": "kuromiClone",
-                        "profileImage": "https://i.namu.wiki/i/l9JWhPivO-KKFbsrt4fEwBh-KCMDLsmA1f93kmd_lJLNnPxmZHmU7GoARSDXJJ4atDBU_dDKQcM8s93h-H_PxQ.svg",
-                        "commentContent": "test양",
-                        "createdAt": "2023-07-29T20:10:32.146994"
-
-
-                    }
                 ],
             }
 
@@ -224,8 +214,6 @@ function Comment() {
 
     }
     
-
-    // let commentArray = props.commentArray;
 
     return (
         <div>
