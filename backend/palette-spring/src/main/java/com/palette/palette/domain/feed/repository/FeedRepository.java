@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.net.ContentHandler;
 import java.util.List;
 
 @Repository
@@ -24,6 +25,5 @@ public interface FeedRepository extends JpaRepository<Feed, Long>, FeedCustomRep
     Long findUserIdByFeedId(@Param("feedId") Long feedId);
 
     List<Feed> findAllByUser(User user);
-
 
 }
