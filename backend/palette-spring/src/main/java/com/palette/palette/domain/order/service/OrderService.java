@@ -11,12 +11,12 @@ import org.springframework.transaction.annotation.Transactional;
 public class OrderService {
 
 
-    /**
-     * 주문 생성
-     */
-    @Transactional
-    public void orderCreate(OrderCreateReqDto orderCreateReqDto) {
-
-    }
+//    /**
+//     * 주문 생성
+//     */
+//    @Transactional
+//    public void orderCreate(OrderCreateReqDto orderCreateReqDto) {
+//
+//    }
 
 }

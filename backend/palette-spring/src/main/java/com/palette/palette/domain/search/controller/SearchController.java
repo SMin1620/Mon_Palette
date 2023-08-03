@@ -2,6 +2,7 @@ package com.palette.palette.domain.search.controller;
 
 
 import com.palette.palette.common.BaseResponse;
+import com.palette.palette.domain.search.dto.SearchDeleteDto;
 import com.palette.palette.domain.search.service.SearchService;
 import com.palette.palette.domain.user.entity.User;
 import com.palette.palette.domain.user.repository.UserRepository;
@@ -174,11 +175,13 @@ public class SearchController {
      * 최근 검색어 삭제
      */
     @Operation(summary = "최근 검색어 삭제")
-    @DeleteMapping("/recent")
+    @PostMapping("/recent")
     public BaseResponse deleteRecent(
-            @RequestBody String keyword,
+            @RequestBody SearchDeleteDto searchDeleteDto,
             HttpServletRequest request
     ) {
+        System.out.println("최근 검색어 삭제 컨트롤러");
+
         try {
             //////////////////////// 토큰으로 인가된 사용자 정보 처리하는 로직
             String token = jwtTokenProvider.resolveToken(request);
@@ -196,7 +199,7 @@ public class SearchController {
                 throw new UserPrincipalNotFoundException("유효한 사용자가 아닙니다.");
             }
 
-            searchService.removeRecentKeyword(user.getId(), keyword);
+            searchService.removeRecentKeyword(user.getId(), searchDeleteDto);
 
             return BaseResponse.success(true);
         } catch (Exception e) {

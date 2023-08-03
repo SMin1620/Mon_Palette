@@ -7,10 +7,7 @@ import com.palette.palette.domain.feed.dto.BaseUserResDto;
 import com.palette.palette.domain.feed.dto.list.FeedResDto;
 import com.palette.palette.domain.feed.entity.Feed;
 import com.palette.palette.domain.feed.repository.FeedRepository;
-import com.palette.palette.domain.search.dto.SearchAutoResDto;
-import com.palette.palette.domain.search.dto.SearchFeedChallengeUserDto;
-import com.palette.palette.domain.search.dto.SearchRankResDto;
-import com.palette.palette.domain.search.dto.SearchRecentResDto;
+import com.palette.palette.domain.search.dto.*;
 import com.palette.palette.domain.user.entity.User;
 import com.palette.palette.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -202,10 +199,10 @@ public class SearchService {
      * 최근 검색어 삭제
      */
     @Transactional
-    public void removeRecentKeyword(Long userId, String keyword) {
+    public void removeRecentKeyword(Long userId, SearchDeleteDto searchDeleteDto) {
         ListOperations<String, String> listOperations = redisTemplate.opsForList();
         String key = "userId::" + userId;
-        listOperations.remove(key, 0, keyword);
+        listOperations.remove(key, 0, searchDeleteDto.getKeyword());
     }
 
 
@@ -218,7 +215,7 @@ public class SearchService {
         if (redisTemplate.getExpire(SEARCH_KEY) < 0) {
             List<User> userList = userRepository.findAll();
             for (User user : userList) {
-                String idWithKeyword = user.getId() + ":" + user.getName() + ":" + user.getEmail();
+                String idWithKeyword = user.getId() + ":" + user.getNickname() + ":" + user.getEmail();
                 zSetOperations.add(SEARCH_KEY, idWithKeyword, 0);
             }
             // Set expiration time for the Redis key

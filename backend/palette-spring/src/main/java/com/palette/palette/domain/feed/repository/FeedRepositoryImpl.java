@@ -44,6 +44,20 @@ public class FeedRepositoryImpl extends QuerydslRepositorySupport implements Fee
         return new PageImpl<Feed>(feeds, pageable, query.fetchCount());
     }
 
+    /**
+     * 메인 피드 목록 조회
+     */
+    @Override
+    public Page<Feed> findByMainFeed(Pageable pageable, String color) {
+        JPAQuery<Feed> query = jpaQueryFactory.selectFrom(feed)
+                .where(eqColor(color))
+                .orderBy(feed.createAt.desc());
+
+
+        List<Feed> feeds = this.getQuerydsl().applyPagination(pageable, query).fetch();
+        return new PageImpl<Feed>(feeds, pageable, query.fetchCount());
+    }
+
     // 검색어 포함 메서드
     private BooleanExpression containContent(String content) {
         if (content == null || content.isEmpty()) {
