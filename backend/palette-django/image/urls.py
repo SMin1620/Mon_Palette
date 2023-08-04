@@ -1,13 +1,17 @@
 from django.urls import path
 
-from image.views import ImageViewSet
+from image.views import ImageViewSet, MakeupViewSet
 
-
-image_result = ImageViewSet.as_view({
+personal_result = ImageViewSet.as_view({
     'post': 'create',
+})
+
+makeup_result = MakeupViewSet.as_view({
+    'post': 'create'
 })
 
 
 urlpatterns = [
-    path('', image_result)
+    path('', personal_result),
+    path('/makeup', makeup_result),
 ]
