@@ -21,6 +21,7 @@ import ChallengeHome from "./Challenge/ChallengeHome";
 import FeedDetail from "./Feed/FeedDetail/FeedDetail";
 import ChallengeCreate from "./Challenge/ChallengeCreate";
 import MakeUpStart from "./AIMakeUp/MakeUpStart";
+import StartPage from "./PersonalColor/StartPage";
 
 import { Routes, Route } from "react-router-dom";
 function App() {
@@ -164,8 +165,15 @@ function App() {
 						<ChallengeCreate />
 					]}
 				/>
-
 				<Route path="/AImakeup" element={[<MakeUpStart />]} />
+
+				<Route
+					path="/personalcolor"
+					element={[
+						<StartPage />
+					]}
+				/>
+		
 			</Routes>
 		</div>
 	);

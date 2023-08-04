@@ -81,7 +81,7 @@ function FeedEdit(props) {
 
   // AWS에 이미지 저장 및 URL 리스트에 저장
   const handleImageUploadToS3 = async (imageFile) => {
-    const replaceFileName = imageFile.name.replace(/[^\w\d]/g, "");
+    const replaceFileName = imageFile.name.replace(/[^A-Za-z0-9_.-]/g, "");    
     const params = {
       ACL: "public-read",
       Body: imageFile,
@@ -106,8 +106,13 @@ function FeedEdit(props) {
   // hashTag 부분
   const handleAddTag = (e) => {
     if (e.key === "Enter") {
-      setTagList((prev) => [...prev, tags])
-      setTags("")
+      const replaceTag = tags.replace(/\s/g,"")
+      if(replaceTag==="") {
+        alert("빈값입니다.")
+      } else {
+        setTagList((prev) => [...prev, replaceTag])
+        setTags("")
+      }
     }
   }
 
