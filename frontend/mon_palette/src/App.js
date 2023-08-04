@@ -20,6 +20,7 @@ import FeedEdit from "./Feed/FeedEdit";
 import ChallengeHome from "./Challenge/ChallengeHome";
 import FeedDetail from "./Feed/FeedDetail/FeedDetail";
 import MakeUpStart from "./AIMakeUp/MakeUpStart";
+import MakeUpResult from "./AIMakeUp/MakeUpResult";
 
 import { Routes, Route } from "react-router-dom";
 function App() {
@@ -152,6 +153,7 @@ function App() {
 				<Route path="/feed/:feedId" element={[<FeedDetail />]} />
 				<Route path="/feed/:feedId" element={[<FeedDetail />]} />
 				<Route path="/AImakeup" element={[<MakeUpStart />]} />
+				<Route path="/makeupresult" element={[<MakeUpResult />]} />
 			</Routes>
 		</div>
 	);
