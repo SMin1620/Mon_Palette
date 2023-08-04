@@ -17,6 +17,10 @@ public class ChallengeCreateReqDto {
     @Schema(description = "동영상 url", example = "asdwad/awdacs.mp4")
     private String video;
 
+    @NotEmpty(message = "썸네일이 필요합니다.")
+    @Schema(description = "동영상 썸네일", example = "asdwad/awdacs.jpg")
+    private String thumbnail;
+
     @NotEmpty(message = "내용이 필요합니다.")
     @Schema(description = "챌린지 내용", example = "챌린지 내용")
     private String content;
