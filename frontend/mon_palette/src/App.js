@@ -2,7 +2,7 @@ import NavigationBarHeader from "./NavigationBar/NavigationBarHeader";
 import NavigationBarBottom from "./NavigationBar/NavigationBarBottom";
 import FeedMain from "./Feed/FeedMain";
 import SearchResult from "./SearchResult/SearchResult";
-import Home from "./Home";
+import Home from "./Home/Home";
 import Search2 from "./Search/Search2";
 import LoginForm from "./user/components/LoginForm";
 import SignUp from "./user/components/SignUp";
@@ -15,15 +15,14 @@ import ChangeInfo from "./user/components/ChangeInfo";
 import UserPage from "./user/components/UserPage";
 import FollowingList from "./user/components/FollowingList";
 import FollowerList from "./user/components/FollowerList";
-import FeedWrite from './Feed/FeedWrite';
-import FeedEdit from './Feed/FeedEdit';
-import ChallengeHome from './Challenge/ChallengeHome';
+import FeedWrite from "./Feed/FeedWrite";
+import FeedEdit from "./Feed/FeedEdit";
+import ChallengeHome from "./Challenge/ChallengeHome";
 import FeedDetail from "./Feed/FeedDetail/FeedDetail";
 import ChallengeCreate from "./Challenge/ChallengeCreate";
+import MakeUpStart from "./AIMakeUp/MakeUpStart";
 
 import { Routes, Route } from "react-router-dom";
-
-
 function App() {
 	return (
 		<div className="App">
@@ -31,6 +30,14 @@ function App() {
 				<Route
 					path="/"
 					element={[<NavigationBarHeader title="login" />, <LoginForm />]}
+				/>
+				<Route
+					path="/home"
+					element={[
+						<NavigationBarHeader title="Mon, palette" />,
+						<Home />,
+						<NavigationBarBottom />,
+					]}
 				/>
 
 				<Route
@@ -127,12 +134,8 @@ function App() {
 					]}
 				/>
 				<Route
-
 					path="/feed/write"
-					element={[
-						<NavigationBarBottom />,
-						<FeedWrite />,
-					]}
+					element={[<NavigationBarBottom />, <FeedWrite />]}
 				/>
 				<Route
 					path="/challenge"
@@ -144,9 +147,7 @@ function App() {
 				/>
 				<Route
 					path="/feed/edit/:id"
-					element={[
-						<NavigationBarBottom />,
-						<FeedEdit />,]}
+					element={[<NavigationBarBottom />, <FeedEdit />]}
 				/>
 
 				<Route
@@ -163,6 +164,8 @@ function App() {
 						<ChallengeCreate />
 					]}
 				/>
+
+				<Route path="/AImakeup" element={[<MakeUpStart />]} />
 			</Routes>
 		</div>
 	);
