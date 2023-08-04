@@ -32,6 +32,16 @@ spring:
       host: 127.0.0.1
       password: 1234
 
+  servlet:
+    multipart:
+      enabled: true
+      location: ./media/img/
+
+  mvc:
+    static-path-pattern: /static/**
+
+
+
 springdoc:
   default-consumes-media-type: application/json;charset=UTF-8
   default-produces-media-type: application/json;charset=UTF-8

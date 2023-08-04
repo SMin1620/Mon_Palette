@@ -54,7 +54,7 @@ public class FeedResDto {
                 .user(BaseUserResDto.toDto(feed.getUser()))
                 .content(feed.getContent())
                 .hashtags(hashtagNames)
-                .createAt(LocalDateTime.now())
+                .createAt(feed.getCreateAt())
                 .isDelete(false)
                 .feedImages(feed.getFeedImages())
                 .build();
