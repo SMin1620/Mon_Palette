@@ -4,6 +4,7 @@ import FollowButton from "./FollowButton/FollowButton";
 import axios from "axios"
 import { useRecoilValue } from "recoil";
 import { loginState } from "../../../user/components/Atom/loginState";
+import { userId } from "src/user/components/Atom/UserId";
 import { useParams } from 'react-router-dom';
 
 
@@ -31,11 +32,10 @@ function Header() {
 
     const {feedId} = useParams()
     const token = useRecoilValue(loginState)
+    const userInfo = useRecoilValue(userId)
     const [feedData, setFeedData] = useState('')
-    const [base, setBase] = useState("https://ssafy9-monpalette.s3.ap-northeast-2.amazonaws.com/%EC%8B%A0%EC%A7%B1%EA%B5%AC.png");
-    console.log(feedData, "header");
-    console.log(feedData.createAt);
-    console.log(feedData.likeCount);
+    
+    console.log(feedData);
 
     useEffect(() => {
         axios
@@ -53,88 +53,68 @@ function Header() {
             })
     },[])
 
-    console.log('feedData', feedData)
+    const following = (idid) => {
+        axios.post(`http://192.168.30.224:8080/api/follow/${idid}`, {}, {
+            headers: { Authorization: token },
+        })
+        .then((response => {
+            console.log(response);
+            console.log("follow");
+            
+        }))
+        .catch((err => {
+            console.log(err);
+        }))
+            
+    }
 
+     // 작성자 여부 판단
+     const isCurrentUser = (user) => {
+        console.log(user, "user");
+        console.log(userInfo, "token");
+        if(user === userInfo) {
+            console.log(user.id, "user.id");
+            return (
+                true
+            )
+        }
+    }
 
-    // const FeedData = {
-    //     "status": "success",
-    //     "message": null,
-    //     "data": [
-    //         {
-    //             "id": 1,
-    //             "content": "쿠로미 귀여웡 귀여웡 쫀귀탱탱",
-    //             "user": [
-    //                 {
-    //                     "userId": 23,
-    //                     "userNickname": "ysk",
-    //                     "personalColor": "summer cool",
-    //                     "profileImage": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcShoVme-PZaEOSY_dTvGc_zpbDUXfcRIyHNoA&usqp=CAU",
-    //                     "isFollowed": false
-    //                 }
-    //             ],
-    //             "tagContent": "#쿠로미",
-    //             "comment": [
-    //                 {
-    //                     "id": 1,
-    //                     "userId": 71,
-    //                     "commentContent": "너무 귀엽쟈나",
-    //                     "createdAt": "2023-07-26T10:10:32.146994"
-
-    //                 },
-    //                 {
-    //                     "id": 2,
-    //                     "userId": 90,
-    //                     "commentContent": "호엑",
-    //                     "createdAt": "2023-07-26T10:15:32.146994"
-
-    //                 },
-    //                 {
-    //                     "id": 3,
-    //                     "userId": 89,
-    //                     "commentContent": "쫀귀",
-    //                     "createdAt": "2023-07-26T10:32:32.146994"
-
-    //                 }
-    //             ],
-    //             "createAt": "2023-07-26T10:09:32.146994",
-    //             "updateAt": null,
-    //             "isDelete": false,
-    //             "deleteAt": null
-    //         }
-    //     ]
-    // };
-    console.log(feedData)
     return (
        feedData && <div className="header_container">
-            
-                
-                    <div className={styles.feedTotalInfo}>
-                        <div className={styles.author_img}>
-                            <img 
-                            className={styles.img}
-                            src={feedData.user.profileImage === null? base: feedData.user.profileImage} alt="aaaaa" />
-                        </div>
+             
+                <div className={styles.feedTotalInfo}>
+                    <div className={styles.author_img}>
+                        <img 
+                        className={styles.img}
+                        src={feedData.user.profileImage} alt="aaaaa" />
+                    </div>
 
-                        <div className={styles.author_info}>
-                            <div className={styles.author_info_left}>
-                                <h3
-                                className={styles.h3}
-                                >{feedData.user.nickname}</h3>
-                                <p>{getTimegap(feedData.createAt)}</p>
-                            
-                        </div>
-
-                        <div className={styles.follow}>
-                            {
-                                feedData.isFollow ? (<FollowButton text="Following" />) : (
-                            
-                            <FollowButton text="Follow" />)
-                            }
-                        </div>
+                    <div className={styles.author_info}>
+                        <div className={styles.author_info_left}>
+                            <h3
+                            className={styles.h3}
+                            >{feedData.user.nickname}</h3>
+                            <p>{getTimegap(feedData.createAt)}</p>
+                        
+                    </div>
+                    <div>
+                        <span>
+                            {feedData.user.personalColor}
+                        </span>
+                    </div>
+                    <div className={styles.follow}>
+                    {isCurrentUser(feedData.user.id) ? (
+                                    <div>
+                                    </div>
+                                ) : (
+                                    <div onClick={() => following(feedData.user.id)}>
+                                        <FollowButton text={feedData.isFollow ? "Following" : "Follow"} />
+                                    </div>
+                                )}
                     </div>
                 </div>
-                
-            
+            </div>
         </div>
  )               
 }
