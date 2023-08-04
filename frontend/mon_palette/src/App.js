@@ -19,6 +19,7 @@ import FeedWrite from './Feed/FeedWrite';
 import FeedEdit from './Feed/FeedEdit';
 import ChallengeHome from './Challenge/ChallengeHome';
 import FeedDetail from "./Feed/FeedDetail/FeedDetail";
+import StartPage from "./PersonalColor/StartPage";
 
 import { Routes, Route } from "react-router-dom";
 
@@ -160,6 +161,14 @@ function App() {
 						<FeedDetail />
 					]}
 				/>
+
+				<Route
+					path="/personalcolor"
+					element={[
+						<StartPage />
+					]}
+				/>
+		
 			</Routes>
 		</div>
 	);

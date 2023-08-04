@@ -113,7 +113,7 @@
 }
 
 .hashtag {
-  font-family: 'NanumSquare';
+  font-style: italic;
   font-weight: 900;
   font-size: 1.3rem;
   text-align: center;
@@ -141,6 +141,7 @@
 .result {
   display: inline-block;
   padding-top: 3.125rem;
+  margin-left: 2rem;
 }
 
 .button {

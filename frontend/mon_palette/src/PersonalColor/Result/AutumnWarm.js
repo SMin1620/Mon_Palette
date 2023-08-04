@@ -2,15 +2,18 @@ import React from 'react';
 import styles from './AutumnWarm.module.css';
 import { Link } from 'react-router-dom';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
+// import { useNavigate } from 'react-router-dom';
 
 
 
-const AutumnWarm = () => {
+const AutumnWarm = ({ handleRestart }) => {
+  // const navigate = useNavigate();
+
     const BackendResponseExample = () => {
       return(
     <div className={styles['backend-response-container']}>
         <div className={styles['backend-response']}>
-            autumn
+            Fall
         </div>
         <div className={styles['backend-response']}>
             warm
@@ -34,7 +37,7 @@ const AutumnWarm = () => {
       </div>
       )
     };
-
+    
     return (
       <div className={styles.div}>
             <div className={styles.container}>
@@ -56,7 +59,7 @@ const AutumnWarm = () => {
                 <BackendResponseDescription />
               </div>  
                 <Link className={styles.button}>
-                  <button className={styles.button2}>
+                  <button className={styles.button2} onClick={handleRestart}>
                     Restart
                   </button>
                 </Link>
