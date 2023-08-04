@@ -19,7 +19,7 @@ function FeedMain() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // getFeed(); // axios 요청 보내기
+    getFeed(); // axios 요청 보내기
     const observer = new IntersectionObserver(handleObs, { threshold: 0.5 }); // 페이지 최초 렌더링시 옵저버 생성
 
     if (obsRef.current) observer.observe(obsRef.current);
@@ -41,7 +41,7 @@ function FeedMain() {
       setFeedPage((prevPage) => prevPage + 1);
     }
   };
-
+  console.log(feedPage)
   const getFeed = async () => {
     try {
       const response = await axios.get(`${process.env.REACT_APP_API}/api/feed?page=${feedPage}`, {
@@ -109,9 +109,9 @@ function FeedMain() {
       </div>
 
       {/* 이부분이 보이면 ref로 무한 스크롤 구현 */}
-      <div className="" ref={obsRef}>
+      {/* <div className="" ref={obsRef}>
         옵저버
-      </div>
+      </div> */}
     </div>
   );
 }

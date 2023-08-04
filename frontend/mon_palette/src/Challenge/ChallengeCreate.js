@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect, useRef} from 'react';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useRecoilValue } from 'recoil';
 import { loginState } from '../user/components/Atom/loginState';
@@ -10,11 +10,14 @@ import axios from 'axios';
 
 function ChallengeCreate() {
   const token = useRecoilValue(loginState)
+  const videoRef = useRef(null)
+
   const [selectedVideo, setSelectedVideo] = useState(null)
   const [previewVideo, setPreviewVideo] = useState(null)
   const [caption, setCaption] = useState('')
   const [videoUrl, setVideoUrl] = useState(null)
   const [update, setUpdate] = useState(false)
+  const [thumbnail, setThumbnail] = useState(null)
 
   // AWS 연동
   const ACCESS_KEY = process.env.REACT_APP_AWS_S3_ACCESS_ID
@@ -42,11 +45,10 @@ function ChallengeCreate() {
     axios
       .post(`${process.env.REACT_APP_API}/api/challenge`, {
         video: videoUrl,
-        cnotent: caption
+        content: caption
       },{
-        headers: {Authorization: loginState}
+        headers: {Authorization: token}
       })
-
   }
 
   // AWS에 비디오 저장하고 url 가져오기
@@ -101,17 +103,16 @@ function ChallengeCreate() {
         const durationInSeconds = videoElement.duration;
         if (durationInSeconds > 60) {
           alert("해당 동영상은 1분 이상입니다.");
-          
         } else {
+          const videoUrl = URL.createObjectURL(videoFile)
           setSelectedVideo(videoFile)
-          reader.onloadend = () => {
-            setPreviewVideo(reader.result);
-          };
+          setPreviewVideo(videoUrl);
         }
       });
     }
   };
-  console.log(selectedVideo)
+  console.log(thumbnail,'thumbnail')
+  console.log(selectedVideo,'selectedVideo')
   
   const handleRemoveVideo = () => {
     setSelectedVideo(null)
@@ -150,10 +151,15 @@ function ChallengeCreate() {
             {
               previewVideo&&
               <div className="challenge_video_container">
-                <video className="challenge_video_item" controls>
+                <video 
+                  className="challenge_video_item" 
+                  controls 
+                  ref={videoRef}
+                >
                   <source src={previewVideo} type="video/mp4" className="challenge_video_item"/>
                 </video>
                 <button onClick={handleRemoveVideo}>-</button>
+                <img src={previewVideo} alt=""/>
               </div>
             }
           </div>
