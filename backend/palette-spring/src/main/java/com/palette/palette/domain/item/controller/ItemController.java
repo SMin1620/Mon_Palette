@@ -1,20 +1,18 @@
 package com.palette.palette.domain.item.controller;
 
+
 import com.palette.palette.common.BaseResponse;
 import com.palette.palette.domain.item.dto.ItemAddReqDto;
-import com.palette.palette.domain.item.repository.ItemRepository;
+import com.palette.palette.domain.item.dto.ItemUpdateReqDto;
 import com.palette.palette.domain.item.service.ItemService;
-import com.palette.palette.domain.user.repository.UserRepository;
-import com.palette.palette.jwt.JwtTokenProvider;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.http.HttpRequest;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,8 +22,6 @@ import java.net.http.HttpRequest;
 public class ItemController {
 
     private final ItemService itemService;
-    private final JwtTokenProvider jwtTokenProvider;
-    private final UserRepository userRepository;
 
     @Operation(summary = "아이템 등록")
     @PostMapping("/regist")
@@ -48,16 +44,57 @@ public class ItemController {
         }
     }
 
-    @Operation(summary = "상품 수정")
+    @Operation(summary = "아이템 수정")
     @PutMapping("/{id}")
-    public BaseResponse updateItem(HttpServletRequest requst, @PathVariable("id") Long id){
+    public BaseResponse updateItem(
+            HttpServletRequest request,
+            @PathVariable("id") Long id ,
+            @RequestBody @Valid ItemUpdateReqDto itemUpdateReqDto
+    ){
         try{
-            return BaseResponse.success(true);
+            return BaseResponse.success(itemService.updateItem(request, id, itemUpdateReqDto));
         }catch (Exception e){
             e.printStackTrace();
             return BaseResponse.error("상품 수정이 실패하였습니다.");
         }
 
+    }
+
+    @Operation(summary = "아이템 삭제")
+    @DeleteMapping("/{id}")
+    public BaseResponse deleteItem(
+        HttpServletRequest request,
+        @PathVariable("id") Long id
+    ){
+        try{
+            return BaseResponse.success(itemService.deleteItem(request, id));
+        }catch (Exception e){
+            e.printStackTrace();
+            return BaseResponse.error("상품 삭제에 실패했습니다.");
+        }
+    }
+
+    @Operation(summary = "아이템 상세 조회")
+    @GetMapping("/detail/{id}")
+    public BaseResponse detailItem(HttpServletRequest request, @PathVariable("id") Long id){
+
+        try{
+            return BaseResponse.success(itemService.detailItem(request, id));
+        }catch (Exception e){
+            e.printStackTrace();
+            return BaseResponse.error("상품 상세 조회에 실패했습니다.");
+        }
+    }
+
+    @Operation(summary = "카테고리별 아이템 조회")
+    @GetMapping("/category")
+    public BaseResponse getCategoryItem(@RequestParam("categoryid") Long id){
+        try{
+            return BaseResponse.success(itemService.getCategoryItem(id));
+        }catch (Exception e){
+            e.printStackTrace();
+            return BaseResponse.error("카테고리별 아이템 조회에 실패했습니다.");
+        }
     }
 
 
