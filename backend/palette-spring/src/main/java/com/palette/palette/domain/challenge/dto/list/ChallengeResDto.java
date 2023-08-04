@@ -19,6 +19,8 @@ public class ChallengeResDto {
 
     private String video;
 
+    private String thumbnail;
+
     private String content;
 
     private Integer likeCount;
