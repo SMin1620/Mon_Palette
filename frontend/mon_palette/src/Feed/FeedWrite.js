@@ -92,7 +92,7 @@ const FeedWrite = () => {
       try {
         await Promise.all(
           imageFileList.map(async (imageFile) => {
-            const replaceFileName = imageFile.name.includes(" ") ? imageFile.name.replace(/\s/g, "") : imageFile.name;
+            const replaceFileName = imageFile.name.replace(/[^\w\d]/g,"");
             const params = {
               ACL: "public-read",
               Body: imageFile,
