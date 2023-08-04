@@ -7,28 +7,53 @@ import WinterCool from './Result/WinterCool';
 import styles from './StartPage.module.css';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+import { loginState } from '../user/components/Atom/loginState';
+import { useRecoilValue } from 'recoil';
+
 
 const StartPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [showResultPage, setShowResultPage] = useState(false);
   const [uploadedImage, setUploadedImage] = useState(null);
   const [season, setSeason] = useState(null);
-  
+  const Authorization = useRecoilValue(loginState);
+
+  useEffect(() => {
+    return () => {
+      setUploadedImage(null);
+      setSeason(null);
+    };
+  }, []);
+
   const handleStartLoading = () => {
     if (!uploadedImage) {
       return;
     }
     setIsLoading(true);
-    // 여기서 나중에 백엔드와 통신하는 코드를 수행
-    // 통신이 완료된 후 결과로 'season' 값 받아온다 가정
-    const responseFromBackend = 'winter'; // 실제 API 응답값으로 대체 예정
 
-    // 통신 완료 -> 상태 업데이트
-    setSeason(responseFromBackend);
-    setIsLoading(false);
-    setShowResultPage(true);
+    const formData = new FormData();
+    formData.append('image', uploadedImage);
+
+    axios({
+      method: "POST",
+      url: `http://192.168.30.224:8000/api/personal`,
+      // mode: "cors",
+      headers: {
+        "Content-Type": "multipart/form-data", 
+      },
+      data: formData,  
+    })
+    .then((response)=>{
+      console.log(response)
+      setSeason(response.data.personal);
+      console.log(season)
+      setIsLoading(false);
+      setShowResultPage(true);
+    })
+    .catch(err => console.log(err)) 
   };
-  
+
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     setUploadedImage(file);
@@ -36,6 +61,13 @@ const StartPage = () => {
 
   const handleButtonClick = () => {
     document.getElementById('file-input').click();
+  };
+
+  const handleRestart = () => {
+    setUploadedImage(null);
+    setSeason(null);
+    setIsLoading(false);
+    setShowResultPage(false);
   };
 
   return (
@@ -68,10 +100,10 @@ const StartPage = () => {
         </div>
       )}
       {isLoading && <LoadingPage />}
-      {season === 'spring' && <SpringWarm />}
-      {season === 'summer' && <SummerCool />}
-      {season === 'autumn' && <AutumnWarm />}
-      {season === 'winter' && <WinterCool />}
+      {season === '봄웜톤' && <SpringWarm handleRestart={handleRestart}/>}
+      {season === '여름쿨톤' && <SummerCool handleRestart={handleRestart}/>}
+      {season === '가을웜톤' && <AutumnWarm handleRestart={handleRestart}/>}
+      {season === '겨울쿨톤' && <WinterCool handleRestart={handleRestart}/>}
     </div>
   );
 };

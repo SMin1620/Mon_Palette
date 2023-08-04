@@ -51,7 +51,7 @@ function ChallengeCreate() {
 
   // AWS에 비디오 저장하고 url 가져오기
   const handleVideoUploadToS3 = async () => {
-    const replaceFileName = selectedVideo.name.replace(/[^\w\d]/g, "");
+    const replaceFileName = selectedVideo.name.replace(/[^A-Za-z0-9_.-]/g, "");
     const params = {
       ACL: "public-read",
       Body: selectedVideo,
