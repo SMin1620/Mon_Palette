@@ -3,7 +3,6 @@ package com.palette.palette;
 
 import com.palette.palette.domain.color.entity.Color;
 import com.palette.palette.domain.color.entity.ColorImage;
-import com.palette.palette.domain.feed.entity.Feed;
 import com.palette.palette.domain.user.entity.Role;
 import com.palette.palette.domain.user.entity.User;
 import jakarta.annotation.PostConstruct;
