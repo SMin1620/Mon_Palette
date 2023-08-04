@@ -11,7 +11,9 @@
 .commentInfo {
     display: flex;
     align-items: flex-start;
-    margin-top: 0.7em;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+
 }
 
 .author_info {
@@ -38,6 +40,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    /* margin: 1rem; */
 }
 
 .content_wrap > p{
