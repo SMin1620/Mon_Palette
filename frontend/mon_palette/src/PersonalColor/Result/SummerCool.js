@@ -4,12 +4,13 @@ import { Link } from 'react-router-dom';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 
 
-const SummerCool = () => {
+const SummerCool = ({ handleRestart }) => {
     const BackendResponseExample = () => {
       return(
     <div className={styles['backend-response-container']}>
         <div className={styles['backend-response']}>
-            summer
+            
+            Summer
         </div>
         <div className={styles['backend-response']}>
             cool
@@ -55,8 +56,8 @@ const SummerCool = () => {
                 <div className={styles.image}></div>
                 <BackendResponseDescription />
               </div>  
-                <Link className={styles.button}>
-                  <button className={styles.button2}>
+                <Link className={styles.button} >
+                  <button className={styles.button2} onClick={handleRestart}>
                     Restart
                   </button>
                 </Link>

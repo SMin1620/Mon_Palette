@@ -92,6 +92,7 @@
 .result{
   padding: 3.125rem 0rem 0rem 0rem;
   font-family: 'NanumSquare';
+  margin-left: 2rem;
 }
 
 .description {
@@ -108,7 +109,7 @@
 }
 
 .hashtag {
-  font-family: 'NanumSquare';
+  font-style: italic;
   font-weight: 900;
   font-size: 1.3rem;
   text-align: center;
