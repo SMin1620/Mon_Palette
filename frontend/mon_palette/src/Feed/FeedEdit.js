@@ -81,7 +81,7 @@ function FeedEdit(props) {
 
   // AWS에 이미지 저장 및 URL 리스트에 저장
   const handleImageUploadToS3 = async (imageFile) => {
-    const replaceFileName = imageFile.name.includes(" ") ? imageFile.name.replace(/\s/g, "") : imageFile.name;
+    const replaceFileName = imageFile.name.replace(/[^\w\d]/g, "");
     const params = {
       ACL: "public-read",
       Body: imageFile,

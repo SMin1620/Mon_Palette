@@ -65,7 +65,7 @@ function FeedMain() {
   
 
   return (
-    <div className="feedMain">
+    feedInfo&&<div className="feedMain">
       {/* 해시태그 부분 */}
       <div className="feed_tags_container">
         <div className="feed_tags">
