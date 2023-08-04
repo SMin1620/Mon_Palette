@@ -1,17 +1,36 @@
 import React, { useState, useEffect } from "react";
 import styles from "./MakeUpStart.module.css";
+import axios from "axios";
+import { loginState } from "../user/components/Atom/loginState";
+import { useRecoilValue } from "recoil";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import { Link, useNavigate } from "react-router-dom";
 
 const MakeUpStart = () => {
+	const Authorization = useRecoilValue(loginState);
 	const [uploadedImage, setUploadedImage] = useState(null);
 	const Navigate = useNavigate();
 	const handleStartLoading = () => {
 		if (!uploadedImage) {
 			return;
 		}
-		//axios
-		Navigate("/makeupresult");
+
+		const formData = new FormData();
+		formData.append("image", uploadedImage);
+
+		axios
+			.post(`http://192.168.30.224:8000/api/aimakeup`, {
+				headers: {
+					Authorization: Authorization,
+					"Content-Type": "multipart/form-data",
+				},
+				data: formData,
+			})
+			.then((response) => {
+				console.log(response);
+				Navigate("/makeupresult");
+			})
+			.catch((err) => console.log(err));
 	};
 
 	const handleImageUpload = (e) => {
