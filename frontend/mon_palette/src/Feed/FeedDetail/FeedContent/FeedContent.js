@@ -28,19 +28,14 @@ function FeedContent() {
     
     const token = useRecoilValue(loginState)
     const userInfo = useRecoilValue(userId)
-    
-    console.log(feedData);
-    console.log(userInfo,"이건돼?");
-    console.log(feedData.user.id, "왜안돼");
 
     // 좋아요 리스트 목록에서 팔로우 등록/취소
     const following = (idid) => {
-        axios.post(`http://192.168.30.224:8080/api/follow/${idid}`, {}, {
+        axios.post(`${process.env.REACT_APP_API}/api/follow/${idid}`, {}, {
             headers: { Authorization: token },
         })
         .then((response => {
             console.log(response);
-            console.log("follow");
             
         }))
         .catch((err => {
@@ -49,37 +44,36 @@ function FeedContent() {
             
     }
     
-
     // feed content 내용 조회
     useEffect(() => {
         axios
-            .get(`http://192.168.30.224:8080/api/feed/${feedId}`,{
-                headers: { Authorization: token },
-
-            })
-            .then ((response) => {
-                console.log(response);
-                setFeedData(response.data.data)
-                setfeedLike(response.data.data.isLiked);
-            })
-            .catch ((err) => {
-                console.log(err)
-            })
+        .get(`${process.env.REACT_APP_API}/api/feed/${feedId}`,{
+            headers: { Authorization: token },
+            
+        })
+        .then ((response) => {
+            console.log(response);
+            setFeedData(response.data.data)
+            setfeedLike(response.data.data.isLiked);
+        })
+        .catch ((err) => {
+            console.log(err)
+        })
     },[feedLike])
-
-
+    
+    
     // 좋아요 리스트 
     useEffect(() => {
         if (likeList) {
             axios
-                .get(`http://192.168.30.224:8080/api/feed/${feedId}/like`, {
-                    headers: { Authorization: token },
-                })
-                .then((response) => {
-                    console.log(response.data.data);
-                    setLikeListData(response.data.data)
-                })
-                .catch((err) => {
+            .get(`${process.env.REACT_APP_API}/api/feed/${feedId}/like`, {
+                headers: { Authorization: token },
+            })
+            .then((response) => {
+                console.log(response.data.data);
+                setLikeListData(response.data.data)
+            })
+            .catch((err) => {
                     console.log(err);
                 });
         }
@@ -87,33 +81,31 @@ function FeedContent() {
 
     // 작성자 여부 판단
     const isCurrentUser = (user) => {
-        console.log(user, "user");
-        console.log(userInfo, "token");
         if(user === userInfo) {
             return (
                 true
-            )
+                )
         }
     }
     
-
+    
     
     // 좋아요 리스트 띄우는 모달창 flag
     const likeCount = () => {
         setLikeList ( prevLikeList => !prevLikeList
-        )
-    }
- 
-
-    useEffect(() => {
-        if (likeList) {
-
+            )
         }
-    },[likeList])
-
+        
+        
+    // useEffect(() => {
+        //     if (likeList) {
+            
+            //     }
+            // },[likeList])
+            
     // 피드를 좋아요 하는 함수
     const likeFeed = () => {
-        axios.post(`http://192.168.30.224:8080/api/feed/${feedId}/like`, {} ,{
+        axios.post(`${process.env.REACT_APP_API}/api/feed/${feedId}/like`, {} ,{
             headers: { Authorization: token },
         })
             .then((response => {
@@ -129,13 +121,13 @@ function FeedContent() {
             .catch((err => {
                 console.error('피드 좋아요 오류:', err);
             }));
-    };
-
-    // 피드 좋아요를 취소하는 함수
-    const unlikeFeed = () => {
-        axios.delete(`http://192.168.30.224:8080/api/feed/${feedId}/like`, {
-            headers: { Authorization: token },
-        })
+        };
+        
+        // 피드 좋아요를 취소하는 함수
+        const unlikeFeed = () => {
+            axios.delete(`${process.env.REACT_APP_API}/api/feed/${feedId}/like`, {
+                headers: { Authorization: token },
+            })
             .then(response => {
                 // 좋아요 상태를 false로 변경
                 setfeedLike(false);
@@ -148,44 +140,43 @@ function FeedContent() {
             .catch(err => {
                 console.error('피드 좋아요 취소 오류:', err);
             });
-    };
-
-    const handleMoreClick = () => {
-        setShowModal(true);
-    }
-
-    const handleEdit = () => {
-        navigate(`/feed/edit/${feedId}`, { state: { feedData } });
+        };
+        
+        const handleMoreClick = () => {
+            setShowModal(true);
+        }
+        
+        const handleEdit = () => {
+            navigate(`/feed/edit/${feedId}`, { state: { feedData } });
         setShowModal(false);
     }
-
+    
     const handleDelete = () => {
-        axios.delete(`http://192.168.30.224:8080/api/feed/${feedId}`)
+        axios
+        .delete(`${process.env.REACT_APP_API}/api/feed/${feedId}`,{
+            headers: { Authorization: token },
+        })
         .then(response => {
-        console.log("피드 삭제 성공:", response);
-        // 피드 삭제에 성공하면 모달창을 닫습니다.
-        setShowModal(false);
-        // 여기서 추가적인 작업을 할 수 있습니다.
-      })
-      .catch(error => {
-        console.error("피드 삭제 오류:", error);
-        // 피드 삭제에 실패하면 오류를 처리하고 모달창을 닫지 않습니다.
-        // 여기서 오류 처리를 원하는 방식으로 작성하십시오.
-      });
+                console.log("피드 삭제 성공:", response);
+            // 피드 삭제에 성공하면 모달창을 닫습니다.
+            setShowModal(false);
+        })
+        .catch(error => {
+            console.error("피드 삭제 오류:", error);
+        });
     };
-   
-    const settings = {
-        dots: true,
-        infinite: false,
-        speed: 500,
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        arrow: true
-    }
 
-    console.log(feedData.user.id, "userIdID");
-    return (
-        <div className={styles.container}>
+const settings = {
+    dots: true,
+    infinite: false,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    arrow: true
+}
+
+return (
+    <div className={styles.container}>
                 <div className={styles.feed}>
                     <div className="feed_wrapper">
                     <Slider {...settings}>
@@ -221,24 +212,27 @@ function FeedContent() {
                                 좋아요
                                 {feedData.likeCount} 개
                                 {/* 좋아요 갯수 표시 */}
+                                
                             </div>
-                            {/* {isCurrentUser(feedData.user.id) ? (
-        <div onClick={handleMoreClick}><MoreOutlined /></div>
-      ) : (
-        <div></div>
-      )} */}
+                                {
+                                feedData && isCurrentUser(feedData.user.id) ? (
+                                    <div onClick={handleMoreClick}><MoreOutlined /></div>
+                                    ) : (
+                                        <div></div>
+                                    )}
 
-      {/* 모달창 */}
-      {showModal && (
-        <div className={styles.modal}>
-          <div className={styles.modalContent}>
-            {/* 삭제 버튼 */}
-            <button onClick={handleDelete}>삭제</button>
-            {/* 닫기 버튼 */}
-            <button onClick={() => setShowModal(false)}>닫기</button>
-          </div>
-        </div>
-      )}
+                        {/* 모달창 */}
+                        {showModal && (
+                            <div className={styles.modal}>
+                            <div className={styles.modalContent}>
+                                {/* 삭제 버튼 */}
+                                <button onClick={handleDelete}>삭제</button>
+                                <button onClick={handleEdit}>수정</button>
+                                {/* 닫기 버튼 */}
+                                <button onClick={() => setShowModal(false)}>닫기</button>
+                            </div>
+                            </div>
+                        )}
                         </div>
 
                     </div>

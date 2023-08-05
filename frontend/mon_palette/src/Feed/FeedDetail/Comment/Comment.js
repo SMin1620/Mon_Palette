@@ -3,8 +3,10 @@ import styles from "./Comment.module.css"
 import { FixedSizeGrid as Grid } from 'react-window';
 import { useRecoilValue } from "recoil";
 import { loginState } from "../../../user/components/Atom/loginState";
+import { userId } from "src/user/components/Atom/UserId";
 import { useParams } from 'react-router-dom';
 import axios from "axios"
+import { FastBackwardFilled, MoreOutlined } from '@ant-design/icons';
 // import InfiniteLoader from 'react-window-infinite-loader';
 
 // 댓글 작성시간 구하는 함수
@@ -31,14 +33,20 @@ const getTimegap = (createdAt) => {
 
 function Comment() {
 
+    const token = useRecoilValue(loginState)
+    const userInfo = useRecoilValue(userId)
+
     const [comments, setComments] = useState([])
     const { feedId } = useParams()
-    const token = useRecoilValue(loginState)
     const [content, setContent] = useState("")
+    const [modalStates, setModalstates] = useState({});
+    const [editingCommentId, setEditingCommentId] = useState(null);
+    const [editedContent, setEditedContent] = useState("");
 
+    // 댓글 불러오기
     useEffect(() => {
         axios
-            .get(`http://192.168.30.224:8080/api/feed/${feedId}/comment?page=0`,{
+            .get(`${process.env.REACT_APP_API}/api/feed/${feedId}/comment?page=0`,{
                 headers: { Authorization: token },
             })
             .then((response) => {
@@ -50,12 +58,14 @@ function Comment() {
             });
     }, []);
 
+    
+    // 댓글 Create
     const onSubmit = (event) => {
         event.preventDefault();
         console.log(event.target[0].value);
 
         axios
-        .post(`http://192.168.30.224:8080/api/feed/${feedId}/comment`,{
+        .post(`${process.env.REACT_APP_API}/api/feed/${feedId}/comment`, {
             content: event.target[0].value
         }, {
             headers: { Authorization: token }
@@ -70,6 +80,81 @@ function Comment() {
         })
     }
     
+    // 작성자 여부 판단
+    const isCurrentUser = (user) => {
+        if(user === userInfo) {
+            return (
+                true
+                )
+        }
+    }
+
+
+    // 댓글 수정
+    const handleEdit = (commentId) => {
+        const commentToEdit = comments.find((comment) => comment.id === commentId)
+        if (commentToEdit) {
+            setEditedContent(commentToEdit.content)
+            setEditingCommentId(commentId)
+            updateModalState(commentId, true)
+            handleCloseOtherModals(commentId)
+        }
+    }
+
+    // 댓글 편집 취소
+    const handleCancelEdit = () => {
+        setEditingCommentId(null);
+        setEditedContent("");
+    }
+    
+    // 댓글의 모달 상태 업데이트
+    const updateModalState = (commentId, value) => {
+        setModalstates((prevModalStates) => ({
+            ...prevModalStates,
+            [commentId]: value,
+        }))
+    }
+
+    const handleCloseOtherModals = (currentCommentId) => {
+        setModalstates((prevModalStates) => {
+            const newModalStates = {...prevModalStates}
+            for (const commentId in newModalStates) {
+                if (commentId !== newModalStates) {
+                    newModalStates[commentId] = false;
+                }
+            }
+            return newModalStates;
+        })
+    }
+    
+    const handleMoreClick = (commentId) => {
+        if (modalStates[commentId]) {
+            updateModalState(commentId, false)
+        } else {
+            handleCloseOtherModals(commentId)
+            updateModalState(commentId, true)
+        }
+    }
+
+    const handleSaveEdit = () => {
+        if (editingCommentId && editedContent.trim() !== "") {
+            const editedComment = {
+                content: editedContent,
+            }
+            axios
+            .put(`${process.env.REACT_APP_API}/api/comment/${editingCommentId}`, editedComment, {
+                headers: { Authorization: token}
+            })
+            .then((response) => {
+                setEditingCommentId(null);
+                setEditedContent("")
+                console.log("댓글 수정");
+            })
+            .catch((err) => {
+                console.log(err);
+            })
+        }
+    }
 
     return (
         <div>
@@ -92,11 +177,39 @@ function Comment() {
                             <div className={styles.time}>{getTimegap(comment.createAt)}</div>
                         </div>
                         <div className={styles.content_wrap}>
-                            <p>{comment.content}</p>
+                            {editingCommentId === comment.id ? (
+                                <div>
+                                    <textarea
+                                    value={editedContent}
+                                    onChange={(event) => setEditedContent(event.target.value)}
+                                    />
+                                    <button onClick={handleSaveEdit}>Save</button>
+                                    <button onClick={handleCancelEdit}>cancel</button>
+                                </div>
+                            ) : (
+                                <p>{comment.content}</p>
+                            )}
+                        
                         </div>
+                        {
+                                isCurrentUser(comment.user.id) ? (
+                                    <div onClick={() => handleMoreClick(comment.id)}><MoreOutlined /></div>
+                                    ) : (
+                                        <div></div>
+                                    )}
+                            {/* 모달창 */}
+                            {modalStates[comment.id] && (
+                                <div className={styles.modal}>
+                                <div className={styles.modalContent}>
+                                    <button onClick={() => handleEdit(comment.id)}>수정</button>
+                                    {/* 닫기 버튼 */}
+                                    <button onClick={() => updateModalState(comment.id, false)}>닫기</button>
+                                </div>
+                            </div>
+                        )}
                     </div>
                 }
-              </div>
+                </div>
             </div>
           ))}
         <div>
