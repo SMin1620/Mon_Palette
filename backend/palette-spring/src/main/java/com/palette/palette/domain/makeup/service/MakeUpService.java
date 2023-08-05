@@ -36,9 +36,4 @@ public class MakeUpService {
                 .map(MakeUpListResDto::toDto)
                 .collect(Collectors.toList());
     }
-
-
-    /**
-     * 메이크업
-     */
 }
