@@ -39,7 +39,7 @@ function Header() {
 
     useEffect(() => {
         axios
-            .get(`http://192.168.30.224:8080/api/feed/${feedId}`,{
+            .get(`${process.env.REACT_APP_API}/api/feed/${feedId}`,{
                 headers: { Authorization: token },
 
             })
@@ -54,7 +54,7 @@ function Header() {
     },[])
 
     const following = (idid) => {
-        axios.post(`http://192.168.30.224:8080/api/follow/${idid}`, {}, {
+        axios.post(`${process.env.REACT_APP_API}/api/follow/${idid}`, {}, {
             headers: { Authorization: token },
         })
         .then((response => {
