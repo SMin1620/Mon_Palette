@@ -1,4 +1,4 @@
-package com.palette.palette.domain.color.entity;
+package com.palette.palette.domain.makeup.entity;
 
 
 import jakarta.persistence.*;
@@ -10,12 +10,12 @@ import lombok.*;
 @AllArgsConstructor
 @Entity
 @Builder
-@Table(name = "color_images")
-public class ColorImage {
+@Table(name = "makeup_images")
+public class MakeUpImage {
 
     @Id
     @GeneratedValue
-    @Column(name = "color_image_id")
+    @Column(name = "makeup_image_id")
     private Long id;
 
     private String imageName;
@@ -23,7 +23,7 @@ public class ColorImage {
     private String imagePath;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "color_id")
-    private Color color;
+    @JoinColumn(name = "makeup_id")
+    private MakeUp makeUp;
 
 }

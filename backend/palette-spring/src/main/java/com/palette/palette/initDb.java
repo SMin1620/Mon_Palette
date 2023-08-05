@@ -1,8 +1,8 @@
 package com.palette.palette;
 
 
-import com.palette.palette.domain.makeup.entity.Color;
-import com.palette.palette.domain.makeup.entity.ColorImage;
+import com.palette.palette.domain.makeup.entity.MakeUpImage;
+import com.palette.palette.domain.makeup.entity.MakeUp;
 import com.palette.palette.domain.user.entity.Role;
 import com.palette.palette.domain.user.entity.User;
 import jakarta.annotation.PostConstruct;
@@ -83,141 +83,144 @@ public class initDb {
         }
 
         public void colorInit() {
-            Color color1 = Color.builder()
+            MakeUp color1 = MakeUp.builder()
                     .name("봄웜톤")
                     .build();
             em.persist(color1);
 
-            Color color2 = Color.builder()
+            MakeUp color2 = MakeUp.builder()
                     .name("여름쿨톤")
                     .build();
             em.persist(color2);
 
-            Color color3 = Color.builder()
+            MakeUp color3 = MakeUp.builder()
                     .name("가을웜톤")
                     .build();
             em.persist(color3);
 
-            Color color4 = Color.builder()
+            MakeUp color4 = MakeUp.builder()
                     .name("겨울쿨톤")
                     .build();
             em.persist(color4);
 
+            /**
+             * classpath: 빼도 될듯
+             */
             // 봄 웜톤 이미지
-            ColorImage colorImage1 = ColorImage.builder()
+            MakeUpImage makeUpImage1 = MakeUpImage.builder()
                     .imageName("봄웜톤1")
                     .imagePath("classpath:/media/봄웜1.png")
-                    .color(color1)
+                    .makeUp(color1)
                     .build();
-            em.persist(colorImage1);
+            em.persist(makeUpImage1);
 
-            ColorImage colorImage2 = ColorImage.builder()
+            MakeUpImage makeUpImage2 = MakeUpImage.builder()
                     .imageName("봄웜톤2")
                     .imagePath("classpath:/media/봄웜2.png")
-                    .color(color1)
+                    .makeUp(color1)
                     .build();
-            em.persist(colorImage2);
+            em.persist(makeUpImage2);
 
-            ColorImage colorImage3 = ColorImage.builder()
+            MakeUpImage makeUpImage3 = MakeUpImage.builder()
                     .imageName("봄웜톤3")
                     .imagePath("classpath:/media/봄웜3.png")
-                    .color(color1)
+                    .makeUp(color1)
                     .build();
-            em.persist(colorImage3);
+            em.persist(makeUpImage3);
 
-            ColorImage colorImage4 = ColorImage.builder()
+            MakeUpImage makeUpImage4 = MakeUpImage.builder()
                     .imageName("봄웜톤6")
                     .imagePath("classpath:/media/봄웜6.png")
-                    .color(color1)
+                    .makeUp(color1)
                     .build();
-            em.persist(colorImage4);
+            em.persist(makeUpImage4);
 
             // 여름쿨톤
-            ColorImage colorImage5 = ColorImage.builder()
+            MakeUpImage makeUpImage5 = MakeUpImage.builder()
                     .imageName("여름쿨톤1")
                     .imagePath("classpath:/media/봄웜1.png")
-                    .color(color2)
+                    .makeUp(color2)
                     .build();
-            em.persist(colorImage5);
+            em.persist(makeUpImage5);
 
-            ColorImage colorImage6 = ColorImage.builder()
+            MakeUpImage makeUpImage6 = MakeUpImage.builder()
                     .imageName("여름쿨톤2")
                     .imagePath("classpath:/media/봄웜1.png")
-                    .color(color2)
+                    .makeUp(color2)
                     .build();
-            em.persist(colorImage6);
+            em.persist(makeUpImage6);
 
-            ColorImage colorImage7 = ColorImage.builder()
+            MakeUpImage makeUpImage7 = MakeUpImage.builder()
                     .imageName("여름쿨톤3")
                     .imagePath("classpath:/media/봄웜1.png")
-                    .color(color2)
+                    .makeUp(color2)
                     .build();
-            em.persist(colorImage7);
+            em.persist(makeUpImage7);
 
-            ColorImage colorImage8 = ColorImage.builder()
+            MakeUpImage makeUpImage8 = MakeUpImage.builder()
                     .imageName("여름쿨톤4")
                     .imagePath("classpath:/media/봄웜1.png")
-                    .color(color2)
+                    .makeUp(color2)
                     .build();
-            em.persist(colorImage8);
+            em.persist(makeUpImage8);
 
             // 기을웜톤
-            ColorImage colorImage9 = ColorImage.builder()
+            MakeUpImage makeUpImage9 = MakeUpImage.builder()
                     .imageName("기을웜톤1")
                     .imagePath("classpath:/media/가을웜1.png")
-                    .color(color3)
+                    .makeUp(color3)
                     .build();
-            em.persist(colorImage9);
+            em.persist(makeUpImage9);
 
-            ColorImage colorImage10 = ColorImage.builder()
+            MakeUpImage makeUpImage10 = MakeUpImage.builder()
                     .imageName("기을웜톤2")
                     .imagePath("classpath:/media/가을웜2.png")
-                    .color(color3)
+                    .makeUp(color3)
                     .build();
-            em.persist(colorImage10);
+            em.persist(makeUpImage10);
 
-            ColorImage colorImage11 = ColorImage.builder()
+            MakeUpImage makeUpImage11 = MakeUpImage.builder()
                     .imageName("기을웜톤3")
                     .imagePath("classpath:/media/가을웜3.png")
-                    .color(color3)
+                    .makeUp(color3)
                     .build();
-            em.persist(colorImage11);
+            em.persist(makeUpImage11);
 
-            ColorImage colorImage12 = ColorImage.builder()
+            MakeUpImage makeUpImage12 = MakeUpImage.builder()
                     .imageName("기을웜톤4")
                     .imagePath("classpath:/media/가을웜4.png")
-                    .color(color3)
+                    .makeUp(color3)
                     .build();
-            em.persist(colorImage12);
+            em.persist(makeUpImage12);
 
             // 겨울쿨톤
-            ColorImage colorImage13 = ColorImage.builder()
+            MakeUpImage makeUpImage13 = MakeUpImage.builder()
                     .imageName("겨울쿨톤1")
                     .imagePath("classpath:/media/겨울쿨1.png")
-                    .color(color4)
+                    .makeUp(color4)
                     .build();
-            em.persist(colorImage13);
+            em.persist(makeUpImage13);
 
-            ColorImage colorImage14 = ColorImage.builder()
+            MakeUpImage makeUpImage14 = MakeUpImage.builder()
                     .imageName("겨울쿨톤2")
                     .imagePath("classpath:/media/겨울쿨2.png")
-                    .color(color4)
+                    .makeUp(color4)
                     .build();
-            em.persist(colorImage14);
+            em.persist(makeUpImage14);
 
-            ColorImage colorImage15 = ColorImage.builder()
+            MakeUpImage makeUpImage15 = MakeUpImage.builder()
                     .imageName("겨울쿨톤3")
                     .imagePath("classpath:/media/겨울쿨3.png")
-                    .color(color4)
+                    .makeUp(color4)
                     .build();
-            em.persist(colorImage15);
+            em.persist(makeUpImage15);
 
-            ColorImage colorImage16 = ColorImage.builder()
+            MakeUpImage makeUpImage16 = MakeUpImage.builder()
                     .imageName("겨울쿨톤4")
                     .imagePath("classpath:/media/겨울쿨4.png")
-                    .color(color4)
+                    .makeUp(color4)
                     .build();
-            em.persist(colorImage16);
+            em.persist(makeUpImage16);
         }
     }
 }
