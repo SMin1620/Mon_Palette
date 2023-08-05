@@ -95,6 +95,5 @@ public class MakeUpController {
             e.printStackTrace();
             return BaseResponse.error("Failed to send image to Django");
         }
-
     }
 }
