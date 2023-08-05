@@ -1,8 +1,8 @@
 package com.palette.palette;
 
 
-import com.palette.palette.domain.color.entity.Color;
-import com.palette.palette.domain.color.entity.ColorImage;
+import com.palette.palette.domain.makeup.entity.Color;
+import com.palette.palette.domain.makeup.entity.ColorImage;
 import com.palette.palette.domain.user.entity.Role;
 import com.palette.palette.domain.user.entity.User;
 import jakarta.annotation.PostConstruct;
@@ -106,28 +106,28 @@ public class initDb {
             // 봄 웜톤 이미지
             ColorImage colorImage1 = ColorImage.builder()
                     .imageName("봄웜톤1")
-                    .imagePath("classpath:/봄웜1.png")
+                    .imagePath("classpath:/media/봄웜1.png")
                     .color(color1)
                     .build();
             em.persist(colorImage1);
 
             ColorImage colorImage2 = ColorImage.builder()
                     .imageName("봄웜톤2")
-                    .imagePath("classpath:봄웜2.png")
+                    .imagePath("classpath:/media/봄웜2.png")
                     .color(color1)
                     .build();
             em.persist(colorImage2);
 
             ColorImage colorImage3 = ColorImage.builder()
                     .imageName("봄웜톤3")
-                    .imagePath("classpath:봄웜3.png")
+                    .imagePath("classpath:/media/봄웜3.png")
                     .color(color1)
                     .build();
             em.persist(colorImage3);
 
             ColorImage colorImage4 = ColorImage.builder()
                     .imageName("봄웜톤6")
-                    .imagePath("classpath:봄웜6.png")
+                    .imagePath("classpath:/media/봄웜6.png")
                     .color(color1)
                     .build();
             em.persist(colorImage4);
@@ -135,28 +135,28 @@ public class initDb {
             // 여름쿨톤
             ColorImage colorImage5 = ColorImage.builder()
                     .imageName("여름쿨톤1")
-                    .imagePath("classpath:봄웜1.png")
+                    .imagePath("classpath:/media/봄웜1.png")
                     .color(color2)
                     .build();
             em.persist(colorImage5);
 
             ColorImage colorImage6 = ColorImage.builder()
                     .imageName("여름쿨톤2")
-                    .imagePath("classpath:봄웜1.png")
+                    .imagePath("classpath:/media/봄웜1.png")
                     .color(color2)
                     .build();
             em.persist(colorImage6);
 
             ColorImage colorImage7 = ColorImage.builder()
                     .imageName("여름쿨톤3")
-                    .imagePath("classpath:봄웜1.png")
+                    .imagePath("classpath:/media/봄웜1.png")
                     .color(color2)
                     .build();
             em.persist(colorImage7);
 
             ColorImage colorImage8 = ColorImage.builder()
                     .imageName("여름쿨톤4")
-                    .imagePath("classpath:봄웜1.png")
+                    .imagePath("classpath:/media/봄웜1.png")
                     .color(color2)
                     .build();
             em.persist(colorImage8);
@@ -164,28 +164,28 @@ public class initDb {
             // 기을웜톤
             ColorImage colorImage9 = ColorImage.builder()
                     .imageName("기을웜톤1")
-                    .imagePath("classpath:가을웜1.png")
+                    .imagePath("classpath:/media/가을웜1.png")
                     .color(color3)
                     .build();
             em.persist(colorImage9);
 
             ColorImage colorImage10 = ColorImage.builder()
                     .imageName("기을웜톤2")
-                    .imagePath("classpath:가을웜2.png")
+                    .imagePath("classpath:/media/가을웜2.png")
                     .color(color3)
                     .build();
             em.persist(colorImage10);
 
             ColorImage colorImage11 = ColorImage.builder()
                     .imageName("기을웜톤3")
-                    .imagePath("classpath:가을웜3.png")
+                    .imagePath("classpath:/media/가을웜3.png")
                     .color(color3)
                     .build();
             em.persist(colorImage11);
 
             ColorImage colorImage12 = ColorImage.builder()
                     .imageName("기을웜톤4")
-                    .imagePath("classpath:가을웜4.png")
+                    .imagePath("classpath:/media/가을웜4.png")
                     .color(color3)
                     .build();
             em.persist(colorImage12);
@@ -193,28 +193,28 @@ public class initDb {
             // 겨울쿨톤
             ColorImage colorImage13 = ColorImage.builder()
                     .imageName("겨울쿨톤1")
-                    .imagePath("classpath:겨울쿨1.png")
+                    .imagePath("classpath:/media/겨울쿨1.png")
                     .color(color4)
                     .build();
             em.persist(colorImage13);
 
             ColorImage colorImage14 = ColorImage.builder()
                     .imageName("겨울쿨톤2")
-                    .imagePath("classpath:겨울쿨2.png")
+                    .imagePath("classpath:/media/겨울쿨2.png")
                     .color(color4)
                     .build();
             em.persist(colorImage14);
 
             ColorImage colorImage15 = ColorImage.builder()
                     .imageName("겨울쿨톤3")
-                    .imagePath("classpath:겨울쿨3.png")
+                    .imagePath("classpath:/media/겨울쿨3.png")
                     .color(color4)
                     .build();
             em.persist(colorImage15);
 
             ColorImage colorImage16 = ColorImage.builder()
                     .imageName("겨울쿨톤4")
-                    .imagePath("classpath:겨울쿨4.png")
+                    .imagePath("classpath:/media/겨울쿨4.png")
                     .color(color4)
                     .build();
             em.persist(colorImage16);
