@@ -25,10 +25,6 @@ public class Delivery {
 
     private String address;
 
-    private String requirement;
-
-    private Integer price;
-
     @Enumerated(EnumType.STRING)
     private DeliveryStatus deliveryStatus;
 

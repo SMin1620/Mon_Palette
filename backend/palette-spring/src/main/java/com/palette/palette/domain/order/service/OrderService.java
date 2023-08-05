@@ -1,6 +1,8 @@
 package com.palette.palette.domain.order.service;
 
 
+import com.palette.palette.domain.delivery.entity.Delivery;
+import com.palette.palette.domain.delivery.entity.DeliveryStatus;
 import com.palette.palette.domain.item.entity.Item;
 import com.palette.palette.domain.itemOption.entity.ItemOption;
 import com.palette.palette.domain.order.dto.create.OrderCreateReqDto;
@@ -80,7 +82,20 @@ public class OrderService {
 //
 //
 //        ////// 배송
+//        Delivery delivery = Delivery.builder()
+//                .order(order)
+//                .phone(orderCreateReqDto.getAddress().getPhone())
+//                .zipcode(orderCreateReqDto.getAddress().getZipcode())
+//                .address(orderCreateReqDto.getAddress().getAddress())
+//                .deliveryStatus(DeliveryStatus.READY)
+//                .build();
 //
+//        deliveryRepository.save(delivery);
+//
+//        /**
+//         * -> order 랑 delivery 를 따로 save() 하고 있지만,
+//         *    양방향 매핑이랑 cascade를 통해 좀 더 효율적으로 개선시킬 수 있을것 같음.
+//         */
 //    }
 
 }
