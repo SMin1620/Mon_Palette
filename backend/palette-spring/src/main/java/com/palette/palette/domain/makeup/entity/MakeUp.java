@@ -1,4 +1,4 @@
-package com.palette.palette.domain.color.entity;
+package com.palette.palette.domain.makeup.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -9,12 +9,12 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "colors")
-public class Color {
+@Table(name = "makeups")
+public class MakeUp {
 
     @Id
     @GeneratedValue
-    @Column(name = "color_id")
+    @Column(name = "makeup_id")
     private Long id;
 
     private String name;
