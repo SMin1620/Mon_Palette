@@ -5,10 +5,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Builder
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class AddressResDto {
-
-}
+//@Builder
+//@Data
+//@NoArgsConstructor
+//@AllArgsConstructor
+//public class AddressResDto {
+//
+//}
