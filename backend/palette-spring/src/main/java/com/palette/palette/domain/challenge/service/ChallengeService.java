@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.webjars.NotFoundException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,12 +39,38 @@ public class ChallengeService {
      * @param page
      * @param size
      */
-    public List<ChallengeResDto> list(int page, int size) {
+    public List<ChallengeResDto> list(int page, int size, Long userId) {
         Pageable pageable = PageRequest.of(page, size);
 
-        return challengeRepository.findAllByDelete(pageable).getContent().stream()
-                .map(ChallengeResDto::toDto)
-                .collect(Collectors.toList());
+        // 유저 유효성 검사
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("사용자가 없습니다."));
+
+        List<ChallengeResDto> challengeResDtoList = new ArrayList<>();
+
+        List<Challenge> challengeList = challengeRepository.findAllByDelete(pageable).getContent();
+        for (Challenge challenge : challengeList) {
+
+            // 해당 글이 팔로우 되어 있는지 체크
+            Boolean isFollowingAuthor = false;
+            if (challenge.getUser().getId().equals(userId)) {
+                isFollowingAuthor = true;
+            }
+            else {
+                List<Follow> currentUserFollowers = followRepository.findByFromUser(user.getEmail());
+                if (currentUserFollowers.stream()
+                        .anyMatch(follow -> follow.getToUser().equals(challenge.getUser().getEmail()))) {
+                    isFollowingAuthor = true;
+                }
+            }
+
+            // dto
+            ChallengeResDto challengeResDto = ChallengeResDto.toDto(challenge);
+            challengeResDto.setIsFollow(isFollowingAuthor);
+            challengeResDtoList.add(challengeResDto);
+        }
+
+        return challengeResDtoList;
     }
 
 

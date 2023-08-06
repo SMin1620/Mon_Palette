@@ -16,8 +16,6 @@ public class ChallengeDetailResDto {
 
     private String video;
 
-    private String thumbnail;
-
     private String content;
 
     private Boolean isLiked;

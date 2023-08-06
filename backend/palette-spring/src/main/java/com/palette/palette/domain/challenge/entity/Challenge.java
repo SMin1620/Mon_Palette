@@ -30,9 +30,6 @@ public class Challenge {
     @Column(nullable = false, length = 2000)
     private String video;
 
-    @Column(nullable = false, length = 2000)
-    private String thumbnail;
-
     @Column(nullable = false)
     private String content;
 
@@ -58,7 +55,6 @@ public class Challenge {
 
         return Challenge.builder()
                 .video(challengeCreateReqDto.getVideo())
-                .thumbnail(challengeCreateReqDto.getThumbnail())
                 .content(challengeCreateReqDto.getContent())
                 .user(user)
                 .isDelete(false)
