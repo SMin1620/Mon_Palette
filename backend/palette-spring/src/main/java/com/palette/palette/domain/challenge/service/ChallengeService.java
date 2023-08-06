@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.webjars.NotFoundException;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -66,7 +67,6 @@ public class ChallengeService {
 
             // dto
             ChallengeResDto challengeResDto = ChallengeResDto.toDto(challenge);
-            challengeResDto.setIsFollow(isFollowingAuthor);
             challengeResDtoList.add(challengeResDto);
         }
 
@@ -79,6 +79,20 @@ public class ChallengeService {
      */
     public List<ChallengeResDto> best() {
         return challengeRepository.findAllByBest().stream()
+                .map(ChallengeResDto::toDto)
+                .collect(Collectors.toList());
+    }
+
+
+    /**
+     * 챌린지 팔로우 최근 목록 조회
+     */
+    public List<ChallengeResDto> recent(String userEmail) {
+
+        // 24시간 내 최근 조회 비교를 위한 변수
+        LocalDateTime twentyFourHoursAgo = LocalDateTime.now().minusHours(24);
+
+        return challengeRepository.findAllByRecentFollow(twentyFourHoursAgo, userEmail).stream()
                 .map(ChallengeResDto::toDto)
                 .collect(Collectors.toList());
     }
