@@ -62,7 +62,7 @@ public class ChallengeController {
                 throw new UserPrincipalNotFoundException("유효한 사용자가 아닙니다.");
             }
 
-            return BaseResponse.success(challengeService.list(page, 10));
+            return BaseResponse.success(challengeService.list(page, 10, currentUserId));
         } catch (Exception e) {
             return BaseResponse.error("챌린지 목록 조회 실패");
         }

@@ -204,6 +204,7 @@ public class UserController {
     @Operation(summary = "유저페이지")
     @GetMapping("/userpage/{id}")
     public BaseResponse userPage(HttpServletRequest request, @PathVariable("id") Long userId){
+        System.out.println("유저페이지 조회 컨트롤러");
         try{
             return BaseResponse.success(userService.userPage(request, userId));
         }catch (Exception e){

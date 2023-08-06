@@ -1,5 +1,6 @@
 package com.palette.palette.domain.user.service;
 
+import com.palette.palette.domain.feed.dto.list.FeedResDto;
 import com.palette.palette.domain.feed.entity.Feed;
 import com.palette.palette.domain.feed.repository.FeedRepository;
 import com.palette.palette.domain.follow.repository.FollowRepository;
@@ -29,6 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -290,7 +292,10 @@ public class UserService {
 
         String followingCnt = followRepository.countByFromUser(user2.get().getEmail());
         String followerCnt = followRepository.countByToUser(user2.get().getEmail());
-        List<Feed> feedList = feedRepository.findAllByUser(user2.get());
+//        List<Feed> feedList = feedRepository.findAllByUser(user2.get());
+        List<FeedResDto> feedList = feedRepository.findAllByUser(user2.get()).stream()
+                .map(FeedResDto::toDto)
+                .collect(Collectors.toList());
         if(user.get().getId().equals(pathUserId)){
             return UserPage.builder()
                     .isMe(true)
