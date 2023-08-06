@@ -1,19 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
-// import { recentSearchesState } from './Atom';
 import styles from './RecentSearches.module.css'; 
 import axios from "axios";
 import { loginState } from '../user/components/Atom/loginState';
-import { resultsState, searchQueryState } from './Atom';
-import { Link } from 'react-router-dom';
+import { resultsState } from './Atom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const RecentSearches = () => {
   const [results, setResults] = useRecoilState(resultsState);
   const [history, setHistory] = useState([])
   const Authorization = useRecoilValue(loginState);
-  const [searchQuery, setSearchQuery] = useRecoilState(searchQueryState);
-
-  // const setRecentSearches = useSetRecoilState(recentSearchesState);
+  const navigate = useNavigate();
 
   const recentSearches = () => {
     axios.get(`${process.env.REACT_APP_API}/api/search/recent`, {
@@ -22,7 +19,7 @@ const RecentSearches = () => {
     .then((response)=>{
       if (response.data !== null) {
         setHistory(response.data.data) // 필요 시 수정
-        console.log( response.data.data)
+        // console.log( response.data.data)
       }
     })
     .catch((err) => {
@@ -45,7 +42,7 @@ const RecentSearches = () => {
       })
     
     .then((response)=>{
-      console.log(response)
+      // console.log(response)
       recentSearches()
       })
     .catch(err => 
@@ -58,18 +55,7 @@ const RecentSearches = () => {
       return;
     }
     console.log(`검색어 "${keyword}"로 검색을 수행합니다.`); 
-    setResults({});
-    axios.get(
-      `${process.env.REACT_APP_API}/api/search?page=0&type=feed&keyword=${keyword}`,
-      {
-        headers: { Authorization: Authorization}
-      }
-    )
-    .then((response)=>{
-      console.log(response.data.data.feed)
-      setResults(response.data.data.feed)
-      setSearchQuery(keyword);
-    })
+    navigate(`/result?query=${keyword}`);
   };
 
   return (
@@ -81,7 +67,7 @@ const RecentSearches = () => {
             .slice(0,10)
             .map((item, index) => (
               <li key={index} className={styles.li}>
-                <Link to='/result' style={{textDecoration: "none"}}><span onClick={() => handleSearchFromRecent(item.keyword)} >{item.keyword}</span></Link>
+                <Link to={`/result?query=${item.keyword}`} style={{textDecoration: "none"}}><span onClick={() => handleSearchFromRecent(item.keyword)} >{item.keyword}</span></Link>
                 <button onClick={() => handleRemoveRecentSearch(item.keyword)}>X</button>
               </li>
             ))}
@@ -93,4 +79,3 @@ const RecentSearches = () => {
 };
 
 export default RecentSearches;
-
