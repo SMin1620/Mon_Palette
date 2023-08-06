@@ -1,6 +1,6 @@
 import React from 'react';
 
-function SearchResultChallenge() {
+const SearchResultChallenge = () => {
   return (
     <div>
       challenge
