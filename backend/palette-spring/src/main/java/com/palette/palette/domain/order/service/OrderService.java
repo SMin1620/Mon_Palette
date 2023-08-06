@@ -9,6 +9,7 @@ import com.palette.palette.domain.item.repository.ItemRepository;
 import com.palette.palette.domain.itemOption.entity.ItemOption;
 import com.palette.palette.domain.itemOption.repository.ItemOptionRepository;
 import com.palette.palette.domain.order.dto.create.OrderCreateReqDto;
+import com.palette.palette.domain.order.dto.list.OrderListResDto;
 import com.palette.palette.domain.orderItem.dto.OrderItemDto;
 import com.palette.palette.domain.orderItem.dto.OrderItemOptionDto;
 import com.palette.palette.domain.order.entity.Order;
@@ -22,6 +23,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -39,11 +42,12 @@ public class OrderService {
      * 주문 생성
      */
     @Transactional
-    public void orderCreate(OrderCreateReqDto orderCreateReqDto) {
+    public void orderCreate(OrderCreateReqDto orderCreateReqDto, User user) {
 
         /////// 주문
         // Order 생성
         Order order = Order.builder()
+                .user(user)
                 .requirement(orderCreateReqDto.getRequirement())
                 .orderStatus(OrderStatus.ORDER)
                 .orderAt(LocalDateTime.now())
@@ -106,4 +110,17 @@ public class OrderService {
          */
     }
 
+
+//    /**
+//     * 주문 목록 조회
+//     * @param userId
+//     *
+//     * 기간 또는 개수로 페이징 처리 해야할 필요가 있음.
+//     */
+//    public List<OrderListResDto> list(Long userId) {
+//
+//        return orderRepository.findAllByUserId(userId).stream()
+//                .map(OrderListResDto::toDto)
+//                .collect(Collectors.toList());
+//    }
 }
