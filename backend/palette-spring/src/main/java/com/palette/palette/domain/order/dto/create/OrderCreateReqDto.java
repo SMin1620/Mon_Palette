@@ -22,9 +22,9 @@ public class OrderCreateReqDto {
 
     private String requirement;
 
-    private Integer totalCount;
+//    private Integer totalCount;
 
-    private Integer totalPrice;
+//    private Integer totalPrice;
 
     private OrderStatus orderStatus;
 
