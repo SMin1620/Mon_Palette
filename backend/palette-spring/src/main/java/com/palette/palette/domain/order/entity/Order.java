@@ -2,6 +2,7 @@ package com.palette.palette.domain.order.entity;
 
 
 import com.palette.palette.domain.delivery.entity.Delivery;
+import com.palette.palette.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.SQLDelete;
@@ -23,6 +24,10 @@ public class Order {
     @GeneratedValue
     @Column(name = "order_id")
     private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @Column(nullable = false)
     private Integer price;
