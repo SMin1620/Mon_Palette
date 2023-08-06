@@ -31,4 +31,11 @@ public class Category {
         this.name = name;
         this.parent = parent;
     }
+
+    public static Category toEntity(String name, Category parent){
+        return Category.builder()
+                .name(name)
+                .parent(parent)
+                .build();
+    }
 }

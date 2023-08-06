@@ -1,7 +1,11 @@
 package com.palette.palette.domain.item.entity;
 
 
+import com.palette.palette.domain.item.dto.ItemAddReqDto;
+import com.palette.palette.domain.item.dto.ItemUpdateReqDto;
+import com.palette.palette.domain.itemPhoto.entity.ItemPhoto;
 import com.palette.palette.domain.user.entity.User;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
@@ -52,6 +56,7 @@ public class Item {
 
     private LocalDateTime updateAt;
 
+    @Builder.Default
     private Boolean isDelete = Boolean.FALSE;
 
     private LocalDateTime deleteAt;
@@ -61,5 +66,35 @@ public class Item {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
+
+    public static Item toEntity(ItemAddReqDto req, User user){
+        return Item.builder()
+                .name(req.getItemaName())
+                .price(req.getPrice())
+                .discount(req.getDiscount())
+                .content(req.getContent())
+                .manufact(req.getManufact())
+                .deliveryFee(req.getDeliveryFee())
+                .thumbnail(req.getThumbnail())
+                .maximum(req.getMaximum())
+                .createAt(req.getCreateAt())
+                .endAt(req.getEndAt())
+                .user(user)
+                .build();
+    }
+
+    public void updateItem(ItemUpdateReqDto req){
+        this.updateAt = LocalDateTime.now();
+        this.name = req.getName();
+        this.price = req.getPrice();
+        this.discount = req.getDiscount();
+        this.content = req.getContent();
+        this.manufact = req.getManufact();
+        this.deliveryFee = req.getDeliveryFee();
+        this.thumbnail = req.getThumbnail();
+        this.maximum = req.getMaximum();
+        this.createAt = req.getCreateAt();
+        this.endAt = req.getEndAt();
+    }
 
 }
