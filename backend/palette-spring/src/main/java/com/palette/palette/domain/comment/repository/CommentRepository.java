@@ -12,7 +12,7 @@ import java.util.List;
 public interface CommentRepository extends JpaRepository<Comment, Long> {
 
 
-    @Query("select c from Comment c where c.feed.id = :feedId order by c.createAt desc")
+    @Query("select c from Comment c where c.feed.id = :feedId order by c.createAt asc")
     List<Comment> findAllByComment(Pageable pageable, @Param("feedId") Long feedId);
 
     @Query("select c.user.id from Comment c where c.id = :commentId")

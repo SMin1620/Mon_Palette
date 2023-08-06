@@ -2,6 +2,7 @@ package com.palette.palette.domain.order.entity;
 
 
 import com.palette.palette.domain.item.entity.Item;
+import com.palette.palette.domain.itemOption.entity.ItemOption;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -24,11 +25,15 @@ public class OrderItem {
     private Item item;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "item_option_id")
+    private ItemOption itemOption;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
     private Order order;
 
     private Integer orderPrice;
 
-    private Integer count;
+    private Integer orderCount;
 
 }

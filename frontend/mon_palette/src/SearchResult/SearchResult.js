@@ -5,17 +5,17 @@ import SearchResultShop from './SearchResultShop';
 import SearchResultFeed from './SearchResultFeed';
 import SearchResultChallenge from './SearchResultChallenge';
 import SearchResultUser from './SearchResultUser'
-import { resultsState } from '../Search/Atom'
 import { loginState } from '../user/components/Atom/loginState';
-import { searchQueryState } from '../Search/Atom';
 import SearchInput from '../Search/SearchInput'
 import axios from 'axios';
+import { useLocation } from 'react-router-dom';
 
-function SearchResult() {
-  const results = useRecoilValue(resultsState);
+const SearchResult = () => {
   const Authorization = useRecoilValue(loginState);
-  const searchQuery = useRecoilValue(searchQueryState);
-  const [resultPage, setResultPage] = useState(<SearchResultFeed results={results.feed}/>)
+  const [resultPage, setResultPage] = useState(null);
+  const location = useLocation();
+
+  const searchQuery = new URLSearchParams(location.search).get('query');
 
   const handleSearch = (type) => {
     axios.get(
@@ -46,7 +46,7 @@ function SearchResult() {
 
   useEffect(() => {
     handleSearch("feed");
-  }, []); 
+  }, [searchQuery]); 
 
   return (
     <div >

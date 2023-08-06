@@ -25,7 +25,9 @@ public class Order {
     private Long id;
 
     @Column(nullable = false)
-    private Integer price = 0;
+    private Integer price;
+
+    private Integer count;
 
     private String requirement;
 
