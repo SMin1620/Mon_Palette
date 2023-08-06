@@ -1,5 +1,6 @@
 package com.palette.palette.domain.user.dto.userpage;
 
+import com.palette.palette.domain.feed.dto.list.FeedResDto;
 import com.palette.palette.domain.feed.entity.Feed;
 import com.palette.palette.domain.user.entity.Role;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -50,6 +51,6 @@ public class UserPage {
     private Integer feedCnt;
 
     @Schema(description = "피드", example = "피드 리스트")
-    private List<Feed> feed;
+    private List<FeedResDto> feed;
 
 }
