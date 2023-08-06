@@ -21,8 +21,6 @@ public class ChallengeResDto {
 
     private String content;
 
-    private Boolean isFollow;
-
     private Integer likeCount;
 
     private LocalDateTime createAt;
