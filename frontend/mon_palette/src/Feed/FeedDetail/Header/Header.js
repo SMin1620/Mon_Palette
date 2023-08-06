@@ -34,8 +34,8 @@ function Header() {
     const token = useRecoilValue(loginState)
     const userInfo = useRecoilValue(userId)
     const [feedData, setFeedData] = useState('')
+    const [check, setCheck] = useState(false)
     
-    console.log(feedData);
 
     useEffect(() => {
         axios
@@ -51,7 +51,7 @@ function Header() {
             .catch ((err) => {
                 console.log(err)
             })
-    },[])
+    },[check])
 
     const following = (idid) => {
         axios.post(`${process.env.REACT_APP_API}/api/follow/${idid}`, {}, {
@@ -59,7 +59,11 @@ function Header() {
         })
         .then((response => {
             console.log(response);
-            console.log("follow");
+            if (check) {
+                setCheck(false)
+            } else {
+                setCheck(true)
+            }
             
         }))
         .catch((err => {

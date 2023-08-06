@@ -25,6 +25,7 @@ function FeedContent() {
     const [likeList, setLikeList] = useState(false)
     const [likeListData, setLikeListData] = useState([])
     const [showModal, setShowModal] = useState(false);
+    const [check, setCheck] = useState(false);
     
     const token = useRecoilValue(loginState)
     const userInfo = useRecoilValue(userId)
@@ -36,6 +37,11 @@ function FeedContent() {
         })
         .then((response => {
             console.log(response);
+            if (check) {
+                setCheck(false)
+            } else {
+                setCheck(true)
+            }
             
         }))
         .catch((err => {
@@ -96,13 +102,7 @@ function FeedContent() {
             )
         }
         
-        
-    // useEffect(() => {
-        //     if (likeList) {
-            
-            //     }
-            // },[likeList])
-            
+
     // 피드를 좋아요 하는 함수
     const likeFeed = () => {
         axios.post(`${process.env.REACT_APP_API}/api/feed/${feedId}/like`, {} ,{

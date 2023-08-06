@@ -54,12 +54,14 @@
     /* display: flex; */
     justify-content: center;
     align-items: center;
-    border-top: 1px solid #fbcfdf;
+    /* border-top: 1px solid #fbcfdf; */
     margin-top: 10px;
+    margin-bottom: 3.7rem;
 }
 
 .input {
-    width: 70%;
+    width: 75%;
+    height:25px;
     border-radius: 10px;
     margin-right: 10px;
     /* margin-left: 10px; */
@@ -84,7 +86,12 @@
 .btn {
     border-radius: 10px;
     border: none;
-    background-color: #fbcfdf;
+    background-color: #e84c8b;
+    height: 25px;
+    color: white;
+    width: 13%;
+    text-align: center;
+    justify-content: center;
     /* flex: 1; */
     /* margin-right: 1rem; */
 }

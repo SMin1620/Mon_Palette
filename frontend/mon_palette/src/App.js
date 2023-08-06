@@ -148,16 +148,13 @@ function App() {
 						<FeedEdit />,]}
 				/>
 
+				
 				<Route
 					path="/feed/:feedId"
 					element={[
-						<FeedDetail />
-					]}
-				/>
-				<Route
-					path="/feed/:feedId"
-					element={[
-						<FeedDetail />
+						<NavigationBarHeader title="Mon, Palette" />,
+						<FeedDetail />,
+						<NavigationBarBottom />
 					]}
 				/>
 			</Routes>
