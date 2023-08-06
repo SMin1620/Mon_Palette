@@ -18,5 +18,5 @@ personal_result = ImageViewSet.as_view({
 
 urlpatterns = [
     path('', personal_result),
-    path('makeup', MakeupAPIView.as_view()),
+    path('/makeup', MakeupAPIView.as_view()),
 ]
