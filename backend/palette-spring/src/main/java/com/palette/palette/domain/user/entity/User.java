@@ -1,5 +1,6 @@
 package com.palette.palette.domain.user.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.palette.palette.domain.feed.entity.Feed;
 import com.palette.palette.domain.follow.entity.Follow;
 import com.palette.palette.domain.user.dto.register.RegisterReqDto;
@@ -73,8 +74,9 @@ public class User {
     private String backgroundImage;
 
     // 피드 - 유저 :: 양방향
-    @OneToMany(mappedBy = "user")
-    private List<Feed> feed;
+//    @OneToMany(mappedBy = "user")
+//    @JsonIgnore
+//    private List<Feed> feed;
 
 //    @OneToMany(mappedBy = "fromUser")
 //    private List<Follow> follower;
