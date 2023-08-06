@@ -34,14 +34,13 @@ function FeedMain() {
 
   // 무한스크롤 구현해서 피드에서 내려갈때마다 axios 요청 보내자
   const handleObs = (entries) => {
-
     const target = entries[0];
     if (!endRef.current && target.isIntersecting) {
       // 스크롤 바닥에 도달하면 페이지 번호를 증가시키고 데이터를 가져옴
       setFeedPage((prevPage) => prevPage + 1);
     }
   };
-  console.log(feedPage)
+
   const getFeed = async () => {
     try {
       const response = await axios.get(`${process.env.REACT_APP_API}/api/feed?page=${feedPage}`, {
@@ -59,8 +58,6 @@ function FeedMain() {
     navigate(`/feed/${feedId}`);
   };
   
-  console.log(feedInfo)
-
   return (
     feedInfo&&<div className="feedMain">
       {/* 해시태그 부분 */}
@@ -109,9 +106,9 @@ function FeedMain() {
       </div>
 
       {/* 이부분이 보이면 ref로 무한 스크롤 구현 */}
-      {/* <div className="" ref={obsRef}>
+      <div className="" ref={obsRef}>
         옵저버
-      </div> */}
+      </div>
     </div>
   );
 }

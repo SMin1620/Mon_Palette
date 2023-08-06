@@ -22,6 +22,7 @@ import FeedDetail from "./Feed/FeedDetail/FeedDetail";
 import ChallengeCreate from "./Challenge/ChallengeCreate";
 import MakeUpStart from "./AIMakeUp/MakeUpStart";
 import StartPage from "./PersonalColor/StartPage";
+import ChallengeDetail from "./Challenge/ChallengeDetail"
 
 import { Routes, Route } from "react-router-dom";
 function App() {
@@ -171,6 +172,14 @@ function App() {
 					path="/personalcolor"
 					element={[
 						<StartPage />
+					]}
+				/>
+
+				<Route
+					path="/challenge/:challengeId"
+					element={[
+						<ChallengeDetail />,
+						<NavigationBarBottom />,
 					]}
 				/>
 		

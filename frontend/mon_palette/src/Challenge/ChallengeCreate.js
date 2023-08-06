@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useRef} from 'react';
+import React, { useState, useEffect } from 'react';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useRecoilValue } from 'recoil';
 import { loginState } from '../user/components/Atom/loginState';
 import './ChallengeCreate.css'
+import { useNavigate } from "react-router-dom"
 
 import AWS from 'aws-sdk'
 import uuid from 'react-uuid'
@@ -10,14 +11,13 @@ import axios from 'axios';
 
 function ChallengeCreate() {
   const token = useRecoilValue(loginState)
-  const videoRef = useRef(null)
+  const navigate = useNavigate()
 
   const [selectedVideo, setSelectedVideo] = useState(null)
   const [previewVideo, setPreviewVideo] = useState(null)
   const [caption, setCaption] = useState('')
   const [videoUrl, setVideoUrl] = useState(null)
   const [update, setUpdate] = useState(false)
-  const [thumbnail, setThumbnail] = useState(null)
 
   // AWS 연동
   const ACCESS_KEY = process.env.REACT_APP_AWS_S3_ACCESS_ID
@@ -37,8 +37,10 @@ function ChallengeCreate() {
 
   useEffect(() => {
     if (update === true) {
+      console.log('실행')
       handlePostAxios()
     }
+    return setUpdate(false)
   },[update])
 
   const handlePostAxios = () => {
@@ -49,7 +51,11 @@ function ChallengeCreate() {
       },{
         headers: {Authorization: token}
       })
+      .then((response) => {
+        navigate("/challenge")
+      })
   }
+  console.log(update)
 
   // AWS에 비디오 저장하고 url 가져오기
   const handleVideoUploadToS3 = async () => {
@@ -111,9 +117,7 @@ function ChallengeCreate() {
       });
     }
   };
-  console.log(thumbnail,'thumbnail')
-  console.log(selectedVideo,'selectedVideo')
-  
+
   const handleRemoveVideo = () => {
     setSelectedVideo(null)
     setPreviewVideo(null)
@@ -154,7 +158,6 @@ function ChallengeCreate() {
                 <video 
                   className="challenge_video_item" 
                   controls 
-                  ref={videoRef}
                 >
                   <source src={previewVideo} type="video/mp4" className="challenge_video_item"/>
                 </video>
