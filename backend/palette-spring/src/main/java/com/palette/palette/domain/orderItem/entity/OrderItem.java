@@ -1,8 +1,9 @@
-package com.palette.palette.domain.order.entity;
+package com.palette.palette.domain.orderItem.entity;
 
 
 import com.palette.palette.domain.item.entity.Item;
 import com.palette.palette.domain.itemOption.entity.ItemOption;
+import com.palette.palette.domain.order.entity.Order;
 import jakarta.persistence.*;
 import lombok.*;
 

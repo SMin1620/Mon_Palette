@@ -1,4 +1,4 @@
-package com.palette.palette.domain.order.dto.create;
+package com.palette.palette.domain.orderItem.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

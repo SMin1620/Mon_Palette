@@ -2,6 +2,7 @@ package com.palette.palette.domain.order.dto.create;
 
 import com.palette.palette.domain.feed.dto.BaseUserResDto;
 import com.palette.palette.domain.order.entity.OrderStatus;
+import com.palette.palette.domain.orderItem.dto.OrderItemDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,8 +17,6 @@ import java.util.List;
 public class OrderCreateReqDto {
 
     private List<OrderItemDto> items;
-
-    private BaseUserResDto user;
 
     private OrderAddressDto address;
 
