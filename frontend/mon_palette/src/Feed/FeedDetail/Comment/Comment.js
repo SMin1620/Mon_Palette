@@ -6,7 +6,7 @@ import { loginState } from "../../../user/components/Atom/loginState";
 import { userId } from "src/user/components/Atom/UserId";
 import { useParams } from 'react-router-dom';
 import axios from "axios"
-import { FastBackwardFilled, MoreOutlined } from '@ant-design/icons';
+import { FastBackwardFilled, MoreOutlined, SendOutlined } from '@ant-design/icons';
 // import InfiniteLoader from 'react-window-infinite-loader';
 
 // 댓글 작성시간 구하는 함수
@@ -36,6 +36,7 @@ function Comment() {
     const token = useRecoilValue(loginState)
     const userInfo = useRecoilValue(userId)
 
+    const [check, setCheck] = useState(false)
     const [comments, setComments] = useState([])
     const { feedId } = useParams()
     const [content, setContent] = useState("")
@@ -56,7 +57,7 @@ function Comment() {
             .catch((err) => {
                 console.log(err);
             });
-    }, []);
+    }, [check]);
 
     
     // 댓글 Create
@@ -73,7 +74,12 @@ function Comment() {
         .then ((response) => {
             console.log(response);
             event.target[0].value = "";
-            // setComments((prevComments) => [...prevComments, response.data]);
+            if (check) {
+                setCheck(false)
+            } else {
+                setCheck(true)
+            }
+             // setComments((prevComments) => [...prevComments, response.data]);
         })
         .catch((err) => {
             console.log(err);
@@ -149,6 +155,11 @@ function Comment() {
                 setEditingCommentId(null);
                 setEditedContent("")
                 console.log("댓글 수정");
+                if (check) {
+                    setCheck(false)
+                } else {
+                    setCheck(true)
+                }
             })
             .catch((err) => {
                 console.log(err);
@@ -226,7 +237,7 @@ function Comment() {
                     className={styles.input}
                     />
                     <button
-                    className={styles.btn}>submit</button>
+                    className={styles.btn}><SendOutlined /></button>
                 </form>
             </div>
 
