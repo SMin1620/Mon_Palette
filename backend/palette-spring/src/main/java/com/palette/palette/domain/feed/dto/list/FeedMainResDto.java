@@ -22,8 +22,6 @@ public class FeedMainResDto {
 
     private String content;
 
-//    private List<String> hashtags;
-
     private LocalDateTime createAt;
 
     private LocalDateTime updateAt;
@@ -42,15 +40,10 @@ public class FeedMainResDto {
      */
     public static FeedMainResDto toDto(Feed feed) {
 
-//        List<String> hashtagNames = feed.getHashtags().stream()
-//                .map(feedHashtag -> feedHashtag.getHashtag().getName())
-//                .collect(Collectors.toList());
-
         return FeedMainResDto.builder()
                 .id(feed.getId())
                 .user(BaseUserResDto.toDto(feed.getUser()))
                 .content(feed.getContent())
-//                .hashtags(hashtagNames)
                 .createAt(LocalDateTime.now())
                 .isDelete(false)
                 .feedImages(feed.getFeedImages())
