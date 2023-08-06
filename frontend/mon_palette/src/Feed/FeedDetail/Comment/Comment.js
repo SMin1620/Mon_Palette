@@ -204,7 +204,9 @@ function Comment() {
                         </div>
                         {
                                 isCurrentUser(comment.user.id) ? (
-                                    <div onClick={() => handleMoreClick(comment.id)}><MoreOutlined /></div>
+                                    <div 
+                                    className={styles.more_btn}
+                                    onClick={() => handleMoreClick(comment.id)}><MoreOutlined /></div>
                                     ) : (
                                         <div></div>
                                     )}
