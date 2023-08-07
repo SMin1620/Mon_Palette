@@ -1,4 +1,4 @@
-import React, { useRef,useState, useEffect } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import styles from "./FeedContent.module.css"
 import { HeartOutlined, HeartFilled , CommentOutlined, MoreOutlined } from '@ant-design/icons';
 import "slick-carousel/slick/slick.css";
@@ -12,6 +12,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import FollowButton from "../Header/FollowButton/FollowButton"
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import Comment from "../Comment/Comment";
 
 
 
@@ -26,6 +27,8 @@ function FeedContent() {
     const [likeListData, setLikeListData] = useState([])
     const [showModal, setShowModal] = useState(false);
     const [check, setCheck] = useState(false);
+    const [focus, setFocus] = useState(false);
+    const commentInputRef = useRef(null)
     
     const token = useRecoilValue(loginState)
     const userInfo = useRecoilValue(userId)
@@ -145,6 +148,7 @@ function FeedContent() {
         const handleMoreClick = () => {
             setShowModal(true);
         }
+
         
         const handleEdit = () => {
             navigate(`/feed/edit/${feedId}`, { state: { feedData } });
@@ -204,7 +208,8 @@ return (
                         </span>
                         <span>
                             <CommentOutlined
-                            className={styles.comment} />
+                            className={styles.comment}
+                             />
                         </span>
                         <div>
                             <div className={styles.like_count} 
