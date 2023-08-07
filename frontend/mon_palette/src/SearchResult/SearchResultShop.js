@@ -1,10 +1,10 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import './SearchResultShop.css'
 import { resultsState } from '../Search/Atom';
 import { useRecoilValue } from 'recoil';
 
 function SearchResultShop({ data }) {
-  const Results = useRecoilValue(resultsState);
+  // const Results = useRecoilValue(resultsState);
   const ShopData = [{
     imgSrc: 'https://image.zdnet.co.kr/2021/10/28/c0f21e0abf1b83f3c1d9e0702aede342.jpg',
     title: 'title',
@@ -36,19 +36,23 @@ function SearchResultShop({ data }) {
     description: '설명설명설명설명설명설명설명설명설명',
     cost: '1470000'
   },]
-  
+  console.log(data)
+  const [resultData, setResultData] = useState([]);
+  useEffect(() => {
+    // setResultData(data.item); //추후 수정 예정
+  }, [data]);
 
   return (
     <div className="search_result_shop_wrap">
       {
-        ShopData.map((shopdata, index) => {
+        resultData.map((shopdata, index) => {
           return <div key={index} className="search_result_shop_item">
-            <img src={shopdata.imgSrc} alt="" className="search_result_shop_shopImg"/>
+            {/* <img src={shopdata.imgSrc} alt="" className="search_result_shop_shopImg"/>
             <div className="search_result_shop_shopTop">
               <h3>{shopdata.title}</h3>
               <p>{shopdata.description.slice(0,12)}</p>
             </div>
-              <h3>{shopdata.cost.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} <span>원</span></h3>
+              <h3>{shopdata.cost.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} <span>원</span></h3> */}
           </div>
         })
       }

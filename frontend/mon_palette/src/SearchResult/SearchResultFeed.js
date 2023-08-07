@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './SearchResultFeed.module.css'
-import { resultsState } from '../Search/Atom';
+import { loginState } from '../user/components/Atom/loginState';
 import { useRecoilValue } from 'recoil';
+import { useLocation, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 
-function SearchResultFeed() {
+function SearchResultFeed({ data }) {
   const FeedData = [{
     description: '설명설명설명설명설명설명설명설명설명설명설명설명',
     feedImg: 'https://img.freepik.com/free-photo/adorable-kitty-looking-like-it-want-to-hunt_23-2149167099.jpg?w=996&t=st=1690267153~exp=1690267753~hmac=ce53bc8b87bfeb06776cc17f93e58ca92a6cbcb3ffd4104e48c830dac4ebe296',
@@ -43,12 +45,31 @@ function SearchResultFeed() {
     userImg: 'https://cdnimg.melon.co.kr/cm2/artistcrop/images/002/61/143/261143_20210325180240_500.jpg?61e575e8653e5920470a38d1482d7312/melon/resize/416/quality/80/optimize'
   },]
 
-  const results = useRecoilValue(resultsState);
-  // console.log(results, typeof results)
+  const navigate = useNavigate()
 
-  const goDetail = () => {
-    return
+  const goDetail = (id) => {
+    return navigate(`/feed/${id}`)
   }
+
+  const [resultData, setResultData] = useState([]);
+  const Authorization = useRecoilValue(loginState);
+  const searchQuery = new URLSearchParams(useLocation().search).get('query');
+  useEffect(() => {
+    setResultData(data.feed);
+  }, [data]);
+  
+  // useEffect(() => {
+  //   axios.get(
+  //     `${process.env.REACT_APP_API}/api/search?page=0&type=feed&keyword=${searchQuery}`,
+  //     {
+  //       headers: { Authorization: Authorization }
+  //     }
+  //   )
+  //   .then((response) => {
+  //     console.log(response.data.data)
+  //     // setData(response.data.data.feed);
+  //   })
+  // }, [searchQuery, Authorization]);
 
   return (
     // <div className="search_result_feed_wrap">
@@ -71,15 +92,15 @@ function SearchResultFeed() {
     //   </div>
     // </div>
     <div>
-    {results && results.length > 0 && results.map((data, index) => (
-      <ul className={styles.ul} key={index}>
-        <li onClick={ () => goDetail(data.keyword) } className={styles.li}>
+    <ul className={styles.ul}>
+      {resultData && resultData.length > 0 && resultData.map((data, index) => (
+        <li onClick={ () => goDetail(data.id) } className={styles.li} key={index}>
           <img src={data.feedImages[0].imagePath} alt="Feed" />
           {data.content}
         </li>
-      </ul>
-    ))}
-  </div>
+      ))}
+    </ul>
+  </div>  
   )}  
 
 export default SearchResultFeed;
