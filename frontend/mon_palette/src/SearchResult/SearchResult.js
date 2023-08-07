@@ -8,14 +8,18 @@ import SearchResultUser from './SearchResultUser'
 import { loginState } from '../user/components/Atom/loginState';
 import SearchInput from '../Search/SearchInput'
 import axios from 'axios';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import ChallengeHome from 'src/Challenge/ChallengeHome';
 
 const SearchResult = () => {
   const Authorization = useRecoilValue(loginState);
   const [resultPage, setResultPage] = useState(null);
   const location = useLocation();
+  // const navigate = useNavigate();
 
   const searchQuery = new URLSearchParams(location.search).get('query');
+
+  
 
   const handleSearch = (type) => {
     axios.get(
