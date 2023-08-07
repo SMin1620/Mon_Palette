@@ -15,7 +15,5 @@ public class OrderItemDto {
 
     private Long itemId;
 
-    private String name;
-
     private List<OrderItemOptionDto> itemOptions;
 }

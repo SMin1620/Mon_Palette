@@ -37,4 +37,8 @@ public class OrderItem {
 
     private Integer orderCount;
 
+    public void cancel() {
+        getItemOption().addStock(orderCount);
+    }
+
 }
