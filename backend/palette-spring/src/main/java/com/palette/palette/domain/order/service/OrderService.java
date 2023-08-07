@@ -75,7 +75,7 @@ public class OrderService {
                         .orElseThrow(() -> new IllegalArgumentException("아이템을 찾지 못했습니다. Item ID: " + orderItemOptionDto.getItemOptionId()));
 
                 // 주문 총 가격 합, 개수 계산
-                totalPrice += orderItemOptionDto.getItemOptionPrice() * orderItemOptionDto.getItemOptionCount();
+                totalPrice += itemOption.getItem().getPrice() * orderItemOptionDto.getItemOptionCount();
                 totalCount += orderItemOptionDto.getItemOptionCount();
 
                 OrderItem orderItem = OrderItem.builder()
@@ -83,7 +83,7 @@ public class OrderService {
                         .itemOption(itemOption)
                         .order(order)
                         .orderCount(orderItemOptionDto.getItemOptionCount())
-                        .orderPrice(orderItemOptionDto.getItemOptionPrice() * orderItemOptionDto.getItemOptionCount())
+                        .orderPrice(itemOption.getItem().getPrice() * orderItemOptionDto.getItemOptionCount())
                         .build();
 
                 // 아이템 옵션의 재고 감소
@@ -91,6 +91,8 @@ public class OrderService {
 
                 orderItemRepository.save(orderItem);
             }
+
+            totalPrice += item.getDeliveryFee();
         }
 
         order.setPrice(totalPrice);
