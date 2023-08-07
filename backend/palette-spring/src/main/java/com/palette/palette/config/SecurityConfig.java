@@ -58,6 +58,8 @@ public class SecurityConfig {
 
         http.authorizeHttpRequests((req) -> req
                         .requestMatchers(mvcMatcherBuilder.pattern("/api/user/signup")).permitAll()
+//                        .requestMatchers(mvcMatcherBuilder.pattern("/login/oauth2/code")).permitAll()
+                        .requestMatchers(mvcMatcherBuilder.pattern("/login/oauth2/code/google")).permitAll()
                         .requestMatchers(mvcMatcherBuilder.pattern("/api/user/idcheck")).permitAll()
                         .requestMatchers(mvcMatcherBuilder.pattern("/api/user/nicknamecheck")).permitAll()
                         .requestMatchers(mvcMatcherBuilder.pattern("/api/user/phonecheck")).permitAll()

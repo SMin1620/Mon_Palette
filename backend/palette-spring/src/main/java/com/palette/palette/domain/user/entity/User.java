@@ -73,6 +73,8 @@ public class User {
     @Column(length = 5000)
     private String backgroundImage;
 
+    private Boolean isOauth = false;
+
     // 피드 - 유저 :: 양방향
 //    @OneToMany(mappedBy = "user")
 //    @JsonIgnore
@@ -107,6 +109,7 @@ public class User {
                 .nickname(request.getNickname())
                 .backgroundImage("https://ssafy9-monpalette.s3.ap-northeast-2.amazonaws.com/background.jpg")
                 .profileImage("https://ssafy9-monpalette.s3.ap-northeast-2.amazonaws.com/baseimg.png")
+                .isOauth(false)
                 .build();
     }
     /**
