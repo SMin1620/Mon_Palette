@@ -9,6 +9,7 @@ import com.palette.palette.domain.item.repository.ItemRepository;
 import com.palette.palette.domain.itemOption.entity.ItemOption;
 import com.palette.palette.domain.itemOption.repository.ItemOptionRepository;
 import com.palette.palette.domain.order.dto.create.OrderCreateReqDto;
+import com.palette.palette.domain.order.dto.detail.OrderDetailResDto;
 import com.palette.palette.domain.order.dto.list.OrderListResDto;
 import com.palette.palette.domain.orderItem.dto.OrderItemDto;
 import com.palette.palette.domain.orderItem.dto.OrderItemOptionDto;
@@ -18,6 +19,7 @@ import com.palette.palette.domain.order.entity.OrderStatus;
 import com.palette.palette.domain.order.repository.OrderRepository;
 import com.palette.palette.domain.orderItem.respository.OrderItemRepository;
 import com.palette.palette.domain.user.entity.User;
+import com.palette.palette.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,7 +37,7 @@ public class OrderService {
     private final ItemOptionRepository itemOptionRepository;
     private final OrderRepository orderRepository;
     private final OrderItemRepository orderItemRepository;
-    private final DeliveryRepository deliveryRepository;
+    private final UserRepository userRepository;
 
 
     /**
@@ -89,8 +91,6 @@ public class OrderService {
 
         order.setPrice(totalPrice);
         order.setCount(totalCount);
-        orderRepository.save(order);
-
 
         ////// 배송
         Delivery delivery = Delivery.builder()
@@ -102,7 +102,9 @@ public class OrderService {
                 .deliveryStatus(DeliveryStatus.READY)
                 .build();
 
-        deliveryRepository.save(delivery);
+
+        order.setDelivery(delivery);
+        orderRepository.save(order);
 
         /**
          * -> order 랑 delivery 를 따로 save() 하고 있지만,
@@ -111,16 +113,26 @@ public class OrderService {
     }
 
 
-//    /**
-//     * 주문 목록 조회
-//     * @param userId
-//     *
-//     * 기간 또는 개수로 페이징 처리 해야할 필요가 있음.
-//     */
-//    public List<OrderListResDto> list(Long userId) {
-//
-//        return orderRepository.findAllByUserId(userId).stream()
-//                .map(OrderListResDto::toDto)
-//                .collect(Collectors.toList());
-//    }
+    /**
+     * 주문 목록 조회
+     * 기간 또는 개수로 페이징 처리 해야할 필요가 있음.
+     */
+    public List<OrderListResDto> list(User user) {
+
+        return orderRepository.findAllByUser(user).stream()
+                .map(OrderListResDto::toDto)
+                .collect(Collectors.toList());
+    }
+
+
+    /**
+     * 주문 상세 조회
+     * @param orderId
+     */
+    public OrderDetailResDto detail(Long orderId) {
+
+        Order order = orderRepository.findById(orderId).get();
+
+        return OrderDetailResDto.toDto(order);
+    }
 }
