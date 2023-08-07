@@ -19,7 +19,7 @@ function FeedMain() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // getFeed(); // axios 요청 보내기
+    getFeed(); // axios 요청 보내기
     const observer = new IntersectionObserver(handleObs, { threshold: 0.5 }); // 페이지 최초 렌더링시 옵저버 생성
 
     if (obsRef.current) observer.observe(obsRef.current);
@@ -34,7 +34,6 @@ function FeedMain() {
 
   // 무한스크롤 구현해서 피드에서 내려갈때마다 axios 요청 보내자
   const handleObs = (entries) => {
-
     const target = entries[0];
     if (!endRef.current && target.isIntersecting) {
       // 스크롤 바닥에 도달하면 페이지 번호를 증가시키고 데이터를 가져옴
@@ -59,8 +58,6 @@ function FeedMain() {
     navigate(`/feed/${feedId}`);
   };
   
-  console.log(feedInfo)
-
   return (
     feedInfo&&<div className="feedMain">
       {/* 해시태그 부분 */}
