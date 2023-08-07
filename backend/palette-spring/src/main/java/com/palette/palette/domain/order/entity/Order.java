@@ -64,17 +64,4 @@ public class Order {
             item.cancel();
         }
     }
-
-
-    /**
-     * 주문 총 금액
-     */
-    public int getTotalPrice(List<OrderItem> orderItem) {
-        int totalPrice = 0;
-        for (OrderItem item : orderItem) {
-            totalPrice += item.getTotalPrice();
-        }
-        return totalPrice;
-    }
-
 }

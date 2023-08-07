@@ -5,6 +5,9 @@ import com.palette.palette.domain.delivery.dto.DeliveryResDto;
 import com.palette.palette.domain.feed.dto.BaseUserResDto;
 import com.palette.palette.domain.order.entity.Order;
 import com.palette.palette.domain.order.entity.OrderStatus;
+import com.palette.palette.domain.orderItem.dto.OrderItemDto;
+import com.palette.palette.domain.orderItem.dto.response.OrderItemResDto;
+import com.palette.palette.domain.orderItem.entity.OrderItem;
 import com.palette.palette.domain.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,6 +15,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 @Builder
@@ -33,10 +38,16 @@ public class OrderDetailResDto {
 
     private LocalDateTime orderAt;
 
+    private List<OrderItemResDto> orderItems;
+
     private DeliveryResDto delivery;
 
 
-    public static OrderDetailResDto toDto(Order order) {
+    public static OrderDetailResDto toDto(Order order, List<OrderItem> orderItems) {
+
+        List<OrderItemResDto> collect = orderItems.stream()
+                .map(OrderItemResDto::toDto)
+                .collect(Collectors.toList());
 
         return OrderDetailResDto.builder()
                 .id(order.getId())
@@ -46,6 +57,7 @@ public class OrderDetailResDto {
                 .requirement(order.getRequirement())
                 .orderStatus(order.getOrderStatus())
                 .orderAt(order.getOrderAt())
+                .orderItems(collect)
                 .delivery(DeliveryResDto.toDto(order.getDelivery()))
                 .build();
     }
