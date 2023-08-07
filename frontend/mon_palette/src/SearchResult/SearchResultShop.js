@@ -3,7 +3,7 @@ import './SearchResultShop.css'
 import { resultsState } from '../Search/Atom';
 import { useRecoilValue } from 'recoil';
 
-function SearchResultShop() {
+function SearchResultShop({ data }) {
   const Results = useRecoilValue(resultsState);
   const ShopData = [{
     imgSrc: 'https://image.zdnet.co.kr/2021/10/28/c0f21e0abf1b83f3c1d9e0702aede342.jpg',

@@ -17,7 +17,7 @@
 
 .search_result_page {
   border-radius: 100px;
-  width: 100px;
+  /* width: 100px; */
   margin: 0 1em;
   display: flex;
   justify-content: center;

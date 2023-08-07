@@ -41,7 +41,7 @@ const SpringWarm = ({ handleRestart }) => {
     return (
       <div className={styles.div}>
             <div className={styles.container}>
-            <Link to="/"><CloseOutlinedIcon className={styles.exit} /></Link>
+            <Link to="/home"><CloseOutlinedIcon className={styles.exit} /></Link>
               <div className={styles.page1}>
                 <div className={styles['text-container']}>
                   <div className={styles.text1}>Your</div>
