@@ -70,3 +70,11 @@ jwt:
     token-validity-in-seconds: 86400 # ttl (초)
     access-token-expiration-sec: 1800
     refresh-token-expiration-sec: 1209600
+
+  oauth2:
+    google:
+      client-id: ${java.oauth.ID}
+      client-secret: ${java.oauth.SECRET}
+      redirect-uri: ${java.redirect.URI}
+      token-uri: https://oauth2.googleapis.com/token
+      resource-uri: https://www.googleapis.com/oauth2/v2/userinfo
