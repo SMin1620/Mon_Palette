@@ -138,8 +138,9 @@ public class OrderService {
     public OrderDetailResDto detail(Long orderId) {
 
         Order order = orderRepository.findById(orderId).get();
+        List<OrderItem> orderItems = orderItemRepository.findByOrderId(order.getId());
 
-        return OrderDetailResDto.toDto(order);
+        return OrderDetailResDto.toDto(order, orderItems);
     }
 
 
