@@ -13,8 +13,6 @@ public class OrderItemOptionDto {
 
     private Long itemOptionId;
 
-//    private String itemOptionName;
-
     private Integer itemOptionCount;
 
     private Integer itemOptionPrice;
