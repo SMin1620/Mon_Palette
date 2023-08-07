@@ -37,7 +37,7 @@ const StartPage = () => {
 
     axios({
       method: "POST",
-      url: `http://192.168.30.224:8000/api/personal`,
+      url: `http://172.30.1.86:8000/api/personal`,
       // mode: "cors",
       headers: {
         "Content-Type": "multipart/form-data", 
@@ -50,6 +50,19 @@ const StartPage = () => {
       console.log(season)
       setIsLoading(false);
       setShowResultPage(true);
+
+      axios.put(`${process.env.REACT_APP_API}/api/personal`,
+        {
+          personalColor: response.data.personal,
+        },
+        {
+          headers: {Authorization: Authorization} 
+        }
+      )      
+      .then((res) => 
+      console.log(res))
+      .catch((err)=>
+      console.log(err))
     })
     .catch(err => console.log(err)) 
   };
@@ -74,7 +87,7 @@ const StartPage = () => {
     <div>
       {!isLoading && !showResultPage && (
         <div className={styles['button-container']}>
-          <Link to="/"><CloseOutlinedIcon className={styles.exit} /></Link>
+          <Link to="/home"><CloseOutlinedIcon className={styles.exit} /></Link>
           {uploadedImage ? (
             <img className={styles.image} src={URL.createObjectURL(uploadedImage)} alt="Uploaded" />
           ) : (

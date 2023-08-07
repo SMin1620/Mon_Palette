@@ -37,6 +37,7 @@ const SearchResult = () => {
           break;
         case "user":
           setResultPage(<SearchResultUser data={response.data.data}/>)
+          // console.log(response.data.data)
           break;
         default:
           break;

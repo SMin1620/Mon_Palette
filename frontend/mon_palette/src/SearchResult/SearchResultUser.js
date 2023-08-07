@@ -1,10 +1,15 @@
 import React from 'react';
 import styles from './SearchResultUser.module.css';
 
-const SearchResultUser = () => {
+const SearchResultUser = ({ data }) => {
     return (
         <div>
-            User
+            {data.user.map((userdata, index)=>{
+                return <div key={index}>
+                    <img src={userdata.profileImage} />
+                    <div> {userdata.nickname} </div>
+                </div>
+            })}
         </div>
     )
 };
