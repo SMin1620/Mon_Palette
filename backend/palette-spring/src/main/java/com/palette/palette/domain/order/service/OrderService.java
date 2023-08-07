@@ -23,6 +23,7 @@ import com.palette.palette.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.webjars.NotFoundException;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -85,6 +86,9 @@ public class OrderService {
                         .orderPrice(orderItemOptionDto.getItemOptionPrice() * orderItemOptionDto.getItemOptionCount())
                         .build();
 
+                // 아이템 옵션의 재고 감소
+                orderItem.getItemOption().removeStock(orderItemOptionDto.getItemOptionCount());
+
                 orderItemRepository.save(orderItem);
             }
         }
@@ -134,5 +138,28 @@ public class OrderService {
         Order order = orderRepository.findById(orderId).get();
 
         return OrderDetailResDto.toDto(order);
+    }
+
+
+    /**
+     * 주문 취소
+     * @param orderId
+     * @param id
+     */
+    @Transactional
+    public void cancel(Long orderId, Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("사용자를 찾을 수 없습니다."));
+        
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new NotFoundException("주문을 찾을 수 없습니다."));
+
+        if (! order.getUser().getEmail().equals(user.getEmail())) {
+            throw new IllegalArgumentException("해당 주문 건은 사용자의 주문이 아닙니다.");
+        }
+
+        List<OrderItem> orderItem  = orderItemRepository.findAllByOrderAndUser(order.getId(), user.getId());
+
+        order.cancel(orderItem);
     }
 }

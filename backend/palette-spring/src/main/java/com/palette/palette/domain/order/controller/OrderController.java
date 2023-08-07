@@ -133,4 +133,42 @@ public class OrderController {
             return BaseResponse.error("주문 상세 조회 실패");
         }
     }
+
+
+    /**
+     * 주문 취소
+     */
+    @Operation(summary = "주문 취소")
+    @PutMapping("/{id}")
+    public BaseResponse orderCancel(
+            @PathVariable("id") Long orderId,
+            HttpServletRequest request
+    ) {
+        System.out.println("주문 취소 컨트롤러");
+
+        try {
+            /////////////////////// 토큰으로 인가된 사용자 정보 처리하는 로직
+            String token = jwtTokenProvider.resolveToken(request);
+            jwtTokenProvider.validateToken(token);
+
+            System.out.println("token >>> " + token);
+
+            Authentication authentication = jwtTokenProvider.getAuthentication(token);
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+
+            User user = userRepository.findByEmail(userDetails.getUsername()).get();
+
+            // 유저 예외처리 :: 예외처리 커스텀 필요
+            if (user == null) {
+                throw new UserPrincipalNotFoundException("유효한 사용자가 아닙니다.");
+            }
+
+            orderService.cancel(orderId, user.getId());
+
+            return BaseResponse.success(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return BaseResponse.error("주문 취소 실패");
+        }
+    }
 }
