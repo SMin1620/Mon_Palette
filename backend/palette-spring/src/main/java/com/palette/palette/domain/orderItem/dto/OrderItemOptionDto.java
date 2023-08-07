@@ -14,6 +14,4 @@ public class OrderItemOptionDto {
     private Long itemOptionId;
 
     private Integer itemOptionCount;
-
-    private Integer itemOptionPrice;
 }
