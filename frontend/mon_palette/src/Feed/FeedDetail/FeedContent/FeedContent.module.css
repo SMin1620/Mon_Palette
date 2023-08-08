@@ -90,9 +90,7 @@
 
 .like_list {
     display: flex;
-    align-items: center;
-    
-    
+    align-items: center;  
 }
 
 .nickname {
@@ -103,7 +101,6 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    /* border-bottom: 1px solid #ccc; */
 }
 
 .follow_button {

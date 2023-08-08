@@ -27,9 +27,8 @@ function FeedContent() {
     const [likeListData, setLikeListData] = useState([])
     const [showModal, setShowModal] = useState(false);
     const [check, setCheck] = useState(false);
-    const [focus, setFocus] = useState(false);
-    
-    
+
+        
     const token = useRecoilValue(loginState)
     const userInfo = useRecoilValue(userId)
 
@@ -96,7 +95,6 @@ function FeedContent() {
                 )
         }
     }
-    
     
     
     // 좋아요 리스트 띄우는 모달창 flag
