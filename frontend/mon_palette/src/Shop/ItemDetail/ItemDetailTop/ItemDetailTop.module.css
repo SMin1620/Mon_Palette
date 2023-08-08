@@ -3,9 +3,12 @@
 }
 
 .thumbnail {
-    min-width: 100%;
     overflow: hidden;
-    border: 3px solid white;
+    border: 3px solid black;
+    position: relative;
+    height: 18rem;
+    overflow: hidden;
+    border-radius: 10px;
 }
 
 .thumb_img {
@@ -13,4 +16,31 @@
     height: 18rem;
     display: block;
     object-fit: cover;
+    border-radius: 10px;
+}
+
+.seller {
+    border-radius: 50%;
+    margin: 1em;
+    width: 60px;
+    height: 60px;
+}
+
+.h3 {
+    margin-bottom: 0.5em;
+    margin-right: 3em;
+    overflow: auto;
+    text-align: center;
+}
+
+.seller_info {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.item_container {
+    /* display: flex; */
+    align-items: center; 
 }
