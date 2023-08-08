@@ -32,7 +32,10 @@ function App() {
 			<Routes>
 				<Route
 					path="/"
-					element={[<NavigationBarHeader title="login" />, <LoginForm />]}
+					element={[
+						<NavigationBarHeader title="login" />, 
+						<LoginForm />
+					]}
 				/>
 				<Route
 					path="/home"
@@ -42,7 +45,6 @@ function App() {
 						<NavigationBarBottom />,
 					]}
 				/>
-
 				<Route
 					path="/feed/"
 					element={[
@@ -55,20 +57,31 @@ function App() {
 				{/* 네비 헤더 부분 빠지고 검색창의 top 부분 들어가야함 */}
 				<Route
 					path="/search/"
-					element={[<NavigationBarBottom />, <Search2 />]}
+					element={[
+						<NavigationBarBottom />, 
+						<Search2 />
+					]}
 				/>
-
 				<Route
 					path="/result"
-					element={[<NavigationBarBottom />, <SearchResult />]}
+					element={[
+						<NavigationBarBottom />, 
+						<SearchResult />
+					]}
 				/>
 				<Route
 					path="/signup"
-					element={[<NavigationBarHeader title="Sign up" />, <SignUp />]}
+					element={[
+						<NavigationBarHeader title="Sign up" />, 
+						<SignUp />
+					]}
 				/>
 				<Route
 					path="signupform"
-					element={[<NavigationBarHeader title="Sign up" />, <SignUpForm />]}
+					element={[
+						<NavigationBarHeader title="Sign up" />, 
+						<SignUpForm />
+					]}
 				/>
 				<Route
 					path="/changenickname"
@@ -118,7 +131,6 @@ function App() {
 						<UserPage />,
 					]}
 				/>
-
 				<Route
 					path="/userpage/following/:id"
 					element={[
@@ -127,7 +139,6 @@ function App() {
 						<FollowingList />,
 					]}
 				/>
-
 				<Route
 					path="/userpage/follower/:id"
 					element={[
@@ -138,7 +149,10 @@ function App() {
 				/>
 				<Route
 					path="/feed/write"
-					element={[<NavigationBarBottom />, <FeedWrite />]}
+					element={[
+						<NavigationBarBottom />, 
+						<FeedWrite />
+					]}
 				/>
 				<Route
 					path="/challenge"
@@ -150,10 +164,11 @@ function App() {
 				/>
 				<Route
 					path="/feed/edit/:id"
-					element={[<NavigationBarBottom />, <FeedEdit />]}
+					element={[
+						<NavigationBarBottom />,
+						<FeedEdit />
+					]}
 				/>
-
-				
 				<Route
 					path="/feed/:feedId"
 					element={[
@@ -162,7 +177,6 @@ function App() {
 						<NavigationBarBottom />
 					]}
 				/>
-
 				<Route
 					path="/challenge/create"
 					element={[
@@ -170,15 +184,17 @@ function App() {
 						<ChallengeCreate />
 					]}
 				/>
-				<Route path="/AImakeup" element={[<MakeUpStart />]} />
-
+				<Route 
+					path="/AImakeup" 
+					element={[
+						<MakeUpStart />
+					]} />
 				<Route
 					path="/personalcolor"
 					element={[
 						<StartPage />
 					]}
 				/>
-
 				<Route
 					path="/challenge/:challengeId"
 					element={[
@@ -186,12 +202,13 @@ function App() {
 						<NavigationBarBottom />,
 					]}
 				/>
-
 				<Route
 					path="/challenge/edit/:id"
-					element={[<NavigationBarBottom />, <ChallengeEdit />]}
+					element={[
+						<NavigationBarBottom />,
+						<ChallengeEdit />
+					]}
 				/>
-		
 			</Routes>
 		</div>
 	);

@@ -24,7 +24,6 @@ function FeedMain() {
   useEffect(() => {
     getFeed(); // axios 요청 보내기
     const observer = new IntersectionObserver(handleObs, { threshold: 0.5 }); // 페이지 최초 렌더링시 옵저버 생성
-
     if (obsRef.current) observer.observe(obsRef.current);
     return () => { observer.disconnect(); }; // 페이지 언마운트시 옵저버 해제
   }, []);
@@ -81,8 +80,6 @@ function FeedMain() {
       setTagState(null);
     }
   }
-
-  console.log(feedPage)
 
   return (
     feedInfo&&<div className="feedMain">
