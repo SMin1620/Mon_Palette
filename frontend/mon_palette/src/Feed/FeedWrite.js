@@ -9,6 +9,7 @@ import AWS from 'aws-sdk'
 import uuid from 'react-uuid'
 import { useRecoilValue } from 'recoil';
 import { useNavigate } from 'react-router-dom';
+import FileUploadOutlinedIcon from '@mui/icons-material/FileUploadOutlined';
 
 const FeedWrite = () => {
   const navigate = useNavigate()
@@ -166,10 +167,7 @@ const FeedWrite = () => {
           headers: { Authorization: token },
         })
         .then((response) => {
-          console.log(response)
-          const feedId = response.data.data.id
-          // navigate(`/feed/${feedId}`)
-          console.log('imageUrlList',imageUrlList)
+          navigate("/feed/")
         })
         .catch((error) => {
           console.error(error)
@@ -177,21 +175,19 @@ const FeedWrite = () => {
     }
   }
 
+
   return (
     <div className="feed_write">
       <div className="feed_write_top">
-        <ArrowBackIcon sx={{ fontSize: 20 }}className="feed_write_top_back"/>
+        <ArrowBackIcon sx={{ fontSize: 20 }}className="feed_write_top_back"onClick={() => navigate(-1)} />
         <h2>write</h2>
         <div 
           className="feed_write_top_upload"
           onClick={() => {
             handleCreate(selectedImages)}
           }
-        >upload</div>
+        ><FileUploadOutlinedIcon /></div>
       </div>
-
-      <hr className="feed_write_top_header_hr"/>
-
 
       {/* feed 이미지 부분 */}
       <div className="feed_write_top_image">

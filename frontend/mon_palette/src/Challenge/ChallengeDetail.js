@@ -8,7 +8,6 @@ import { userId } from './../user/components/Atom/UserId';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
-import Modal from './../Modal/Modal';
 
 function ChallengeDetail() {
   const token = useRecoilValue(loginState)
@@ -19,7 +18,6 @@ function ChallengeDetail() {
   const [buttonText, setButtonText] = useState("팔로우")
   const [modalState, setModalState] = useState(false)
   const navigate = useNavigate()
-  console.log(challengeId)
 
   useEffect(() => {
     handleChallengeDetail()
@@ -94,7 +92,7 @@ function ChallengeDetail() {
 
   const handleDeleteChallenge = () => {
     axios
-      .delete(`${process.env.REACT_APP_API}/api/challenge/${challengeId}`,{},
+      .delete(`${process.env.REACT_APP_API}/api/challenge/${challengeId}`,
       {
         headers: { Authorization: token }
       })
@@ -115,11 +113,11 @@ function ChallengeDetail() {
   return (
     challengeInfo&&<div className="challenge_detail">
       <div className="challenge_detail_top">
-        <ArrowBackIcon sx={{fontSize: 20}} className="challenge_detail_back"/>
+        <ArrowBackIcon sx={{fontSize: 20}} className="challenge_detail_back" onClick={() => navigate("/challenge")}/>
         <h2>Challenge</h2>
         {
           currentUser === challengeInfo.user.id ?
-          <div className="challenge_detail_top_temp onClick={handleModal}">
+          <div className="challenge_detail_top_temp" onClick={handleModal}>
             ...
           </div>
           :
@@ -142,7 +140,7 @@ function ChallengeDetail() {
 
       <div className="challenge_detail_user">
         <div className="challenge_detail_user_info">
-          <img src={challengeInfo.user.profileImage} alt={challengeInfo.user.name}/>
+          <img src="https://ssafy9-monpalette.s3.ap-northeast-2.amazonaws.com/baseimg.png" alt={challengeInfo.user.name}/>
           <div className="challenge_detail_user_namebox">
             <p className="challenge_detail_user_nickname">
               {challengeInfo.user.nickname}
@@ -152,9 +150,15 @@ function ChallengeDetail() {
             </p>
           </div>
         </div>
+        { currentUser !== challengeInfo.user.id ?
         <div className="challenge_detail_follow">
           <button onClick={handleFollow}>{buttonText}</button>
         </div>
+        :
+        <div className="challenge_detail_follow">
+
+        </div>
+        }
       </div>
       <div className="challenge_detail_video">
         <video className="challenge_detail_video_item" autoPlay muted controls>
