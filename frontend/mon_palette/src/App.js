@@ -24,6 +24,7 @@ import MakeUpStart from "./AIMakeUp/MakeUpStart";
 import StartPage from "./PersonalColor/StartPage";
 import ChallengeDetail from "./Challenge/ChallengeDetail"
 import ChallengeEdit from './Challenge/ChallengeEdit';
+import ItemDetail from "./Shop/ItemDetail";
 
 import { Routes, Route } from "react-router-dom";
 function App() {
@@ -190,6 +191,15 @@ function App() {
 				<Route
 					path="/challenge/edit/:id"
 					element={[<NavigationBarBottom />, <ChallengeEdit />]}
+				/>
+
+				<Route
+					path="/shop/shopdetail"
+					element={[
+						<NavigationBarHeader />,
+						<ItemDetail />,
+						<NavigationBarBottom />
+					]}
 				/>
 		
 			</Routes>
