@@ -12,7 +12,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import FollowButton from "../Header/FollowButton/FollowButton"
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-import Comment from "../Comment/Comment";
+
 
 
 
@@ -28,7 +28,7 @@ function FeedContent() {
     const [showModal, setShowModal] = useState(false);
     const [check, setCheck] = useState(false);
     const [focus, setFocus] = useState(false);
-    const commentInputRef = useRef(null)
+    
     
     const token = useRecoilValue(loginState)
     const userInfo = useRecoilValue(userId)
@@ -162,6 +162,7 @@ function FeedContent() {
         })
         .then(response => {
                 console.log("피드 삭제 성공:", response);
+                navigate(`/feed/`);
             // 피드 삭제에 성공하면 모달창을 닫습니다.
             setShowModal(false);
         })
@@ -206,11 +207,11 @@ return (
                             <HeartOutlined className={styles.heart} onClick={() => likeFeed()} />
                         )}
                         </span>
-                        <span>
+                        {/* <span>
                             <CommentOutlined
                             className={styles.comment}
                              />
-                        </span>
+                        </span> */}
                         <div>
                             <div className={styles.like_count} 
                             onClick={likeCount}>
@@ -295,8 +296,6 @@ return (
                     ))
                    }        
                 </div>
-
-            
          </div>
     )
     
