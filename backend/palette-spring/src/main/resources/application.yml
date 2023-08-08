@@ -1,8 +1,8 @@
 spring:
   jpa:
     ######## mariadb 전용
-    database: mysql   # 추가 해준 부분
-    database-platform: org.hibernate.dialect.MySQL5Dialect
+#    database: mysql   # 추가 해준 부분
+#    database-platform: org.hibernate.dialect.MySQLDialect
     ########
     hibernate:
       ddl-auto: create
@@ -12,7 +12,7 @@ spring:
         show_sql: true
   datasource:
     ############ mysql database
-      url: jdbc:mysql://3.135.94.237:3306/palette?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul
+      url: jdbc:mysql://mysql:3306/palette?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul
       username: root
       password: 1234
       driver-class-name: com.mysql.cj.jdbc.Driver
@@ -44,7 +44,7 @@ spring:
           min-idle: 2
 
       port: 6379
-      host: "3.135.94.237"
+      host: 3.135.94.237
 
   servlet:
     multipart:
