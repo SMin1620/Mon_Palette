@@ -2,9 +2,10 @@ import React, {useEffect, useState} from 'react';
 import './SearchResultShop.css'
 import { resultsState } from '../Search/Atom';
 import { useRecoilValue } from 'recoil';
+import { useNavigate } from 'react-router-dom';
 
 function SearchResultShop({ data }) {
-  // const Results = useRecoilValue(resultsState);
+  const navigate = useNavigate();
   const ShopData = [{
     imgSrc: 'https://image.zdnet.co.kr/2021/10/28/c0f21e0abf1b83f3c1d9e0702aede342.jpg',
     title: 'title',
@@ -39,20 +40,24 @@ function SearchResultShop({ data }) {
   console.log(data)
   const [resultData, setResultData] = useState([]);
   useEffect(() => {
-    // setResultData(data.item); //추후 수정 예정
-  }, [data]);
+    setResultData(data.item)
+  }, [data.item]);
+
+  const goDetail = (id) => {
+    navigate(`/item/${id}`)
+  }
 
   return (
     <div className="search_result_shop_wrap">
       {
         resultData.map((shopdata, index) => {
-          return <div key={index} className="search_result_shop_item">
-            {/* <img src={shopdata.imgSrc} alt="" className="search_result_shop_shopImg"/>
+          return <div key={index} className="search_result_shop_item" onClick={ () => goDetail(shopdata.id) }>
+            <img src={shopdata.imgSrc} alt="" className="search_result_shop_shopImg"/>
             <div className="search_result_shop_shopTop">
               <h3>{shopdata.title}</h3>
               <p>{shopdata.description.slice(0,12)}</p>
             </div>
-              <h3>{shopdata.cost.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} <span>원</span></h3> */}
+              <h3>{shopdata.cost.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} <span>원</span></h3>
           </div>
         })
       }
