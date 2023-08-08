@@ -30,7 +30,7 @@ const SearchResult = () => {
     )
     .then((response) => {
       switch(type) {
-        case "shop":
+        case "item":
           setResultPage(<SearchResultShop data={response.data.data}/>)
           break;
         case "feed":
