@@ -27,7 +27,7 @@ function ItemDetailTop() {
             },
             {
                 id: 3,
-                imagePath: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQq296nUsfyp04NukLFkperiSyZouZzrKva5w&usqp=CAU"
+                imagePath: "https://d2u3dcdbebyaiu.cloudfront.net/uploads/atch_img/248/988c9527e85c5b2f7e13a974ae6714c0_res.jpeg"
             }
 
         ],
@@ -58,23 +58,40 @@ function ItemDetailTop() {
 
 
     return (
-        <div>
+        <div className={styles.item_container}>
             <div
                 className={styles.blank_space}>
             </div>
             <div>
                 <Slider {...settings}>
-                    {ItemDetailData.thumbnail.map((image, index) => (
-                        <div className={styles.thumbnail} key={image.id}>
-                            <img
-                                className={styles.thummb_img}
-                                src={image.imagePath}
-                                alt=""
-                                />
-                        </div>
+                    {
+                        ItemDetailData.thumbnail.map((image, index) => (
+                            <div className={styles.thumbnail} key={image.id}>
+                                <img
+                                    className={styles.thummb_img}
+                                    src={image.imagePath}
+                                    alt=""
+                                    />
+                            </div>
                     ))}
                 </Slider> 
             </div>
+
+            <div>
+                <div>
+                    <img
+                        className={styles.seller}
+                        src={ItemDetailData.user.profileImage}
+                    />
+                </div>
+                <div className={styles.seller_info}>
+                    <h3
+                    className={styles.h3}>
+                        {ItemDetailData.user.nickname}
+                    </h3>
+                </div>
+            </div>
+
         </div>
     )
 
