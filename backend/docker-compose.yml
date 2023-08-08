@@ -16,6 +16,8 @@ services:
       - --collation-server=utf8mb4_unicode_ci
       - --default-authentication-plugin=mysql_native_password  # 추가한 부분
     restart: always
+    networks:
+      palette:
 
 
   redis:
@@ -23,7 +25,10 @@ services:
     container_name: redis
 #    hostname: redis
     ports:
-      - "6379:6379"
+      - 6379:6379
+    restart: always
+    networks:
+      palette:
 
 
   spring:
@@ -37,6 +42,7 @@ services:
       - 8080:8080
     expose:
       - 8080
+
 
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://3.135.94.237:3306/palette
@@ -52,6 +58,8 @@ services:
       - mysql
       - redis
     restart: always
+    networks:
+      palette:
 
 
   django:
@@ -79,3 +87,9 @@ services:
       - mysql
       - redis
     restart: always
+    networks:
+      palette:
+
+
+networks:
+  palette:

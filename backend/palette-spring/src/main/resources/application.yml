@@ -10,6 +10,7 @@ spring:
       hibernate:
         format_sql: true
         show_sql: true
+        dialect: org.hibernate.dialect.MySQL8Dialect
   datasource:
     ############ mysql database
       url: jdbc:mysql://mysql:3306/palette?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul
@@ -35,6 +36,7 @@ spring:
     user:
       password: 1234
 
+
   data:
     redis:
       lettuce:
@@ -44,7 +46,7 @@ spring:
           min-idle: 2
 
       port: 6379
-      host: 3.135.94.237
+      host: redis
 
   servlet:
     multipart:
