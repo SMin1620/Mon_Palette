@@ -29,7 +29,7 @@ class DominantColors:
     def rgb_to_hex(self, rgb):
         return '#%02x%02x%02x' % (int(rgb[0]), int(rgb[1]), int(rgb[2]))
 
-    # Return a list in order of color that appeared most often.
+    # Return a list in order of makeup that appeared most often.
     def getHistogram(self):
         numLabels = np.arange(0, self.CLUSTERS+1)
         #create frequency count tables
@@ -54,7 +54,7 @@ class DominantColors:
         chart = np.zeros((50, 500, 3), np.uint8)
         start = 0
 
-        #creating color rectangles
+        #creating makeup rectangles
         for i in range(len(colors)):
             end = start + hist[i] * 500
             r,g,b = colors[i]

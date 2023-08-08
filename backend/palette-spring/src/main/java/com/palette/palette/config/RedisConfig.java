@@ -18,7 +18,7 @@ public class RedisConfig {
     @Value("6379")
     private int port;
 
-    @Value("127.0.0.1")
+    @Value("3.135.94.237")
     private String host;
 
     @Bean

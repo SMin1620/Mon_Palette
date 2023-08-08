@@ -7,12 +7,11 @@ from rest_framework import status
 from rest_framework.response import Response
 
 from image.serializers import ImageSerializer, VirtualSerializer
-from color.models import Color
 
 
 class ImageViewSet(mixins.CreateModelMixin,
                    viewsets.GenericViewSet):
-    queryset = Color.objects.all()
+    # queryset = Color.objects.all()
     serializer_class = ImageSerializer
     # permission_classes = [IsAuthenticated]
     parser_classes = (MultiPartParser, FormParser)

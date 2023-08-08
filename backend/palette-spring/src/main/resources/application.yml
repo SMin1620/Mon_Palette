@@ -1,20 +1,34 @@
 spring:
   jpa:
+    ######## mariadb 전용
+    database: mysql   # 추가 해준 부분
+    database-platform: org.hibernate.dialect.MySQL5Dialect
+    ########
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     properties:
       hibernate:
         format_sql: true
         show_sql: true
   datasource:
-    url: jdbc:h2:tcp://localhost/~/test
-    username: sa
-    password:
-    driver-class-name: org.h2.Driver
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
+    ############ mysql database
+      url: jdbc:mysql://3.135.94.237:3306/palette?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul
+      username: root
+      password: 1234
+      driver-class-name: com.mysql.cj.jdbc.Driver
+    ##########################
+
+    ######### h2 database
+#    url: jdbc:h2:tcp://localhost/~/test
+#    username: sa
+#    password:
+#    driver-class-name: org.h2.Driver
+#    h2:
+#      console:
+#        enabled: true
+#        path: /h2-console
+  ##########################
+
 
 
   security:
@@ -28,9 +42,9 @@ spring:
           max-active: 10
           max-idle: 10
           min-idle: 2
+
       port: 6379
-      host: 127.0.0.1
-      password: 1234
+      host: "3.135.94.237"
 
   servlet:
     multipart:

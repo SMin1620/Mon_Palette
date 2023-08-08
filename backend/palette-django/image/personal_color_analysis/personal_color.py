@@ -41,7 +41,7 @@ def analysis(imgpath):
     # print('Lab_b[skin, eyebrow, eye]',Lab_b)
     # print('hsv_s[skin, eyebrow, eye]',hsv_s)
     #######################################
-    #      Personal color Analysis        #
+    #      Personal makeup Analysis        #
     #######################################
     Lab_weight = [30, 20, 5]
     hsv_weight = [10, 1, 1]

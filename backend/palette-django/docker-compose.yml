@@ -1,19 +1,42 @@
 version: "3"
 services:
-    db:
-        image: mariadb:10.5
-#        platform: linux/amd64
-        container_name: db
-        volumes:
-          - ./:/app/server/mysql/
-        env_file:
-          - ./.env.db
-        ports:
-           - "3306:3306"
-        command:
-          - --character-set-server=utf8mb4
-          - --collation-server=utf8mb4_unicode_ci
-        restart: always
+#    db:
+#        image: mariadb:10.5
+##        platform: linux/amd64
+#        container_name: db
+#        volumes:
+#          - ./:/app/server/mysql/
+#        env_file:
+#          - ./.env.db
+#        ports:
+#           - "3306:3306"
+#        command:
+#          - --character-set-server=utf8mb4
+#          - --collation-server=utf8mb4_unicode_ci
+#        restart: always
+
+
+    mysql:
+      image: mysql
+      #        platform: linux/amd64
+      container_name: mysql
+      volumes:
+        - ./:/app/server/mysql/
+      environment:
+        MYSQL_DATABASE: palette
+        #      MYSQL_USER: root
+        #      MYSQL_PASSWORD: 1234
+        #      MYSQL_ROOT_HOST: '%'
+        MYSQL_ROOT_PASSWORD: 1234
+      ports:
+        - "3306:3306"
+      command:
+        - --character-set-server=utf8mb4
+        - --collation-server=utf8mb4_unicode_ci
+        - --default-authentication-plugin=mysql_native_password  # 추가한 부분
+      restart: always
+      networks:
+        - mp
 
     django:
         build: .
@@ -34,8 +57,10 @@ services:
         env_file:
           - ./.env
         depends_on:
-          - db
+          - mysql
         restart: always
+        networks:
+          - mp
 
 
 #    nginx:
@@ -55,4 +80,6 @@ services:
 #            - django
 
 networks:
-    docker:
+  mp:
+    driver: bridge
+

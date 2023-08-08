@@ -55,7 +55,6 @@ INSTALLED_APPS += [
     'drf_yasg',
     'rest_framework_simplejwt',
     'corsheaders',
-    'color',
     'image',
 ]
 
@@ -115,7 +114,7 @@ DATABASES = {
         'USER': 'root',
         'PASSWORD': '1234',
         # 'HOST': '127.0.0.1',
-        'HOST': 'db',
+        'HOST': '3.135.94.237',
         'PORT': '3306',
         'OPTIONS': {
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
@@ -129,7 +128,7 @@ CACHES = {
     "default": {
         "BACKEND": "django.core.cache.backends.redis.RedisCache",
         # "LOCATION": "redis://127.0.0.1:6379",
-        "LOCATION": "redis://redis:6379",
+        "LOCATION": "redis://3.135.94.237:6379",
     }
 }
 
