@@ -11,6 +11,7 @@ import { loginState } from "./Atom/loginState";
 import { useNavigate } from "react-router-dom";
 import "./Modal.css";
 import AWS from "aws-sdk";
+import uuid from 'react-uuid';
 
 const ChangeInfo = () => {
 	const [background, setBackground] = useState("");
@@ -53,11 +54,12 @@ const ChangeInfo = () => {
 			const reader = new FileReader();
 			reader.onload = (e) => {
 				const imageBlob = new Blob([e.target.result], { type: file.type });
+				const replaceFileName = file.name.replace(/[^A-Za-z0-9_.-]/g, "")
 				const params = {
 					ACL: "public-read",
 					Body: imageBlob, // Use the image data (blob) as the Body of the S3 object
 					Bucket: BUCKET,
-					Key: file.name, // Use a valid key for the object, for example, the file name
+					Key: uuid() + replaceFileName, // Use a valid key for the object, for example, the file name
 				};
 				myBucket.putObject(params, (err, data) => {
 					if (err) {
@@ -86,18 +88,12 @@ const ChangeInfo = () => {
 		};
 
 		try {
-			if (params.Key.includes(" ")) {
-				const replaceFileName = params.Key.replace(/\s/g, "+");
-				const imageUrl = `https://${BUCKET}.s3.ap-northeast-2.amazonaws.com/${replaceFileName}`;
-				return imageUrl;
-			} else {
-				const imageUrl = `https://${BUCKET}.s3.ap-northeast-2.amazonaws.com/${params.Key}`;
-				return imageUrl;
-			}
-		} catch (error) {
-			console.log(error);
-			return null;
-		}
+      const imageUrl = `https://${BUCKET}.s3.ap-northeast-2.amazonaws.com/${params.Key}`
+      return imageUrl
+    } catch (error) {
+      console.log(error)
+      return null
+    }
 	};
 
 	const getmapping = () => {

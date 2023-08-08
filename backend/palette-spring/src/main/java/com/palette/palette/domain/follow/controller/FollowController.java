@@ -22,6 +22,7 @@ public class FollowController {
     @Operation(summary = "팔로잉 걸기")
     @PostMapping("/{id}")
     public BaseResponse followUser(HttpServletRequest request, @PathVariable("id") Long followingId){
+        System.out.println("팔로우 걸기 컨트롤러");
         try {
             return BaseResponse.success(followService.followUser(request, followingId));
         } catch (Exception e) {

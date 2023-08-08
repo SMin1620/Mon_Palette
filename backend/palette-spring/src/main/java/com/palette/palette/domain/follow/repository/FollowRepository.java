@@ -21,7 +21,7 @@ public interface FollowRepository extends JpaRepository<Follow, Long> {
     List<User> findAllByToUser(@Param("userEmail") String userEmail); // 사용자를 팔로우하는 관게를 가져옴
 
     @Query(value = "select u from Follow f inner join User u on f.toUser = u.email where f.fromUser = :userEmail")
-    List<User> findAllByFromUser(String userEmail); // 사용자가 팔로우한 관계를 가져옴
+    List<User> findAllByFromUser(@Param("userEmail") String userEmail); // 사용자가 팔로우한 관계를 가져옴
 
     Boolean existsByFromUserAndToUser(String fromUserEmail, String toUserEmail);
 

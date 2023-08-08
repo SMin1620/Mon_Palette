@@ -7,6 +7,8 @@ import MenuIcon from '@mui/icons-material/Menu';
 import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined';
 import SearchIcon from '@mui/icons-material/Search';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
+import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 
 function NavigationBarHeader(props) {
   const [showPage, setShowPage] = useState(false)
@@ -68,7 +70,7 @@ function NavigationBarHeader(props) {
       <div className={`page ${showPage ? 'show' : ''}`}>
         <div className="modal_top">
           <div className="modal_left">
-            <ArrowBackIcon sx={{ fontSize: 20 }} className="mordal_back" onClick={handleModal} />
+            <ArrowBackIcon sx={{ fontSize: 30 }} className="mordal_back" onClick={handleModal} />
           </div>
 
           <div className="modal_center">
@@ -81,11 +83,27 @@ function NavigationBarHeader(props) {
         </div>
         {/* Function 에 Link 걸기 */}
         <div className="modal_body">
-          <h1>Function1</h1>
-          <h1>Function2</h1>
-          <h1>Function3</h1>
-          <h1>Function4</h1>
+          <div className="modal_body_item">
+            <Link to="/AImakeup">AI MakeUp</Link>
+          </div>
+
+          <div className="modal_body_item">
+            <Link to="/AImakeup">YouTuber</Link>
+          </div>
+
+          <div className="modal_body_item">
+            <Link to="/AImakeup">My Palette</Link>
+          </div>
+
+          <div className="modal_body_item">
+            <Link to="/personalcolor">Color Test</Link>
+          </div>
         </div> 
+
+        <div className="modal_bottom">
+          {/* <SettingsOutlinedIcon sx={{ fontSize: 30}} className="modal_bottom_settings" /> */}
+          <LogoutOutlinedIcon sx={{ fontSize: 30}} className="modal_bottom_logout" />
+        </div>
       </div>
     </>
   );

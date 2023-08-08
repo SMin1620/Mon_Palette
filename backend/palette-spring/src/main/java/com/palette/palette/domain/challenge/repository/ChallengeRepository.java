@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -29,4 +30,14 @@ public interface ChallengeRepository extends JpaRepository<Challenge, Long>, Cha
      */
     @Query("select c from Challenge c order by c.likeCount desc limit 10")
     List<Challenge> findAllByBest();
+
+    /**
+     * 챌린지 팔로우 최근 목록 조회
+     */
+    @Query("select c from Challenge c " +
+            "where c.createAt >= :twentyFourHoursAgo and c.user.email in (select f.toUser from Follow f where f.fromUser = :userEmail) " +
+            "order by c.createAt desc"
+    )
+    List<Challenge> findAllByRecentFollow(@Param("twentyFourHoursAgo") LocalDateTime twentyFourHoursAgo, @Param("userEmail") String userEmail);
+
 }
