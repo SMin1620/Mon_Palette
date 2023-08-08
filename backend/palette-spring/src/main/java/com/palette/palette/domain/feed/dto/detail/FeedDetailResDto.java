@@ -62,7 +62,7 @@ public class FeedDetailResDto {
                 .isLiked(isLiked)
                 .likeCount(feed.getLikeCount())
                 .isFollow(isFollow)
-                .createAt(LocalDateTime.now())
+                .createAt(feed.getCreateAt())
                 .isDelete(false)
                 .feedImages(feed.getFeedImages())
                 .build();

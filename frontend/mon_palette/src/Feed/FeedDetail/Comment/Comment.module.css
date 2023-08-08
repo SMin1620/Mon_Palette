@@ -30,6 +30,7 @@
     font-weight: 500;
     font-size: 17px;
     margin-bottom: 0.2em;
+    overflow: auto;
 }
 
 .time {
@@ -38,10 +39,9 @@
 
 .content_wrap {
     display: flex;
-    /* flex-direction: column; */
-    justify-content: space-between;
-    align-items: center;
-    
+    flex-direction: column;
+    justify-content: center;
+    overflow: auto;
     /* margin: 1rem; */
 }
 
@@ -54,12 +54,16 @@
 }
 
 .input_wrap {
-    /* display: flex; */
     justify-content: center;
     align-items: center;
     /* border-top: 1px solid #fbcfdf; */
     margin-top: 10px;
     margin-bottom: 3.7rem;
+    /* position: fixed; */
+    /* display: flex; */
+    /* padding: 10px; */
+
+
 }
 
 .input {
@@ -99,6 +103,6 @@
     /* margin-right: 1rem; */
 }
 
-.more_btn {
-
+.edit_btn {
+    
 }

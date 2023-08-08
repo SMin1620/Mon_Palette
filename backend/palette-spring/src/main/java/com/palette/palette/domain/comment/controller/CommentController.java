@@ -74,7 +74,7 @@ public class CommentController {
     @Operation(summary = "피드 댓글 생성")
     @PostMapping("/feed/{feedId}/comment")
     public BaseResponse commentCreate(
-            @RequestParam("feedId") Long feedId,
+            @PathVariable("feedId") Long feedId,
             @RequestBody CommentCreateReqDto commentCreateReqDto,
             HttpServletRequest request
     ) {

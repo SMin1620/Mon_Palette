@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styles from "./Comment.module.css"
 import { FixedSizeGrid as Grid } from 'react-window';
 import { useRecoilValue } from "recoil";
@@ -6,7 +6,7 @@ import { loginState } from "../../../user/components/Atom/loginState";
 import { userId } from "src/user/components/Atom/UserId";
 import { useParams } from 'react-router-dom';
 import axios from "axios"
-import { FastBackwardFilled, MoreOutlined, SendOutlined } from '@ant-design/icons';
+import { MoreOutlined, SendOutlined } from '@ant-design/icons';
 // import InfiniteLoader from 'react-window-infinite-loader';
 
 // 댓글 작성시간 구하는 함수
@@ -44,6 +44,7 @@ function Comment() {
     const [editingCommentId, setEditingCommentId] = useState(null);
     const [editedContent, setEditedContent] = useState("");
 
+
     // 댓글 불러오기
     useEffect(() => {
         axios
@@ -72,7 +73,7 @@ function Comment() {
             headers: { Authorization: token }
         })
         .then ((response) => {
-            console.log(response);
+            console.log(response);            
             event.target[0].value = "";
             if (check) {
                 setCheck(false)
@@ -167,6 +168,7 @@ function Comment() {
         }
     }
 
+
     return (
         <div>
           {comments.map((comment) => (
@@ -194,7 +196,9 @@ function Comment() {
                                     value={editedContent}
                                     onChange={(event) => setEditedContent(event.target.value)}
                                     />
-                                    <button onClick={handleSaveEdit}>Save</button>
+                                    <button 
+                                    className={styles.edit_btn}
+                                    onClick={handleSaveEdit}>Save</button>
                                     <button onClick={handleCancelEdit}>cancel</button>
                                 </div>
                             ) : (
@@ -249,4 +253,4 @@ function Comment() {
       
 }
 
-export default Comment;
+export default Comment; 

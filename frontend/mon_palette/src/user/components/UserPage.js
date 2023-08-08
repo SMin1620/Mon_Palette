@@ -22,11 +22,11 @@ const ChangeInfo = () => {
 	const [isInfluence, setIsInfluence] = useState("");
 	const [isMe, setIsMe] = useState(false);
 	const [buttonText, setButtonText] = useState("팔로우");
+	const [feed, setFeed] = useState([]);
 	const [getinfo, setGetInfo] = useState("Feed");
 	const Authorization = useRecoilValue(loginState);
 	const Navigate = useNavigate();
 	const { id } = useParams();
-	console.log(id);
 
 	const followreq = () => {
 		console.log("here");
@@ -68,6 +68,10 @@ const ChangeInfo = () => {
 					setFollower(response.data.data.followerCnt);
 					setFollowing(response.data.data.followingCnt);
 					setIsInfluence(response.data.data.isInfluence);
+					setFeed(response.data.data.feed);
+					console.log(response.data.data.feed);
+
+					console.log(response.data.data.feed[0]);
 					setIsMe(response.data.data.isMe);
 					if (!response.data.data.isMe) {
 						//내 페이지가 아니고
@@ -92,31 +96,10 @@ const ChangeInfo = () => {
 		// setFollowing(0);
 		// setIsInfluence("USER");
 	}, [buttonText]); // 빈 배열을 넣어서 컴포넌트가 처음 렌더링될 때 한 번만 실행되도록 합니다.
-	const AllChallengeImage = [
-		"https://cdn.autotribune.co.kr/news/photo/202304/8017_43246_1529.jpg",
-		"https://cdn.autotribune.co.kr/news/photo/202304/8017_43246_1529.jpg",
-		"https://cdn.autotribune.co.kr/news/photo/202304/8017_43246_1529.jpg",
-		"https://cdn.autotribune.co.kr/news/photo/202304/8017_43246_1529.jpg",
-		"https://cdn.autotribune.co.kr/news/photo/202304/8017_43246_1529.jpg",
-		"https://cdn.autotribune.co.kr/news/photo/202304/8017_43246_1529.jpg",
-		"https://cdn.autotribune.co.kr/news/photo/202304/8017_43246_1529.jpg",
-		"https://cdn.newsculture.press/news/photo/202305/524104_647160_2237.jpg",
-		"https://upload.wikimedia.org/wikipedia/commons/6/6d/IU_at_Sony_new_product_launching_event%2C_20_September_2017_05.jpg",
-		"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSbvWLKz993UWxYqdnHM09YKO3d1nbYuoExzd_k2Scnvw&s",
-		"https://cdnimg.melon.co.kr/cm2/artistcrop/images/002/61/143/261143_20210325180240_500.jpg?61e575e8653e5920470a38d1482d7312/melon/resize/416/quality/80/optimize",
-		"https://upload.wikimedia.org/wikipedia/commons/6/6d/IU_at_Sony_new_product_launching_event%2C_20_September_2017_05.jpg",
-		"https://cdn.newsculture.press/news/photo/202305/524104_647160_2237.jpg",
-		"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSbvWLKz993UWxYqdnHM09YKO3d1nbYuoExzd_k2Scnvw&s",
-		"https://cdn.autotribune.co.kr/news/photo/202304/8017_43246_1529.jpg",
-		"https://cdn.newsculture.press/news/photo/202305/524104_647160_2237.jpg",
-		"https://upload.wikimedia.org/wikipedia/commons/6/6d/IU_at_Sony_new_product_launching_event%2C_20_September_2017_05.jpg",
-		"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSbvWLKz993UWxYqdnHM09YKO3d1nbYuoExzd_k2Scnvw&s",
-		"https://cdnimg.melon.co.kr/cm2/artistcrop/images/002/61/143/261143_20210325180240_500.jpg?61e575e8653e5920470a38d1482d7312/melon/resize/416/quality/80/optimize",
-		"https://upload.wikimedia.org/wikipedia/commons/6/6d/IU_at_Sony_new_product_launching_event%2C_20_September_2017_05.jpg",
-		"https://cdn.newsculture.press/news/photo/202305/524104_647160_2237.jpg",
-		"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSbvWLKz993UWxYqdnHM09YKO3d1nbYuoExzd_k2Scnvw&s",
-		"https://cdn.newsculture.press/news/photo/202305/524104_647160_2237.jpg",
-	];
+
+	const handleFeedDetail = (feedId) => {
+		Navigate(`/feed/${feedId}`);
+	};
 	return (
 		<div className="mypage_container">
 			<div className="mypage_background-container">
@@ -181,7 +164,7 @@ const ChangeInfo = () => {
 									<div className="mypage_group-left">cart</div>
 								</button>
 							</Link>
-							<Link to="/feedwrite">
+							<Link to="/feed/write">
 								<button className="mypage_button3">
 									<AddOutlinedIcon />
 									<div className="mypage_group-left">write</div>
@@ -217,7 +200,7 @@ const ChangeInfo = () => {
 										<div className="mypage_group-left">상품판매</div>
 									</button>
 								</Link>
-								<Link to="/feedwrite">
+								<Link to="/feed/write">
 									<button className="mypage_button8">
 										<AddOutlinedIcon />
 										<div className="mypage_group-left">만들기</div>
@@ -248,10 +231,14 @@ const ChangeInfo = () => {
 			<div className="feedMain_body">
 				<div className="feedMain_body_info">
 					<div className="feedMain_body_container">
-						{AllChallengeImage.map((challengeInfo, index) => {
+						{feed.map((feedimg, index) => {
 							return (
 								<div className="feedMain_body_info_item" key={index}>
-									<img src={challengeInfo} alt="" />
+									<img
+										src={feedimg.feedImages[0].imagePath}
+										alt=""
+										onClick={() => handleFeedDetail(feedimg.id)}
+									/>
 								</div>
 							);
 						})}
