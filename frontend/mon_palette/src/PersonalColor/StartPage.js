@@ -37,7 +37,7 @@ const StartPage = () => {
 
     axios({
       method: "POST",
-      url: `http://172.30.1.86:8000/api/personal`,
+      url: `${process.env.PERSONAL_API}/api/personal`,
       // mode: "cors",
       headers: {
         "Content-Type": "multipart/form-data", 
