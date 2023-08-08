@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, forwardRef, useImperativeHandle } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styles from "./Comment.module.css"
 import { FixedSizeGrid as Grid } from 'react-window';
 import { useRecoilValue } from "recoil";
@@ -43,7 +43,6 @@ function Comment() {
     const [modalStates, setModalstates] = useState({});
     const [editingCommentId, setEditingCommentId] = useState(null);
     const [editedContent, setEditedContent] = useState("");
-    const commentInputRef = useRef(null);
 
 
     // 댓글 불러오기
@@ -197,7 +196,9 @@ function Comment() {
                                     value={editedContent}
                                     onChange={(event) => setEditedContent(event.target.value)}
                                     />
-                                    <button onClick={handleSaveEdit}>Save</button>
+                                    <button 
+                                    className={styles.edit_btn}
+                                    onClick={handleSaveEdit}>Save</button>
                                     <button onClick={handleCancelEdit}>cancel</button>
                                 </div>
                             ) : (
@@ -240,7 +241,6 @@ function Comment() {
                     type="text"
                     placeholder="Write your comment..."
                     className={styles.input}
-                    ref={commentInputRef}
                     />
                     <button
                     className={styles.btn}><SendOutlined /></button>
