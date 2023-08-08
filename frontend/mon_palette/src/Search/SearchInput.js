@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { recentSearchesState } from './Atom';
 import styles from './SearchInput.module.css'
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
-import ArrowCircleLeftOutlinedIcon from '@mui/icons-material/ArrowCircleLeftOutlined';
+import ArrowBackOutlinedIcon from '@mui/icons-material/ArrowBackOutlined';
 import axios from 'axios';
 import { loginState } from '../user/components/Atom/loginState';
 import { resultsState } from './Atom';
-import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams, useLocation } from 'react-router-dom';
 import Autocomplete from './AutoComplete';
 
 const SearchInput = () => {
@@ -19,6 +19,9 @@ const SearchInput = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
   const [showSuggestions, setShowSuggestions] = useState(false);
+  const [inputFocused, setInputFocused] = useState(false);
+  const location = useLocation();
+  const containerRef = useRef(null);
   
   const query = searchParams.get('query') || '';
 
@@ -43,19 +46,27 @@ const SearchInput = () => {
 
   const handleClick = (event) => {
     event.preventDefault();
+    setShowSuggestions(false);
     if (query !== '') {
       handleSearch(query);
     }
   };
 
-  const handleSuggestionClick = (suggestion) => {
-    setSearchParams({ query: suggestion });
-    handleSearch(suggestion);
-    setSuggestions([]);
+  const handleClickOutside = (event) => {
+    if (containerRef.current && !containerRef.current.contains(event.target)) {
+      setShowSuggestions(false);
+      if (document.activeElement instanceof HTMLElement) {
+        document.activeElement.blur();
+      }
+    }
+  };
+
+  const handleSuggestionClick = (id, suggestion) => {
+    navigate(`/userpage/${id}`);
   };
 
   const autocomplete = (value) => {
-    if (value) {
+    if (value && inputFocused) {
       axios.get(`${process.env.REACT_APP_API}/api/search/auto?keyword=${value}`, {
         headers: { Authorization: Authorization }
       })
@@ -63,6 +74,7 @@ const SearchInput = () => {
         const suggestions = response.data.data.map((item) => ({
           nickname: item.nickname,
           profileImage: item.profileImage,
+          id: item.id
         }));
         setSuggestions(suggestions);
         setShowSuggestions(true);
@@ -82,14 +94,27 @@ const SearchInput = () => {
   useEffect(() => {
     if (query) {
       autocomplete(query);
+    } else {
+      setShowSuggestions(false);
     }
   }, [query]);
 
+  useEffect(() => {
+    setShowSuggestions(false);
+  }, [location]);
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
   return (
-    <div className={styles.div}>
+    <div className={styles.div} ref={containerRef}>
     <div className={styles['input-container']}>
       <Link to={fromSearchResults ? '/search/' : '/'} className={styles.link}>
-      <ArrowCircleLeftOutlinedIcon className={styles.back} />
+      <ArrowBackOutlinedIcon sx={{ fontSize:20 }} className={styles.back} />
       </Link>
       <input className={styles['search-input']}
         type="text"
@@ -99,6 +124,8 @@ const SearchInput = () => {
           autocomplete(e.target.value); 
           }
         }
+        onFocus={() => setInputFocused(true)} 
+        onBlur={() => setInputFocused(false)} 
         placeholder='검색어를 입력하세요'
       />
       <button className={styles['search-btn']} onClick={handleClick}>
