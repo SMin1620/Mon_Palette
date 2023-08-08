@@ -52,5 +52,7 @@ public class UserPage {
 
     @Schema(description = "피드", example = "피드 리스트")
     private List<FeedResDto> feed;
+    @Schema(description = "소셜 로그인 여부", example = "true")
+    private Boolean isOauth;
 
 }
