@@ -3,7 +3,7 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import { recentSearchesState } from './Atom';
 import styles from './SearchInput.module.css'
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
-import ArrowCircleLeftOutlinedIcon from '@mui/icons-material/ArrowCircleLeftOutlined';
+import ArrowBackOutlinedIcon from '@mui/icons-material/ArrowBackOutlined';
 import axios from 'axios';
 import { loginState } from '../user/components/Atom/loginState';
 import { resultsState } from './Atom';
@@ -89,7 +89,7 @@ const SearchInput = () => {
     <div className={styles.div}>
     <div className={styles['input-container']}>
       <Link to={fromSearchResults ? '/search/' : '/'} className={styles.link}>
-      <ArrowCircleLeftOutlinedIcon className={styles.back} />
+      <ArrowBackOutlinedIcon sx={{ fontSize:20 }} className={styles.back} />
       </Link>
       <input className={styles['search-input']}
         type="text"
