@@ -1,6 +1,8 @@
 import React from 'react';
+import axios from 'axios';
+import styles from './SearchResult.module.css'
 
-const SearchResultChallenge = () => {
+const SearchResultChallenge = ({ data }) => {
   return (
     <div>
       challenge

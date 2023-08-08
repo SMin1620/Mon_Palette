@@ -53,9 +53,10 @@
     margin-top: 0.125rem; 
   }
   
-  .back {
-    height: 1.875rem; 
-    width: 1.875rem; 
-    margin-bottom: 0.125rem; 
+   .back {
+    margin-bottom: 0.125rem;
+    border: 1px solid black;
+    border-radius: 50%;  
   }
+  
   
