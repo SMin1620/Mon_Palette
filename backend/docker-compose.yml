@@ -39,7 +39,7 @@ services:
       - 8080
 
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/palette
+      SPRING_DATASOURCE_URL: jdbc:mysql://3.135.94.237:3306/palette
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: 1234
 #      SPRING_REDIS_HOST: redis  # Redis 컨테이너의 이름
