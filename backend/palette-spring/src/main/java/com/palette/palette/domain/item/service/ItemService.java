@@ -53,6 +53,7 @@ public class ItemService {
     public Boolean registItem(HttpServletRequest request, ItemAddReqDto itemAddReqDto){
         String userEmail = jwtTokenProvider.getUserEmail(jwtTokenProvider.resolveToken(request));
         Optional<User> user = userRepository.findByEmail(userEmail);
+        // 인플루언서만 상품 등록할 수 있음
         if(user.get().getRole() == Role.USER) throw new IllegalArgumentException("권한이 없습니다.");
         Item item = Item.toEntity(itemAddReqDto, user.get());
         itemRepository.save(item);

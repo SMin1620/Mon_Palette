@@ -1,17 +1,29 @@
 package com.palette.palette.domain.oauth.google.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.palette.palette.domain.user.dto.oauth.UserOauthDto;
+import com.palette.palette.domain.user.dto.token.TokenDto;
+import com.palette.palette.domain.user.entity.User;
+import com.palette.palette.domain.user.repository.UserRepository;
+import com.palette.palette.jwt.JwtTokenProvider;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.core.env.Environment;
 import org.springframework.http.*;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -21,19 +33,74 @@ public class GoogleService {
 
     private final Environment env;
     private final RestTemplate restTemplate = new RestTemplate();
+    private final UserRepository userRepository;
+    private final AuthenticationManager authenticationManager;
+    private final JwtTokenProvider jwtTokenProvider;
+    private final PasswordEncoder passwordEncoder;
 
-    public void socialLogin(String code, String registrationId){
-       String accessToken = getAccessToken(code, registrationId);
-       JsonNode userResourceNode = getUserResource(accessToken, registrationId);
+    public TokenDto socialLogin(HttpServletResponse response, String code, String registrationId){
+        log.info("======================================================");
+        System.out.println(code);
+        String accessToken = getAccessToken(code, registrationId);
+        JsonNode userResourceNode = getUserResource(accessToken, registrationId);
 
         System.out.println("userResourceNode = " + userResourceNode);
 
-        String id = userResourceNode.get("id").asText();
-        String email = userResourceNode.get("email").asText();
-        String nickname = userResourceNode.get("name").asText();
-        System.out.println("id = " + id);
-        System.out.println("email = " + email);
-        System.out.println("nickname = " + nickname);
+        UserOauthDto user = new UserOauthDto();
+        log.info("userResource = {}", user);
+        switch (registrationId) {
+            case "google": {
+                user.setEmail(userResourceNode.get("email").asText());
+                user.setName(userResourceNode.get("name").asText());
+                user.setProfileImage(userResourceNode.get("picture").asText());
+                break;
+            } default: {
+                throw new RuntimeException("UNSUPPORTED SOCIAL TYPE");
+            }
+        }
+        log.info("email = {}", user.getEmail());
+        log.info("nickname {}", user.getName());
+        log.info("profileImage {}", user.getProfileImage());
+        log.info("======================================================");
+
+        Optional<User> isUser = userRepository.findByEmail(user.getEmail());
+        if(isUser.isEmpty()){
+            userRepository.save(User.fromOauthEntity(user, passwordEncoder));
+            userRepository.flush();
+        }
+        Optional<User> oauthUser = userRepository.findByEmail(user.getEmail());
+
+        try{
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                        oauthUser.get().getEmail(),
+                        oauthUser.get().getEmail()
+                    )
+            );
+            log.info("로그인 컨트롤러 에러 >>> " + authentication);
+
+            String accessToken2 = jwtTokenProvider.createAccessToken(authentication);
+            String refreshToken = jwtTokenProvider.createRefreshToken(authentication);
+
+            Optional<User> oauthUserNew = userRepository.findByEmail(oauthUser.get().getEmail());
+
+            TokenDto tokenDto =TokenDto.builder()
+                    .accessToken(accessToken2)
+                    .refreshToken(refreshToken)
+                    .userId(oauthUserNew.get().getId())
+                    .build();
+            // 헤더에 토큰 담기
+            jwtTokenProvider.setHeaderAccessToken(response, accessToken);
+            jwtTokenProvider.setHeaderRefreshToken(response, refreshToken);
+
+            log.info("토큰Dto 생성 후 에러 >>> " + tokenDto);
+
+            return tokenDto;
+        }catch (Exception e){
+            e.printStackTrace();
+            throw new NullPointerException("로그인 에러");
+        }
+
     }
 
     private String getAccessToken(String authorizationCode, String registrationId) {
@@ -53,8 +120,10 @@ public class GoogleService {
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
         HttpEntity entity = new HttpEntity(params, headers);
+        System.out.println(params);
 
         ResponseEntity<JsonNode> responseNode = restTemplate.exchange(tokenUri, HttpMethod.POST, entity, JsonNode.class);
+        System.out.println(responseNode.toString());
         JsonNode accessTokenNode = responseNode.getBody();
         return accessTokenNode.get("access_token").asText();
     }
