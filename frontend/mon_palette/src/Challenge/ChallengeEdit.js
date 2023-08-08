@@ -1,23 +1,38 @@
 import React, { useState, useEffect } from 'react';
+import './ChallengeEdit.css'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
-import { loginState } from '../user/components/Atom/loginState';
-import './ChallengeCreate.css'
-import { useNavigate } from "react-router-dom"
+import { loginState } from 'src/user/components/Atom/loginState';
 
 import AWS from 'aws-sdk'
 import uuid from 'react-uuid'
 import axios from 'axios';
 
-function ChallengeCreate() {
+function ChallengeEdit() {
+  const location = useLocation()
   const token = useRecoilValue(loginState)
   const navigate = useNavigate()
-
+  const [challengeInfo, setChallengeInfo] = useState("")
   const [selectedVideo, setSelectedVideo] = useState(null)
   const [previewVideo, setPreviewVideo] = useState(null)
   const [caption, setCaption] = useState('')
-  const [videoUrl, setVideoUrl] = useState(null)
   const [update, setUpdate] = useState(false)
+
+  console.log(location)
+  useEffect (() => {
+    setChallengeInfo(location.state.challengeInfo)
+    setSelectedVideo(location.state.challengeInfo.video)
+    setPreviewVideo(location.state.challengeInfo.video)
+    setCaption(location.state.challengeInfo.content)
+  },[])
+
+  useEffect(() => {
+    if (update === true) {
+      handlePutAxios()
+    }
+    return setUpdate(false)
+  },[update])
 
   // AWS 연동
   const ACCESS_KEY = process.env.REACT_APP_AWS_S3_ACCESS_ID
@@ -35,27 +50,6 @@ function ChallengeCreate() {
     region: REGION,
   })
 
-  useEffect(() => {
-    if (update === true) {
-      handlePostAxios()
-    }
-    return setUpdate(false)
-  },[update])
-
-  const handlePostAxios = () => {
-    axios
-      .post(`${process.env.REACT_APP_API}/api/challenge`, {
-        video: videoUrl,
-        content: caption
-      },{
-        headers: {Authorization: token}
-      })
-      .then((response) => {
-        navigate("/challenge")
-      })
-  }
-  console.log(update)
-
   // AWS에 비디오 저장하고 url 가져오기
   const handleVideoUploadToS3 = async () => {
     const replaceFileName = selectedVideo.name.replace(/[^A-Za-z0-9_.-]/g, "");
@@ -69,7 +63,7 @@ function ChallengeCreate() {
     try {
       await myBucket.putObject(params).promise()
       const S3Url = await handleVideoUrlFromS3(params.Key)
-      setVideoUrl(S3Url)
+      setSelectedVideo(S3Url)
     } catch (error) {
       console.error(error)
     }
@@ -88,6 +82,22 @@ function ChallengeCreate() {
     } catch (error) {
       console.log(error)
     }
+  }
+
+  const handlePutAxios = () => {
+    axios
+      .put(`${process.env.REACT_APP_API}/api/challenge/${location.state.challengeInfo.id}`, {
+        video: selectedVideo,
+        content: caption
+      },{
+        headers: { Authorization: token}
+      })
+      .then((response) => {
+        navigate(`/challenge/${location.state.challengeInfo.id}`)
+      })
+      .catch((error) => {
+        console.error(error)
+      })
   }
 
   const handleVideoUpload = (e) => {
@@ -116,7 +126,6 @@ function ChallengeCreate() {
       });
     }
   };
-
   const handleRemoveVideo = () => {
     setSelectedVideo(null)
     setPreviewVideo(null)
@@ -126,7 +135,7 @@ function ChallengeCreate() {
     <div className="challenge_create">
       <div className="challenge_write_top">
         <ArrowBackIcon sx={{ fontSize: 20 }}className="feed_write_top_back" onClick={() => navigate(-1)}/>
-        <h2>Create</h2>
+        <h2>Edit Challenge</h2>
         <div 
           className="feed_write_top_upload"
           onClick={handleVideoUploadToS3}
@@ -135,8 +144,7 @@ function ChallengeCreate() {
 
       <hr className="feed_write_top_header_hr"/>
 
-
-      {/* challenge 비디오 보여주는 부분 */}
+       {/* challenge 비디오 보여주는 부분 */}
       <div className="feed_write_top_image">
         <div className="feed_write_top_image_upload">
           <label for="fileUpload" className="feed_write_top_image_label">Up load</label>
@@ -148,8 +156,8 @@ function ChallengeCreate() {
             id="fileUpload"
           />
         </div>
-          
-        {previewVideo ? 
+
+        {challengeInfo ? 
           <div className="challenge_video_wrap">
             {
               previewVideo&&
@@ -161,15 +169,13 @@ function ChallengeCreate() {
                   <source src={previewVideo} type="video/mp4" className="challenge_video_item"/>
                 </video>
                 <button onClick={handleRemoveVideo}>-</button>
-                <img src={previewVideo} alt=""/>
               </div>
             }
           </div>
           :
           <div className="challenge_video_wrap"></div>}
       </div>
-      
-      
+
       {/* feed caption 부분 */}
       <div className="feed_write_mid">
         <textarea
@@ -180,7 +186,7 @@ function ChallengeCreate() {
         />
       </div>
     </div>
-  )
+  );
 }
 
-export default ChallengeCreate;
+export default ChallengeEdit;
