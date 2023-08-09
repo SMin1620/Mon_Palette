@@ -1,5 +1,6 @@
-package com.palette.palette.domain.order.dto.create;
+package com.palette.palette.domain.orderItem.dto;
 
+import com.palette.palette.domain.orderItem.entity.OrderItem;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,7 +16,6 @@ public class OrderItemDto {
 
     private Long itemId;
 
-    private String name;
-
     private List<OrderItemOptionDto> itemOptions;
+
 }

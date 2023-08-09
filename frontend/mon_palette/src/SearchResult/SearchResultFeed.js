@@ -1,85 +1,83 @@
-import React from 'react';
-import styles from './SearchResultFeed.module.css'
-import { resultsState } from '../Search/Atom';
+import React, { useState, useEffect, useRef } from 'react';
+import axios from 'axios';
+import styles from './SearchResultFeed.module.css';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { loginState } from '../user/components/Atom/loginState';
 import { useRecoilValue } from 'recoil';
 
+function SearchResultFeed({ data }) {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const Authorization = useRecoilValue(loginState);
+  const searchQuery = new URLSearchParams(location.search).get('query');
 
-function SearchResultFeed() {
-  const FeedData = [{
-    description: '설명설명설명설명설명설명설명설명설명설명설명설명',
-    feedImg: 'https://img.freepik.com/free-photo/adorable-kitty-looking-like-it-want-to-hunt_23-2149167099.jpg?w=996&t=st=1690267153~exp=1690267753~hmac=ce53bc8b87bfeb06776cc17f93e58ca92a6cbcb3ffd4104e48c830dac4ebe296',
-    userId: 'jsw',
-    personalColor: '봄 웜톤',
-    userImg: 'https://cdnimg.melon.co.kr/cm2/artistcrop/images/002/61/143/261143_20210325180240_500.jpg?61e575e8653e5920470a38d1482d7312/melon/resize/416/quality/80/optimize'
-  },{
-    description: '설명설명설명설명설명설명설명설명설명설명설명설명',
-    feedImg: 'https://cdnimg.melon.co.kr/cm2/artistcrop/images/002/61/143/261143_20210325180240_500.jpg?61e575e8653e5920470a38d1482d7312/melon/resize/416/quality/80/optimize',
-    userId: 'jsw',
-    personalColor: '봄 웜톤',
-    userImg: 'https://cdnimg.melon.co.kr/cm2/artistcrop/images/002/61/143/261143_20210325180240_500.jpg?61e575e8653e5920470a38d1482d7312/melon/resize/416/quality/80/optimize'
-  },{
-    description: '설명설명설명설명설명설명설명설명설명설명설명설명',
-    feedImg: 'https://img.freepik.com/free-photo/adorable-kitty-looking-like-it-want-to-hunt_23-2149167099.jpg?w=996&t=st=1690267153~exp=1690267753~hmac=ce53bc8b87bfeb06776cc17f93e58ca92a6cbcb3ffd4104e48c830dac4ebe296',
-    userId: 'jsw',
-    personalColor: '봄 웜톤',
-    userImg: 'https://cdnimg.melon.co.kr/cm2/artistcrop/images/002/61/143/261143_20210325180240_500.jpg?61e575e8653e5920470a38d1482d7312/melon/resize/416/quality/80/optimize'
-  },{
-    description: '설명설명설명설명설명설명설명설명설명설명설명설명',
-    feedImg: 'https://cdnimg.melon.co.kr/cm2/artistcrop/images/002/61/143/261143_20210325180240_500.jpg?61e575e8653e5920470a38d1482d7312/melon/resize/416/quality/80/optimize',
-    userId: 'jsw',
-    personalColor: '봄 웜톤',
-    userImg: 'https://cdnimg.melon.co.kr/cm2/artistcrop/images/002/61/143/261143_20210325180240_500.jpg?61e575e8653e5920470a38d1482d7312/melon/resize/416/quality/80/optimize'
-  },{
-    description: '설명설명설명설명설명설명설명설명설명설명설명설명',
-    feedImg: 'https://img.freepik.com/free-photo/adorable-kitty-looking-like-it-want-to-hunt_23-2149167099.jpg?w=996&t=st=1690267153~exp=1690267753~hmac=ce53bc8b87bfeb06776cc17f93e58ca92a6cbcb3ffd4104e48c830dac4ebe296',
-    userId: 'jsw',
-    personalColor: '봄 웜톤',
-    userImg: 'https://cdnimg.melon.co.kr/cm2/artistcrop/images/002/61/143/261143_20210325180240_500.jpg?61e575e8653e5920470a38d1482d7312/melon/resize/416/quality/80/optimize'
-  },{
-    description: '설명설명설명설명설명설명설명설명설명설명설명설명',
-    feedImg: 'https://mblogthumb-phinf.pstatic.net/MjAxODA0MjhfMjQ3/MDAxNTI0ODgxODM2ODg4.qQGPRwKWHTgq1R2XIx2f5hNExkrL60L4xuB08IW5gC0g.Zbu_z7BSjkCeoCeylaV4QmMyHiBAIZSIN87H8ob3eLIg.JPEG.ichufs/IMG_8931s.jpg?type=w800',
-    userId: 'jsw',
-    personalColor: '봄 웜톤',
-    userImg: 'https://cdnimg.melon.co.kr/cm2/artistcrop/images/002/61/143/261143_20210325180240_500.jpg?61e575e8653e5920470a38d1482d7312/melon/resize/416/quality/80/optimize'
-  },]
+  const [resultData, setResultData] = useState(data.feed || []);
+  const [feedPage, setFeedPage] = useState(0);
+  const obsRef = useRef(null);
+  const endRef = useRef(false);
 
-  const results = useRecoilValue(resultsState);
-  // console.log(results, typeof results)
+  const loadMoreData = () => {
+    if (endRef.current) return;
 
-  const goDetail = () => {
-    return
-  }
+    axios.get(
+      `${process.env.REACT_APP_API}/api/search?page=${feedPage}&type=feed&keyword=${searchQuery}`,
+      {
+        headers: { Authorization: Authorization }
+      }
+    )
+    .then(response => {
+      const feedData = response.data.data.feed;
+      if (feedData && feedData.length === 0) {
+        endRef.current = true;
+      } else {
+        setResultData(prev => [...prev, ...feedData]);
+        setFeedPage(prev => prev + 1);
+      }
+    })
+    .catch(error => {
+      console.error("Error fetching data:", error);
+    });
+  };
+
+  const handleObs = (entries) => {
+    const target = entries[0];
+    if (!endRef.current && target.isIntersecting) {
+      loadMoreData();
+    }
+  };
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(handleObs, { threshold: 0.1 });
+    if (obsRef.current) observer.observe(obsRef.current);
+    return () => observer.disconnect();
+  }, []);
+
+  const goDetail = (id) => {
+    return navigate(`/feed/${id}`);
+  };
 
   return (
-    // <div className="search_result_feed_wrap">
-    //   <div className="search_result_feed_container">
-    //     {
-    //       FeedData.map((data, index) => {
-    //         return <div className="search_result_feed_item" key={index}>
-    //           <img src={data.feedImg} alt="" className="search_result_feed_feedImg"/>
-    //           <div className="search_result_feed_user">
-    //             <div className="search_result_feed_user_left">
-    //               <img src={data.userImg} alt="" className="search_result_feed_userImg" />
-    //               <p>{data.userId}</p>
-    //             </div>
-    //             <p>{data.personalColor}</p>
-    //           </div>
-    //           <p>{data.description.slice(0, 10)} <span>...</span></p>
-    //         </div>
-    //       })
-    //     }
-    //   </div>
-    // </div>
-    <div>
-    {results && results.length > 0 && results.map((data, index) => (
-      <ul className={styles.ul} key={index}>
-        <li onClick={ () => goDetail(data.keyword) } className={styles.li}>
-          <img src={data.feedImages[0].imagePath} alt="Feed" />
-          {data.content}
-        </li>
-      </ul>
-    ))}
-  </div>
-  )}  
+    <div className={styles["feedMain_body"]}>
+      <div className={styles["feedMain_body_info"]}>
+        <div className={styles["feedMain_body_container"]}>
+          {resultData.map((item, index) => (
+            <div key={index} className={styles["feedMain_body_info_item"]} onClick={() => goDetail(item.id)}>
+              <div>
+                <img src={item.feedImages[0].imagePath} alt="" onClick={() => goDetail(item.id)} className={styles["feedMain_body_info_item_top"]} />
+                <div className={styles["feedMain_body_info_item_bottom"]}>
+                  <img src={item.user.profileImage} alt={item.user.name} />
+                  <p>{item.user.nickname}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+          <li ref={obsRef} className={styles.loadingIndicator}>
+            Loading more...
+          </li>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default SearchResultFeed;

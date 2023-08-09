@@ -37,7 +37,6 @@ function ChallengeCreate() {
 
   useEffect(() => {
     if (update === true) {
-      console.log('실행')
       handlePostAxios()
     }
     return setUpdate(false)
@@ -126,8 +125,8 @@ function ChallengeCreate() {
   return (
     <div className="challenge_create">
       <div className="challenge_write_top">
-        <ArrowBackIcon sx={{ fontSize: 20 }}className="feed_write_top_back"/>
-        <h2>challenge</h2>
+        <ArrowBackIcon sx={{ fontSize: 20 }}className="feed_write_top_back" onClick={() => navigate(-1)}/>
+        <h2>Create</h2>
         <div 
           className="feed_write_top_upload"
           onClick={handleVideoUploadToS3}

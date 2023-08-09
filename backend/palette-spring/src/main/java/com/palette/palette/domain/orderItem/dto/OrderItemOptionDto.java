@@ -1,9 +1,12 @@
-package com.palette.palette.domain.order.dto.create;
+package com.palette.palette.domain.orderItem.dto;
 
+import com.palette.palette.domain.itemOption.entity.ItemOption;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Data
 @Builder
@@ -13,9 +16,5 @@ public class OrderItemOptionDto {
 
     private Long itemOptionId;
 
-//    private String itemOptionName;
-
     private Integer itemOptionCount;
-
-    private Integer itemOptionPrice;
 }
