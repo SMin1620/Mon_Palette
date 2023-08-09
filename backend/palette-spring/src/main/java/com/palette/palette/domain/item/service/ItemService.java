@@ -143,11 +143,27 @@ public class ItemService {
         return itemDetailResDto;
     }
 
-    public List<ItemGetResDto> getCategoryItem(Long categoryid){
+    public List<ItemGetResDto> getCategoryItem(Long categoryid, int page, int size){
+        Pageable pageable = PageRequest.of(page, size);
         Optional<Category> category = categoryRepository.findById(categoryid);
-        List<ItemGetResDto>  itemGetResDtoList = categoryProductListRepository.findByCategory(category.get())
+        System.out.println(categoryid);
+        List<ItemGetResDto>  itemGetResDtoList = categoryProductListRepository.findByCategory(category.get(), pageable)
+                .getContent()
                 .stream()
                 .map(ItemGetResDto::toCDto)
+                .collect(Collectors.toList());
+        return itemGetResDtoList;
+    }
+
+    public List<ItemGetResDto> getManageItem(HttpServletRequest req){
+        String userEmail = jwtTokenProvider.getUserEmail(jwtTokenProvider.resolveToken(req));
+        Optional<User> user = userRepository.findByEmail(userEmail);
+        if(user.get().getRole() != Role.IF){
+            throw new IllegalArgumentException("권한이 없습니다.");
+        }
+        List<ItemGetResDto> itemGetResDtoList = itemRepository.findByUserEmail(user.get().getEmail())
+                .stream()
+                .map(ItemGetResDto::toDto)
                 .collect(Collectors.toList());
         return itemGetResDtoList;
     }
