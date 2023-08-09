@@ -6,6 +6,7 @@ import com.palette.palette.domain.challenge.entity.Challenge;
 import com.palette.palette.domain.feed.dto.BaseUserResDto;
 import com.palette.palette.domain.feed.dto.list.FeedResDto;
 import com.palette.palette.domain.feed.entity.Feed;
+import com.palette.palette.domain.item.dto.ItemGetResDto;
 import com.palette.palette.domain.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,5 +26,7 @@ public class SearchFeedChallengeUserDto {
     private List<FeedResDto> feed;
 
     private List<ChallengeResDto> challenge;
+
+    private List<ItemGetResDto> item;
 
 }

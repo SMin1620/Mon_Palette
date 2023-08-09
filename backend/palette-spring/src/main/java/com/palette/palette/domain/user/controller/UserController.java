@@ -4,6 +4,7 @@ import com.palette.palette.common.BaseResponse;
 import com.palette.palette.domain.user.dto.login.LoginReqDto;
 import com.palette.palette.domain.user.dto.register.RegisterReqDto;
 import com.palette.palette.domain.user.dto.update.*;
+import com.palette.palette.domain.user.entity.User;
 import com.palette.palette.domain.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -14,6 +15,8 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/user")

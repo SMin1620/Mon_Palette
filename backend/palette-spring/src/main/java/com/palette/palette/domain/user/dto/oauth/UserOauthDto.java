@@ -1,21 +1,17 @@
-package com.palette.palette.domain.order.dto.create;
+package com.palette.palette.domain.user.dto.oauth;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderItemDto {
+public class UserOauthDto {
 
-    private Long itemId;
-
+    private String email;
     private String name;
-
-    private List<OrderItemOptionDto> itemOptions;
+    private String profileImage;
 }
