@@ -73,8 +73,8 @@ jwt:
 
   oauth2:
     google:
-      client-id: ${java.oauth.ID}
-      client-secret: ${java.oauth.SECRET}
-      redirect-uri: ${java.redirect.URI}
-      token-uri: https://oauth2.googleapis.com/token
-      resource-uri: https://www.googleapis.com/oauth2/v2/userinfo
+      client-id: ${oauth2.google.client-id}
+      client-secret: ${oauth2.google.client-secret}
+      redirect-uri: ${oauth2.google.redirect-uri}
+      token-uri: ${oauth2.google.token-uri}
+      resource-uri: ${oauth2.google.resource-uri}
