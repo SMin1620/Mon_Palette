@@ -198,7 +198,6 @@ function App() {
 					element={[
 						<NavigationBarHeader />,
 						<ItemDetail />,
-						<NavigationBarBottom />
 					]}
 				/>
 		
