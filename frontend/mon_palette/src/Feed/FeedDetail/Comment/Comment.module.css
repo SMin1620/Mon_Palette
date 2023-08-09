@@ -8,7 +8,7 @@
     
 }
 
-.commentInfo {
+.comment_info {
     display: flex;
     align-items: flex-start;
     margin-top: 1em;
@@ -103,6 +103,11 @@
     /* margin-right: 1rem; */
 }
 
-.edit_btn {
-    
+.more_btn {
+    /* align-self: flex-end; */
+    margin-left: auto;
+    position: relative;
+    display: inline-block;
+    margin-right: 0.5rem;
+
 }

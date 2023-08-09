@@ -13,16 +13,20 @@
 }
 
 .feed_item {
-    min-width: 100%;
+    width: 100%;
+    height: 18rem;
     overflow: hidden;
+    margin: 0 auto;
     border: 3px solid white;
 }
 
 .img {
     width: 100%;
-    height: 18rem;
+    height: 100%;
     display: block;
     object-fit: cover;
+    top: 0;
+    left: 0;
 }
 
 .content {
@@ -132,4 +136,24 @@
 
 .temp_div {
     width: 37.6px;
+}
+
+.content_bottom {
+    display: flex;
+    justify-content: space-between;
+}
+
+.more_btn {
+    margin-left: auto;
+    margin-right: 0.5rem;
+}
+
+.btn {
+    background-color: #fdf2f7;
+    border: none;
+}
+
+.more_btn_container {
+    position: relative;
+    display: inline-block;
 }
