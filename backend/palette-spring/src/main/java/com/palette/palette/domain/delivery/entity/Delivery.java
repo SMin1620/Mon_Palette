@@ -19,11 +19,17 @@ public class Delivery {
     @Column(name = "delivery_id")
     private Long id;
 
-    private String phone;
-
+    @Column(nullable = false)
     private String zipcode;
 
+    @Column(nullable = false)
     private String address;
+
+    @Column(nullable = false)
+    private String receiver;
+
+    @Column(nullable = false)
+    private String phone;
 
     @Enumerated(EnumType.STRING)
     private DeliveryStatus deliveryStatus;

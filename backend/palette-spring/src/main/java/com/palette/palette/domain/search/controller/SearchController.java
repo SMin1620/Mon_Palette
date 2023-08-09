@@ -36,7 +36,7 @@ public class SearchController {
      */
     @Operation(summary = "검색 QueryDSL")
     @GetMapping()
-    public BaseResponse feedSearch(
+    public BaseResponse search(
             @RequestParam("page") int page,
             @RequestParam(value = "type") String type,
             @RequestParam(value = "keyword") String keyword,

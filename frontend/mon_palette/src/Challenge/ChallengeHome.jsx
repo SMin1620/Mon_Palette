@@ -22,6 +22,7 @@ function ChallengeHome() {
   useEffect(() => {
     getChallenge()
     getPopularChallenge()
+    getRecentChallenge()
     const observer = new IntersectionObserver(handleObs, { threshold: 0.5 }); // 페이지 최초 렌더링시 옵저버 생성
     if (obsRef.current) observer.observe(obsRef.current);
     return () => { observer.disconnect(); }; // 페이지 언마운트시 옵저버 해제
@@ -70,10 +71,22 @@ function ChallengeHome() {
     }
   }
 
+  const getRecentChallenge = async () => {
+    axios
+      .get(`${process.env.REACT_APP_API}/api/challenge/recent`, {
+        headers: { Authorization: token }
+      })
+      .then((response) => {
+        console.log(response)
+        setFollowChallenge((prevChallenge) => [...prevChallenge, ...response.data.data])
+      })
+  }
+
   const handleChallengeDetail = (id) => {
     navigate(`/challenge/${id}`)
   }
 
+  console.log(challengeList)
   return (
     <div className="challengeHome">
       <div className="challengeHome_top">
@@ -92,7 +105,6 @@ function ChallengeHome() {
       <div className="challengeHome_mid">
         <div className="challenge_mid_label">
           <h3>Popular challenge</h3>
-          <button>more</button>
         </div>
         <div className="challengeHome_mid_challengeImg">
           <div className="challengeHome_mid_container">
@@ -118,7 +130,17 @@ function ChallengeHome() {
                 challengeList&&challengeList.map((challengeInfo, index) => {
                   return <div className="challengeHome_bottom_info_item" key={index} onClick={() => handleChallengeDetail(challengeInfo.id)}>
                     <video src={challengeInfo.video} alt="" />
-                    {index}
+                    <div className="challengeHome_bottom_info_item_user">
+                      <img src={challengeInfo.user.profileImage} alt="" />
+                      <div className="challengeHome_bottom_info_item_personal_color">
+                        <p>{challengeInfo.user.nickname}</p>
+                        {
+                          challengeInfo.user.personalColor ? 
+                          <p>{challengeInfo.user.personalColor}</p>
+                          : <p>null</p>
+                        }
+                      </div>
+                    </div>
 
                   </div>
                 })
