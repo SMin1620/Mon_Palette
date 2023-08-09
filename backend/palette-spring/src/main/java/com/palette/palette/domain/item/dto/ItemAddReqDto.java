@@ -59,5 +59,6 @@ public class ItemAddReqDto {
      * 카테고리
      */
     private String categoryName;
+    private String categoryPhoto;
     private Long categoryParentId = 1L;
 }

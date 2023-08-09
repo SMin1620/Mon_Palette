@@ -59,7 +59,7 @@ public class ItemService {
         itemRepository.save(item);
 
         Optional<Category> category = categoryRepository.findById(itemAddReqDto.getCategoryParentId());
-        Category itemCategory = Category.toEntity(itemAddReqDto.getCategoryName(), category.get());
+        Category itemCategory = Category.toEntity(itemAddReqDto.getCategoryName(), itemAddReqDto.getCategoryPhoto(),category.get());
         categoryRepository.save(itemCategory);
 
         categoryProductListRepository.save(CategoryProductList.toEntity(itemCategory, item));
