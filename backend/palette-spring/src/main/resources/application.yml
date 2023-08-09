@@ -70,3 +70,11 @@ jwt:
     token-validity-in-seconds: 86400 # ttl (초)
     access-token-expiration-sec: 1800
     refresh-token-expiration-sec: 1209600
+
+  oauth2:
+    google:
+      client-id: ${oauth2.google.client-id}
+      client-secret: ${oauth2.google.client-secret}
+      redirect-uri: ${oauth2.google.redirect-uri}
+      token-uri: ${oauth2.google.token-uri}
+      resource-uri: ${oauth2.google.resource-uri}
