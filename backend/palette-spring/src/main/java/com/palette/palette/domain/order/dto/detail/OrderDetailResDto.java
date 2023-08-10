@@ -5,10 +5,8 @@ import com.palette.palette.domain.delivery.dto.DeliveryResDto;
 import com.palette.palette.domain.feed.dto.BaseUserResDto;
 import com.palette.palette.domain.order.entity.Order;
 import com.palette.palette.domain.order.entity.OrderStatus;
-import com.palette.palette.domain.orderItem.dto.OrderItemDto;
-import com.palette.palette.domain.orderItem.dto.response.OrderItemResDto;
+import com.palette.palette.domain.orderItem.dto.detail.OrderItemDetailResDto;
 import com.palette.palette.domain.orderItem.entity.OrderItem;
-import com.palette.palette.domain.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -38,27 +36,8 @@ public class OrderDetailResDto {
 
     private LocalDateTime orderAt;
 
-    private List<OrderItemResDto> orderItems;
+    private List<OrderItemDetailResDto> items;  // 아이템 리스트 -> 아이템 옵션 리스트
 
     private DeliveryResDto delivery;
 
-
-    public static OrderDetailResDto toDto(Order order, List<OrderItem> orderItems) {
-
-        List<OrderItemResDto> collect = orderItems.stream()
-                .map(OrderItemResDto::toDto)
-                .collect(Collectors.toList());
-
-        return OrderDetailResDto.builder()
-                .id(order.getId())
-                .user(BaseUserResDto.toDto(order.getUser()))
-                .price(order.getPrice())
-                .count(order.getCount())
-                .requirement(order.getRequirement())
-                .orderStatus(order.getOrderStatus())
-                .orderAt(order.getOrderAt())
-                .orderItems(collect)
-                .delivery(DeliveryResDto.toDto(order.getDelivery()))
-                .build();
-    }
 }
