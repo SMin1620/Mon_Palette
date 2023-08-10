@@ -24,6 +24,9 @@ import MakeUpStart from "./AIMakeUp/MakeUpStart";
 import StartPage from "./PersonalColor/StartPage";
 import ChallengeDetail from "./Challenge/ChallengeDetail"
 import ChallengeEdit from './Challenge/ChallengeEdit';
+import PaymentFailed from "./Shop/PaymentFailed";
+import PaymentSucceed from "./Shop/PaymentSucceed";
+
 
 import { Routes, Route } from "react-router-dom";
 function App() {
@@ -192,6 +195,24 @@ function App() {
 					element={[<NavigationBarBottom />, <ChallengeEdit />]}
 				/>
 		
+
+				<Route
+					path="/paymentsucceed"
+					element={[
+						<NavigationBarHeader title="Mon, Palette" />,
+						<NavigationBarBottom />,
+						<PaymentSucceed />,
+					]}
+				/>
+
+				<Route
+					path="/paymentfailed"
+					element={[
+						<NavigationBarHeader title="Mon, Palette" />,
+						<PaymentFailed />,
+						<NavigationBarBottom />,
+					]}
+				/>
 			</Routes>
 		</div>
 	);

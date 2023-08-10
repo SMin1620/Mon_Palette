@@ -33,6 +33,9 @@ const Payment = ({ orderData }) => {
         const validationResult = await axios({
             url: `${process.env.REACT_APP_API}/api/order`,
             method: "POST",
+            headers: {
+                Authorization: Authorization,
+            },
             data: {
                 txId: response.txId,
                 paymentId: response.paymentId,
