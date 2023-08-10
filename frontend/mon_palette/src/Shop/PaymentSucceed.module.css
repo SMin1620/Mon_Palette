@@ -1,0 +1,10 @@
+.container {
+    position: absolute;
+}
+
+.button {
+    border-radius: 10px;
+    background-color: #e84c8b;
+    height: 3rem;
+    width: 100%;
+}
