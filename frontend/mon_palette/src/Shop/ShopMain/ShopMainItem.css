@@ -1,0 +1,52 @@
+.shopMain_item_wrap {
+  column-count: 2;
+  column-gap: 1rem;
+  column-width: 100%;
+  margin: 1rem;
+}
+
+.shopMain_item_container {
+  width: 100%;
+}
+
+.shopMain_item_item {
+  display: inline-block;
+  padding: 1rem 0;
+}
+
+.shopMain_item_item img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 10px;
+}
+
+.shopMain_item_item_cost {
+  display: flex;
+  align-items: center;
+}
+
+.shopMain_item_item_cost h4 {
+  margin-right: 0.5rem;
+  color: red;
+  font-weight: 700;
+}
+
+.shopMain_item_title {
+  margin-left: 1rem;
+  margin-top: 0.5rem;
+  font-style: italic;
+  color: #D72B67;
+  font-family: 'Finger Paint', cursive;
+}
+
+.shopMain_item_item_period {
+  display: flex;
+  align-items: center;
+}
+
+.shopMain_item_item_period p {
+  margin-right: 0.4rem;
+  white-space: nowrap;
+  font-weight: 500;
+}
