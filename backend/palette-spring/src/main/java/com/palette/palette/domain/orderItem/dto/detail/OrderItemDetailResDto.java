@@ -18,6 +18,8 @@ public class OrderItemDetailResDto {
 
     private String itemName;
 
+    private String thumbnail;
+
     private Integer orderPrice;
 
     private Integer orderCount;
