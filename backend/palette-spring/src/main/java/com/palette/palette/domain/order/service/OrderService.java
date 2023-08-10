@@ -199,6 +199,7 @@ public class OrderService {
                     OrderItemDetailResDto.builder()
                             .itemId(orderItem.getId())
                             .itemName(orderItem.getItem().getName())
+                            .thumbnail(orderItem.getItem().getThumbnail())
                             .orderPrice(orderItem.getOrderPrice())
                             .orderCount(orderItem.getOrderCount())
                             .orderItemOptions(orderItemOptionDetailResDtoList)
@@ -244,7 +245,9 @@ public class OrderService {
             List<OrderItemOption> orderItemOptions = orderItemOptionRepository.findAllByOrderAndUser(orderItem.getId());
             order.cancel(orderItemOptions);
         }
-//        List<OrderItemOption> orderItemOption  = orderItemOptionRepository.findAllByOrderitemAndUser(, user.getId());
 
+        /**
+         * 주문 취소시 배송도 삭제 ?
+         */
     }
 }
