@@ -1,9 +1,11 @@
 package com.palette.palette.domain.order.service;
 
 
+import com.palette.palette.domain.delivery.dto.DeliveryResDto;
 import com.palette.palette.domain.delivery.entity.Delivery;
 import com.palette.palette.domain.delivery.entity.DeliveryStatus;
 import com.palette.palette.domain.delivery.repository.DeliveryRepository;
+import com.palette.palette.domain.feed.dto.BaseUserResDto;
 import com.palette.palette.domain.item.entity.Item;
 import com.palette.palette.domain.item.repository.ItemRepository;
 import com.palette.palette.domain.itemOption.entity.ItemOption;
@@ -14,9 +16,13 @@ import com.palette.palette.domain.order.dto.list.OrderListResDto;
 import com.palette.palette.domain.orderItem.dto.OrderItemDto;
 import com.palette.palette.domain.orderItem.dto.OrderItemOptionDto;
 import com.palette.palette.domain.order.entity.Order;
+import com.palette.palette.domain.orderItem.dto.detail.OrderItemDetailResDto;
+import com.palette.palette.domain.orderItem.dto.detail.OrderItemOptionDetailResDto;
 import com.palette.palette.domain.orderItem.entity.OrderItem;
 import com.palette.palette.domain.order.entity.OrderStatus;
 import com.palette.palette.domain.order.repository.OrderRepository;
+import com.palette.palette.domain.orderItem.entity.OrderItemOption;
+import com.palette.palette.domain.orderItem.respository.OrderItemOptionRepository;
 import com.palette.palette.domain.orderItem.respository.OrderItemRepository;
 import com.palette.palette.domain.user.entity.User;
 import com.palette.palette.domain.user.repository.UserRepository;
@@ -26,6 +32,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.webjars.NotFoundException;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,6 +45,7 @@ public class OrderService {
     private final ItemOptionRepository itemOptionRepository;
     private final OrderRepository orderRepository;
     private final OrderItemRepository orderItemRepository;
+    private final OrderItemOptionRepository orderItemOptionRepository;
     private final UserRepository userRepository;
 
 
@@ -68,6 +76,16 @@ public class OrderService {
                             .orElseThrow(() -> new IllegalArgumentException("아이템을 찾지 못했습니다. Item ID: " + orderItemDto.getItemId()));
 
 
+            OrderItem orderItem = OrderItem.builder()
+                    .item(item)
+                    .order(order)
+                    .build();
+
+
+            Integer itemPrice = 0;
+            Integer itemCount = 0;
+
+
             for (OrderItemOptionDto orderItemOptionDto : orderItemDto.getItemOptions()) {
 
                 // DB에 ItemOption 가져오기
@@ -78,19 +96,37 @@ public class OrderService {
                 totalPrice += itemOption.getItem().getPrice() * orderItemOptionDto.getItemOptionCount();
                 totalCount += orderItemOptionDto.getItemOptionCount();
 
-                OrderItem orderItem = OrderItem.builder()
-                        .item(item)
+                itemCount += orderItemOptionDto.getItemOptionCount();
+                itemPrice += orderItemOptionDto.getItemOptionCount() * item.getPrice();
+
+                OrderItemOption orderItemOption = OrderItemOption.builder()
                         .itemOption(itemOption)
-                        .order(order)
+                        .orderItem(orderItem)
                         .orderCount(orderItemOptionDto.getItemOptionCount())
-                        .orderPrice(itemOption.getItem().getPrice() * orderItemOptionDto.getItemOptionCount())
+                        .orderPrice(orderItemOptionDto.getItemOptionCount() * item.getPrice())
                         .build();
 
-                // 아이템 옵션의 재고 감소
-                orderItem.getItemOption().removeStock(orderItemOptionDto.getItemOptionCount());
 
-                orderItemRepository.save(orderItem);
+
+//                OrderItem orderItem = OrderItem.builder()
+//                        .item(item)
+//                        .itemOption(itemOption)
+//                        .order(order)
+//                        .orderCount(orderItemOptionDto.getItemOptionCount())
+//                        .orderPrice(itemOption.getItem().getPrice() * orderItemOptionDto.getItemOptionCount())
+//                        .build();
+
+                orderItem.setOrderCount(orderItemOptionDto.getItemOptionCount());
+                orderItem.setOrderPrice(itemOption.getItem().getPrice() * orderItemOptionDto.getItemOptionCount());
+
+                // 아이템 옵션의 재고 감소
+                orderItemOption.getItemOption().removeStock(orderItemOptionDto.getItemOptionCount());
+//                orderItemRepository.save(orderItem);
+                orderItemOptionRepository.save(orderItemOption);
+
             }
+
+            orderItemRepository.save(orderItem);
 
             totalPrice += item.getDeliveryFee();
         }
@@ -140,7 +176,48 @@ public class OrderService {
         Order order = orderRepository.findById(orderId).get();
         List<OrderItem> orderItems = orderItemRepository.findByOrderId(order.getId());
 
-        return OrderDetailResDto.toDto(order, orderItems);
+        List<OrderItemDetailResDto> orderItemDetailResDtoList = new ArrayList<>();
+
+        for (OrderItem orderItem : orderItems) {
+            List<OrderItemOption> orderItemOptions = orderItemOptionRepository.findByOrderItemId(orderItem.getId());
+
+            List<OrderItemOptionDetailResDto> orderItemOptionDetailResDtoList = new ArrayList<>();
+
+            for (OrderItemOption orderItemOption : orderItemOptions) {
+
+                orderItemOptionDetailResDtoList.add(
+                        OrderItemOptionDetailResDto.builder()
+                                .itemOptionId(orderItemOption.getId())
+                                .optionName(orderItemOption.getItemOption().getOptionName())
+                                .orderCount(orderItemOption.getOrderCount())
+                                .orderPrice(orderItemOption.getOrderPrice())
+                                .build()
+                );
+            }
+
+            orderItemDetailResDtoList.add(
+                    OrderItemDetailResDto.builder()
+                            .itemId(orderItem.getId())
+                            .itemName(orderItem.getItem().getName())
+                            .orderPrice(orderItem.getOrderPrice())
+                            .orderCount(orderItem.getOrderCount())
+                            .orderItemOptions(orderItemOptionDetailResDtoList)
+                            .build()
+            );
+
+        }
+
+        return OrderDetailResDto.builder()
+                .id(order.getId())
+                .user(BaseUserResDto.toDto(order.getUser()))
+                .price(order.getPrice())
+                .count(order.getCount())
+                .requirement(order.getRequirement())
+                .orderStatus(order.getOrderStatus())
+                .orderAt(order.getOrderAt())
+                .items(orderItemDetailResDtoList)
+                .delivery(DeliveryResDto.toDto(order.getDelivery()))
+                .build();
     }
 
 
@@ -161,8 +238,13 @@ public class OrderService {
             throw new IllegalArgumentException("해당 주문 건은 사용자의 주문이 아닙니다.");
         }
 
-        List<OrderItem> orderItem  = orderItemRepository.findAllByOrderAndUser(order.getId(), user.getId());
+        List<OrderItem> orderItems = orderItemRepository.findByOrderId(orderId);
 
-        order.cancel(orderItem);
+        for (OrderItem orderItem : orderItems) {
+            List<OrderItemOption> orderItemOptions = orderItemOptionRepository.findAllByOrderAndUser(orderItem.getId());
+            order.cancel(orderItemOptions);
+        }
+//        List<OrderItemOption> orderItemOption  = orderItemOptionRepository.findAllByOrderitemAndUser(, user.getId());
+
     }
 }
