@@ -106,25 +106,17 @@ public class OrderService {
                         .orderPrice(orderItemOptionDto.getItemOptionCount() * item.getPrice())
                         .build();
 
-
-
-//                OrderItem orderItem = OrderItem.builder()
-//                        .item(item)
-//                        .itemOption(itemOption)
-//                        .order(order)
-//                        .orderCount(orderItemOptionDto.getItemOptionCount())
-//                        .orderPrice(itemOption.getItem().getPrice() * orderItemOptionDto.getItemOptionCount())
-//                        .build();
-
                 orderItem.setOrderCount(orderItemOptionDto.getItemOptionCount());
                 orderItem.setOrderPrice(itemOption.getItem().getPrice() * orderItemOptionDto.getItemOptionCount());
 
                 // 아이템 옵션의 재고 감소
                 orderItemOption.getItemOption().removeStock(orderItemOptionDto.getItemOptionCount());
-//                orderItemRepository.save(orderItem);
                 orderItemOptionRepository.save(orderItemOption);
 
             }
+
+            // 최대 구매 개수 제한
+            if (itemCount > item.getMaximum()) throw new IllegalArgumentException("최대 개수 구매 제한을 넘었습니다.");
 
             orderItemRepository.save(orderItem);
 
