@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
 import styles from "./FeedContent.module.css"
-import { HeartOutlined, HeartFilled , CommentOutlined, MoreOutlined } from '@ant-design/icons';
+import { HeartOutlined, HeartFilled , CommentOutlined, MoreOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
@@ -144,8 +144,13 @@ function FeedContent() {
         };
         
         const handleMoreClick = () => {
-            setShowModal(true);
-        }
+            if (showModal) {
+                setShowModal(false);
+            } else {
+                setShowModal(true);
+            }
+        };
+        
 
         
         const handleEdit = () => {
@@ -210,7 +215,7 @@ return (
                             className={styles.comment}
                              />
                         </span> */}
-                        <div>
+                        <div className={styles.content_bottom}>
                             <div className={styles.like_count} 
                             onClick={likeCount}>
                                 좋아요
@@ -218,9 +223,12 @@ return (
                                 {/* 좋아요 갯수 표시 */}
                                 
                             </div>
+                            <div className={styles.more_btn_container}>
                                 {
                                 feedData && isCurrentUser(feedData.user.id) ? (
-                                    <div onClick={handleMoreClick}><MoreOutlined /></div>
+                                    <div 
+                                    className={styles.more_btn}
+                                    onClick={handleMoreClick}><MoreOutlined /></div>
                                     ) : (
                                         <div></div>
                                     )}
@@ -230,15 +238,17 @@ return (
                             <div className={styles.modal}>
                             <div className={styles.modalContent}>
                                 {/* 삭제 버튼 */}
-                                <button onClick={handleDelete}>삭제</button>
-                                <button onClick={handleEdit}>수정</button>
-                                {/* 닫기 버튼 */}
-                                <button onClick={() => setShowModal(false)}>닫기</button>
+                                <button 
+                                className={styles.btn}
+                                onClick={handleDelete}><DeleteOutlined /></button>
+                                <button 
+                                className={styles.btn}
+                                onClick={handleEdit}><EditOutlined /></button>
                             </div>
                             </div>
                         )}
                         </div>
-
+                        </div>         
                     </div>
                     <p 
                     className={styles.content}>{feedData.content}</p>
@@ -248,18 +258,15 @@ return (
                 {/* 좋아요 리스트 모달창 */}
                 <div className={`${styles.page} ${likeList ? styles.open : ''}`}>
                     <div className={styles.modal_header}>
-                        <div>
+                        <div className={styles.more_btn_container}>
                             <ArrowBackIcon sx={{ fontSize: 20 }}
                             onClick = {likeCount}
                             className = {styles.back_btn} />
                         </div>
 
-                        <div className={styles.header_name}>
-                            Liked List
-                        </div>
+                        <div className={styles.header_name}>Liked List</div>
 
                         <div className={styles.temp_div}>
-
                         </div>
                     </div>
                    {

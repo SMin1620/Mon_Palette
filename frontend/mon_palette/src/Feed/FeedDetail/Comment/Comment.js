@@ -175,7 +175,7 @@ function Comment() {
             <div key={comment.id}>
               <div>
                 {
-                    <div className={styles.commentInfo}>
+                    <div className={styles.comment_info}>
                         <div>
                             <img
                             className={styles.img}
