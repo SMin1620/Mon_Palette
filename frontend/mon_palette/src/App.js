@@ -24,6 +24,8 @@ import MakeUpStart from "./AIMakeUp/MakeUpStart";
 import StartPage from "./PersonalColor/StartPage";
 import ChallengeDetail from "./Challenge/ChallengeDetail"
 import ChallengeEdit from './Challenge/ChallengeEdit';
+import ShopMain from "./Shop/ShopMain/ShopMain";
+import ShoppingCart from './Shop/ShoppingCart/ShoppingCart';
 
 import { Routes, Route } from "react-router-dom";
 function App() {
@@ -207,6 +209,22 @@ function App() {
 					element={[
 						<NavigationBarBottom />,
 						<ChallengeEdit />
+					]}
+				/>
+				<Route
+					path="/shop"
+					element={[
+						<NavigationBarHeader title="Mon, Palette" item="shop"/>,
+						<ShopMain />,
+						<NavigationBarBottom />
+					]}
+				/>
+				<Route
+					path="/cart"
+					element={[
+						<NavigationBarHeader title="Mon, Palette" item="shop"/>,
+						<ShoppingCart />,
+						<NavigationBarBottom />
 					]}
 				/>
 			</Routes>
