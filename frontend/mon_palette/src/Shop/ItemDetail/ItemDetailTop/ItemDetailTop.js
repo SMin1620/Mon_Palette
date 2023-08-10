@@ -7,6 +7,7 @@ import axios from "axios"
 import { useRecoilValue } from "recoil";
 import { loginState } from "../../../user/components/Atom/loginState";
 import { userId } from "src/user/components/Atom/UserId";
+import TopButton from "../TopButton/TopButton";
 
 
 function ItemDetailTop() {
@@ -82,6 +83,7 @@ function ItemDetailTop() {
         },
     }
 
+    console.log(ItemDetailData);
     const settings = {
         dots: true,
         infinite: false,
@@ -105,7 +107,7 @@ function ItemDetailTop() {
                             <div className={styles.thumbnail} key={image.id}>
                                 <img
                                    className={styles.thumb_img}
-                                    src={ItemDetailData.thumbnail}
+                                    src={image.itemImage}
                                     alt=""
                                     />
                             </div>
@@ -124,11 +126,14 @@ function ItemDetailTop() {
                         />
                     </div>
                     <div className={styles.seller_name}>
-                        <h3
-                        className={styles.h3}>
+                        <h5
+                        className={styles.h5}>
                             {ItemDetailData.user.nickname}
-                        </h3>
+                        </h5>
                     </div>
+                </div>
+                <div className={styles.name}>
+                    <p>{ ItemDetailData.name }</p>
                 </div>
             </div>
 
@@ -143,10 +148,30 @@ function ItemDetailTop() {
                 </div>
                 <div>
                     <p className={styles.result_price}>{ 
-                        Math.round(ItemDetailData.price - (ItemDetailData.price / ItemDetailData.discount))}₩</p>
+                        Math.round(ItemDetailData.price * ((100 - ItemDetailData.discount) * 0.01 ))}₩</p>
                 </div>
             </div>
+            <div className={styles.delivery_fee}>
+                <p>Delivery Fee: { ItemDetailData.deliveryFee }</p>
+            </div>
 
+            <div className={styles.detail_photo_container}>
+                {
+                    ItemDetailData.itemDetailPhotoDtoList.map((image, index) => (
+                        <div key={index}>
+                            <img
+                                className={styles.detail_photo}
+                                key={image.id}
+                                src={image.itemImage}
+                                alt=""
+                            />
+                        </div>
+                        
+                    ))
+                }
+            </div>
+                
+            <TopButton />
         </div>
     )
 
