@@ -32,6 +32,7 @@ function FeedContent() {
     const token = useRecoilValue(loginState)
     const userInfo = useRecoilValue(userId)
 
+
     // 좋아요 리스트 목록에서 팔로우 등록/취소
     const following = (idid) => {
         axios.post(`${process.env.REACT_APP_API}/api/follow/${idid}`, {}, {
@@ -218,8 +219,8 @@ return (
                         <div className={styles.content_bottom}>
                             <div className={styles.like_count} 
                             onClick={likeCount}>
-                                좋아요
-                                {feedData.likeCount} 개
+                                좋아요 &nbsp;
+                                {feedData.likeCount}개
                                 {/* 좋아요 갯수 표시 */}
                                 
                             </div>
@@ -239,10 +240,10 @@ return (
                             <div className={styles.modalContent}>
                                 {/* 삭제 버튼 */}
                                 <button 
-                                className={styles.btn}
+                                className={styles.delete_btn}
                                 onClick={handleDelete}><DeleteOutlined /></button>
                                 <button 
-                                className={styles.btn}
+                                className={styles.edit_btn}
                                 onClick={handleEdit}><EditOutlined /></button>
                             </div>
                             </div>
@@ -250,9 +251,31 @@ return (
                         </div>
                         </div>         
                     </div>
-                    <p 
-                    className={styles.content}>{feedData.content}</p>
-                    
+
+                    <div>
+                        <div>
+                            <p 
+                            className={styles.content}>{feedData.content}</p>
+                        </div>
+                        <div className={styles.tag_container}>
+                            <div className={styles.tags}>
+                                {
+                                    feedData && feedData.hashtags.map((tag, index) => {
+                                        const keyWordLength = tag.length
+                                        const tagItemWidth = keyWordLength * 1.7
+                                        return (
+                                        <div 
+                                            className={styles.feed_tag} 
+                                            key={index} 
+                                            style={{ width: `${tagItemWidth}rem`}}
+                                        ># {tag}
+                                        </div>
+                                        );
+                                    })
+                                } 
+                            </div>
+                        </div>
+                    </div>
             
                 </div>
                 {/* 좋아요 리스트 모달창 */}

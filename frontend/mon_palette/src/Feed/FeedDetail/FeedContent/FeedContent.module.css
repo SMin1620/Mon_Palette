@@ -14,7 +14,7 @@
 
 .feed_item {
     width: 100%;
-    height: 18rem;
+    height: 20rem;
     overflow: hidden;
     margin: 0 auto;
     border: 3px solid white;
@@ -30,7 +30,7 @@
 }
 
 .content {
-    margin: 5%;
+    margin: 1rem;
 }
 
 .heart_filled {
@@ -148,12 +148,49 @@
     margin-right: 0.5rem;
 }
 
-.btn {
-    background-color: #fdf2f7;
-    border: none;
-}
+
 
 .more_btn_container {
     position: relative;
     display: inline-block;
+}
+
+.feed_tag {
+    padding: 0;
+    background-color: #FCE7F1;
+    border-radius: 200px;
+    margin-right: 1rem;
+    padding-left: 1rem;
+    font-weight: bold;
+    width: auto;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+.tag_container {
+    width: 100%;
+    display: flex;
+    overflow-x: scroll;
+    margin-bottom: 1.5rem;
+}
+
+.tags {
+    display: flex;
+    margin-top: 1rem;
+    margin-left: 1rem;
+}
+
+.delete_btn {
+    font-size: 20px;
+    background-color: transparent;
+    color: #e84c8b;
+    border: none;
+}
+
+.edit_btn {
+    font-size: 20px;
+    background-color: transparent;
+    color: #e84c8b;
+    border: none;
 }

@@ -6,7 +6,7 @@ import { loginState } from "../../../user/components/Atom/loginState";
 import { userId } from "src/user/components/Atom/UserId";
 import { useParams } from 'react-router-dom';
 import axios from "axios"
-import { MoreOutlined, SendOutlined } from '@ant-design/icons';
+import { MoreOutlined, SendOutlined, EditOutlined, CloseCircleOutlined } from '@ant-design/icons';
 // import InfiniteLoader from 'react-window-infinite-loader';
 
 // 댓글 작성시간 구하는 함수
@@ -193,13 +193,16 @@ function Comment() {
                             {editingCommentId === comment.id ? (
                                 <div>
                                     <textarea
+                                    className={styles.textarea}
                                     value={editedContent}
                                     onChange={(event) => setEditedContent(event.target.value)}
                                     />
                                     <button 
-                                    className={styles.edit_btn}
-                                    onClick={handleSaveEdit}>Save</button>
-                                    <button onClick={handleCancelEdit}>cancel</button>
+                                    className={styles.icon_btn}
+                                    onClick={handleSaveEdit}><SendOutlined /></button>
+                                    <button 
+                                    className={styles.icon_btn}
+                                    onClick={handleCancelEdit}><CloseCircleOutlined /></button>
                                 </div>
                             ) : (
                                 <p>{comment.content}</p>
@@ -218,9 +221,10 @@ function Comment() {
                             {modalStates[comment.id] && (
                                 <div className={styles.modal}>
                                 <div className={styles.modalContent}>
-                                    <button onClick={() => handleEdit(comment.id)}>수정</button>
+                                    <button 
+                                    className={styles.icon_btn} onClick={() => handleEdit(comment.id)}><EditOutlined /></button>
                                     {/* 닫기 버튼 */}
-                                    <button onClick={() => updateModalState(comment.id, false)}>닫기</button>
+                                    {/* <button onClick={() => updateModalState(comment.id, false)}>닫기</button> */}
                                 </div>
                             </div>
                         )}
