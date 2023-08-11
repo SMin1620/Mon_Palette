@@ -29,7 +29,7 @@ public class CategoryService {
 
     @Transactional
     public void createFirst(){
-        Category category = new Category("default", null);
+        Category category = new Category("default", null,null);
         categoryRepository.save(category);
     }
 
@@ -38,6 +38,6 @@ public class CategoryService {
         Category parent = Optional.ofNullable(req.getParentId())
                 .map(id -> categoryRepository.findById(id).orElseThrow(NullPointerException::new))
                 .orElse(null);
-        categoryRepository.save(new Category(req.getName(), parent));
+        categoryRepository.save(new Category(req.getName(), req.getCategoryPhoto(), parent));
     }
 }

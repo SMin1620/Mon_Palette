@@ -13,7 +13,10 @@ public class OrderAddressDto {
 
     private String address;
 
+    private String zipcode;
+
     private String phone;
 
-    private String zipcode;
+    private String receiver;
+
 }
