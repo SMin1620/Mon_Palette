@@ -3,6 +3,7 @@ package com.palette.palette.domain.user.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.palette.palette.domain.feed.entity.Feed;
 import com.palette.palette.domain.follow.entity.Follow;
+import com.palette.palette.domain.user.dto.oauth.UserOauthDto;
 import com.palette.palette.domain.user.dto.register.RegisterReqDto;
 import jakarta.persistence.*;
 import lombok.*;
@@ -35,21 +36,15 @@ public class User {
     private String email;
 
 
-
-
-    @Column(nullable = false)
     private String password;
 
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
     private String birth;
 
-    @Column(nullable = false)
     private String phone;
 
-    @Column(nullable = false)
     private String gender;
 
     @Column(nullable = false)
@@ -73,6 +68,8 @@ public class User {
     @Column(length = 5000)
     private String backgroundImage;
 
+    private Boolean isOauth = false;
+
     // 피드 - 유저 :: 양방향
 //    @OneToMany(mappedBy = "user")
 //    @JsonIgnore
@@ -88,6 +85,23 @@ public class User {
     private String refreshToken;
 
     private String address;
+    /**
+     * oauth 회원 가입 로직
+     */
+    public static User fromOauthEntity(UserOauthDto userOauthDto, PasswordEncoder encoder){
+        return User.builder()
+                .email(userOauthDto.getEmail())
+                .password(encoder.encode(userOauthDto.getEmail()))
+                .name(userOauthDto.getName())
+                .createAt(LocalDateTime.now())
+                .role(Role.USER)
+                .isLeave(false)
+                .nickname(userOauthDto.getName())
+                .backgroundImage("https://ssafy9-monpalette.s3.ap-northeast-2.amazonaws.com/background.jpg")
+                .profileImage(userOauthDto.getProfileImage())
+                .isOauth(true)
+                .build();
+    }
 
     /**
      * 회원 가입 로직
@@ -107,6 +121,7 @@ public class User {
                 .nickname(request.getNickname())
                 .backgroundImage("https://ssafy9-monpalette.s3.ap-northeast-2.amazonaws.com/background.jpg")
                 .profileImage("https://ssafy9-monpalette.s3.ap-northeast-2.amazonaws.com/baseimg.png")
+                .isOauth(false)
                 .build();
     }
     /**

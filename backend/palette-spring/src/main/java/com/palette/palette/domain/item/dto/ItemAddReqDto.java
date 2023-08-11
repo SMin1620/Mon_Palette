@@ -17,7 +17,7 @@ import java.util.List;
 public class ItemAddReqDto {
 
     @Schema(description = "상품 이름", example = "상품 이름")
-    private String itemaName;
+    private String itemName;
 
     @Schema(description = "가격", example = "10000")
     private Integer price;
@@ -59,5 +59,6 @@ public class ItemAddReqDto {
      * 카테고리
      */
     private String categoryName;
+    private String categoryPhoto;
     private Long categoryParentId = 1L;
 }

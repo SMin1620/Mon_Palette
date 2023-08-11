@@ -69,7 +69,7 @@ public class Item {
 
     public static Item toEntity(ItemAddReqDto req, User user){
         return Item.builder()
-                .name(req.getItemaName())
+                .name(req.getItemName())
                 .price(req.getPrice())
                 .discount(req.getDiscount())
                 .content(req.getContent())
