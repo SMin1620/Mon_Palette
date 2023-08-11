@@ -8,7 +8,8 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import AWS from 'aws-sdk'
 import uuid from 'react-uuid'
 import { useRecoilValue } from 'recoil';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import FileUploadOutlinedIcon from '@mui/icons-material/FileUploadOutlined';
 
 const FeedWrite = () => {
   const navigate = useNavigate()
@@ -92,7 +93,7 @@ const FeedWrite = () => {
       try {
         await Promise.all(
           imageFileList.map(async (imageFile) => {
-            const replaceFileName = imageFile.name.includes(" ") ? imageFile.name.replace(/\s/g, "") : imageFile.name;
+            const replaceFileName = imageFile.name.replace(/[^A-Za-z0-9_.-]/g, "");
             const params = {
               ACL: "public-read",
               Body: imageFile,
@@ -119,10 +120,24 @@ const FeedWrite = () => {
   // hashTag 부분
   const handleAddTag = (e) => {
     if (e.key === "Enter") {
-      setTagList((prev) => [...prev, tags])
-      setTags("")
+      const replaceTag = tags.replace(/\s/g,"")
+      if(replaceTag==="") {
+        alert("빈값입니다.")
+      } else {
+        setTagList((prev) => [...prev, replaceTag])
+        setTags("")
+      }
     }
   }
+
+  useEffect(() => {
+    if(tagList.length === 20) {
+      document.querySelector("#hashtag_textarea").disabled = true
+    }
+    else {
+      document.querySelector("#hashtag_textarea").disabled = false
+    }
+  },[tagList])
 
   const handleRemoveHashTag = (tagindex) => {
     setTagList((prev) => prev.filter((_, index) => index !== tagindex));
@@ -152,10 +167,7 @@ const FeedWrite = () => {
           headers: { Authorization: token },
         })
         .then((response) => {
-          console.log(response)
-          const feedId = response.data.data.id
-          // navigate(`/feed/${feedId}`)
-          console.log('imageUrlList',imageUrlList)
+          navigate("/feed/")
         })
         .catch((error) => {
           console.error(error)
@@ -166,18 +178,15 @@ const FeedWrite = () => {
   return (
     <div className="feed_write">
       <div className="feed_write_top">
-        <ArrowBackIcon sx={{ fontSize: 20 }}className="feed_write_top_back"/>
+        <ArrowBackIcon sx={{ fontSize: 20 }}className="feed_write_top_back"onClick={() => navigate(-1)} />
         <h2>write</h2>
         <div 
           className="feed_write_top_upload"
           onClick={() => {
             handleCreate(selectedImages)}
           }
-        >upload</div>
+        ><FileUploadOutlinedIcon /></div>
       </div>
-
-      <hr className="feed_write_top_header_hr"/>
-
 
       {/* feed 이미지 부분 */}
       <div className="feed_write_top_image">
@@ -229,8 +238,8 @@ const FeedWrite = () => {
           placeholder="# 단어를 입력해서 나만의 tag를 만들어보세요!"
           maxLength={20}
           onKeyUp={handleAddTag}
+          id="hashtag_textarea"
         />
-
         <div className="feed_write_bottom_hashtag_area">
           {
             tagList.map((tag, index) => {

@@ -1,12 +1,13 @@
-import React, { useRef,useState, useEffect } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import styles from "./FeedContent.module.css"
-import { HeartOutlined, HeartFilled , CommentOutlined } from '@ant-design/icons';
+import { HeartOutlined, HeartFilled , CommentOutlined, MoreOutlined } from '@ant-design/icons';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
 import axios from "axios"
 import { useRecoilValue } from "recoil";
 import { loginState } from "../../../user/components/Atom/loginState";
+import { userId } from "src/user/components/Atom/UserId";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import FollowButton from "../Header/FollowButton/FollowButton"
 import { useParams } from 'react-router-dom';
@@ -14,102 +15,100 @@ import { useNavigate } from 'react-router-dom';
 
 
 
-function FeedContent() {
 
-    console.log("feedcontent");
+function FeedContent() {
 
     const navigate = useNavigate()
 
     const { feedId } = useParams()
-    // const { followingId } = useParams()
-
     const [feedData, setFeedData] = useState('')
     const [feedLike, setfeedLike] = useState(feedData.isLiked);
     const [likeList, setLikeList] = useState(false)
     const [likeListData, setLikeListData] = useState([])
-
+    const [showModal, setShowModal] = useState(false);
+    const [check, setCheck] = useState(false);
+    const [focus, setFocus] = useState(false);
+    
+    
     const token = useRecoilValue(loginState)
+    const userInfo = useRecoilValue(userId)
 
-    console.log(feedData);
-
+    // 좋아요 리스트 목록에서 팔로우 등록/취소
     const following = (idid) => {
-        axios.post(`http://192.168.30.224:8080/api/follow/${idid}`, {} ,{
+        axios.post(`${process.env.REACT_APP_API}/api/follow/${idid}`, {}, {
             headers: { Authorization: token },
         })
-            .then((response => {
-                console.log(response);
-                axios.get(`http://192.168.30.224:8080/api/feed/${feedId}/like`, {
-                    headers: { Authorization: token },
-                })
-                .then((response) => {
-                    console.log(response.data.data);
-                    setLikeListData(response.data.data);
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
-                
-                
-            }))
-            .catch((err => {
-                console.log(err);
-            }))
+        .then((response => {
+            console.log(response);
+            if (check) {
+                setCheck(false)
+            } else {
+                setCheck(true)
+            }
+            
+        }))
+        .catch((err => {
+            console.log(err);
+        }))
+            
     }
-
-
+    
+    // feed content 내용 조회
     useEffect(() => {
         axios
-            .get(`http://192.168.30.224:8080/api/feed/${feedId}`,{
-                headers: { Authorization: token },
-
-            })
-            .then ((response) => {
-                console.log(response)
-                setFeedData(response.data.data)
-                setfeedLike(response.data.data.isLiked);
-            })
-            .catch ((err) => {
-                console.log(err)
-            })
+        .get(`${process.env.REACT_APP_API}/api/feed/${feedId}`,{
+            headers: { Authorization: token },
+            
+        })
+        .then ((response) => {
+            console.log(response);
+            setFeedData(response.data.data)
+            setfeedLike(response.data.data.isLiked);
+        })
+        .catch ((err) => {
+            console.log(err)
+        })
     },[feedLike])
-
-
+    
+    
     // 좋아요 리스트 
     useEffect(() => {
         if (likeList) {
             axios
-                .get(`http://192.168.30.224:8080/api/feed/${feedId}/like`, {
-                    headers: { Authorization: token },
-                })
-                .then((response) => {
-                    console.log(response.data.data);
-                    setLikeListData(response.data.data)
-                })
-                .catch((err) => {
+            .get(`${process.env.REACT_APP_API}/api/feed/${feedId}/like`, {
+                headers: { Authorization: token },
+            })
+            .then((response) => {
+                console.log(response.data.data);
+                setLikeListData(response.data.data)
+            })
+            .catch((err) => {
                     console.log(err);
                 });
         }
     }, [likeList]);
 
+    // 작성자 여부 판단
+    const isCurrentUser = (user) => {
+        if(user === userInfo) {
+            return (
+                true
+                )
+        }
+    }
     
-
+    
     
     // 좋아요 리스트 띄우는 모달창 flag
     const likeCount = () => {
         setLikeList ( prevLikeList => !prevLikeList
-        )
-    }
- 
-
-    useEffect(() => {
-        if (likeList) {
-
+            )
         }
-    },[likeList])
+        
 
     // 피드를 좋아요 하는 함수
     const likeFeed = () => {
-        axios.post(`http://192.168.30.224:8080/api/feed/${feedId}/like`, {} ,{
+        axios.post(`${process.env.REACT_APP_API}/api/feed/${feedId}/like`, {} ,{
             headers: { Authorization: token },
         })
             .then((response => {
@@ -125,13 +124,13 @@ function FeedContent() {
             .catch((err => {
                 console.error('피드 좋아요 오류:', err);
             }));
-    };
-
-    // 피드 좋아요를 취소하는 함수
-    const unlikeFeed = () => {
-        axios.delete(`http://192.168.30.224:8080/api/feed/${feedId}/like`, {
-            headers: { Authorization: token },
-        })
+        };
+        
+        // 피드 좋아요를 취소하는 함수
+        const unlikeFeed = () => {
+            axios.delete(`${process.env.REACT_APP_API}/api/feed/${feedId}/like`, {
+                headers: { Authorization: token },
+            })
             .then(response => {
                 // 좋아요 상태를 false로 변경
                 setfeedLike(false);
@@ -144,64 +143,45 @@ function FeedContent() {
             .catch(err => {
                 console.error('피드 좋아요 취소 오류:', err);
             });
-    };
-   
-    const settings = {
-        dots: true,
-        infinite: false,
-        speed: 500,
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        arrow: true
+        };
+        
+        const handleMoreClick = () => {
+            setShowModal(true);
+        }
+
+        
+        const handleEdit = () => {
+            navigate(`/feed/edit/${feedId}`, { state: { feedData } });
+        setShowModal(false);
     }
-
-    // const feedDat = {
-    //     "likeList" : [
-    //         {
-    //             "id": 1,
-    //             "nickname": "한글이얌",
-    //             "profileImage": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTSuim68sxj9smYW0K3bwHrrEM-I67IqLjQUQ&usqp=CAU",
-    //             "isFollow": false
-    //         },
-    //         {
-    //             "id": 2,
-    //             "nickname": "한글을 사랑하쟈",
-    //             "profileImage": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSOyO06UpMnfv0Qcs5GT5PnUiUynm8JQ-T99jch48u04fCqENASi8_oBvSNktYzJs4TfME&usqp=CAU://encrypted-tbn0.gstatic.com/images?q=tbn:https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTbmqip9wCHyLZ9apnq7d2BnK4rnpEZWNP1Mg&usqp=CAU&usqp=CAU",
-    //             "isFollow": true
-    //         },
-    //         {
-    //             "id": 3,
-    //             "nickname": "안뇽뇽뇽뇽",
-    //             "profileImage": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTSuim68sxj9smYW0K3bwHrrEM-I67IqLjQUQ&usqp=CAU",
-    //             "isFollow": false
-    //         },
-    //         {
-    //             "id": 4,
-    //             "nickname": "kitty",
-    //             "profileImage": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSDW7giQem6if7NhnjuDsdzvjL8Bxs9aJjKbQ&usqp=CAU",
-    //             "isFollow": false
-    //         },
-    //         {
-    //             "id": 5,
-    //             "nickname": "roll",
-    //             "profileImage": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGAUJ4McVJQ1XoHlNX9cQqzWAGZK7KGv-5IQ&usqp=CAU",
-    //             "isFollow": false
-    //         },
-
-
-    //     ]
-    // }
- 
-    // const handleLikeClick = (feedId) => {
-        
-    //     setFeedData((prev) =>
-        
-    //         feedData.id === feedId ? { ...feedData, isLiked: !prev.isLiked,  likeCount: feedData.isLiked ? feedData.likeCount - 1 : feedData.likeCount + 1 } : feedData
-    //       )
     
-    //   };
-    return (
-        <div className={styles.container}>
+    const handleDelete = () => {
+        axios
+        .delete(`${process.env.REACT_APP_API}/api/feed/${feedId}`,{
+            headers: { Authorization: token },
+        })
+        .then(response => {
+                console.log("피드 삭제 성공:", response);
+                navigate(`/feed/`);
+            // 피드 삭제에 성공하면 모달창을 닫습니다.
+            setShowModal(false);
+        })
+        .catch(error => {
+            console.error("피드 삭제 오류:", error);
+        });
+    };
+
+const settings = {
+    dots: true,
+    infinite: false,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    arrow: true
+}
+
+return (
+    <div className={styles.container}>
                 <div className={styles.feed}>
                     <div className="feed_wrapper">
                     <Slider {...settings}>
@@ -227,18 +207,38 @@ function FeedContent() {
                             <HeartOutlined className={styles.heart} onClick={() => likeFeed()} />
                         )}
                         </span>
-                        <span>
+                        {/* <span>
                             <CommentOutlined
-                            className={styles.comment} />
-                        </span>
+                            className={styles.comment}
+                             />
+                        </span> */}
                         <div>
                             <div className={styles.like_count} 
                             onClick={likeCount}>
                                 좋아요
                                 {feedData.likeCount} 개
                                 {/* 좋아요 갯수 표시 */}
+                                
                             </div>
-                            <div onClick={() => navigate(`/feed/edit/${feedId}`, {state: {feedData}})}>...</div>
+                                {
+                                feedData && isCurrentUser(feedData.user.id) ? (
+                                    <div onClick={handleMoreClick}><MoreOutlined /></div>
+                                    ) : (
+                                        <div></div>
+                                    )}
+
+                        {/* 모달창 */}
+                        {showModal && (
+                            <div className={styles.modal}>
+                            <div className={styles.modalContent}>
+                                {/* 삭제 버튼 */}
+                                <button onClick={handleDelete}>삭제</button>
+                                <button onClick={handleEdit}>수정</button>
+                                {/* 닫기 버튼 */}
+                                <button onClick={() => setShowModal(false)}>닫기</button>
+                            </div>
+                            </div>
+                        )}
                         </div>
 
                     </div>
@@ -279,19 +279,16 @@ function FeedContent() {
                                 <div
                                 className= {styles.nickname}
                                 >
-                                    {user.nickname} 
+                                    {user.nickname}
                                 </div>
                             </div>
                             <div className={styles.follow_button}>
-                                {user.isFollow ? (
-                                    <div onClick = {() => following(user.id)}>
-                                    <FollowButton text={"Following"}
-                                    />
+                            {isCurrentUser(user.id) ? (
+                                    <div>
                                     </div>
                                 ) : (
-                                    <div onClick = {following(user.id)}>
-                                    <FollowButton text={"Follow"}
-                                    />
+                                    <div onClick={() => following(user.id)}>
+                                        <FollowButton text={user.isFollow ? "Following" : "Follow"} />
                                     </div>
                                 )}
                             </div>
@@ -299,8 +296,6 @@ function FeedContent() {
                     ))
                    }        
                 </div>
-
-            
          </div>
     )
     

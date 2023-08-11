@@ -65,3 +65,34 @@ html {
 	font-size: 0.875rem; /* 14px를 rem 단위로 변환 (14 / 16 = 0.875) */
 	color: #666;
 }
+
+/* HorizontalLine.css */
+.signUp_horizontal-line-container {
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+}
+/* SocialLoginButton.css */
+.signUp_social-login-button-container {
+	display: flex;
+	justify-content: center;
+	margin-bottom: 10px;
+}
+
+.signUp_social-login-button-container button {
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center; /* 가운데 정렬 추가 */
+	background-color: #f0f0f0;
+	border: none;
+	border-radius: 5px;
+	padding: 10px;
+	cursor: pointer;
+	font-weight: bold;
+}
+.signUp_social-media-icon {
+	width: 20px;
+	height: 20px;
+	margin-right: 8px;
+}

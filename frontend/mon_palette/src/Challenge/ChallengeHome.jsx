@@ -1,161 +1,112 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './ChallengeHome.css'
-// import FollowChallenge from './FollowChallenge'
+import { useRecoilValue } from 'recoil';
+import { loginState } from './../user/components/Atom/loginState';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { PropagateLoader }  from 'react-spinners';
 
 function ChallengeHome() {
 
-  // 받아온 challengeuser 정보
-  const FollowUserImage = [
-    {
-      id: '1',
-      user: {
-        userId: 'email정보',
-        userImg: 'https://cdnimg.melon.co.kr/cm2/artistcrop/images/002/61/143/261143_20210325180240_500.jpg?61e575e8653e5920470a38d1482d7312/melon/resize/416/quality/80/optimize',
-        userNicname: 'jsw'
-      },
-      challenge: {
-        challengeId: 'challenge번호',
-        challengeComment: '챌린지 이름',
-        challengeVideo: '유저가 올린 챌린지 비디오 정보'
-      }
-    },
-    {
-      id: '2',
-      user: {
-        userId: 'email정보',
-        userImg: 'https://upload.wikimedia.org/wikipedia/commons/6/6d/IU_at_Sony_new_product_launching_event%2C_20_September_2017_05.jpg',
-        userNicname: 'jsww'
-      },
-      challenge: {
-        challengeId: 'challenge번호',
-        challengeComment: '챌린지 이름',
-        challengeVideo: '유저가 올린 챌린지 비디오 정보'
-      }
-    },
-    {
-      id: '3',
-      user: {
-        userId: 'email정보',
-        userImg: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSbvWLKz993UWxYqdnHM09YKO3d1nbYuoExzd_k2Scnvw&s',
-        userNicname: 'choijs'
-      },
-      challenge: {
-        challengeId: 'challenge번호',
-        challengeComment: '챌린지 이름',
-        challengeVideo: '유저가 올린 챌린지 비디오 정보'
-      }
-    },
-    {
-      id: '4',
-      user: {
-        userId: 'email정보',
-        userImg: 'https://cdnimg.melon.co.kr/cm2/artistcrop/images/002/61/143/261143_20210325180240_500.jpg?61e575e8653e5920470a38d1482d7312/melon/resize/416/quality/80/optimize',
-        userNicname: 'joej'
-      },
-      challenge: {
-        challengeId: 'challenge번호',
-        challengeComment: '챌린지 이름',
-        challengeVideo: '유저가 올린 챌린지 비디오 정보'
-      }
-    },
-    {
-      id: '5',
-      user: {
-        userId: 'email정보',
-        userImg: 'https://cdnimg.melon.co.kr/cm2/artistcrop/images/002/61/143/261143_20210325180240_500.jpg?61e575e8653e5920470a38d1482d7312/melon/resize/416/quality/80/optimize',
-        userNicname: 'kys'
-      },
-      challenge: {
-        challengeId: 'challenge번호',
-        challengeComment: '챌린지 이름',
-        challengeVideo: '유저가 올린 챌린지 비디오 정보'
-      }
-    },
-    {
-      id: '6',
-      user: {
-        userId: 'email정보',
-        userImg: 'https://cdnimg.melon.co.kr/cm2/artistcrop/images/002/61/143/261143_20210325180240_500.jpg?61e575e8653e5920470a38d1482d7312/melon/resize/416/quality/80/optimize',
-        userNicname: 'ksm'
-      },
-      challenge: {
-        challengeId: 'challenge번호',
-        challengeComment: '챌린지 이름',
-        challengeVideo: '유저가 올린 챌린지 비디오 정보'
-      }
-    },
-    {
-      id: '7',
-      user: {
-        userId: 'email정보',
-        userImg: 'https://cdnimg.melon.co.kr/cm2/artistcrop/images/002/61/143/261143_20210325180240_500.jpg?61e575e8653e5920470a38d1482d7312/melon/resize/416/quality/80/optimize',
-        userNicname: 'osv'
-      },
-      challenge: {
-        challengeId: 'challenge번호',
-        challengeComment: '챌린지 이름',
-        challengeVideo: '유저가 올린 챌린지 비디오 정보'
-      },
-    },
-    {
-      id: '8',
-      user: {
-        userId: 'email정보',
-        userImg: 'https://cdnimg.melon.co.kr/cm2/artistcrop/images/002/61/143/261143_20210325180240_500.jpg?61e575e8653e5920470a38d1482d7312/melon/resize/416/quality/80/optimize',
-        userNicname: 'lsm'
-      },
-      challenge: {
-        challengeId: 'challenge번호',
-        challengeComment: '챌린지 이름',
-        challengeVideo: '유저가 올린 챌린지 비디오 정보'
-      },
-    },
-    {
-      id: '9',
-      user: {
-        userId: 'email정보',
-        userImg: 'https://cdnimg.melon.co.kr/cm2/artistcrop/images/002/61/143/261143_20210325180240_500.jpg?61e575e8653e5920470a38d1482d7312/melon/resize/416/quality/80/optimize',
-        userNicname: 'asdfqweras'
-      },
-      challenge: {
-        challengeId: 'challenge번호',
-        challengeComment: '챌린지 이름',
-        challengeVideo: '유저가 올린 챌린지 비디오 정보'
-      }
+  const token = useRecoilValue(loginState)
+  const [challengeList, setChallengeList] = useState([])
+  const [followChallenge, setFollowChallenge] = useState([])
+  const [popularChallenge, setPopularChallenge] = useState([])
+  const [challengePage, setChallengePage] = useState(0)
+  const [load, setLoad] = useState(true)
+
+  
+  // 무한스크롤 구현
+  const preventRef = useRef(true)
+  const obsRef = useRef(null);
+  const endRef = useRef(false);
+
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    getChallenge()
+    getPopularChallenge()
+    getRecentChallenge()
+    const observer = new IntersectionObserver(handleObs, { threshold: 0.5 }); // 페이지 최초 렌더링시 옵저버 생성
+    if (obsRef.current) observer.observe(obsRef.current);
+    return () => { observer.disconnect(); }; // 페이지 언마운트시 옵저버 해제
+  },[])
+
+  useEffect(() => {
+    if (challengePage !== 0) {
+      getChallenge()
     }
-  ]
+  },[challengePage])
 
-  const PopularChallengeImage = [
-    'https://cdn.autotribune.co.kr/news/photo/202304/8017_43246_1529.jpg',
-    'https://cdn.newsculture.press/news/photo/202305/524104_647160_2237.jpg',
-    'https://cdn.autotribune.co.kr/news/photo/202304/8017_43246_1529.jpg',
-    'https://cdn.newsculture.press/news/photo/202305/524104_647160_2237.jpg',
-    'https://cdn.autotribune.co.kr/news/photo/202304/8017_43246_1529.jpg',
-    'https://cdn.newsculture.press/news/photo/202305/524104_647160_2237.jpg',
-    'https://cdn.autotribune.co.kr/news/photo/202304/8017_43246_1529.jpg',
-    'https://cdn.newsculture.press/news/photo/202305/524104_647160_2237.jpg',
-  ]
+  // 무한스크롤 구현해서 피드에서 내려갈때마다 axios 요청 보내자
+  const handleObs = (entries) => {
+    const target = entries[0];
+    if (!endRef.current && target.isIntersecting) {
+      // 스크롤 바닥에 도달하면 페이지 번호를 증가시키고 데이터를 가져옴
+      setChallengePage((prevPage) => prevPage + 1);
+    }
+  };
 
-const AllChallengeImage = [
-  'https://cdn.autotribune.co.kr/news/photo/202304/8017_43246_1529.jpg',
-]
+  const getChallenge = async () => {
+    try {
+      await axios
+      .get(`${process.env.REACT_APP_API}/api/challenge?page=${challengePage}`, {
+        headers: {Authorization: token}
+      })
+      .then((response) => {
+        if (response.data.data.length !== 10) {
+          endRef.current = true
+          setLoad(false)
+          setChallengeList((prevChallenge) =>[...prevChallenge, ...response.data.data])
+        } else {
+          setChallengeList((prevChallenge) =>[...prevChallenge, ...response.data.data])
+          preventRef.current = true
+        }
+      })
+    } catch (error) {
+      console.error(error)
+    }
+  }
 
+  const getPopularChallenge = async () => {
+    try {
+      await axios
+        .get(`${process.env.REACT_APP_API}/api/challenge/best`, {
+          headers: { Authorization: token}
+        })
+        .then((response) => {
+          setPopularChallenge((prevChallenge) =>[...prevChallenge, ...response.data.data])
+        })
+    } catch (error) {
+      console.error(error)
+    }
+  }
 
+  const getRecentChallenge = async () => {
+    axios
+      .get(`${process.env.REACT_APP_API}/api/challenge/recent`, {
+        headers: { Authorization: token }
+      })
+      .then((response) => {
+        console.log(response)
+        setFollowChallenge((prevChallenge) => [...prevChallenge, ...response.data.data])
+      })
+  }
+
+  const handleChallengeDetail = (id) => {
+    navigate(`/challenge/${id}`)
+  }
+
+  console.log(challengeList)
   return (
     <div className="challengeHome">
       <div className="challengeHome_top">
         <div className="challengeHome_top_container">
           {
-            FollowUserImage.map((followUserInfo) => {
-              // console.log(followUserInfo)
-              // axios 로 받아온 정보들에서 데이터 타입 맞춰서 이미지 넣어주기
-              // 받아올 때 내가 팔로우한 유저 정보 전체를 받아옴
-              // 클릭하면 해당 유저가 올린 챌린지 디테일로 이동
-              // 다시 여기 돌아오면 스크롤 위치 이동 및 이전에 이미 클릭한 유저는 opacity 로 그라데이션 블랙 투명도 낮은거 배경으로 넣어서 diable 처럼 보이게 하기
-              
-              return <div className="challengeHome_top_image_item" key={followUserInfo.id}>
-                <img src={followUserInfo.user.userImg} alt={followUserInfo.id} />
-                <p>{followUserInfo.user.userNicname}{}</p>
+            followChallenge&&followChallenge.map((challengeInfo) => {
+              return <div className="challengeHome_top_image_item" key={challengeInfo.id} onClick={() => handleChallengeDetail(challengeInfo.id)}>
+                <img src={challengeInfo.user.profileImage} alt={challengeInfo.id} />
+                <p>{challengeInfo.user.nickname}</p>
               </div>
             })
           }
@@ -165,14 +116,13 @@ const AllChallengeImage = [
       <div className="challengeHome_mid">
         <div className="challenge_mid_label">
           <h3>Popular challenge</h3>
-          <button>more</button>
         </div>
         <div className="challengeHome_mid_challengeImg">
           <div className="challengeHome_mid_container">
             {
-              PopularChallengeImage.map((challengeImage, index) => {
-                return <div className="challengeHome_mid_image_item" key={index}>
-                  <img src={challengeImage} alt="" />
+              popularChallenge&&popularChallenge.map((challengeInfo, index) => {
+                return <div className="challengeHome_mid_image_item" key={index} onClick={()=>handleChallengeDetail(challengeInfo.id)}>
+                  <video src={challengeInfo.video} alt="" />
                 </div>
               })
             }
@@ -188,10 +138,20 @@ const AllChallengeImage = [
         <div className="challengeHome_bottom_challengeInfo">
             <div className="challengeHome_bottom_container">
               {
-                AllChallengeImage.map((challengeInfo, index) => {
-                  return <div className="challengeHome_bottom_info_item" key={index}>
-                    <img src={challengeInfo} alt="" />
-                    {index}
+                challengeList&&challengeList.map((challengeInfo, index) => {
+                  return <div className="challengeHome_bottom_info_item" key={index} onClick={() => handleChallengeDetail(challengeInfo.id)}>
+                    <video src={challengeInfo.video} alt="" />
+                    <div className="challengeHome_bottom_info_item_user">
+                      <img src={challengeInfo.user.profileImage} alt="" />
+                      <div className="challengeHome_bottom_info_item_personal_color">
+                        <p>{challengeInfo.user.nickname}</p>
+                        {
+                          challengeInfo.user.personalColor ? 
+                          <p>{challengeInfo.user.personalColor}</p>
+                          : <p>null</p>
+                        }
+                      </div>
+                    </div>
 
                   </div>
                 })
@@ -200,7 +160,19 @@ const AllChallengeImage = [
         </div>
 
       </div>
-
+      
+      {/* 이부분이 보이면 ref로 무한 스크롤 구현 */}
+      {
+        load ? 
+        <div className="observer_spinner" ref={obsRef}>
+          <PropagateLoader color='#fdf2f7'/>
+        </div>
+        :
+        <div
+          className="observer_last_data"
+          ref={obsRef}
+        >Last Page</div>
+      }
     </div>
   );
 }
