@@ -39,3 +39,10 @@
 .shop_main_top_item p {
   text-align: center;
 }
+
+.shopMain_container {
+  column-count: 2;
+  column-gap: 1rem;
+  column-width: 100%;
+  margin: 1rem;
+}
