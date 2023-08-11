@@ -29,9 +29,13 @@ import MakeUpResult from "./AIMakeUp/MakeUpResult";
 import ItemRegist from "./Shop/ItemRegist";
 import HandleProduct from "./Shop/HandleProduct";
 import DeliveryRegist from "./Shop/delivery/DeliveryRegist";
+import PaymentFailed from "./Shop/PaymentFailed";
+import PaymentSucceed from "./Shop/PaymentSucceed";
+import Payment from "./Shop/Payment";
+import DeliveryList from "./DeliveryList";
+
 
 import { Routes, Route } from "react-router-dom";
-import DeliveryList from "./DeliveryList";
 function App() {
 	return (
 		<div className="App">
@@ -73,13 +77,6 @@ function App() {
 					element={[
 						<NavigationBarBottom />, 
 						<SearchResult />
-					]}
-				/>
-				<Route
-					path="/signup"
-					element={[
-						<NavigationBarHeader title="Sign up" />, 
-						<SignUp />
 					]}
 				/>
 				<Route
@@ -286,8 +283,25 @@ function App() {
 					]}
 				/>
 
+				<Route
+					path="/paymentsucceed"
+					element={[
+						<NavigationBarHeader title="Mon, Palette" />,
+						<NavigationBarBottom />,
+						<PaymentSucceed />,
+					]}
+				/>
+
+				<Route
+					path="/paymentfailed"
+					element={[
+						<NavigationBarHeader title="Mon, Palette" />,
+						<PaymentFailed />,
+						<NavigationBarBottom />,
+					]}
+				/>
+
 				<Route path="/feed/:feedId" element={[<FeedDetail />]} />
-				<Route path="/AImakeup" element={[<MakeUpStart />]} />
 				<Route path="/makeupresult" element={[<MakeUpResult />]} />
 				<Route
 					path="/itemregist"
@@ -313,6 +327,12 @@ function App() {
 						<DeliveryRegist />,
 					]}
 				/>
+				<Route
+					path="/payment"
+					element={[
+						<Payment />,
+					]}
+				/>	
 			</Routes>
 		</div>
 	);
