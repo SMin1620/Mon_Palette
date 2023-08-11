@@ -28,6 +28,7 @@ import ShopMain from "./Shop/ShopMain/ShopMain";
 import ShoppingCart from './Shop/ShoppingCart/ShoppingCart';
 
 import { Routes, Route } from "react-router-dom";
+import DeliveryList from "./DeliveryList";
 function App() {
 	return (
 		<div className="App">
@@ -224,6 +225,14 @@ function App() {
 					element={[
 						<NavigationBarHeader title="Mon, Palette" item="shop"/>,
 						<ShoppingCart />,
+						<NavigationBarBottom />
+					]}
+				/>
+				<Route
+					path="/deliveryList"
+					element={[
+						<NavigationBarHeader title="Edit address" />,
+						<DeliveryList />,
 						<NavigationBarBottom />
 					]}
 				/>
