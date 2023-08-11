@@ -21,6 +21,9 @@ import ChallengeHome from "./Challenge/ChallengeHome";
 import FeedDetail from "./Feed/FeedDetail/FeedDetail";
 import MakeUpStart from "./AIMakeUp/MakeUpStart";
 import MakeUpResult from "./AIMakeUp/MakeUpResult";
+import ItemRegist from "./Shop/ItemRegist";
+import HandleProduct from "./Shop/HandleProduct";
+import DeliveryRegist from "./Shop/delivery/DeliveryRegist";
 
 import { Routes, Route } from "react-router-dom";
 function App() {
@@ -151,9 +154,32 @@ function App() {
 				/>
 
 				<Route path="/feed/:feedId" element={[<FeedDetail />]} />
-				<Route path="/feed/:feedId" element={[<FeedDetail />]} />
 				<Route path="/AImakeup" element={[<MakeUpStart />]} />
 				<Route path="/makeupresult" element={[<MakeUpResult />]} />
+				<Route
+					path="/itemregist"
+					element={[
+						<NavigationBarHeader title="Mon, Palette" />,
+						<NavigationBarBottom />,
+						<ItemRegist />,
+					]}
+				/>
+				<Route
+					path="/handleProduct"
+					element={[
+						<NavigationBarHeader title="" />,
+						<NavigationBarBottom />,
+						<HandleProduct />,
+					]}
+				/>
+				<Route
+					path="/deliveryregist"
+					element={[
+						<NavigationBarHeader title="" />,
+						<NavigationBarBottom />,
+						<DeliveryRegist />,
+					]}
+				/>
 			</Routes>
 		</div>
 	);

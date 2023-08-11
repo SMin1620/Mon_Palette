@@ -4,7 +4,7 @@ html {
 
 .change_container {
 	margin: 50% auto;
-	width: 18.75rem; /* 300px를 rem 단위로 변환 (300 / 16 = 18.75) */
+	width: 80%;
 }
 
 .change_label {
@@ -59,4 +59,16 @@ html {
 	color: #fff;
 	border: none;
 	border-radius: 0.5rem; /* 5px를 rem 단위로 변환 (5 / 16 = 0.3125) */
+}
+.change_search_button {
+	display: flex;
+	justify-content: space-between;
+}
+.change_address_search_button {
+	background-color: #e84c8b;
+	width: 5rem;
+	height: 2.5rem;
+	color: #fff;
+	border: none;
+	border-radius: 10px; /* 5px를 rem 단위로 변환 (5 / 16 = 0.3125) */
 }
