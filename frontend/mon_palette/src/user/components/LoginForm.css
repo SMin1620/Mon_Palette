@@ -11,6 +11,7 @@ html {
 
 .loginForm_form-group {
 	margin-bottom: 0.9375rem; /* 15px를 rem 단위로 변환 (15 / 16 = 0.9375) */
+	overflow-x: hidden;
 }
 
 .loginForm_label {
@@ -27,6 +28,10 @@ html {
 	border-bottom: 0.125rem solid #dddddd; /* 2px를 rem 단위로 변환 (2 / 16 = 0.125) */
 }
 
+.loginForm_input:-webkit-autofill {
+	-webkit-box-shadow: 0 0 0 1000px white inset;
+	box-shadow: 0 0 0 1000px white inset;
+}
 .loginForm_input:focus {
 	outline: none;
 	border-bottom: 0.125rem solid #e84c8b;

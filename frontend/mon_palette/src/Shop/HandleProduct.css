@@ -1,0 +1,74 @@
+.html {
+	font-size: 16px;
+}
+.handleproduct_container {
+	margin: 4.3rem;
+	margin-left: 5%;
+	margin-right: 5%;
+	flex-direction: column; /* 요소들을 세로 방향으로 정렬합니다. */
+	align-items: center; /* 요소들을 가운데 정렬합니다. */
+	justify-content: center;
+	text-align: left;
+}
+
+.handleproduct_label {
+	display: block;
+	font-weight: bold;
+	font-size: 1rem;
+}
+
+.handleproduct_content {
+	background: #fdf2f7;
+	border-radius: 10px; /* 50%로 설정하여 이미지를 원형으로 만듭니다. */
+	align-items: center; /* 요소들을 가운데 정렬합니다. */
+	padding-top: 10px;
+	padding-left: 15px;
+	padding-bottom: 10px;
+	padding-right: 15px;
+}
+
+.handleproduct_product_header {
+	height: 5rem;
+	align-items: center; /* 요소들을 가운데 정렬합니다. */
+	justify-content: center;
+	text-align: center;
+	display: flex;
+}
+.handleproduct_productCnt {
+	display: block;
+	font-weight: bold;
+	font-size: 2rem;
+}
+.handleproduct_object {
+	display: flex;
+	align-items: center;
+	height: 4rem;
+	margin-top: 7px;
+	margin-bottom: 7px;
+}
+.handleproduct_object_img {
+	border: 1px solid lightgray;
+	background-color: lightgray;
+	border-radius: 5px;
+	position: relative;
+	width: 5rem;
+}
+
+.handleproduct_object_img_img {
+	width: 100%;
+	height: 3.75rem;
+	border-radius: 5px;
+	object-fit: cover;
+}
+
+.handleproduct_object_icon {
+	position: relative;
+	display: flex;
+	justify-content: right;
+	text-align: right;
+	margin-top: 1rem;
+}
+.handleproduct_object_with_icon {
+	display: flex;
+	justify-content: space-between;
+}
