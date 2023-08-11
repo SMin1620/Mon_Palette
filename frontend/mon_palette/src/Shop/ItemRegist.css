@@ -1,0 +1,222 @@
+.html {
+	font-size: 16px;
+}
+.itemregist_container {
+	margin: 4.3rem;
+	margin-left: 5%;
+	margin-right: 5%;
+	flex-direction: column; /* 요소들을 세로 방향으로 정렬합니다. */
+	align-items: center; /* 요소들을 가운데 정렬합니다. */
+	justify-content: center;
+	text-align: left;
+}
+
+.itemregist_label {
+	display: block;
+	font-weight: bold;
+	height: 25px;
+}
+
+.itemregist_content {
+	display: flex;
+	background: #fdf2f7;
+	border-radius: 10px; /* 50%로 설정하여 이미지를 원형으로 만듭니다. */
+	align-items: center; /* 요소들을 가운데 정렬합니다. */
+	padding-top: 10px;
+	padding-left: 15px;
+	padding-bottom: 10px;
+	padding-right: 15px;
+}
+
+.itemregist_content_category {
+	background: #fdf2f7;
+	border-radius: 10px; /* 50%로 설정하여 이미지를 원형으로 만듭니다. */
+	align-items: center; /* 요소들을 가운데 정렬합니다. */
+	justify-content: left;
+	padding-top: 10px;
+	padding-left: 15px;
+	padding-bottom: 10px;
+	padding-right: 15px;
+}
+
+.itemregist_content_category_select {
+	display: flex;
+
+	align-items: center; /* 요소들을 가운데 정렬합니다. */
+	justify-content: space-between;
+}
+
+.itemregist_profileimg_div {
+	width: 6rem;
+	height: 3.5rem;
+	align-items: left; /* 요소들을 가운데 정렬합니다. */
+	justify-content: center;
+}
+.itemregist_profileimg {
+	width: 3.5rem; /* 이미지를 컨테이너 크기에 맞게 조정합니다. */
+	height: 3.5rem; /* 이미지를 컨테이너 크기에 맞게 조정합니다. */
+	border-radius: 50%; /* 50%로 설정하여 이미지를 원형으로 만듭니다. */
+	overflow: hidden; /* 이미지가 컨테이너 영역을 벗어나는 부분은 잘립니다. */
+	object-fit: cover; /* 이미지가 비율을 유지하면서 컨테이너를 가득 채우도록 합니다. */
+}
+.itemregist_price {
+	width: 100%;
+	margin-right: 10px;
+}
+.itemregist_price_info {
+	display: flex;
+	justify-content: space-between;
+}
+.itemregist_price_price {
+	display: flex;
+	width: 10rem;
+}
+
+.itemregist_price_input {
+	width: 80%;
+	border: none;
+	border-radius: 0;
+	text-align: right;
+	font-size: 1rem; /* 16px를 rem 단위로 변환 (16 / 16 = 1) */
+	background-color: #fdf2f7;
+	border-bottom: 0.125rem solid #e84c8b; /* 2px를 rem 단위로 변환 (2 / 16 = 0.125) */
+}
+
+.itemregist_price_input:focus {
+	outline: none;
+	border-bottom: 0.125rem solid #e84c8b; /* 2px를 rem 단위로 변환 (2 / 16 = 0.125) */
+}
+
+.itemregist_category_select {
+	width: 75%;
+	border: 1px solid #c4c4c4;
+	box-sizing: border-box;
+	border-radius: 10px;
+	padding: 5px 15px;
+	font-size: 14px;
+	line-height: 16px;
+}
+.example-custom-input {
+	background-color: #fdf2f7;
+	color: gray;
+	cursor: pointer;
+	width: 7rem;
+	border: none;
+	text-align: center;
+	font-weight: bold;
+	font-size: 1rem; /* 16px를 rem 단위로 변환 (16 / 16 = 1) */
+	border-bottom: 0.125rem solid #e84c8b; /* 2px를 rem 단위로 변환 (2 / 16 = 0.125) */
+}
+
+.example-custom-input:focus {
+	outline: none;
+	border-bottom: 0.125rem solid #e84c8b; /* 2px를 rem 단위로 변환 (2 / 16 = 0.125) */
+}
+.itemregist_datepick {
+	background: #fdf2f7;
+	border-radius: 10px; /* 50%로 설정하여 이미지를 원형으로 만듭니다. */
+	padding-top: 10px;
+	padding-left: 15px;
+	padding-bottom: 10px;
+	padding-right: 15px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.itemregist_content_input {
+	width: 100%;
+	background-color: #fdf2f7;
+	border: none;
+	text-align: center;
+	font-weight: bold;
+	font-size: 1rem; /* 16px를 rem 단위로 변환 (16 / 16 = 1) */
+	border-bottom: 0.125rem solid #e84c8b; /* 2px를 rem 단위로 변환 (2 / 16 = 0.125) */
+}
+.itemregist_content_div {
+	width: 100%;
+}
+.intemregist_limit {
+	display: flex;
+}
+.itemregist_limit_input {
+	width: 5rem;
+	background-color: #fdf2f7;
+	border: none;
+	text-align: right;
+	font-size: 1rem; /* 16px를 rem 단위로 변환 (16 / 16 = 1) */
+	border-bottom: 0.125rem solid #e84c8b;
+}
+
+.itemregist_limit_input:focus {
+	outline: none;
+	border-bottom: 0.125rem solid #e84c8b;
+}
+.itemregist_option_info {
+	display: flex;
+	margin-left: 20px;
+	align-items: center;
+	font-size: 0.8rem;
+}
+.itemregist_icon {
+	color: white;
+	background-color: #e84c8b;
+	border-radius: 10px;
+	margin-top: 0.3rem;
+}
+.itemregist_option_info li::marker {
+	color: #e84c8b;
+
+	font-weight: bold;
+}
+.itemregist_option_input {
+	width: 100%;
+	border: none;
+	border-radius: 0;
+	font-size: 1rem; /* 16px를 rem 단위로 변환 (16 / 16 = 1) */
+	background-color: #fdf2f7;
+	border-bottom: 0.125rem solid #e84c8b; /* 2px를 rem 단위로 변환 (2 / 16 = 0.125) */
+}
+
+.itemregist_submit_button {
+	width: 100%;
+	background: #e84c8b;
+	border: none;
+	color: white;
+	font-weight: bold;
+	border-radius: 10px; /* 50%로 설정하여 이미지를 원형으로 만듭니다. */
+	align-items: center; /* 요소들을 가운데 정렬합니다. */
+	justify-content: left;
+	padding-top: 10px;
+	padding-left: 15px;
+	padding-bottom: 10px;
+	padding-right: 15px;
+}
+.itemregist_stock_input {
+	width: 30%;
+	border: none;
+	border-radius: 0;
+	font-size: 1rem; /* 16px를 rem 단위로 변환 (16 / 16 = 1) */
+	background-color: #fdf2f7;
+	border-bottom: 0.125rem solid #e84c8b; /* 2px를 rem 단위로 변환 (2 / 16 = 0.125) */
+}
+.itemregist_itemcontent_input {
+	width: 100%;
+	height: 10rem;
+	border-radius: 10px; /* 50%로 설정하여 이미지를 원형으로 만듭니다. */
+	border: 1px solid #e84c8b;
+}
+
+.itemregist_optionlist_info {
+	display: flex;
+	align-items: center;
+	font-size: 0.8rem;
+	text-align: right;
+	justify-content: end;
+}
+.itemregist_optionlist_option {
+	margin-left: 20px;
+}
+.itemregist_option_box {
+	align-items: center;
+	width: 100%;
+}

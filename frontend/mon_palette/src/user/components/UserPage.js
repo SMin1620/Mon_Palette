@@ -11,7 +11,7 @@ import AddShoppingCartOutlinedIcon from "@mui/icons-material/AddShoppingCartOutl
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 
-const ChangeInfo = () => {
+const UserPage = () => {
 	const [background, setBackground] = useState("");
 	const [profile, setProfile] = useState("");
 	const [nickname, setNickname] = useState("");
@@ -194,7 +194,7 @@ const ChangeInfo = () => {
 								</Link>
 							</div>
 							<div className="mypage_menu_button">
-								<Link to="/feedwrite">
+								<Link to="/handleproduct">
 									<button className="mypage_button7">
 										<AddShoppingCartOutlinedIcon />
 										<div className="mypage_group-left">상품판매</div>
@@ -249,4 +249,4 @@ const ChangeInfo = () => {
 	);
 };
 
-export default ChangeInfo;
+export default UserPage;
