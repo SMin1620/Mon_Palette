@@ -26,6 +26,7 @@ import ChallengeDetail from "./Challenge/ChallengeDetail"
 import ChallengeEdit from './Challenge/ChallengeEdit';
 import PaymentFailed from "./Shop/PaymentFailed";
 import PaymentSucceed from "./Shop/PaymentSucceed";
+import Payment from "./Shop/Payment";
 
 
 import { Routes, Route } from "react-router-dom";
@@ -213,6 +214,13 @@ function App() {
 						<NavigationBarBottom />,
 					]}
 				/>
+
+				<Route
+					path="/payment"
+					element={[
+						<Payment />,
+					]}
+				/>	
 			</Routes>
 		</div>
 	);
