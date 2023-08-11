@@ -3,7 +3,6 @@ import "./ShopMain.css"
 import { loginState } from 'src/user/components/Atom/loginState';
 import { useRecoilValue } from 'recoil';
 import ShopMainCategory from './ShopMainCategory';
-import ShopMainItem from './ShopMainItem';
 import axios from 'axios';
 import { useNavigate } from 'react-router';
 
@@ -90,29 +89,31 @@ function ShopMain() {
           modalOpen&&modalOpen ? <ShopMainCategory categoryName={modalCategory} />
           :
           <div>
-            <h3>Recent Item</h3>
-            <div className="shopMain_container">
-              {
-                allItem.map(item => {
-                  return <div className="shopMain_item_item" key={item.id} onClick={() => handleMoveDetail(item.id)}>
-                        <img src={item.thumbnail} alt=""/>
-                        <h3>{item.name}</h3>
-                        <div className="shopMain_item_item_cost">
-                          {
-                            item.discount !== 0 ? <h4>{item.discount}%</h4> : null
-                          }
-                          <h5>{item.price.toLocaleString()}원</h5>
-                        </div>
-                        <div className="shopMain_item_item_period">
-                          <p>기간:</p>
-                          <p>{item.createAt.slice(5, 10)}</p>
-                          <p>~</p>
-                          <p>{item.endAt.slice(5, 10)}</p>
-                        </div>
+
+          
+          <h3>Recent Item</h3>
+          <div className="shopMain_container">
+            {
+              allItem.map(item => {
+                return <div className="shopMain_item_item" key={item.id} onClick={() => handleMoveDetail(item.id)}>
+                      <img src={item.thumbnail} alt=""/>
+                      <h3>{item.name}</h3>
+                      <div className="shopMain_item_item_cost">
+                        {
+                          item.discount !== 0 ? <h4>{item.discount}%</h4> : null
+                        }
+                        <h5>{item.price.toLocaleString()}원</h5>
                       </div>
-                })
-              }
-            </div>
+                      <div className="shopMain_item_item_period">
+                        <p>기간:</p>
+                        <p>{item.createAt.slice(5, 10)}</p>
+                        <p>~</p>
+                        <p>{item.endAt.slice(5, 10)}</p>
+                      </div>
+                    </div>
+              })
+            }
+          </div>
           </div>
           
         }

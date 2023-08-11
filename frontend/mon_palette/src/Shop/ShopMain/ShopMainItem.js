@@ -67,7 +67,7 @@ function ShopMainItem(props) {
       console.error(error)
     }
   }
-  console.log(categoryItem)
+  
   const handleMoveDetail = (id) => {
     navigate(`/shop/shopdetail/${id}`)
   }
@@ -75,35 +75,32 @@ function ShopMainItem(props) {
   return (
     <div className="shopMain_item">
       <div className="shopMain_item_wrap">
-
-      {
-        categoryItem&&categoryItem ?
-        <div className="shopMain_item_container">
-          {
-            categoryItem.map(category => {
-              return <div className="shopMain_item_item" key={category.id} onClick={() => handleMoveDetail(category.id)}>
-                <img src={category.thumbnail} alt=""/>
-                <h3>{category.name}</h3>
-                <div className="shopMain_item_item_cost">
-                  {
-                    category.discount !== 0 ? <h4>{category.discount}%</h4> : null
-                  }
-                  <h5>{category.price.toLocaleString()}원</h5>
+        {
+          categoryItem&&
+          <div className="shopMain_item_container">
+            {
+              categoryItem.map(category => {
+                return <div className="shopMain_item_item" key={category.id} onClick={() => handleMoveDetail(category.id)}>
+                  <img src={category.thumbnail} alt=""/>
+                  <h3>{category.name}</h3>
+                  <div className="shopMain_item_item_cost">
+                    {
+                      category.discount !== 0 ? <h4>{category.discount}%</h4> : null
+                    }
+                    <h5>{category.price.toLocaleString()}원</h5>
+                  </div>
+                  <div className="shopMain_item_item_period">
+                    <p>기간:</p>
+                    <p>{category.createAt.slice(5, 10)}</p>
+                    <p>~</p>
+                    <p>{category.endAt.slice(5, 10)}</p>
+                  </div>
                 </div>
-                <div className="shopMain_item_item_period">
-                  <p>기간:</p>
-                  <p>{category.createAt.slice(5, 10)}</p>
-                  <p>~</p>
-                  <p>{category.endAt.slice(5, 10)}</p>
-                </div>
-              </div>
-            })
-          }
+              })
+            }
 
-        </div>
-        :
-        <h1>Popular item</h1>
-      }
+          </div>
+        }
       </div>
 
       {/* 이부분이 보이면 ref로 무한 스크롤 구현 */}
