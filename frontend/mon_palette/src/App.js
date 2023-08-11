@@ -5,7 +5,6 @@ import SearchResult from "./SearchResult/SearchResult";
 import Home from "./Home/Home";
 import Search2 from "./Search/Search2";
 import LoginForm from "./user/components/LoginForm";
-import SignUp from "./user/components/SignUp";
 import SignUpForm from "./user/components/SignUpForm";
 import ChangeNickname from "./user/components/ChangeNickname";
 import ChangePassword from "./user/components/ChangePassword";
@@ -22,10 +21,10 @@ import FeedDetail from "./Feed/FeedDetail/FeedDetail";
 import ChallengeCreate from "./Challenge/ChallengeCreate";
 import MakeUpStart from "./AIMakeUp/MakeUpStart";
 import StartPage from "./PersonalColor/StartPage";
-import ChallengeDetail from "./Challenge/ChallengeDetail"
-import ChallengeEdit from './Challenge/ChallengeEdit';
+import ChallengeDetail from "./Challenge/ChallengeDetail";
+import ChallengeEdit from "./Challenge/ChallengeEdit";
 import ShopMain from "./Shop/ShopMain/ShopMain";
-import ShoppingCart from './Shop/ShoppingCart/ShoppingCart';
+import ShoppingCart from "./Shop/ShoppingCart/ShoppingCart";
 import MakeUpResult from "./AIMakeUp/MakeUpResult";
 import ItemRegist from "./Shop/ItemRegist";
 import HandleProduct from "./Shop/HandleProduct";
@@ -123,7 +122,7 @@ function App() {
 					]}
 				/>
 				<Route
-					path="/changeinfo"
+					path="/changeinfo/:oauth"
 					element={[
 						<NavigationBarHeader title="Edit profile" />,
 						<NavigationBarBottom />,
@@ -238,6 +237,52 @@ function App() {
 						<NavigationBarHeader title="Edit address" />,
 						<DeliveryList />,
 						<NavigationBarBottom />
+					]}
+				/>
+				<Route
+					path="/feed/:feedId"
+					element={[
+						<NavigationBarHeader title="Mon, Palette" />,
+						<FeedDetail />,
+						<NavigationBarBottom />,
+					]}
+				/>
+				<Route
+					path="/challenge/create"
+					element={[<NavigationBarBottom />, <ChallengeCreate />]}
+				/>
+				<Route path="/AImakeup" element={[<MakeUpStart />]} />
+				<Route path="/personalcolor" element={[<StartPage />]} />
+				<Route
+					path="/challenge/:challengeId"
+					element={[<ChallengeDetail />, <NavigationBarBottom />]}
+				/>
+				<Route
+					path="/challenge/edit/:id"
+					element={[<NavigationBarBottom />, <ChallengeEdit />]}
+				/>
+				<Route
+					path="/shop"
+					element={[
+						<NavigationBarHeader title="Mon, Palette" item="shop" />,
+						<ShopMain />,
+						<NavigationBarBottom />,
+					]}
+				/>
+				<Route
+					path="/cart"
+					element={[
+						<NavigationBarHeader title="Mon, Palette" item="shop" />,
+						<ShoppingCart />,
+						<NavigationBarBottom />,
+					]}
+				/>
+				<Route
+					path="/deliveryList"
+					element={[
+						<NavigationBarHeader title="Edit address" />,
+						<DeliveryList />,
+						<NavigationBarBottom />,
 					]}
 				/>
 

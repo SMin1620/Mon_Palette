@@ -85,3 +85,7 @@ html {
 .picture-edit {
 	display: none;
 }
+.changeInfo_withdraw {
+	text-align: right;
+	font-size: 0.8rem;
+}

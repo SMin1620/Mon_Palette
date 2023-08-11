@@ -21,9 +21,10 @@ const UserPage = () => {
 	const [following, setFollowing] = useState("");
 	const [isInfluence, setIsInfluence] = useState("");
 	const [isMe, setIsMe] = useState(false);
+	const [isoauth, setIsOauth] = useState(false);
 	const [buttonText, setButtonText] = useState("팔로우");
 	const [feed, setFeed] = useState([]);
-	const [getinfo, setGetInfo] = useState("Feed");
+	const [getinfo, setGetInfo] = useState(null);
 	const Authorization = useRecoilValue(loginState);
 	const Navigate = useNavigate();
 	const { id } = useParams();
@@ -69,6 +70,7 @@ const UserPage = () => {
 					setFollowing(response.data.data.followingCnt);
 					setIsInfluence(response.data.data.isInfluence);
 					setFeed(response.data.data.feed);
+					setIsOauth(response.data.data.isOauth);
 					console.log(response.data.data.feed);
 
 					console.log(response.data.data.feed[0]);
@@ -96,10 +98,71 @@ const UserPage = () => {
 		// setFollowing(0);
 		// setIsInfluence("USER");
 	}, [buttonText]); // 빈 배열을 넣어서 컴포넌트가 처음 렌더링될 때 한 번만 실행되도록 합니다.
+	useEffect(() => {
+		if (getinfo !== null) {
+			if (getinfo === "feed") {
+				getFeed();
+				setGetInfo(null);
+			} else if (getinfo === "challenge") {
+				getChallenge();
+				setGetInfo(null);
+			} else if (getinfo === "liked") {
+				getLiked();
+				setGetInfo(null);
+			}
+		}
+	}, [getinfo]); // 빈 배열을 넣어서 컴포넌트가 처음 렌더링될 때 한 번만 실행되도록 합니다.
 
 	const handleFeedDetail = (feedId) => {
-		Navigate(`/feed/${feedId}`);
+		if (getinfo === "feed") {
+			Navigate(`/feed/${feedId}`);
+		} else if (getinfo === "challenge") {
+			Navigate(`/challenge/${feedId}`);
+		} else {
+			Navigate(`/challenge/${feedId}`);
+		}
 	};
+
+	const getFeed = () => {
+		axios
+			.get(`${process.env.REACT_APP_API}/api/user/feed/${id}`, {
+				headers: { Authorization: Authorization },
+			})
+			.then((response) => {
+				console.log(response.data);
+				if (response.data !== null) {
+					console.log(response.data);
+					setFeed(response.data.data.feed);
+				}
+			});
+	};
+	const getChallenge = () => {
+		axios
+			.get(`${process.env.REACT_APP_API}/api/user/challenge/${id}`, {
+				headers: { Authorization: Authorization },
+			})
+			.then((response) => {
+				console.log(response.data);
+				if (response.data !== null) {
+					console.log(response.data);
+					setFeed(response.data.data.feed);
+				}
+			});
+	};
+	const getLiked = () => {
+		axios
+			.get(`${process.env.REACT_APP_API}/api/user/liked/${id}`, {
+				headers: { Authorization: Authorization },
+			})
+			.then((response) => {
+				console.log(response.data);
+				if (response.data !== null) {
+					console.log(response.data);
+					setFeed(response.data.data.feed);
+				}
+			});
+	};
+
 	return (
 		<div className="mypage_container">
 			<div className="mypage_background-container">
@@ -155,10 +218,10 @@ const UserPage = () => {
 							<Link to="/changenickname">
 								<button className="mypage_button1">
 									<AssignmentOutlinedIcon />
-									<div className="mypage_group-left">list</div>
+									<div className="mypage_group-left">order</div>
 								</button>
 							</Link>
-							<Link to="/changenickname">
+							<Link to="/cart">
 								<button className="mypage_button2">
 									<ShoppingCartOutlinedIcon />
 									<div className="mypage_group-left">cart</div>
@@ -170,7 +233,7 @@ const UserPage = () => {
 									<div className="mypage_group-left">write</div>
 								</button>
 							</Link>
-							<Link to="/changeinfo">
+							<Link to={`/changeinfo/${isoauth}`}>
 								<button className="mypage_button4">
 									<SettingsOutlinedIcon />
 									<div className="mypage_group-left">info</div>
@@ -186,7 +249,7 @@ const UserPage = () => {
 										<div className="mypage_group-left">주문목록</div>
 									</button>
 								</Link>
-								<Link to="/feedwrite">
+								<Link to="/cart">
 									<button className="mypage_button6">
 										<ShoppingCartOutlinedIcon />
 										<div className="mypage_group-left">장바구니</div>
@@ -206,7 +269,7 @@ const UserPage = () => {
 										<div className="mypage_group-left">만들기</div>
 									</button>
 								</Link>
-								<Link to="/changeinfo">
+								<Link to={`/changeinfo/${isoauth}`}>
 									<button className="mypage_button9">
 										<SettingsOutlinedIcon />
 										<div className="mypage_group-left">정보수정</div>
@@ -223,10 +286,26 @@ const UserPage = () => {
 			<br />
 			<hr className="mypage_hr" />
 			<div className="mypage_menu_button">
-				<button className="mypage_button_feed">Feed</button>
-				<button className="mypage_button_challenge">Challenge</button>
-				<button className="mypage_button_makeup">Make up</button>
+				<button
+					className="mypage_button_feed"
+					onClick={() => setGetInfo("feed")}
+				>
+					Feed
+				</button>
+				<button
+					className="mypage_button_challenge"
+					onClick={() => setGetInfo("challenge")}
+				>
+					Challenge
+				</button>
+				<button
+					className="mypage_button_makeup"
+					onClick={() => setGetInfo("liked")}
+				>
+					Liked
+				</button>
 			</div>
+
 			<hr className="mypage_hr" />
 			<div className="feedMain_body">
 				<div className="feedMain_body_info">
