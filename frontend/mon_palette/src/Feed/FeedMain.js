@@ -87,15 +87,12 @@ function FeedMain() {
       <div className="feed_tags_container">
         <div className="feed_tags">
           {tagInfo.map((tag, index) => {
-            const keyWordLength = tag.keyword.length
-            const tagItemWidth = keyWordLength * 1.3
             return (
               <div 
                 className="feed_tag_item" 
                 onClick={() => {handleTags(tag)}} 
                 key={index} 
-                style={{ width: `${tagItemWidth}rem`}}
-              ># {tag.keyword}
+              ><p># {tag.keyword}</p>
               </div>
             );
           })}
