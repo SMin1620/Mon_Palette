@@ -261,14 +261,12 @@ return (
                             <div className={styles.tags}>
                                 {
                                     feedData && feedData.hashtags.map((tag, index) => {
-                                        const keyWordLength = tag.length
-                                        const tagItemWidth = keyWordLength * 1.7
+                                    
                                         return (
                                         <div 
                                             className={styles.feed_tag} 
                                             key={index} 
-                                            style={{ width: `${tagItemWidth}rem`}}
-                                        ># {tag}
+                                        ><p className={styles.p}># {tag}</p>
                                         </div>
                                         );
                                     })
