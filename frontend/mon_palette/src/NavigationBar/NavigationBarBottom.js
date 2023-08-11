@@ -15,13 +15,13 @@ function NavigationBarBottom() {
 	return (
 		<div className="navigationbar_bottom">
 			<div className="nav_bottom_icons">
-				<Link>
+				<Link to="/challenge">
 					<FireIcon sx={{ fontSize: 30 }} />
 				</Link>
 			</div>
 
 			<div className="nav_bottom_icons">
-				<Link to="/feed/">
+				<Link to="/feed">
 					<PhotoSizeIcon sx={{ fontSize: 30 }} />
 				</Link>
 			</div>
@@ -33,7 +33,7 @@ function NavigationBarBottom() {
 			</div>
 
 			<div className="nav_bottom_icons">
-				<Link>
+				<Link to="/shop">
 					<LocalMallOutlinedIcon sx={{ fontSize: 30 }} />
 				</Link>
 			</div>

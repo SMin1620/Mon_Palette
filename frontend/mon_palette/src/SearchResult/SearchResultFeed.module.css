@@ -1,101 +1,77 @@
-.search_result_feed_wrap {
+.feedMain {
+  margin-top: 4.1875em;
+}
+
+.feedMain_body_info {
   column-count: 2;
   column-gap: 1em;
   margin: 0 1em;
-  margin-top: 1em;
+  margin-top: 1rem;
 }
 
-.search_result_feed_container {
+.feedMain_body_container {
+  display: flex;
+  flex-direction: column;
   justify-content: center;
 }
 
-.search_result_feed_item {
+.feedMain_body_info_item {
   display: inline-block;
   margin-bottom: 1em;
   border-radius: 10px;
+  display: flex;
+  flex-direction: column;
 }
 
-.search_result_feed_item p {
-  margin: 0;
-} 
+.feedMain_body {
+  margin-bottom: 3em;
+}
 
-.search_result_feed_feedImg{
+.feed_tags_container {
+  width: 100%;
+  display: flex;
+  overflow-x: scroll;
+}
+
+.feed_tags_container::-webkit-scrollbar {
+  display: none;
+}
+
+.feed_tags {
+  display: flex;
+  margin-top: 1rem;
+  margin-left: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid black;
+}
+
+.feed_tag_item {
+  padding: 0;
+  background-color: #FCE7F1;
+  border-radius: 200px;
+  margin-right: 1rem;
+  padding-left: 1rem;
+  font-weight: bold;
+  width: auto;
+}
+
+.feedMain_body_info_item_top {
   width: 100%;
   border-radius: 10px;
 }
 
-.search_result_feed_user {
+.feedMain_body_info_item_bottom {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 0.5rem 0;
+  padding: 0.2rem 0.3rem;
 }
 
-.search_result_feed_userImg  {
+.feedMain_body_info_item_bottom img {
+  width: 30px;
   border-radius: 50%;
-  width: 40px;
-  height: 40px;
   margin-right: 0.5rem;
 }
 
-.search_result_feed_user_left {
-  display: flex;
-  justify-content: center;
-}
-
-.search_result_feed_wrap {
-  column-count: 2;
-  column-gap: 1em;
-  margin: 0 1em;
-  margin-top: 1em;
-}
-
-.search_result_feed_container {
-  justify-content: center;
-}
-
-.search_result_feed_item {
-  display: inline-block;
-  margin-bottom: 1em;
-  border-radius: 10px;
-}
-
-.search_result_feed_item p {
+.feedMain_body_info_item_bottom p {
   margin: 0;
-} 
-
-.search_result_feed_feedImg{
-  width: 100%;
-  border-radius: 10px;
-}
-
-.search_result_feed_user {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 0.5rem 0;
-}
-
-.search_result_feed_userImg  {
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  margin-right: 0.5rem;
-}
-
-.search_result_feed_user_left {
-  display: flex;
-  justify-content: center;
-}
-
-.li {
-  list-style: none; 
-  padding: 0px 0px 0px 0.625rem; 
-  /* background-color: #FCE7F1; */
-  border-radius: 0.4rem;
-}
-
-.ul {
-  column-count: 2;
-  margin-top: 3rem;
+  padding: 0;
 }

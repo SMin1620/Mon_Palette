@@ -7,32 +7,34 @@ import MenuIcon from '@mui/icons-material/Menu';
 import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined';
 import SearchIcon from '@mui/icons-material/Search';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
+import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 
 function NavigationBarHeader(props) {
+  const navigate = useNavigate()
   const [showPage, setShowPage] = useState(false)
   const handleModal = () => { setShowPage(!showPage) }
-  
-  const navigate = useNavigate()
   const handlePageBack = () => { navigate(-1) }
-
+  
   let PageTitle = props.title
+  console.log(props.item)
   let PageCenter = true
   let PageLeft = true
-  let PageRight = true
 
   if (PageTitle === 'Mon, Palette') {
     PageCenter = true;
     PageLeft = true;
-    PageRight = true;
 
   } else if (PageTitle === 'login') {
     PageCenter = false;
     PageLeft = false;
-    PageRight = false;
   } else {
     PageCenter = false;
     PageLeft = true;
-    PageRight = true;
+  }
+
+  const handleCart = () => {
+    navigate("/cart")
   }
   
 
@@ -57,18 +59,28 @@ function NavigationBarHeader(props) {
                   <SearchIcon sx={{ fontSize: 30 }} />
                 </Link>
               </div>
-    
-              <div className="navigationBar_right_right">
-                <NotificationsNoneOutlinedIcon sx={{ fontSize: 30 }}/>
-              </div>
-            </div>) : (<div className="navigationBar_right_none"></div>)
+              
+              {
+                props.item==="shop" ? 
+                <div className="navigationBar_right_right">
+                  <ShoppingCartOutlinedIcon sx={{fontSize: 30}} onClick={handleCart}/>
+                </div>
+                :
+                <div className="navigationBar_right_right">
+                  <NotificationsNoneOutlinedIcon sx={{ fontSize: 30 }}/>
+                </div>
+              }
+            </div>
+            ) 
+            :
+            (<div className="navigationBar_right_none"></div>)
         }
       </div>
 
       <div className={`page ${showPage ? 'show' : ''}`}>
         <div className="modal_top">
           <div className="modal_left">
-            <ArrowBackIcon sx={{ fontSize: 20 }} className="mordal_back" onClick={handleModal} />
+            <ArrowBackIcon sx={{ fontSize: 30 }} className="mordal_back" onClick={handleModal} />
           </div>
 
           <div className="modal_center">
@@ -81,11 +93,27 @@ function NavigationBarHeader(props) {
         </div>
         {/* Function 에 Link 걸기 */}
         <div className="modal_body">
-          <h1>Function1</h1>
-          <h1>Function2</h1>
-          <h1>Function3</h1>
-          <h1>Function4</h1>
+          <div className="modal_body_item">
+            <Link to="/AImakeup">AI MakeUp</Link>
+          </div>
+
+          <div className="modal_body_item">
+            <Link to="/AImakeup">YouTuber</Link>
+          </div>
+
+          <div className="modal_body_item">
+            <Link to="/AImakeup">My Palette</Link>
+          </div>
+
+          <div className="modal_body_item">
+            <Link to="/personalcolor">Color Test</Link>
+          </div>
         </div> 
+
+        <div className="modal_bottom">
+          {/* <SettingsOutlinedIcon sx={{ fontSize: 30}} className="modal_bottom_settings" /> */}
+          <LogoutOutlinedIcon sx={{ fontSize: 30}} className="modal_bottom_logout" />
+        </div>
       </div>
     </>
   );

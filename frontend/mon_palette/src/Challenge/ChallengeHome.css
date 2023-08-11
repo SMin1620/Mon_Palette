@@ -58,7 +58,7 @@
   margin-left: 1rem;
 }
 
-.challengeHome_mid_image_item img {
+.challengeHome_mid_image_item video {
   width: 100px;
   height: 100px;
   object-fit: cover;
@@ -90,11 +90,24 @@
   border-radius: 10px;
 }
 
-.challengeHome_bottom_info_item img {
+.challengeHome_bottom_info_item video {
   width: 100%;
   border-radius: 10px;
 }
 
 .challengeHome_bottom {
   margin-bottom: 3em;
+}
+
+.challengeHome_bottom_info_item_user > img {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 0.5rem;
+}
+
+.challengeHome_bottom_info_item_user {
+  display: flex;
+  align-items: center;
 }

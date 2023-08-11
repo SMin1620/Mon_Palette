@@ -1,17 +1,17 @@
 .feed_write {
   margin-top: 3rem;
   width: 100%;
+  margin-bottom: 4rem;
+  overflow-x: hidden;
 }
 
 .feed_write_top {
-  position: fixed;
-  width: 100%;
   background-color: white;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 0 1rem 1rem 1rem;
   margin-bottom: 1rem;
-  padding: 0 0.5rem 0.5rem 0.5rem;
   border-bottom: 1px solid black;
 }
 
@@ -27,7 +27,6 @@
 
 .feed_write_top_upload {
   margin: 0;
-  background-color: none;
   padding: 0.2rem 0.5rem;
   font-weight: 500;
 }
@@ -35,8 +34,7 @@
 .feed_write_top_image {
   width: 100%;
   height: 50%;
-  justify-content: center;
-  margin-top: 3rem;
+  margin-top: 1rem;
 }
 
 .feed_write_top_image_upload {
@@ -181,3 +179,4 @@
 .feed_write_bottom_h2 {
   padding: 0 0.5rem;
 }
+

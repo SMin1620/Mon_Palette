@@ -87,7 +87,10 @@ const ItemRegist = () => {
 	}, []);
 
 	useEffect(() => {
-		handleCreate();
+		if (check) {
+			handleCreate();
+			setCheck(false);
+		}
 	}, [check]);
 
 	const getmapping = () => {
@@ -190,18 +193,13 @@ const ItemRegist = () => {
 						try {
 							const _temp = await myBucket.putObject(params).promise();
 							const S3Url = await handleImageUrlFromS3(params.Key);
-							console.log(S3Url);
 							setItemContentImgUrl((prev) => [...prev, S3Url]);
 						} catch (error) {
 							console.log(error);
 						}
 					})
 				);
-				if (check) {
-					setCheck(false);
-				} else {
-					setCheck(true);
-				}
+				setCheck(true);
 			} catch (error) {
 				console.log(error);
 			}
@@ -210,42 +208,39 @@ const ItemRegist = () => {
 	console.log(itemImgUrl);
 	// AWS로 이미지 저장하기
 	const handleCreate = () => {
-		try {
-			axios
-				.post(
-					`${process.env.REACT_APP_API}/api/item/regist`,
-					{
-						itemName: itemName,
-						price: price,
-						discount: sale,
-						content: itemContent,
-						manufact: manufacture,
-						deliveryFee: deliveryFee,
-						thumbnail: itemImgUrl[0],
-						maximum: itemCountLimit,
-						createAt: startDate,
-						endAt: endDate,
-						itemOptionList: options,
-						itemDetailImageList: itemContentImgUrl,
-						itemPhotoList: itemImgUrl,
-						categoryName: subCategoryset,
-						categoryParentId: categoryParentId,
-					},
-					{
-						headers: { Authorization: Authorization },
-					}
-				)
-				.then((response) => {
-					console.log(response);
+		console.log("here");
+		axios
+			.post(
+				`${process.env.REACT_APP_API}/api/item/regist`,
+				{
+					itemName: itemName,
+					price: price,
+					discount: sale,
+					content: itemContent,
+					manufact: manufacture,
+					deliveryFee: deliveryFee,
+					thumbnail: itemImgUrl[0],
+					maximum: itemCountLimit,
+					createAt: startDate,
+					endAt: endDate,
+					itemOptionList: options,
+					itemDetailImageList: itemContentImgUrl,
+					itemPhotoList: itemImgUrl,
+					categoryName: subCategoryset,
+					categoryParentId: categoryParentId,
+				},
+				{
+					headers: { Authorization: Authorization },
+				}
+			)
+			.then((response) => {
+				console.log(response);
 
-					Navigate(`/userpage/${id}`);
-				})
-				.catch((error) => {
-					console.error(error);
-				});
-		} catch (error) {
-			console.error(error);
-		}
+				Navigate(`/userpage/${id}`);
+			})
+			.catch((error) => {
+				console.error(error);
+			});
 	};
 
 	const handleRemoveItem = (imageIndex) => {
@@ -572,7 +567,7 @@ const ItemRegist = () => {
 				</div>
 			</div>
 			<br />
-			<button className="itemregist_submit_button" onClick={handleCreate}>
+			<button className="itemregist_submit_button" onClick={Imagesave}>
 				SUBMIT
 			</button>
 		</div>
