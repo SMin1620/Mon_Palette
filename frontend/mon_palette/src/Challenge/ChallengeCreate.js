@@ -4,6 +4,7 @@ import { useRecoilValue } from 'recoil';
 import { loginState } from '../user/components/Atom/loginState';
 import './ChallengeCreate.css'
 import { useNavigate } from "react-router-dom"
+import FileUploadOutlinedIcon from '@mui/icons-material/FileUploadOutlined';
 
 import AWS from 'aws-sdk'
 import uuid from 'react-uuid'
@@ -130,7 +131,7 @@ function ChallengeCreate() {
         <div 
           className="feed_write_top_upload"
           onClick={handleVideoUploadToS3}
-        >upload</div>
+        ><FileUploadOutlinedIcon /></div>
       </div>
 
       <hr className="feed_write_top_header_hr"/>
@@ -139,7 +140,7 @@ function ChallengeCreate() {
       {/* challenge 비디오 보여주는 부분 */}
       <div className="feed_write_top_image">
         <div className="feed_write_top_image_upload">
-          <label for="fileUpload" className="feed_write_top_image_label">Up load</label>
+          <label for="fileUpload" className="feed_write_top_image_label">Select Video</label>
           <input 
             className="feed_write_top_image_input"
             accept="video/mp4"
@@ -160,7 +161,7 @@ function ChallengeCreate() {
                 >
                   <source src={previewVideo} type="video/mp4" className="challenge_video_item"/>
                 </video>
-                <button onClick={handleRemoveVideo}>-</button>
+                <button onClick={handleRemoveVideo}>X</button>
                 <img src={previewVideo} alt=""/>
               </div>
             }

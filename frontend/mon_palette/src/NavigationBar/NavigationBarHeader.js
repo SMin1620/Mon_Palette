@@ -41,7 +41,7 @@ function NavigationBarHeader(props) {
   return (
     <>
       <div className="navigationBar_header">
-        <div className="navigationBar_left">
+        <div className={`${props.item==="shop" ? "navigationBar_left_temp" : "navigationBar_left"}`}>
           {
             PageCenter ? (<MenuIcon sx={{ fontSize: 30 }} onClick={handleModal}/>) : PageLeft ? ((<ArrowBackIcon onClick={handlePageBack} className="mordal_back" sx={{ fontSize: 30 }}/>)) : (<div></div>)
           }
@@ -59,15 +59,10 @@ function NavigationBarHeader(props) {
                   <SearchIcon sx={{ fontSize: 30 }} />
                 </Link>
               </div>
-              
               {
-                props.item==="shop" ? 
+                props.item==="shop"&&
                 <div className="navigationBar_right_right">
                   <ShoppingCartOutlinedIcon sx={{fontSize: 30}} onClick={handleCart}/>
-                </div>
-                :
-                <div className="navigationBar_right_right">
-                  <NotificationsNoneOutlinedIcon sx={{ fontSize: 30 }}/>
                 </div>
               }
             </div>
