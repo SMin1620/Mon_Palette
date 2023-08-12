@@ -196,7 +196,7 @@ function App() {
 				<Route
 					path="/shop/shopdetail"
 					element={[
-						<NavigationBarHeader />,
+						<NavigationBarHeader title="Mon, Palette" />,
 						<ItemDetail />,
 					]}
 				/>
