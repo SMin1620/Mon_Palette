@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './ChallengeHome.css'
 import { useRecoilValue } from 'recoil';
-import { loginState } from './../user/components/Atom/loginState';
+import { loginState } from '../user/components/Atom/loginState';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { PropagateLoader }  from 'react-spinners';
@@ -14,7 +14,6 @@ function ChallengeHome() {
   const [popularChallenge, setPopularChallenge] = useState([])
   const [challengePage, setChallengePage] = useState(0)
   const [load, setLoad] = useState(true)
-
   
   // 무한스크롤 구현
   const preventRef = useRef(true)
