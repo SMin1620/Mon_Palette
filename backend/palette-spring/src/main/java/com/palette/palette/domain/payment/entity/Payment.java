@@ -1,5 +1,6 @@
 package com.palette.palette.domain.payment.entity;
 
+import com.palette.palette.domain.order.entity.Order;
 import com.palette.palette.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
@@ -16,7 +17,7 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor
 @Setter
-@Table(name = "payments", indexes = @Index(name = "index_payments_order_id", columnList = "orderId"))
+@Table(name = "payments", indexes = @Index(name = "index_payments_order_id", columnList = "order_id"))
 @ToString
 public class Payment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,18 +28,21 @@ public class Payment {
     @ManyToOne
     private User buyer; // 구매자
 
-    @Column(nullable = false, unique = true)
+    @Column(unique = true)
     private String receiptId; // PG 사에서 생성한 주문 번호
 
-    @Column(nullable = false, unique = true)
-    private Integer orderId; // 우리가 생성한 주문 번호
+//    @Column(nullable = false, unique = true)
+//    private String orderId; // 우리가 생성한 주문 번호
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_id")
+    private Order order;
 
-    private PaymentMethod method; // 결제 수단
+    private PaymentMethod paymentMethod; // 결제 수단
 
     private String name; // 결제 이름
 
     @Column(nullable = false)
-    private BigDecimal amount; // 결제 금액
+    private Integer price; // 결제 금액
 
     @Builder.Default
     @Column(nullable = false)
@@ -54,5 +58,5 @@ public class Payment {
     @Builder.Default
     private BigDecimal cancelledAmount = BigDecimal.ZERO; // 취소된 금액
 
-    private LocalDateTime cancelledAt; // 결제 취소 일시
+    private LocalDateTime cancelAt; // 결제 취소 일시
 }
