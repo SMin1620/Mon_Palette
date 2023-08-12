@@ -170,8 +170,10 @@ function ItemDetailTop() {
                     ))
                 }
             </div>
-                
+            <div className={styles.top_btn}>  
             <TopButton />
+            </div>
+
         </div>
     )
 

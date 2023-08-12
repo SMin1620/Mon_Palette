@@ -194,3 +194,12 @@
     color: #e84c8b;
     border: none;
 }
+
+.p {
+    background-color: #FCE7F1;
+    border-radius: 200px;
+    margin-right: 1rem;
+    white-space: nowrap;
+    padding: 0 1rem;
+    font-weight: 500;
+}

@@ -19,20 +19,20 @@ function TopButton() {
 
         return () => {
             window.removeEventListener("scroll", handleScroll);
-        }
+        };
     }, []);
-}
 
-// 버튼 클릭 시 스크롤을 맨 위로 올려주는 함수
-const gotoTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    // 버튼 클릭 시 스크롤을 맨 위로 올려주는 함수
+    const gotoTop = () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    };
 
     // 토글 여부 state에 따라 버튼을 보여주거나 감추게 만듦
     return toggleBtn ? (
         <div onClick={gotoTop}>
             <UpCircleOutlined />
         </div>
-        ) : null;
+    ) : null;
 }
 
 export default TopButton;

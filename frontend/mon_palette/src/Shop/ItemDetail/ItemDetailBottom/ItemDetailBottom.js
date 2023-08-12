@@ -1,6 +1,20 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import styles from "./ItemDetailBottom.module.css"
 
 function ItemDetailBottom () {
+
+    const [isModalOpen, setIsModalOpen] = useState(false); 
+
+    const openModal = () => {
+         setIsModalOpen(true);
+    }
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+    }
+
+    console.log(isModalOpen);
+
 
     const ItemDetailData = {
         "thumbnail": "https://pbs.twimg.com/media/EZLMS90VcAUXk-z.jpg:large",
@@ -73,6 +87,25 @@ function ItemDetailBottom () {
 
     return (
         <div>
+            <div className={styles.btn_container}>
+                <button onClick={openModal} className={styles.btn}>Buy</button>
+            </div>
+
+            {/* 모달창 */}
+            {
+                isModalOpen && (
+                <div className={styles.modal}>
+                    <div>
+                        <select>
+                            { ItemDetailData.itemOptionDtoList.map((option, index) => (
+                                <option key={index}>{option.optionName}</option>
+                            ))}
+                        </select>
+                    </div>
+                </div>
+
+            )}
+           
             
         </div>
     )

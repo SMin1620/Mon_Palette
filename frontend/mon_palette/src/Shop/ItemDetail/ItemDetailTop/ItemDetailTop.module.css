@@ -45,6 +45,8 @@
 .item_container {
     /* display: flex; */
     align-items: center; 
+    position: relative;
+    overflow: hidden;
 }
 
 .price_wrap {
@@ -93,4 +95,12 @@
     margin-left: 1rem;
     font-weight: 500;
     margin-bottom: 1rem;
+}
+
+.top_btn {
+    position: fixed;
+    bottom: 5rem;
+    right: 30px;
+    z-index: 1;
+    font-size: 25px;
 }
