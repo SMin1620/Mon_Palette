@@ -6,7 +6,6 @@ import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter as Router } from "react-router-dom";
 import { RecoilRoot } from "recoil";
 import { PropagateLoader }  from 'react-spinners';
-import "./LoadingPage.css"
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 const App = lazy(() => import("./App"))
