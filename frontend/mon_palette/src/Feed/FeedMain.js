@@ -123,6 +123,12 @@ function FeedMain() {
           </div>
         </div>
       </div>
+      <div>
+        <button 
+          className="challengeHome_create"
+          onClick={() => navigate("/feed/write")}
+        >+</button>
+      </div>
 
       {/* 이부분이 보이면 ref로 무한 스크롤 구현 */}
       {

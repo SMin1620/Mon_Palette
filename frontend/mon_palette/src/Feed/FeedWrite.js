@@ -191,7 +191,7 @@ const FeedWrite = () => {
       {/* feed 이미지 부분 */}
       <div className="feed_write_top_image">
         <div className="feed_write_top_image_upload">
-          <label for="fileUpload" className="feed_write_top_image_label">Up load</label>
+          <label for="fileUpload" className="feed_write_top_image_label">Select Image</label>
           <input 
             className="feed_write_top_image_input"
             accept="image/*"

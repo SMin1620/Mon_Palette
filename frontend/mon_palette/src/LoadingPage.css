@@ -1,0 +1,7 @@
+.loading_page {
+  position: fixed;
+  top: 45%;
+  left: 0;
+  right: 0;
+  text-align: center;
+}
