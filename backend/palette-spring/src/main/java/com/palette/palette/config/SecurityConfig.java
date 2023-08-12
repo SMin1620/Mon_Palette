@@ -72,6 +72,7 @@ public class SecurityConfig {
                         .requestMatchers(mvcMatcherBuilder.pattern( "/swagger-resources/**")).permitAll()
                         .requestMatchers(mvcMatcherBuilder.pattern( "/v3/api-docs/**")).permitAll()
                                 .requestMatchers(mvcMatcherBuilder.pattern("/api/color/makeup/send/django")).permitAll()
+                                .requestMatchers(mvcMatcherBuilder.pattern("/media/index.html")).permitAll()
                         .anyRequest().authenticated()
 //                        .anyRequest().permitAll()
                 )   // 다음 리퀘스트에 대한 사용권한 체크
