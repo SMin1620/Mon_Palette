@@ -54,9 +54,7 @@ public class OrderController {
                 throw new UserPrincipalNotFoundException("유효한 사용자가 아닙니다.");
             }
 
-            orderService.orderCreate(orderCreateReqDto, user);
-
-            return BaseResponse.success(true);
+            return BaseResponse.success(orderService.orderCreate(orderCreateReqDto, user));
         } catch (Exception e) {
             e.printStackTrace();
             return BaseResponse.error("주문 생성 실패");
