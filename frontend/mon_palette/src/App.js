@@ -24,7 +24,7 @@ import MakeUpStart from "./AIMakeUp/MakeUpStart";
 import StartPage from "./PersonalColor/StartPage";
 import ChallengeDetail from "./Challenge/ChallengeDetail"
 import ChallengeEdit from './Challenge/ChallengeEdit';
-import ItemDetail from "./Shop/ItemDetail";
+import ItemDetail from "./Shop/ItemDetail/ItemDetail";
 
 import { Routes, Route } from "react-router-dom";
 function App() {
