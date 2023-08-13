@@ -1,25 +1,41 @@
 spring:
   jpa:
+    ######## mariadb 전용
+    #    database: mysql   # 추가 해준 부분
+    #    database-platform: org.hibernate.dialect.MySQLDialect
+    ########
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     properties:
       hibernate:
         format_sql: true
         show_sql: true
+        dialect: org.hibernate.dialect.MySQL8Dialect
   datasource:
-    url: jdbc:h2:tcp://localhost/~/test
-    username: sa
-    password:
-    driver-class-name: org.h2.Driver
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
+    ############ mysql database
+    url: jdbc:mysql://mysql:3306/palette?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul
+    username: root
+    password: 1234
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    ##########################
+
+    ######### h2 database
+  #    url: jdbc:h2:tcp://localhost/~/test
+  #    username: sa
+  #    password:
+  #    driver-class-name: org.h2.Driver
+  #    h2:
+  #      console:
+  #        enabled: true
+  #        path: /h2-console
+  ##########################
+
 
 
   security:
     user:
       password: 1234
+
 
   data:
     redis:
@@ -28,9 +44,9 @@ spring:
           max-active: 10
           max-idle: 10
           min-idle: 2
+
       port: 6379
-      host: 127.0.0.1
-      password: 1234
+      host: redis
 
   servlet:
     multipart:
@@ -70,6 +86,7 @@ jwt:
     token-validity-in-seconds: 86400 # ttl (초)
     access-token-expiration-sec: 1800
     refresh-token-expiration-sec: 1209600
+
 
   oauth2:
     google:
