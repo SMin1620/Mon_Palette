@@ -267,7 +267,7 @@ function App() {
 						element={[
 							<NavigationBarHeader title="Edit address" />,
 							<DeliveryList />,
-							<NavigationBarBottom />
+							// <NavigationBarBottom />
 						]}
 					/>
 					<Route
