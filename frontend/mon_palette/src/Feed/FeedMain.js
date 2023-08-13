@@ -24,7 +24,6 @@ function FeedMain() {
   useEffect(() => {
     getFeed(); // axios 요청 보내기
     const observer = new IntersectionObserver(handleObs, { threshold: 0.5 }); // 페이지 최초 렌더링시 옵저버 생성
-
     if (obsRef.current) observer.observe(obsRef.current);
     return () => { observer.disconnect(); }; // 페이지 언마운트시 옵저버 해제
   }, []);
@@ -82,23 +81,18 @@ function FeedMain() {
     }
   }
 
-  console.log(feedPage)
-
   return (
     feedInfo&&<div className="feedMain">
       {/* 해시태그 부분 */}
       <div className="feed_tags_container">
         <div className="feed_tags">
           {tagInfo.map((tag, index) => {
-            const keyWordLength = tag.keyword.length
-            const tagItemWidth = keyWordLength * 1.3
             return (
               <div 
                 className="feed_tag_item" 
                 onClick={() => {handleTags(tag)}} 
                 key={index} 
-                style={{ width: `${tagItemWidth}rem`}}
-              ># {tag.keyword}
+              ><p># {tag.keyword}</p>
               </div>
             );
           })}

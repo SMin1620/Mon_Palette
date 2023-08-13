@@ -25,5 +25,135 @@
 
 .modal {
     width: 100%;
-    height: 100px;
+    height: 70%;
+    background-color: white;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 5;
+    transition: bottom 1.3s ease-in;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.modal_top {
+    z-index: 5;
+    width: 100%;
+    height: 75%;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+}
+
+.close_modal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 15px;
+    cursor: pointer;
+}
+
+.close_modal svg {
+    font-size: 25px;
+    color: #e84c8b;
+}
+
+.select_box {
+    margin-top: 25px;
+    width: 90%;
+    justify-items: center;
+}
+
+.modal_background {
+    width: 100%;
+    height: 100%;
+    z-index: 3;
+    position: fixed;
+    background-color: rgba(204, 204, 204, 0.5);
+    top: 0;
+    left: 0;
+
+}
+
+.selected {
+    width: 100%;
+    height: 60%;
+    /* border: 1px solid black; */
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+}
+
+.button_container {
+    display: flex;
+    margin-top: auto;
+    margin-bottom: 1rem;
+    justify-content: space-between;
+}
+
+.modal_btn {
+    margin-right: 1rem;
+    margin-left: 1rem;
+    background-color: #e84c8b;
+    font-size: 18px;
+    font-weight: 600;
+    color: white;
+    border-radius: 5px;
+    border: none;
+    width: 150px;
+    height: 35px;
+}
+
+.selected_option {
+    margin-left: 1rem;
+    /* display: flex; */
+    /* border: 1px solid #e84c8b; */
+    border-radius: 5px;
+    width: 90%;
+    height: 4rem;
+    margin-bottom: 1rem;
+    background-color: #fce7f1;
+    text-align: center;
+    justify-content: center;
+    padding-top: 1rem;
+
+}
+
+.clear {
+    color: #949494;
+    margin-left: auto;
+    margin-right: 10px;
+}
+
+.name {
+    margin-left: 1rem;
+    margin-right: 1rem;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.stock {
+    font-size: 13px;
+    margin-left: 1rem;
+}
+
+.cnt {
+    display: flex;
+    margin-left: 1rem;
+    color: #e84c8b;
+    margin-top: 0.3rem;
+}
+
+.info {
+    display: flex;
+}
+
+.minus {
+    margin-right: 0.5rem;
+}
+
+.plus {
+    margin-left: 0.5rem;
 }

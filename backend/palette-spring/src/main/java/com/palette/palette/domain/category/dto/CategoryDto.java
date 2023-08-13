@@ -22,13 +22,16 @@ public class CategoryDto {
     @Schema(description = "카테고리 이름", example = "화장품")
     private String name;
 
+    @Schema(description = "카테고리 사진", example = "화장품.jpg")
+    private String categoryPhoto;
+
     @Schema(description = "하위 카테고리", example = "리스트")
     private List<CategoryDto> children;
 
     public static List<CategoryDto> toDtoList(List<Category> categories){
         CategoryHelper helper = CategoryHelper.newInstance(
                 categories,
-                c -> new CategoryDto(c.getId(), c.getName(), new ArrayList<>()),
+                c -> new CategoryDto(c.getId(), c.getName(), c.getCategoryPhoto(),new ArrayList<>()),
                 c -> c.getParent(),
                 c -> c.getId(),
                 d -> d.getChildren());

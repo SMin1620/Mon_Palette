@@ -1,39 +1,60 @@
 import NavigationBarHeader from "./NavigationBar/NavigationBarHeader";
 import NavigationBarBottom from "./NavigationBar/NavigationBarBottom";
-import FeedMain from "./Feed/FeedMain";
-import SearchResult from "./SearchResult/SearchResult";
 import Home from "./Home/Home";
-import Search2 from "./Search/Search2";
+// 피드
+import FeedMain from "./Feed/FeedMain";
+import FeedWrite from "./Feed/FeedWrite";
+import FeedEdit from "./Feed/FeedEdit";
+import FeedDetail from "./Feed/FeedDetail/FeedDetail";
+// 챌린지
+import ChallengeHome from "./Challenge/ChallengeHome";
+import ChallengeCreate from "./Challenge/ChallengeCreate";
+import ChallengeDetail from "./Challenge/ChallengeDetail";
+import ChallengeEdit from "./Challenge/ChallengeEdit";
+// 유저
+import UserPage from "./user/components/UserPage";
 import LoginForm from "./user/components/LoginForm";
-import SignUp from "./user/components/SignUp";
 import SignUpForm from "./user/components/SignUpForm";
 import ChangeNickname from "./user/components/ChangeNickname";
 import ChangePassword from "./user/components/ChangePassword";
 import ChangeAddress from "./user/components/ChangeAddress";
 import ChangePhone from "./user/components/ChangePhone";
 import ChangeInfo from "./user/components/ChangeInfo";
-import UserPage from "./user/components/UserPage";
 import FollowingList from "./user/components/FollowingList";
 import FollowerList from "./user/components/FollowerList";
-import FeedWrite from "./Feed/FeedWrite";
-import FeedEdit from "./Feed/FeedEdit";
-import ChallengeHome from "./Challenge/ChallengeHome";
-import FeedDetail from "./Feed/FeedDetail/FeedDetail";
-import ChallengeCreate from "./Challenge/ChallengeCreate";
+// 서치
+import SearchResult from "./SearchResult/SearchResult";
+import Search2 from "./Search/Search2";
+// 퍼스널컬러 / 메이크업
 import MakeUpStart from "./AIMakeUp/MakeUpStart";
 import StartPage from "./PersonalColor/StartPage";
-import ChallengeDetail from "./Challenge/ChallengeDetail"
-import ChallengeEdit from './Challenge/ChallengeEdit';
-import ItemDetail from "./Shop/ItemDetail/ItemDetail";
+import MakeUpResult from "./AIMakeUp/MakeUpResult";
+// 쇼핑몰
+import ShopMain from "./Shop/ShopMain/ShopMain";
+import ShoppingCart from "./Shop/ShoppingCart/ShoppingCart";
+import ItemRegist from "./Shop/ItemRegist";
+import HandleProduct from "./Shop/HandleProduct";
+import DeliveryRegist from "./Shop/delivery/DeliveryRegist";
+import DeliveryList from "./DeliveryList";
+import Payment from "./Shop/Payment";
+import PaymentFailed from "./Shop/PaymentFailed";
+import PaymentSucceed from "./Shop/PaymentSucceed";
+
 
 import { Routes, Route } from "react-router-dom";
+import ItemDetailTop from "./Shop/ItemDetail/ItemDetailTop/ItemDetailTop";
+import ItemDetailBottom from "./Shop/ItemDetail/ItemDetailBottom/ItemDetailBottom";
+
 function App() {
 	return (
 		<div className="App">
 			<Routes>
 				<Route
 					path="/"
-					element={[<NavigationBarHeader title="login" />, <LoginForm />]}
+					element={[
+						<NavigationBarHeader title="login" />, 
+						<LoginForm />
+					]}
 				/>
 				<Route
 					path="/home"
@@ -43,7 +64,6 @@ function App() {
 						<NavigationBarBottom />,
 					]}
 				/>
-
 				<Route
 					path="/feed/"
 					element={[
@@ -52,24 +72,71 @@ function App() {
 						<FeedMain />,
 					]}
 				/>
-				{/* path={`/search/${검색결과 변수이름}`} */}
-				{/* 네비 헤더 부분 빠지고 검색창의 top 부분 들어가야함 */}
 				<Route
-					path="/search/"
-					element={[<NavigationBarBottom />, <Search2 />]}
-				/>
-
-				<Route
-					path="/result"
-					element={[<NavigationBarBottom />, <SearchResult />]}
+					path="/feed/write"
+					element={[
+						<NavigationBarBottom />, 
+						<FeedWrite />
+					]}
 				/>
 				<Route
-					path="/signup"
-					element={[<NavigationBarHeader title="Sign up" />, <SignUp />]}
+					path="/feed/edit/:id"
+					element={[
+						<NavigationBarBottom />,
+						<FeedEdit />
+					]}
+				/>
+				<Route
+					path="/feed/:feedId"
+					element={[
+						<NavigationBarHeader title="Mon, Palette" />,
+						<FeedDetail />,
+						<NavigationBarBottom />
+					]}
+				/>
+				<Route
+					path="/challenge"
+					element={[
+						<NavigationBarHeader title="Mon, Palette" />,
+						<NavigationBarBottom />,
+						<ChallengeHome />,
+					]}
+				/>
+				<Route
+					path="/challenge/create"
+					element={[
+						<NavigationBarBottom />,
+						<ChallengeCreate />
+					]}
+				/>
+				<Route
+					path="/challenge/edit/:id"
+					element={[
+						<NavigationBarBottom />,
+						<ChallengeEdit />
+					]}
+				/>
+				<Route
+					path="/challenge/:challengeId"
+					element={[
+						<ChallengeDetail />,
+						<NavigationBarBottom />,
+					]}
+				/>
+				<Route
+					path="/userpage/:id"
+					element={[
+						<NavigationBarHeader title="Mon, Palette" />,
+						<NavigationBarBottom />,
+						<UserPage />,
+					]}
 				/>
 				<Route
 					path="signupform"
-					element={[<NavigationBarHeader title="Sign up" />, <SignUpForm />]}
+					element={[
+						<NavigationBarHeader title="Sign up" />, 
+						<SignUpForm />
+					]}
 				/>
 				<Route
 					path="/changenickname"
@@ -104,22 +171,13 @@ function App() {
 					]}
 				/>
 				<Route
-					path="/changeinfo"
+					path="/changeinfo/:oauth"
 					element={[
 						<NavigationBarHeader title="Edit profile" />,
 						<NavigationBarBottom />,
 						<ChangeInfo />,
 					]}
 				/>
-				<Route
-					path="/userpage/:id"
-					element={[
-						<NavigationBarHeader title="Mon, Palette" />,
-						<NavigationBarBottom />,
-						<UserPage />,
-					]}
-				/>
-
 				<Route
 					path="/userpage/following/:id"
 					element={[
@@ -128,7 +186,6 @@ function App() {
 						<FollowingList />,
 					]}
 				/>
-
 				<Route
 					path="/userpage/follower/:id"
 					element={[
@@ -138,69 +195,114 @@ function App() {
 					]}
 				/>
 				<Route
-					path="/feed/write"
-					element={[<NavigationBarBottom />, <FeedWrite />]}
-				/>
-				<Route
-					path="/challenge"
+					path="/search/"
 					element={[
-						<NavigationBarHeader title="Mon, Palette" />,
-						<NavigationBarBottom />,
-						<ChallengeHome />,
+						<NavigationBarBottom />, 
+						<Search2 />
 					]}
 				/>
 				<Route
-					path="/feed/edit/:id"
-					element={[<NavigationBarBottom />, <FeedEdit />]}
-				/>
-
-				
-				<Route
-					path="/feed/:feedId"
+					path="/result"
 					element={[
-						<NavigationBarHeader title="Mon, Palette" />,
-						<FeedDetail />,
-						<NavigationBarBottom />
+						<NavigationBarBottom />, 
+						<SearchResult />
 					]}
 				/>
-
-				<Route
-					path="/challenge/create"
+				<Route 
+					path="/AImakeup" 
 					element={[
-						<NavigationBarBottom />,
-						<ChallengeCreate />
-					]}
-				/>
-				<Route path="/AImakeup" element={[<MakeUpStart />]} />
-
+						<MakeUpStart />
+					]} />
 				<Route
 					path="/personalcolor"
 					element={[
 						<StartPage />
 					]}
 				/>
-
-				<Route
-					path="/challenge/:challengeId"
+				<Route 
+					path="/makeupresult" 
 					element={[
-						<ChallengeDetail />,
+						<MakeUpResult />
+						]}
+				/>
+				<Route
+					path="/shop"
+					element={[
+						<NavigationBarHeader title="Mon, Palette" item="shop"/>,
+						<ShopMain />,
+						<NavigationBarBottom />
+					]}
+				/>
+				<Route
+					path="/cart"
+					element={[
+						<NavigationBarHeader title="Mon, Palette" item="shop"/>,
+						<ShoppingCart />,
+						<NavigationBarBottom />
+					]}
+				/>
+				<Route
+					path="/itemregist"
+					element={[
+						<NavigationBarHeader title="Mon, Palette" />,
+						<NavigationBarBottom />,
+						<ItemRegist />,
+					]}
+				/>
+				<Route
+					path="/handleProduct"
+					element={[
+						<NavigationBarHeader title="" />,
+						<NavigationBarBottom />,
+						<HandleProduct />,
+					]}
+				/>
+				<Route
+					path="/deliveryregist"
+					element={[
+						<NavigationBarHeader title="" />,
+						<NavigationBarBottom />,
+						<DeliveryRegist />,
+					]}
+				/>
+				<Route
+					path="/deliveryList"
+					element={[
+						<NavigationBarHeader title="Edit address" />,
+						<DeliveryList />,
+						<NavigationBarBottom />
+					]}
+				/>
+				<Route
+					path="/payment"
+					element={[
+						<Payment />,
+					]}
+				/>
+				<Route
+					path="/paymentsucceed"
+					element={[
+						<NavigationBarHeader title="Mon, Palette" />,
+						<NavigationBarBottom />,
+						<PaymentSucceed />,
+					]}
+				/>
+				<Route
+					path="/paymentfailed"
+					element={[
+						<NavigationBarHeader title="Mon, Palette" />,
+						<PaymentFailed />,
 						<NavigationBarBottom />,
 					]}
 				/>
-
-				<Route
-					path="/challenge/edit/:id"
-					element={[<NavigationBarBottom />, <ChallengeEdit />]}
-				/>
-
 				<Route
 					path="/shop/shopdetail"
 					element={[
 						<NavigationBarHeader title="Mon, Palette" />,
-						<ItemDetail />,
-					]}
+						<ItemDetailTop />,
+						<ItemDetailBottom />,
+					]}				
 				/>
-		
 			</Routes>
 		</div>
 	);

@@ -45,14 +45,18 @@
   border-bottom: 1px solid black;
 }
 
-.feed_tag_item {
-  padding: 0;
+.feed_tag_item p {
+  margin: 0;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
   background-color: #FCE7F1;
   border-radius: 200px;
   margin-right: 1rem;
-  padding-left: 1rem;
-  font-weight: bold;
-  width: auto;
+  white-space: nowrap;
+  padding: 0 1rem;
+  font-weight: 500;
 }
 
 .feedMain_body_info_item_top {

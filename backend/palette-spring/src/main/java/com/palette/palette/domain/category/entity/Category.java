@@ -23,18 +23,22 @@ public class Category {
     @Column(nullable = false)
     private String name;
 
+    private String categoryPhoto;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id")
     private Category parent;
 
-    public Category(String name, Category parent){
+    public Category(String name, String categoryPhoto,Category parent){
         this.name = name;
+        this.categoryPhoto = categoryPhoto;
         this.parent = parent;
     }
 
-    public static Category toEntity(String name, Category parent){
+    public static Category toEntity(String name, String categoryPhoto,Category parent){
         return Category.builder()
                 .name(name)
+                .categoryPhoto(categoryPhoto)
                 .parent(parent)
                 .build();
     }

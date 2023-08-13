@@ -8,7 +8,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import AWS from 'aws-sdk'
 import uuid from 'react-uuid'
 import { useRecoilValue } from 'recoil';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import FileUploadOutlinedIcon from '@mui/icons-material/FileUploadOutlined';
 
 const FeedWrite = () => {
@@ -175,7 +175,6 @@ const FeedWrite = () => {
     }
   }
 
-
   return (
     <div className="feed_write">
       <div className="feed_write_top">
@@ -241,7 +240,6 @@ const FeedWrite = () => {
           onKeyUp={handleAddTag}
           id="hashtag_textarea"
         />
-
         <div className="feed_write_bottom_hashtag_area">
           {
             tagList.map((tag, index) => {

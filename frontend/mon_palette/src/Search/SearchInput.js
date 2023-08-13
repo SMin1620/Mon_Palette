@@ -26,6 +26,7 @@ const SearchInput = () => {
   const query = searchParams.get('query') || '';
 
   const handleSearch = (query) => {
+    if (query.length < 2) return;
     // setResults({});
     // setRecentSearches((prevSearches) => [...prevSearches, query]);
     console.log(`${query}로 검색을 수행합니다.`)
@@ -67,6 +68,7 @@ const SearchInput = () => {
 
   const autocomplete = (value) => {
     if (value && inputFocused) {
+      setSuggestions([]);
       axios.get(`${process.env.REACT_APP_API}/api/search/auto?keyword=${value}`, {
         headers: { Authorization: Authorization }
       })
@@ -124,7 +126,7 @@ const SearchInput = () => {
           autocomplete(e.target.value); 
           }
         }
-        onFocus={() => setInputFocused(true)} 
+        onFocus={() => {setInputFocused(true); setSearchParams({ query: '' })}}
         onBlur={() => setInputFocused(false)} 
         placeholder='검색어를 입력하세요'
       />

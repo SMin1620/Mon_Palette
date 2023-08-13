@@ -7,6 +7,8 @@ import com.palette.palette.domain.feed.dto.BaseUserResDto;
 import com.palette.palette.domain.feed.dto.list.FeedResDto;
 import com.palette.palette.domain.feed.entity.Feed;
 import com.palette.palette.domain.feed.repository.FeedRepository;
+import com.palette.palette.domain.item.dto.ItemGetResDto;
+import com.palette.palette.domain.item.repository.ItemRepository;
 import com.palette.palette.domain.search.dto.*;
 import com.palette.palette.domain.user.entity.User;
 import com.palette.palette.domain.user.repository.UserRepository;
@@ -36,6 +38,8 @@ public class SearchService {
     private final ChallengeRepository challengeRepository;
     private final RedisTemplate<String, String> redisTemplate;
     private final UserRepository userRepository;
+    private final ItemRepository itemRepository;
+
 
     /**
      * 검색어 자동완성 변수
@@ -61,6 +65,7 @@ public class SearchService {
         List<BaseUserResDto> users = null;
         List<ChallengeResDto> challenges = null;
         List<FeedResDto> feeds = null;
+        List<ItemGetResDto> items = null;
 
         if (type.equals("user")) {
             users = userRepository.findBySearchOption(pageable, content, orderBy, color).getContent().stream()
@@ -73,9 +78,14 @@ public class SearchService {
                     .map(ChallengeResDto::toDto)
                     .collect(Collectors.toList());
         }
-        else {
+        else if (type.equals("feed")) {
             feeds = feedRepository.findBySearchOption(pageable, content, orderBy, color).getContent().stream()
                     .map(FeedResDto::toDto)
+                    .collect(Collectors.toList());
+        }
+        else {
+            items = itemRepository.findBySearchOption(pageable, content, orderBy, color).getContent().stream()
+                    .map(ItemGetResDto::toDto)
                     .collect(Collectors.toList());
         }
 
@@ -84,7 +94,7 @@ public class SearchService {
 
 
 
-        return new SearchFeedChallengeUserDto(users, feeds, challenges);
+        return new SearchFeedChallengeUserDto(users, feeds, challenges, items);
     }
 
 

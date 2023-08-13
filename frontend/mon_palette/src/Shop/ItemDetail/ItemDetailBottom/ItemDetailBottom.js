@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from "react";
 import styles from "./ItemDetailBottom.module.css"
+import { HighlightOff as HighlightOffIcon, Clear as ClearIcon } from '@mui/icons-material';
+import { MinusCircleOutlined, PlusCircleOutlined } from "@ant-design/icons";
+import Select from 'react-select'
 
 function ItemDetailBottom () {
 
     const [isModalOpen, setIsModalOpen] = useState(false); 
+    const [selectedOption, setSelectedOption] = useState(null);
+    const [selectedOptionList, setSelectedOptionList] = useState([]);
 
     const openModal = () => {
          setIsModalOpen(true);
@@ -13,7 +18,6 @@ function ItemDetailBottom () {
         setIsModalOpen(false);
     }
 
-    console.log(isModalOpen);
 
 
     const ItemDetailData = {
@@ -33,12 +37,17 @@ function ItemDetailBottom () {
                 "id": 1604,
                 "optionName": "레드",
                 "stock": 100
-              },
-              {
+            },
+            {
                 "id": 1605,
                 "optionName": "오렌지",
                 "stock": 100
-              }
+            },
+            {
+                "id": 1606,
+                "optionName": "핑크",
+                "stock": 100
+            }
         ],
         "itemPhotoDtoList": [
             {
@@ -85,6 +94,60 @@ function ItemDetailBottom () {
         },
     }
 
+    const options = ItemDetailData.itemOptionDtoList.map((option) => ({
+        value: option.id,
+        label: option.optionName,
+        stock: option.stock,
+        count: 1
+    }));
+
+    const price = ItemDetailData.price
+
+    const handleSelectChange = (selectedValue) => {
+        // Check if the selected option is already in the list
+        const existingOptionIndex = selectedOptionList.findIndex(
+          (option) => option.value === selectedValue.value
+        );
+      
+        if (existingOptionIndex !== -1) {
+          // Option already exists in the list, increment its count
+          handleIncrement(existingOptionIndex);
+        } else {
+          // Option is not in the list, add it with count 1
+          setSelectedOptionList((prevSelected) => [...prevSelected, selectedValue]);
+        }
+      };
+
+    const handleClearClick = (index) => {
+        setSelectedOptionList((prevSelected) => {
+            const newSelected = [...prevSelected];
+            newSelected.splice(index, 1);
+            return newSelected;
+        })
+    }
+
+    const handleIncrement = (index) => {
+        setSelectedOptionList((prevSelected) => {
+          const newSelected = [...prevSelected];
+          newSelected[index].count += 1;
+          return newSelected;
+        });
+      };
+
+      const handleDecrement = (index) => {
+        setSelectedOptionList((prevSelected) => {
+          const newSelected = [...prevSelected];
+          if (newSelected[index].count > 0) {
+            newSelected[index].count -= 1;
+            if (newSelected[index].count === 0) {
+              handleClearClick(index); // If count reaches 0, remove the option
+            }
+          }
+          return newSelected;
+        });
+      };
+
+
     return (
         <div>
             <div className={styles.btn_container}>
@@ -94,19 +157,93 @@ function ItemDetailBottom () {
             {/* 모달창 */}
             {
                 isModalOpen && (
-                <div className={styles.modal}>
-                    <div>
-                        <select>
-                            { ItemDetailData.itemOptionDtoList.map((option, index) => (
-                                <option key={index}>{option.optionName}</option>
-                            ))}
-                        </select>
+                <div className={styles.modal_background}>
+                    <div className={styles.modal_top}>
+                        <div className={styles.close_modal} onClick={closeModal}>
+                            <HighlightOffIcon />
+                        </div>
+                        <div className={styles.modal}>
+                            <div>
+
+                            </div>
+                            <div className={styles.select_box}>
+                                <Select 
+                                options={options}
+                                // value={selectedOption}
+                                onChange={handleSelectChange}
+                                // components={{
+                                //     Option: CustomOption
+                                // }}
+                                styles={{
+                                    control: (baseStyles, state) => ({
+                                      ...baseStyles,
+                                      borderColor: state.isFocused ? 'pink' : 'pink',
+                                      boxShadow: state.isFocused ? '0 0 0 2px hotpink' : 'hotpink', // Add boxShadow for focus
+                                      '&:hover': {
+                                        borderColor: 'pink', // Add hover style
+                                      },
+                                    }),
+                                    option: (baseStyles, state) => ({
+                                      ...baseStyles,
+                                      '&:hover': {
+                                        backgroundColor: 'pink', // Add background color for hover
+                                      },
+                                    }),
+                                  }}
+                                theme={(theme) => ({
+                                    ...theme,
+                                    borderRadius: 5,
+                                    colors: {
+                                        ...theme.colors,
+                                        primary25: 'neutral30',
+                                        primary: 'hotpink',
+                                    }
+                                })}
+                                />
+                            </div>
+                            <div className={styles.selected}>
+                                {
+                                    selectedOptionList && (
+                                        selectedOptionList.map((option, index) => (
+                                            <div key={index} className={styles.selected_option}>
+                                                <div className={styles.info}>
+                                                    <span className={styles.name}>{option.label} </span>
+                                                    
+                                                    <span  className={styles.clear} onClick={() => handleClearClick(index)}><ClearIcon/></span>
+                                                </div>
+                                                <div className={styles.cnt}>
+                                                <div className={styles.minus} onClick={() => handleDecrement(index)}>
+                                                    <MinusCircleOutlined />
+                                                </div>
+                                                <div>
+                                                    {option.count}
+                                                </div>
+                                                <div className={styles.plus} onClick={() => handleIncrement(index)}>
+                                                    <PlusCircleOutlined />
+                                                </div>
+                                                <span className={styles.stock}>(재고: {option.stock})</span>
+                                            </div>
+                                            </div>
+                                        ))
+                                    )
+                                }
+                            </div>
+                            <div className={styles.button_container}>
+                                <div>
+                                    <button 
+                                    className={styles.modal_btn} 
+                                    type="button">Add to Cart</button>
+                                </div>
+                                <div>
+                                    <button 
+                                    className={styles.modal_btn}
+                                    type="button">Buy</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-
-            )}
-           
-            
+            )}    
         </div>
     )
 
