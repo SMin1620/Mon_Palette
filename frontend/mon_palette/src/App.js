@@ -41,6 +41,7 @@ import PaymentFailed from "./Shop/PaymentFailed";
 import PaymentSucceed from "./Shop/PaymentSucceed";
 
 import { Routes, Route } from "react-router-dom";
+import OrderList from './OrderList';
 
 function App() {
 	return (
@@ -268,6 +269,14 @@ function App() {
 							<NavigationBarHeader title="Edit address" />,
 							<DeliveryList />,
 							// <NavigationBarBottom />
+						]}
+					/>
+					<Route
+						path="/orderList"
+						element={[
+							<NavigationBarHeader title="Mon, Palette" />,
+							<OrderList />,
+							<NavigationBarBottom />
 						]}
 					/>
 					<Route
