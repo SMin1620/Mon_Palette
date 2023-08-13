@@ -98,20 +98,14 @@ public class PaymentService {
                     payment.setStatus(status);
                     paymentRepository.save(payment);
 
-//                    if (status.equals(PaymentStatus.READY)) {
-//                        if (method.equals(PaymentMethod.VBANK)) {
-//                            throw new PaymentRequiredException(paymentData.getVbankNum() + " " + paymentData.getVbankDate() + " " + paymentData.getVbankName());
-//                        } else {
-//                            throw new PaymentRequiredException("Payment was not completed.");
-//                        }
-//                    } else if (status.equals(PaymentStatus.PAID)) {
-//                        payment.setPaidAt(paymentData.getPaidAt().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
-//                        paymentRepository.save(payment);
-//                    } else if (status.equals(PaymentStatus.FAILED)) {
-//                        throw new ForbiddenException("Payment failed.");
-//                    } else if (status.equals(PaymentStatus.CANCELLED)) {
-//                        throw new ForbiddenException("This is a cancelled payment.");
-//                    }
+                    if (status.equals(PaymentStatus.PAID)) {
+                        payment.setPaidAt(paymentData.getPaidAt().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
+                        paymentRepository.save(payment);
+                    } else if (status.equals(PaymentStatus.FAILED)) {
+                        throw new InternalException("Payment failed.");
+                    } else if (status.equals(PaymentStatus.CANCELLED)) {
+                        throw new InternalException("This is a cancelled payment.");
+                    }
                 }
                 else {
                     throw new IllegalArgumentException("The amount paid and the amount to be paid do not match.");
