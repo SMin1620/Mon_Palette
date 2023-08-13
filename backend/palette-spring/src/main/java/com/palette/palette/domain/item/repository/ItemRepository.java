@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-public interface ItemRepository extends JpaRepository<Item, Long> {
+public interface ItemRepository extends JpaRepository<Item, Long>, ItemCustomRepository {
 
     @Query("select i from Item i where i.isDelete = false and i.endAt > NOW() order by i.endAt ASC")
     Page<Item> findAllOrderByEndAtAsc(Pageable pageable);

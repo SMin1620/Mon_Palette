@@ -4,6 +4,7 @@ import { useRecoilValue } from 'recoil';
 import { loginState } from './../user/components/Atom/loginState';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { PropagateLoader }  from 'react-spinners';
 
 function ChallengeHome() {
 
@@ -12,8 +13,11 @@ function ChallengeHome() {
   const [followChallenge, setFollowChallenge] = useState([])
   const [popularChallenge, setPopularChallenge] = useState([])
   const [challengePage, setChallengePage] = useState(0)
+  const [load, setLoad] = useState(true)
+
   
   // 무한스크롤 구현
+  const preventRef = useRef(true)
   const obsRef = useRef(null);
   const endRef = useRef(false);
 
@@ -50,7 +54,14 @@ function ChallengeHome() {
         headers: {Authorization: token}
       })
       .then((response) => {
-        setChallengeList((prevChallenge) =>[...prevChallenge, ...response.data.data])
+        if (response.data.data.length !== 10) {
+          endRef.current = true
+          setLoad(false)
+          setChallengeList((prevChallenge) =>[...prevChallenge, ...response.data.data])
+        } else {
+          setChallengeList((prevChallenge) =>[...prevChallenge, ...response.data.data])
+          preventRef.current = true
+        }
       })
     } catch (error) {
       console.error(error)
@@ -151,10 +162,17 @@ function ChallengeHome() {
       </div>
       
       {/* 이부분이 보이면 ref로 무한 스크롤 구현 */}
-      <div className="" ref={obsRef}>
-        옵저버
-      </div>
-
+      {
+        load ? 
+        <div className="observer_spinner" ref={obsRef}>
+          <PropagateLoader color='#fdf2f7'/>
+        </div>
+        :
+        <div
+          className="observer_last_data"
+          ref={obsRef}
+        >Last Page</div>
+      }
     </div>
   );
 }

@@ -1,0 +1,98 @@
+html {
+	font-size: 16px; /* 루트 요소(HTML)의 기본 폰트 크기를 설정합니다. */
+}
+.deliveryregist_container {
+	margin: 50% auto;
+	width: 80%;
+}
+.deliveryregist_form_group {
+	margin-bottom: 0.9375rem; /* 15px를 rem 단위로 변환 (15 / 16 = 0.9375) */
+	/* 요소들을 가로 방향으로 가운데 정렬합니다. */
+	justify-content: space-between;
+}
+.deliveryregist_label {
+	display: block;
+	font-weight: bold;
+	text-align: left;
+}
+
+.deliveryregist_input {
+	width: 100%;
+	padding-top: 0.625rem; /* 10px를 rem 단위로 변환 (10 / 16 = 0.625) */
+	padding-bottom: 0.625rem; /* 10px를 rem 단위로 변환 (10 / 16 = 0.625) */
+	border: none;
+	border-radius: 0;
+	font-size: 1rem; /* 16px를 rem 단위로 변환 (16 / 16 = 1) */
+	border-bottom: 0.125rem solid #dddddd; /* 2px를 rem 단위로 변환 (2 / 16 = 0.125) */
+}
+
+.deliveryregist_input:focus {
+	outline: none;
+	border-bottom: 0.125rem solid #e84c8b;
+}
+.deliveryregist_input_button {
+	display: flex;
+}
+.deliveryregist_select {
+	width: 100%;
+	border: 1px solid #c4c4c4;
+	box-sizing: border-box;
+	border-radius: 10px;
+	padding: 5px 15px;
+	font-size: 14px;
+	line-height: 16px;
+}
+.deliveryregist_buttoncontainer button {
+	width: 100%;
+	padding: 1.25rem 2.5rem; /* 20px, 40px를 rem 단위로 변환 (20 / 16 = 1.25, 40 / 16 = 2.5) */
+	background-color: #e84c8b;
+	color: #fff;
+	border: none;
+	border-radius: 0.3125rem; /* 5px를 rem 단위로 변환 (5 / 16 = 0.3125) */
+	font-size: 1rem;
+	cursor: pointer;
+	margin-top: 1rem;
+}
+.deliveryregist_checkbox {
+	margin: 0 0.5rem;
+	margin-top: 1rem;
+	appearance: none;
+	box-sizing: border-box;
+	position: relative;
+	width: 20px;
+	height: 20px;
+	border: 1px solid #999;
+	vertical-align: middle;
+	border-radius: 50%;
+}
+
+.deliveryregist_checkbox::before {
+	content: "\25CF";
+	position: absolute;
+	color: white;
+	overflow: hidden;
+	transform: scale(0) translate(-50%, -50%);
+	line-height: 1;
+	font-size: 25px;
+	top: 40%;
+	left: 49%;
+}
+
+.deliveryregist_checkbox:checked {
+	background-color: #d72b67;
+	border-color: #d72b67;
+	color: white;
+}
+
+.deliveryregist_checkbox:checked::before {
+	border-radius: 50%;
+	transform: scale(1) translate(-50%, -50%);
+}
+.deliveryregist_checkbox_group {
+	display: flex;
+	align-items: center;
+}
+.deliveryregist_checkbox_text {
+	font-size: 0.8rem;
+	margin-top: 1rem;
+}

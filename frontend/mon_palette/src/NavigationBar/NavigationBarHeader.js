@@ -7,34 +7,34 @@ import MenuIcon from '@mui/icons-material/Menu';
 import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined';
 import SearchIcon from '@mui/icons-material/Search';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
+import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 
 function NavigationBarHeader(props) {
+  const navigate = useNavigate()
   const [showPage, setShowPage] = useState(false)
   const handleModal = () => { setShowPage(!showPage) }
-  
-  const navigate = useNavigate()
   const handlePageBack = () => { navigate(-1) }
-
+  
   let PageTitle = props.title
+  console.log(props.item)
   let PageCenter = true
   let PageLeft = true
-  let PageRight = true
 
   if (PageTitle === 'Mon, Palette') {
     PageCenter = true;
     PageLeft = true;
-    PageRight = true;
 
   } else if (PageTitle === 'login') {
     PageCenter = false;
     PageLeft = false;
-    PageRight = false;
   } else {
     PageCenter = false;
     PageLeft = true;
-    PageRight = true;
+  }
+
+  const handleCart = () => {
+    navigate("/cart")
   }
   
 
@@ -59,11 +59,21 @@ function NavigationBarHeader(props) {
                   <SearchIcon sx={{ fontSize: 30 }} />
                 </Link>
               </div>
-    
-              <div className="navigationBar_right_right">
-                <NotificationsNoneOutlinedIcon sx={{ fontSize: 30 }}/>
-              </div>
-            </div>) : (<div className="navigationBar_right_none"></div>)
+              
+              {
+                props.item==="shop" ? 
+                <div className="navigationBar_right_right">
+                  <ShoppingCartOutlinedIcon sx={{fontSize: 30}} onClick={handleCart}/>
+                </div>
+                :
+                <div className="navigationBar_right_right">
+                  <NotificationsNoneOutlinedIcon sx={{ fontSize: 30 }}/>
+                </div>
+              }
+            </div>
+            ) 
+            :
+            (<div className="navigationBar_right_none"></div>)
         }
       </div>
 

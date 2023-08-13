@@ -71,6 +71,10 @@ public class UserService {
             HttpServletResponse response,
             LoginReqDto loginReqDto
     ){
+        Optional<User> userCheck = userRepository.findByEmail(loginReqDto.getEmail());
+        if(!userCheck.isEmpty() && userCheck.get().getIsOauth()){
+            throw new IllegalArgumentException("소셜 로그인 사용자 입니다.");
+        }
         // ================
         try{
             System.out.println("로그인 시작 ");
@@ -309,6 +313,7 @@ public class UserService {
                     .followingCnt(followingCnt)
                     .followerCnt(followerCnt)
                     .feedCnt(feedList.size())
+                    .isOauth(user2.get().getIsOauth())
                     .feed(feedList)
                     .build();
         }else{

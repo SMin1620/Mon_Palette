@@ -1,0 +1,147 @@
+.shoppingCart_main {
+  margin-top: 5.1875rem;
+  margin-bottom: 3rem;
+}
+
+.shoppingCart_main_top {
+  display: flex;
+  padding-bottom: 1rem 0;
+  background-color: #fdf2f6;
+  border-radius: 4px;
+}
+
+.shoppingCart_main_top p {
+  margin: 1rem 0;
+}
+
+.shoppingCart_main_body_wrap {
+  margin-bottom: 11rem;
+}
+
+.shoppingCart_main_body {
+  display: flex;
+  align-items: start;
+  width: 100%;
+  margin: 1rem 0;
+  padding-top: 1rem;
+  background-color: #fdf2f6;
+}
+
+.shoppingCart_main_body_item {
+  display: flex;
+  width: 90%;
+}
+
+.shoppingCart_main_body_left {
+  display: flex;
+}
+
+.shoppingCart_main_body_left img{
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+}
+
+.shoppingCart_main_body_rigth {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin: 0 1rem;
+}
+
+.shoppingCart_main_body_rigth_top {
+  display: flex;
+  justify-content: space-between;
+}
+
+.shoppingCart_main_body_rigth_bottom {
+  display: flex;
+  justify-content: space-between;
+}
+
+.shoppingCart_checkbox {
+  margin: 0 0.5rem;
+  margin-top: 1rem;
+  appearance: none;
+  box-sizing: border-box;
+  position: relative;
+  width: 20px;
+  height: 20px;
+  border: 1px solid #999;
+  vertical-align: middle;
+  border-radius: 50%;
+}
+
+.shoppingCart_checkbox::before {
+  content: "\25CF";
+  position: absolute;
+  color: white;
+  overflow: hidden;
+  transform: scale(0) translate(-50%, -50%);
+  line-height: 1;
+  font-size: 25px;
+  top: 40%;
+  left: 49%;
+  
+}
+
+.shoppingCart_checkbox:checked {
+  background-color: #d72b67;
+  border-color: #d72b67;
+  color: white;
+}
+
+.shoppingCart_checkbox:checked::before {
+  border-radius: 50%;
+  transform: scale(1) translate(-50%, -50%)
+}
+
+.shoppingCart_main_body_remove {
+  background-color: transparent;
+  border: none;
+  font-weight: 600;
+}
+
+.shoppingCart_main_bottom_option {
+  background-color: #d72b67;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  line-height: 1;
+  padding: 0.3rem 1rem;
+}
+
+.shoppingCart_main_bottom_pay {
+  position: fixed;
+  bottom: 0;
+  padding-bottom: 3rem;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: white;
+}
+
+.shoppingCart_main_bottom_pay_title {
+  align-self: start;
+  margin-left: 0.3rem;
+  margin-top: 0.5rem;
+}
+
+.shoppingCart_main_bottom_pay_title > span {
+  color: #999;
+}
+
+.shoppingCart_main_bottom_pay_button {
+  border: none;
+  background-color: #d72b67;
+  color: white;
+  width: 96%;
+  margin: 1rem 0;
+  padding: 1rem;
+  border-radius: 4px;
+}
+
+.shoppingCart_main_bottom_pay_button > span {
+  color: rgba(255, 255, 255, 0.5);
+}

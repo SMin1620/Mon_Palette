@@ -1,12 +1,12 @@
 @font-face {
-	font-family: "KCCChassam";
-	src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302@1.0/KCCChassam.woff2")
-		format("woff2");
+	font-family: "Katuri";
+	src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_13@1.0/Katuri.woff")
+		format("woff");
 	font-weight: normal;
 	font-style: normal;
 }
 * {
-	font-family: "KCCChassam";
+	font-family: "Katuri", sans-serif; /* 모든 요소에 Katuri 폰트 적용 */
 }
 .App {
 	text-align: center;

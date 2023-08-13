@@ -42,4 +42,15 @@ public class ItemOption {
                 .build();
     }
 
+
+    public void addStock(Integer count) {
+        this.stock += count;
+    }
+
+    public void removeStock(Integer count) {
+        int result = this.stock - count;
+        if (result < 0) throw new IllegalArgumentException("재고가 부족합니다.");
+
+        this.stock = result;
+    }
 }

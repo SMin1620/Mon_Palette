@@ -1,0 +1,24 @@
+.shopMain_category_container {
+  display: flex;
+  overflow-x: scroll;
+  padding: 0.5rem 0;
+  padding-left: 0.5rem;
+  background-color: #fdf2f7;
+}
+
+.shopMain_category_container::-webkit-scrollbar {
+  display: none;
+}
+
+.shopMain_category_item_on {
+  background-color: #d72b67;
+  color: white;
+  border-radius: 20px;
+  padding: 0 0.5rem;
+  margin-right: 0.5rem;
+}
+
+.shopMain_category_item_off {
+  padding: 0 0.5rem;
+  margin-right: 0.5rem;
+}
