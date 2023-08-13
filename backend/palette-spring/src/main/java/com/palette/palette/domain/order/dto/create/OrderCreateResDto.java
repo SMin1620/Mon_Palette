@@ -20,11 +20,14 @@ public class OrderCreateResDto {
 
     private PaymentMethod paymentMethod;
 
+    private Long orderId;
+
     public static OrderCreateResDto toDto(Payment payment) {
         return OrderCreateResDto.builder()
                 .name(payment.getName())
                 .totalPrice(payment.getPrice())
                 .paymentMethod(payment.getPaymentMethod())
+                .orderId(payment.getOrder().getId())
                 .build();
     }
 }
