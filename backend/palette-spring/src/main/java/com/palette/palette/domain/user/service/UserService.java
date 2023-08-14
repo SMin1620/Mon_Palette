@@ -1,5 +1,8 @@
 package com.palette.palette.domain.user.service;
 
+import com.palette.palette.domain.challenge.dto.detail.ChallengeDetailResDto;
+import com.palette.palette.domain.challenge.dto.list.ChallengeResDto;
+import com.palette.palette.domain.challenge.repository.ChallengeRepository;
 import com.palette.palette.domain.feed.dto.list.FeedResDto;
 import com.palette.palette.domain.feed.entity.Feed;
 import com.palette.palette.domain.feed.repository.FeedRepository;
@@ -45,6 +48,7 @@ public class UserService {
     private final RedisTemplate<String, String> redisTemplate;
     private final FollowRepository followRepository;
     private final FeedRepository feedRepository;
+    private final ChallengeRepository challengeRepository;
 
     /**
      * 회원 가입 로직
@@ -52,6 +56,11 @@ public class UserService {
 
     @Transactional
     public RegisterResDto signup(RegisterReqDto request){
+
+        Optional<User> user = userRepository.findByEmail(request.getEmail());
+
+        if(!user.isEmpty()) throw new IllegalArgumentException("이미 사용중인 아이디입니다.");
+
         userRepository.save(User.fromEntity(request, passwordEncoder));
 
         try{
@@ -300,6 +309,10 @@ public class UserService {
         List<FeedResDto> feedList = feedRepository.findAllByUser(user2.get()).stream()
                 .map(FeedResDto::toDto)
                 .collect(Collectors.toList());
+        List<ChallengeResDto> challengeResDtoList = challengeRepository.findByUser(user2.get())
+                .stream()
+                .map(ChallengeResDto::toDto)
+                .collect(Collectors.toList());
         if(user.get().getId().equals(pathUserId)){
             return UserPage.builder()
                     .isMe(true)
@@ -315,6 +328,7 @@ public class UserService {
                     .feedCnt(feedList.size())
                     .isOauth(user2.get().getIsOauth())
                     .feed(feedList)
+                    .challengeResDtoList(challengeResDtoList)
                     .build();
         }else{
             return UserPage.builder()
@@ -330,6 +344,7 @@ public class UserService {
                     .followerCnt(followerCnt)
                     .feedCnt(feedList.size())
                     .feed(feedList)
+                    .challengeResDtoList(challengeResDtoList)
                     .build();
         }
 
