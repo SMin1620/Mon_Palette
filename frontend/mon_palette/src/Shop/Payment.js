@@ -56,7 +56,7 @@ const Payment = () => {
         const response = PortOne.requestPayment({
           storeId: 'store-179baf9b-4048-4f05-90b7-ec5d44e298d4',
           channelKey: "channel-key-cdbcf2cf-3157-494d-b499-f8f1dd97dd2e",
-          paymentId: 'paymentswserafawaewfs_{now()}',
+          paymentId: `payments_${Date.now()}`,
           orderName: '나이키 와플 트레이너 2 SD',
           totalAmount: totalPrice,
           currency: 'KRW',
@@ -67,7 +67,7 @@ const Payment = () => {
           },
         //   customer: {
         //     customerId: 'customerId_now',
-        //     fullName: '신현성',
+        //     fullName: '오수빈',
         //     phoneNumber: '1670-5176',
         //     email: 'test@portone.io',
         //     address: '성수이로 길 16 JK타워 3층',
@@ -81,27 +81,37 @@ const Payment = () => {
             if (response.code !== null) {
                 return alert(response.message);
             }
-        
-            axios.post(`${process.env.REACT_APP_API}/api/order`,
+            // const { txId, paymentId } = response; 
+            return axios.post(`${process.env.REACT_APP_API}/payments/complete`, 
+            {
+                body: {
+                    txId: response.txId,
+                    paymentId: response.paymentId,
+                  },
+            }, 
+            {
+                headers: { Authorization: Authorization },
+            });
+        })
+        .then(validationResult => {
+            if (validationResult.data === true) {
+                axios.post(`${process.env.REACT_APP_API}/api/order`,
                 {
-                    data: {item : orderData},
+                    data: {item : orderData,
+                    totalPrice : totalPrice},
                 },
                 {
                     headers: { Authorization: Authorization },
                 }
             )
-            .then(validationResult => {
-                console.log(validationResult);
-                if (validationResult.data === true) {
-                    navigate('/paymentsucceed');
-                } else {
-                    navigate('/paymentfailed');
-                }
-            })
-            .catch(err => {
-                console.log(err);
-            });
-          });
+            navigate('/paymentsucceed');
+            } else {
+                navigate('/paymentfailed');
+            }
+        })
+        .catch(err => {
+            console.log(err);
+        });
       
     }
 
@@ -171,23 +181,28 @@ const Payment = () => {
             </div>
             <div className={styles["address_container"]}>
                 <div>
-                    <p>배송지 정보</p>
-                    <div onClick={() => navigate('/changeaddress')}>변경</div>
+                    <p className={styles.deliveryinfo}>배송지 정보</p>
+                    <div className={styles.deliveryinfochange} onClick={() => navigate('/changeaddress')}>변경</div>
                 </div>
-                <div>
+                <div className={styles.deliveryinfocontainer}>
                     <div>
                         <div>{mainAddress ? mainAddress.receiver : ""}</div>
                         <div>{mainAddress ? mainAddress.phone : ""}</div>
                     </div>
+                    <div>
                     <div>{mainAddress ? mainAddress.zipcode : ""}</div>
                     <div>{mainAddress ? mainAddress.address : "주소가 설정되지 않았습니다."}</div>
+                    </div>
                 </div>
             </div>
+            <div className={styles["paymethod_container"]}>
+                <div>결제 방법</div>
+            </div>
             <div className={styles["price_container"]}>
-                <div>결제 금액</div>
-                <div>
+                <div className={styles.priceinfo}>결제 금액</div>
+                <div className={styles.price}>
                     <div>총 결제금액</div>
-                    <div>{totalPrice}</div>
+                    <div>{totalPrice}원</div>
                 </div>
             </div>
             <div className={styles.purchase}>
