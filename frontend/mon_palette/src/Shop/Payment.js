@@ -10,6 +10,7 @@ const Payment = () => {
     const [userInfo, setUserInfo] = useState([]);
     const navigate = useNavigate();
     const Authorization = useRecoilValue(loginState);
+    const [paymentMethod, setPaymentMethod] = useState("KAKAOPAY");  
     const mainAddress = userInfo.find(address => address.isMain === 1);
     // const {IMP} = window; 
     // IMP.init("imp66584242"); 
@@ -52,67 +53,66 @@ const Payment = () => {
 
 
     function openPaymentWindow() {
-        // console.log("openPaymentWindow called");
-        const response = PortOne.requestPayment({
-          storeId: 'store-179baf9b-4048-4f05-90b7-ec5d44e298d4',
-          channelKey: "channel-key-cdbcf2cf-3157-494d-b499-f8f1dd97dd2e",
-          paymentId: `payments_${Date.now()}`,
-          orderName: '나이키 와플 트레이너 2 SD',
-          totalAmount: totalPrice,
-          currency: 'KRW',
-          pgProvider: 'KAKAOPAY',
-          payMethod: "EASY_PAY",
-          windowType: {
-            "pc": "IFRAME",
-          },
-        //   customer: {
-        //     customerId: 'customerId_now',
-        //     fullName: '오수빈',
-        //     phoneNumber: '1670-5176',
-        //     email: 'test@portone.io',
-        //     address: '성수이로 길 16 JK타워 3층',
-        //     zipcode: '04783',
-        //   },
-          redirectUrl: "http://192.168.30.220:3000/home",
-        //   callback: handlePaymentResponse  
-        })
-        .then(function (response) {
-            console.log(response)
-            if (response.code !== null) {
-                return alert(response.message);
-            }
-            // const { txId, paymentId } = response; 
-            return axios.post(`${process.env.REACT_APP_API}/payments/complete`, 
-            {
-                body: {
-                    txId: response.txId,
-                    paymentId: response.paymentId,
-                  },
-            }, 
-            {
-                headers: { Authorization: Authorization },
-            });
-        })
-        .then(validationResult => {
-            if (validationResult.data === true) {
-                axios.post(`${process.env.REACT_APP_API}/api/order`,
+            axios.post(
+                `${process.env.REACT_APP_API}/api/order`,
                 {
-                    data: {item : orderData,
-                    totalPrice : totalPrice},
+                    data: {
+                        items: orderData.brands,
+                    }
                 },
                 {
-                    headers: { Authorization: Authorization },
+                    headers: { Authorization: Authorization }
                 }
             )
-            navigate('/paymentsucceed');
-            } else {
-                navigate('/paymentfailed');
-            }
-        })
-        .catch(err => {
-            console.log(err);
-        });
-      
+            .then(orderResponse => {
+                const paymentData = orderResponse.data;
+                console.log(paymentData)
+        
+                return PortOne.requestPayment({
+                    // ...paymentData,
+                    paymentId: `payments_${Date.now()}`,
+                    storeId: 'store-179baf9b-4048-4f05-90b7-ec5d44e298d4',
+                    channelKey: "channel-key-cdbcf2cf-3157-494d-b499-f8f1dd97dd2e",
+                    orderName: paymentData.name,
+                    totalAmount: paymentData.totalPrice,
+                    currency: 'KRW',
+                    pgProvider: paymentMethod === "KAKAOPAY",
+                    payMethod: "EASY_PAY",
+                    windowType: {
+                        "pc": "IFRAME",
+                    },
+                    redirectUrl: "http://192.168.30.220:3000/home",
+                });
+            })
+            .then(paymentResponse => {
+                if (paymentResponse.code !== null) {
+                    return alert(paymentResponse.message);
+                }
+        
+                return axios.post(
+                    `${process.env.REACT_APP_API}/payments/complete`,
+                    {
+                        body: {
+                            txId: paymentResponse.txId,
+                            paymentId: paymentResponse.paymentId,
+                        },
+                    },
+                    {
+                        headers: { Authorization: Authorization }
+                    }
+                );
+            })
+            .then(validationResult => {
+                if (validationResult.data === true) {
+                    navigate('/paymentsucceed');
+                } else {
+                    navigate('/paymentfailed');
+                }
+            })
+            .catch(err => {
+                console.log(err);
+            });
+        
     }
 
     const calculateTotalPrice = () => {
@@ -182,7 +182,7 @@ const Payment = () => {
             <div className={styles["address_container"]}>
                 <div>
                     <p className={styles.deliveryinfo}>배송지 정보</p>
-                    <div className={styles.deliveryinfochange} onClick={() => navigate('/changeaddress')}>변경</div>
+                    <div className={styles.deliveryinfochange} onClick={() => navigate('/deliveryList')}>변경</div>
                 </div>
                 <div className={styles.deliveryinfocontainer}>
                     <div>
@@ -195,9 +195,31 @@ const Payment = () => {
                     </div>
                 </div>
             </div>
+
             <div className={styles["paymethod_container"]}>
                 <div>결제 방법</div>
+                <div className={styles.radioboxcontainer}>
+                <label>
+                    <input
+                        type="radio"
+                        value="KAKAOPAY"
+                        checked={paymentMethod === "KAKAOPAY"}
+                        onChange={(e) => setPaymentMethod(e.target.value)}
+                    />
+                    카카오 페이
+                </label>
+                {/* <label>
+                    <input
+                        type="radio"
+                        value="NAVERPAY"
+                        checked={paymentMethod === "NAVERPAY"}
+                        onChange={(e) => setPaymentMethod(e.target.value)}
+                    />
+                    네이버 페이
+                </label> */}
+                </div>
             </div>
+
             <div className={styles["price_container"]}>
                 <div className={styles.priceinfo}>결제 금액</div>
                 <div className={styles.price}>
