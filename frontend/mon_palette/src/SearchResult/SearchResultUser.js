@@ -1,24 +1,88 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styles from './SearchResultUser.module.css';
 import { useNavigate } from 'react-router-dom';
+import { loginState } from '../user/components/Atom/loginState';
+import { useRecoilValue } from 'recoil';
+import { PropagateLoader } from 'react-spinners';
+import axios from 'axios';
 
-const SearchResultUser = ({ data, onUserClick }) => {
+const SearchResultUser = ({ query }) => {
     const navigate = useNavigate();
+    const Authorization = useRecoilValue(loginState);
+    const [resultData, setResultData] = useState([]); 
+    const [userPage, setUserPage] = useState(0);
+    const [load, setLoad] = useState(true);
+    const endRef = useRef(false);
+    const obsRef = useRef(null);
+
+
+    const handleObs = (entries) => {
+        const target = entries[0];
+        if (!endRef.current && target.isIntersecting) {
+            setUserPage((prevPage) => prevPage + 1);
+        }
+    };
+
+    const fetchUserData = async (page) => {
+        try {
+            const response = await axios.get(
+                `${process.env.REACT_APP_API}/api/search?page=${page}&type=user&keyword=${query}`,
+                {
+                    headers: { Authorization: Authorization }
+                }
+            );
+
+            if (response.data.data.user.length !== 10) {
+                endRef.current = true;
+                setLoad(false);
+            }
+
+            setResultData(prev => [...prev, ...response.data.data.user]);
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+
+    useEffect(() => {
+        setResultData([]);
+        fetchUserData(0);  
+    }, [query]);
+
+    useEffect(() => {
+        if (userPage > 0) {  
+            fetchUserData(userPage);
+        }
+
+        const observer = new IntersectionObserver(handleObs, { threshold: 0.5 });
+        if (obsRef.current) observer.observe(obsRef.current);
+
+        return () => { observer.disconnect(); }; 
+    }, [userPage]);
+
+
+
     const handleUserClick = (id) => {
         navigate(`/userpage/${id}`);
       };
-    const [resultData, setResultData] = useState([]); 
-    useEffect(() => {
-        setResultData(data.feed);
-      }, [data]);
+
+
+    
     return (
-        <div>
-            {resultData.map((userdata, index)=>{
-                return <div key={index} onClick={() => handleUserClick(userdata.id)}>
-                    <img src={userdata.profileImage} />
-                    <div> {userdata.nickname} </div>
+        <div className={styles.wrap}>
+            {resultData && resultData.length>0 && resultData.map((userdata, index)=>{
+                return <div key={index} className={styles.container} onClick={() => handleUserClick(userdata.id)}>
+                    <img className={styles.img} src={userdata.profileImage} />
+                    <div className={styles.nickname}> {userdata.nickname} </div>
                 </div>
             })}
+            {load ? 
+                <div className="observer_spinner" ref={obsRef}>
+                    <PropagateLoader color='#fdf2f7'/>
+                </div>
+                :
+                <div ref={obsRef}></div>
+            }
         </div>
     )
 };

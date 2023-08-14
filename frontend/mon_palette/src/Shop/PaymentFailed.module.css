@@ -1,0 +1,15 @@
+.container {
+    margin-top: 4.1875em;
+    width: 100%;
+    min-height: 300px;
+    position: absolute;
+
+}
+
+.button {
+    border-radius: 10px;
+    background-color: #e84c8b;
+    height: 3rem;
+    width: 100%;
+}
+
