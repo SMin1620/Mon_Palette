@@ -14,9 +14,6 @@ import java.util.List;
 @Builder
 public class CartAddReqDto {
 
-    @Schema(description = "아이템 id", example = "52")
-    private Long itemId;
-
     @Schema(description = "옵션 id, 객수", example = "{itemOptionId=1, count=1}")
-    private List<CartItemOptionDto> cartItemOptionDtoList;
+    private List<CartItemDto> cartItemDtoList;
 }
