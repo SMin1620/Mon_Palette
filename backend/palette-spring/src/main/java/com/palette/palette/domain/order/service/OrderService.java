@@ -11,6 +11,7 @@ import com.palette.palette.domain.item.repository.ItemRepository;
 import com.palette.palette.domain.itemOption.entity.ItemOption;
 import com.palette.palette.domain.itemOption.repository.ItemOptionRepository;
 import com.palette.palette.domain.order.dto.create.OrderCreateReqDto;
+import com.palette.palette.domain.order.dto.create.OrderCreateResDto;
 import com.palette.palette.domain.order.dto.detail.OrderDetailResDto;
 import com.palette.palette.domain.order.dto.list.OrderListResDto;
 import com.palette.palette.domain.orderItem.dto.OrderItemDto;
@@ -24,9 +25,12 @@ import com.palette.palette.domain.order.repository.OrderRepository;
 import com.palette.palette.domain.orderItem.entity.OrderItemOption;
 import com.palette.palette.domain.orderItem.respository.OrderItemOptionRepository;
 import com.palette.palette.domain.orderItem.respository.OrderItemRepository;
+import com.palette.palette.domain.payment.entity.Payment;
+import com.palette.palette.domain.payment.repository.PaymentRepository;
 import com.palette.palette.domain.user.entity.User;
 import com.palette.palette.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.webjars.NotFoundException;
@@ -34,6 +38,7 @@ import org.webjars.NotFoundException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -47,13 +52,14 @@ public class OrderService {
     private final OrderItemRepository orderItemRepository;
     private final OrderItemOptionRepository orderItemOptionRepository;
     private final UserRepository userRepository;
+    private final PaymentRepository paymentRepository;
 
 
     /**
      * 주문 생성
      */
     @Transactional
-    public void orderCreate(OrderCreateReqDto orderCreateReqDto, User user) {
+    public OrderCreateResDto orderCreate(OrderCreateReqDto orderCreateReqDto, User user) {
 
         /////// 주문
         // Order 생성
@@ -67,6 +73,13 @@ public class OrderService {
         // 주문 총 가격, 개수
         Integer totalPrice = 0;
         Integer totalCount = 0;
+
+        // 첫 상품 + 상품 옵션
+        Item firstItem = itemRepository.findById(orderCreateReqDto.getItems().get(0).getItemId())
+                .orElseThrow(() -> new NotFoundException("상품 없음"));
+
+        ItemOption firstItemOption = itemOptionRepository.findById(orderCreateReqDto.getItems().get(0).getItemOptions().get(0).getItemOptionId())
+                .orElseThrow(() -> new NotFoundException("상품 옵션 없음"));
 
         // 각 OrderItem 생성
         for (OrderItemDto orderItemDto : orderCreateReqDto.getItems()) {
@@ -136,14 +149,27 @@ public class OrderService {
                 .deliveryStatus(DeliveryStatus.READY)
                 .build();
 
-
-        order.setDelivery(delivery);
-        orderRepository.save(order);
-
         /**
          * -> order 랑 delivery 를 따로 save() 하고 있지만,
          *    양방향 매핑이랑 cascade를 통해 좀 더 효율적으로 개선시킬 수 있을것 같음.
          */
+        order.setDelivery(delivery);
+        orderRepository.save(order);
+
+        /**
+         * 주문에 맞춰서 결제 엔티티 생성
+         */
+        Payment payment = Payment.builder()
+                .buyer(user)
+                .order(order)
+                .name(firstItem.getName() + "(" + firstItemOption.getOptionName() + ")" + " 외 " + totalCount + "개")
+                .price(totalPrice)
+                .paymentMethod(orderCreateReqDto.getPaymentMethod())
+                .build();
+
+        paymentRepository.save(payment);
+
+        return OrderCreateResDto.toDto(payment);
     }
 
 
