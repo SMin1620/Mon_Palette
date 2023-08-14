@@ -7,12 +7,30 @@ import axios from "axios"
 import { useRecoilValue } from "recoil";
 import { loginState } from "../../../user/components/Atom/loginState";
 import { userId } from "src/user/components/Atom/UserId";
+import { useParams } from "react-router-dom";
 import TopButton from "../TopButton/TopButton";
 
 
 function ItemDetailTop() {
 
-    const [ItemData, setItemData] = useState("")
+    // const [ItemDetailData, setItemDetailData] = useState("")
+
+    // const { itemId } = useParams()
+    // const token = useRecoilValue(loginState)
+
+    // useEffect(() => {
+    //    axios
+    //    .get(`${process.env.REACT_APP_API}/api/item/option/${itemId}`, {
+    //     headers: { Authorization: token },
+    //    })
+    //    .then ((response) => {
+    //     console.log(response);
+    //     setItemDetailData(response)
+    //    })
+    //    .catch ((err) => {
+    //         console.log(err);
+    //    })
+    // },)
 
     const ItemDetailData = {
         "thumbnail": "https://pbs.twimg.com/media/EZLMS90VcAUXk-z.jpg:large",
@@ -21,9 +39,9 @@ function ItemDetailTop() {
         "content": "롬앤 * 산리오 콜라보 상품이에요! 우와앙아아앙 다들 환영해주세요!!",
         "manufact": "롬앤",
         "deliveryFee": "Free",
-        "maximum": 1,
+        "maximum": 3,
         "createAt": "2023-08-08T15:00:00",
-        "endAt": "2023-08-15T15:00:00",
+        "endAt": "2023-08-17T15:00:00",
         "discount": 30,
         "price": 20000,
         "itemOptionDtoList": [
@@ -94,6 +112,20 @@ function ItemDetailTop() {
     }
     
 
+    const createDateFormatted = (dateString) => {
+        const date = new Date(dateString);
+        const year = date.getFullYear().toString().slice(-2);
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const day = date.getDate().toString().padStart(2, '0');
+
+        return `${year}-${month}-${day}`;
+    };
+
+    const startDay = createDateFormatted(ItemDetailData.createAt)
+    const endDay = createDateFormatted(ItemDetailData.endAt)
+
+
+
 
     return (
         <div className={styles.item_container}>
@@ -148,11 +180,20 @@ function ItemDetailTop() {
                 </div>
                 <div>
                     <p className={styles.result_price}>{ 
-                        Math.round(ItemDetailData.price * ((100 - ItemDetailData.discount) * 0.01 ))}₩</p>
+                        Math.round(ItemDetailData.price * ((100 - ItemDetailData.discount) * 0.01 )).toLocaleString()} ₩</p>
                 </div>
             </div>
             <div className={styles.delivery_fee}>
                 <p>Delivery Fee: { ItemDetailData.deliveryFee }</p>
+            </div>
+            <div className={styles.date}>
+                판매 종료 일자 : {endDay}
+            </div>
+
+            <div className={styles.content_wrap}>
+                <div className={styles.content}>
+                    {ItemDetailData.content}
+                </div>
             </div>
 
             <div className={styles.detail_photo_container}>
