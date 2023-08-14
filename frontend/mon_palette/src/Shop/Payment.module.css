@@ -206,3 +206,12 @@
     color: black;
     text-align: start;
 }
+
+.radioboxcontainer {
+    display: flex;
+    flex-direction: column;
+    text-align: start;
+    margin-top: 24px;
+    /* height: 3.3rem; */
+    justify-content: space-between;
+}
