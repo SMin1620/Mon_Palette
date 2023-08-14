@@ -95,3 +95,12 @@ jwt:
       redirect-uri: ${oauth2.google.redirect-uri}
       token-uri: ${oauth2.google.token-uri}
       resource-uri: ${oauth2.google.resource-uri}
+
+
+server:
+  ssl:
+    key-store: classpath:keystore.p12
+    key-store-type: PKCS12
+    key-store-password: 1234
+    enabled: true
+  port: 8080
