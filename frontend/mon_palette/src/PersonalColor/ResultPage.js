@@ -4,7 +4,7 @@ import SpringWarm from './Result/SpringWarm';
 import SummerCool from './Result/SummerCool';
 import AutumnWarm from './Result/AutumnWarm';
 import WinterCool from './Result/WinterCool';
-import styles from './StartPage.module.css';
+import styles from './ResultPage.module.css';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
