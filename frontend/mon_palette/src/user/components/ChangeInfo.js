@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 import "./ChangeInfo.css"; // 스타일 파일 임포트
 import { useRecoilValue } from "recoil";
 import { loginState } from "./Atom/loginState";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import "./Modal.css";
 import AWS from "aws-sdk";
 import uuid from 'react-uuid';
@@ -22,8 +22,8 @@ const ChangeInfo = () => {
 	const [address, setAddress] = useState("");
 	const [check, setCheck] = useState(true);
 
+	const { oauth } = useParams();
 	const [isModalOpen, setIsModalOpen] = useState(false);
-
 	const Authorization = useRecoilValue(loginState);
 	const Navigate = useNavigate();
 
@@ -112,7 +112,17 @@ const ChangeInfo = () => {
 				}
 			});
 	};
-
+	const logout = () => {
+		axios
+			.get(`${process.env.REACT_APP_API}/api/user/logout`, {
+				headers: { Authorization: Authorization },
+			})
+			.then((response) => {
+				if (response.data.data !== null) {
+					Navigate(`/`);
+				}
+			});
+	};
 	const changebackground = (url) => {
 		axios
 			.put(
@@ -154,6 +164,8 @@ const ChangeInfo = () => {
 				console.error("error", err);
 			});
 	};
+
+	const changepersonal = () => {};
 
 	const leave = () => {
 		setIsModalOpen(true);
@@ -261,20 +273,25 @@ const ChangeInfo = () => {
 					</label>
 					<span>{personalcolor}</span>
 				</div>
-				<Link to="/changepersonalcolor">
-					<ChevronRightOutlinedIcon className="changeInfo_arrow-icon" />
-				</Link>
+				<ChevronRightOutlinedIcon
+					className="changeInfo_arrow-icon"
+					onClick={changepersonal}
+				/>
 			</div>
-			<div className="changeInfo_form-group">
-				<div className="changeInfo_group-left">
-					<label className="changeInfo_label" htmlFor="password">
-						비밀번호
-					</label>
+			{oauth ? (
+				<></>
+			) : (
+				<div className="changeInfo_form-group">
+					<div className="changeInfo_group-left">
+						<label className="changeInfo_label" htmlFor="password">
+							비밀번호
+						</label>
+					</div>
+					<Link to="/changepassword">
+						<ChevronRightOutlinedIcon className="changeInfo_arrow-icon" />
+					</Link>
 				</div>
-				<Link to="/changepassword">
-					<ChevronRightOutlinedIcon className="changeInfo_arrow-icon" />
-				</Link>
-			</div>
+			)}
 			<div className="changeInfo_form-group">
 				<div className="changeInfo_group-left">
 					<label className="changeInfo_label" htmlFor="phone">
@@ -298,13 +315,18 @@ const ChangeInfo = () => {
 				</Link>
 			</div>
 			<div className="changeInfo_form-group">
-				<label className="changeInfo_label">회 원 탈 퇴</label>
+				<label className="changeInfo_label">로그아웃</label>
 
 				<ChevronRightOutlinedIcon
 					className="changeInfo_arrow-icon"
-					onClick={leave}
+					onClick={logout}
 				/>
 			</div>
+
+			<div className="changeInfo_withdraw" onClick={leave}>
+				회원탈퇴
+			</div>
+
 			<Modal isOpen={isModalOpen} onClose={closeModal}>
 				<h3>진짜 내가 필요없어요? ._.</h3>
 			</Modal>

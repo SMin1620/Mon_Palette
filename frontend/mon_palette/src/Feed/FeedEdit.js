@@ -148,7 +148,7 @@ function FeedEdit(props) {
 
       <div className="feed_edit_top_image">
         <div className="feed_edit_top_image_upload">
-          <label for="fileUpload" className="feed_edit_top_image_label">Up load</label>
+          <label for="fileUpload" className="feed_edit_top_image_label">Select Image</label>
           <input 
             className="feed_edit_top_image_input"
             type="file"

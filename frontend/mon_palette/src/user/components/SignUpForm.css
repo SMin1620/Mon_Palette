@@ -5,12 +5,13 @@ html {
 
 .signUpForm_container {
 	margin: 50% auto;
-	width: 18.75rem; /* 300px를 rem 단위로 변환 (300 / 16 = 18.75) */
+	width: 18rem; /* 300px를 rem 단위로 변환 (300 / 16 = 18.75) */
 	text-align: left;
 }
 
 .signUpForm_form-group {
 	margin-bottom: 0.9375rem; /* 15px를 rem 단위로 변환 (15 / 16 = 0.9375) */
+	overflow-x: hidden;
 }
 
 .signUpForm_label {
@@ -26,7 +27,10 @@ html {
 	font-size: 1rem; /* 16px를 rem 단위로 변환 (16 / 16 = 1) */
 	border-bottom: 0.125rem solid #dddddd; /* 2px를 rem 단위로 변환 (2 / 16 = 0.125) */
 }
-
+.signUpForm_input:-webkit-autofill {
+	-webkit-box-shadow: 0 0 0 1000px white inset;
+	box-shadow: 0 0 0 1000px white inset;
+}
 .signUpForm_input:focus {
 	outline: none;
 	border-bottom: 0.125rem solid #e84c8b;

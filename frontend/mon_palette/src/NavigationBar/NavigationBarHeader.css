@@ -10,12 +10,17 @@
   border-bottom: 0.5px solid black;
   background-color: white;
   position: fixed;
-  padding-bottom: 1rem;
+  z-index: 2;
 }
 .navigationBar_left {
   margin-left: 1em;
-  width: 20%;
 }
+
+.navigationBar_left_temp {
+  margin-left: 1em;
+  width: 15%;
+}
+
 .navigationBar_right {
   display: flex;
   margin-right: 1em;
@@ -50,21 +55,18 @@
 .modal_top {
   display: flex;
   justify-content: space-between;
-  padding-top: 2rem;
+  padding-top: 1.9rem;
   border-bottom: 0.5px solid black;
   background-color: white;
-  padding-bottom: 0.9rem;
 }
 
 .modal_left {
   margin-left: 1em;
-  width: 20%;
 }
 
 .mordal_back {
   border: 1px solid black;  
   border-radius: 50%;
-  color: red;
 }
 
 .modal_center {
