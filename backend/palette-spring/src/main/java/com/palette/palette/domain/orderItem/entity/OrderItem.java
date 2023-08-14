@@ -25,9 +25,9 @@ public class OrderItem {
     @JoinColumn(name = "item_id")
     private Item item;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "item_option_id")
-    private ItemOption itemOption;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "item_option_id")
+//    private ItemOption itemOption;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
@@ -38,18 +38,18 @@ public class OrderItem {
     private Integer orderCount;
 
 
-    /**
-     * 주문 취소 시 재고량 증가
-     */
-    public void cancel() {
-        getItemOption().addStock(orderCount);
-    }
-
-    /**
-     * 주문 상품 옵션 가격
-     */
-    public int getTotalPrice() {
-        return getOrderPrice() * getOrderCount();
-    }
+//    /**
+//     * 주문 취소 시 재고량 증가
+//     */
+//    public void cancel() {
+//        getItemOption().addStock(orderCount);
+//    }
+//
+//    /**
+//     * 주문 상품 옵션 가격
+//     */
+//    public int getTotalPrice() {
+//        return getOrderPrice() * getOrderCount();
+//    }
 
 }
