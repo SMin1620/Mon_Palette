@@ -3,21 +3,17 @@ import styles from "./ItemDetailBottom.module.css"
 import { HighlightOff as HighlightOffIcon, Clear as ClearIcon } from '@mui/icons-material';
 import { MinusCircleOutlined, PlusCircleOutlined } from "@ant-design/icons";
 import Select from 'react-select'
+import axios from "axios";
+import { logDOM } from "@testing-library/react";
 
 function ItemDetailBottom () {
 
     const [isModalOpen, setIsModalOpen] = useState(false); 
-    const [selectedOption, setSelectedOption] = useState(null);
+    // const [selectedOption, setSelectedOption] = useState(null);
     const [selectedOptionList, setSelectedOptionList] = useState([]);
+    const [totalPrice, setTotalPrice] = useState(0);
 
-    const openModal = () => {
-         setIsModalOpen(true);
-    }
-
-    const closeModal = () => {
-        setIsModalOpen(false);
-    }
-
+    
 
 
     const ItemDetailData = {
@@ -27,7 +23,7 @@ function ItemDetailBottom () {
         "content": "롬앤 * 산리오 콜라보 상품이에요! 우와앙아아앙 다들 환영해주세요!!",
         "manufact": "롬앤",
         "deliveryFee": "Free",
-        "maximum": 1,
+        "maximum": 3,
         "createAt": "2023-08-08T15:00:00",
         "endAt": "2023-08-15T15:00:00",
         "discount": 30,
@@ -101,22 +97,44 @@ function ItemDetailBottom () {
         count: 1
     }));
 
+    
     const price = ItemDetailData.price
+    const maximumItem = ItemDetailData.maximum
+    const [totalCount, setTotalCount] = useState(0)
 
     const handleSelectChange = (selectedValue) => {
+        console.log(selectedValue);
         // Check if the selected option is already in the list
         const existingOptionIndex = selectedOptionList.findIndex(
           (option) => option.value === selectedValue.value
         );
-      
+        setTotalCount(totalCount + selectedValue.count)
+        
+        // const totalCount = selectedOptionList.reduce((total, option) => total + option.count, 1);
+        // console.log(totalCount);
+
         if (existingOptionIndex !== -1) {
           // Option already exists in the list, increment its count
           handleIncrement(existingOptionIndex);
         } else {
+            // const totalCount = selectedOptionList.reduce((total, option) => total + option.count, 1);
+            // console.log(totalCount)
           // Option is not in the list, add it with count 1
-          setSelectedOptionList((prevSelected) => [...prevSelected, selectedValue]);
+          if (totalCount > maximumItem)  {
+            console.log("실행")
+            alert(`You can only select up to ${maximumItem} items.`);
+        } else {
+            setSelectedOptionList((prevSelected) => [...prevSelected, selectedValue]);
+        }
         }
       };
+
+      console.log('totalCount',totalCount)
+    useEffect(() => {
+        if (totalCount === ItemDetailData.maximum) {
+            alert("그이상 못산다")
+        }
+    })
 
     const handleClearClick = (index) => {
         setSelectedOptionList((prevSelected) => {
@@ -125,7 +143,7 @@ function ItemDetailBottom () {
             return newSelected;
         })
     }
-
+    
     const handleIncrement = (index) => {
         setSelectedOptionList((prevSelected) => {
           const newSelected = [...prevSelected];
@@ -146,6 +164,25 @@ function ItemDetailBottom () {
           return newSelected;
         });
       };
+
+      useEffect(() => {
+        const newTotalPrice = selectedOptionList.reduce(
+            (total, option) => total + option.count * price,
+            0
+        );
+        setTotalPrice(newTotalPrice);
+    }, [selectedOptionList, price]);
+
+    const openModal = () => {
+         setIsModalOpen(true);
+    }
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+    }
+
+
+    
 
 
     return (
@@ -215,31 +252,43 @@ function ItemDetailBottom () {
                                                 <div className={styles.minus} onClick={() => handleDecrement(index)}>
                                                     <MinusCircleOutlined />
                                                 </div>
-                                                <div>
+                                                <div className={styles.count}>
                                                     {option.count}
                                                 </div>
                                                 <div className={styles.plus} onClick={() => handleIncrement(index)}>
                                                     <PlusCircleOutlined />
                                                 </div>
                                                 <span className={styles.stock}>(재고: {option.stock})</span>
+                                                <div className={styles.price}>
+                                                    {((option.count) * (price)).toLocaleString()} ₩
+                                                </div>
                                             </div>
                                             </div>
                                         ))
                                     )
                                 }
                             </div>
-                            <div className={styles.button_container}>
-                                <div>
-                                    <button 
-                                    className={styles.modal_btn} 
-                                    type="button">Add to Cart</button>
+                                <div className={styles.total_price_wrap}>
+                                    <div className={styles.total}>
+                                        TOTAL
+                                    </div>
+                                    <div className={styles.total_price}>
+                                        {totalPrice.toLocaleString()} ₩
+                                    </div>
                                 </div>
-                                <div>
-                                    <button 
-                                    className={styles.modal_btn}
-                                    type="button">Buy</button>
+                                <div className={styles.button_container}>
+                                    <div>
+                                        <button 
+                                        className={styles.modal_btn} 
+                                        type="button">Add to Cart</button>
+                                    </div>
+                                    <div>
+                                        <button 
+                                        className={styles.modal_btn}
+                                        type="button">Buy</button>
+                                    </div>
                                 </div>
-                            </div>
+                                
                         </div>
                     </div>
                 </div>

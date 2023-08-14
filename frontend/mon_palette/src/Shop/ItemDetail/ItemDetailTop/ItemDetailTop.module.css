@@ -104,3 +104,22 @@
     z-index: 1;
     font-size: 25px;
 }
+
+
+.date {
+    margin-left: 1rem;
+    font-weight: 500;
+    font-size: 15px;
+    margin-bottom: 1.5rem;
+}
+
+.content {
+    margin-left: 1rem;
+    margin-top: 2rem;
+    margin-right: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.content_wrap {
+    border-top: 1px solid #ccc;
+}
