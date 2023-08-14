@@ -5,7 +5,7 @@ import { useRecoilValue } from "recoil";
 import { loginState } from "./Atom/loginState";
 import { useNavigate } from "react-router-dom";
 
-const ChangeNickname = () => {
+const ChangePassword = () => {
 	const [password, setPassword] = useState("");
 	const [passwordError, setPasswordError] = useState(false);
 	const Navigate = useNavigate();
@@ -68,4 +68,4 @@ const ChangeNickname = () => {
 	);
 };
 
-export default ChangeNickname;
+export default ChangePassword;
