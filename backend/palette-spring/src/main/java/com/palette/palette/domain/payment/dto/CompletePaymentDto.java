@@ -11,8 +11,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class CompletePaymentDto {
 
+    private Long id;
+
     private String paymentId;
 
     private String txId;
+
 
 }
