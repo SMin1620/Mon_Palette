@@ -4,9 +4,9 @@ import com.palette.palette.common.BaseResponse;
 import com.palette.palette.domain.cart.dto.CartAddReqDto;
 import com.palette.palette.domain.cart.service.CartService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +20,8 @@ public class CartController {
 
     @Operation(summary = "카트에 담기")
     @PostMapping("/insert")
-    public BaseResponse insertCart(HttpServletRequest request, @RequestBody CartAddReqDto cartAddReqDto){
+    public BaseResponse insertCart(HttpServletRequest request, @RequestBody @Valid CartAddReqDto cartAddReqDto){
+        System.out.println("cartAddReqDto : " + cartAddReqDto);
         try{
             return BaseResponse.success(cartService.insertCart(cartAddReqDto, request));
         }catch (Exception e){
@@ -41,10 +42,10 @@ public class CartController {
     }
 
     @Operation(summary = "카트 삭제")
-    @DeleteMapping("/{cartId}")
-    public BaseResponse deleteCart(HttpServletRequest request, @PathVariable("cartId") Long cartId){
+    @DeleteMapping("/{cartItemId}")
+    public BaseResponse deleteCart(HttpServletRequest request, @PathVariable("cartItemId") Long cartItemId){
         try{
-            return BaseResponse.success(cartService.deleteCart(request, cartId));
+            return BaseResponse.success(cartService.deleteCart(request, cartItemId));
         }catch (Exception e){
             e.printStackTrace();
             return BaseResponse.error("카트 삭제에 실패하였습니다.");

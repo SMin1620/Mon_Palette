@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -18,12 +20,15 @@ public class CartListResDto {
 
     private Integer count;
 
-    public static CartListResDto toDto(Cart cart){
+    private List<CartItemDto> cartItemDtoList;
+
+    public static CartListResDto toDto(Cart cart, List<CartItemDto> cartItemDtoList){
 
         return CartListResDto.builder()
                 .id(cart.getId())
                 .price(cart.getPrice())
                 .count(cart.getCount())
+                .cartItemDtoList(cartItemDtoList)
                 .build();
     }
 }
