@@ -147,7 +147,7 @@ function ChallengeEdit() {
        {/* challenge 비디오 보여주는 부분 */}
       <div className="feed_write_top_image">
         <div className="feed_write_top_image_upload">
-          <label for="fileUpload" className="feed_write_top_image_label">Up load</label>
+          <label for="fileUpload" className="feed_write_top_image_label">Select Video</label>
           <input 
             className="feed_write_top_image_input"
             accept="video/mp4"
@@ -168,7 +168,7 @@ function ChallengeEdit() {
                 >
                   <source src={previewVideo} type="video/mp4" className="challenge_video_item"/>
                 </video>
-                <button onClick={handleRemoveVideo}>-</button>
+                <button onClick={handleRemoveVideo}>X</button>
               </div>
             }
           </div>

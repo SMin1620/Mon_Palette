@@ -1,0 +1,68 @@
+.deliveryList {
+  margin: 5.1475rem 0 4rem 0;
+}
+
+.deliveryList_top_baseList_container {
+  margin: 1rem;
+  padding: 1rem;
+  margin-bottom: 1.5rem;  
+  background-color: #fdf2f7;
+  border-radius: 7px;
+}
+
+.deliveryList_top_baseList_user_info {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.3rem;
+}
+
+.deliveryList_top_baseList_baseAddress {
+  margin-left: 1rem;
+  background-color: #d72b67;
+  color: white;
+  border-radius: 200px;
+  padding: 0 0.5rem;
+  border: 1px solid black;
+  font-size: 3vw;
+}
+
+.deliveryList_top_baseList_address_info {
+  margin-bottom: 0.3rem;
+}
+
+.deliveryList_top_baseList_address_info span {
+  margin-right: 0.1rem;
+}
+
+.deliveryList_top_baseList_button {
+  display: flex;
+}
+
+.deliveryList_top_baseList_button button {
+  margin-right: 0.5rem;
+  padding: 0.1rem 1.3rem;
+  background-color: #d72b67;
+  border: none;
+  color: white;
+  border-radius: 7px;
+  font-size: 0.5vw;
+}
+
+.deliveryList_top_baseList_button button:active {
+  opacity: 50%;
+}
+
+.delivery_bottom_add_address {
+  margin: 1rem;
+}
+
+.delivery_bottom_add_address button {
+  background-color: #d72b67;
+  color: white;
+  width: 100%;
+  border: none;
+  border-radius: 7px;
+  padding: 1.5rem 0;
+  font-size: 1.5rem;
+  opacity: 70%;
+}

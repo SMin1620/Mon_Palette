@@ -53,7 +53,7 @@ const StartPage = () => {
 
       axios.put(`${process.env.REACT_APP_API}/api/personal`,
         {
-          personalColor: response.data.personal,
+          body : {personal: response.data.personal},
         },
         {
           headers: {Authorization: Authorization} 
