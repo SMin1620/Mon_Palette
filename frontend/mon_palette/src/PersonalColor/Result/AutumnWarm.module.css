@@ -6,8 +6,8 @@
 
 .div {
   overflow: scroll;
-  scroll-snap-type: y mandatory;
-  height: 100vh;
+  /* scroll-snap-type: y mandatory; */
+  /* height: 100vh; */
 }
 
 .container {
@@ -22,13 +22,16 @@
 .page1 {
   height: 100vh;
 }
+.page2 {
+  height: auto;
+}
 
 .text-container {
   /* margin-top: 6.25rem; */ 
   display: flex;
   flex-direction: column;
   align-items: center;
-  scroll-snap-align: start;
+  /* scroll-snap-align: start; */
   /* scroll-margin: 12.5rem;  */
   height: 31.25rem; 
 }
@@ -43,7 +46,7 @@
 }
 
 .exit {
-  position: absolute;
+  position: fixed;
   top: 1rem;
   right: 1rem;
   font-size: 3rem;
@@ -87,17 +90,20 @@
 }
 
 .result-description {
-  padding: 3.125rem 2.9rem 2rem;
+  padding: 3.125rem 2rem 2rem;
   font-family: 'NanumSquare';
 }
 
 .description {
   margin-top: 1rem;
-  word-wrap: break-word;
-  white-space: pre-wrap;
+  display: flex;
   
 }
 
+.color {
+  word-wrap: break-word;
+  white-space: pre-wrap;
+}
 .description2 {
   word-wrap: break-word;
   white-space: pre-wrap;
@@ -115,7 +121,7 @@
 }
 
 .backend-response-scroll {
-  scroll-snap-align: start;
+  /* scroll-snap-align: start; */
   scroll-margin-top: 5rem; 
 }
 
