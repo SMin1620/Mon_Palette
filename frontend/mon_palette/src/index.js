@@ -1,18 +1,25 @@
-import React from "react";
+import React, {lazy, Suspense} from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
-import App from "./App";
+// import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter as Router } from "react-router-dom";
 import { RecoilRoot } from "recoil";
+import { PropagateLoader }  from 'react-spinners';
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
+const App = lazy(() => import("./App"))
 root.render(
 	<Router>
 		<RecoilRoot>
-			{/* <React.StrictMode> */}
-				<App />
-			{/* </React.StrictMode> */}
+				<Suspense fallback=
+				{
+				<div className="loading_page">
+					<PropagateLoader color='#d72b76'/>
+				</div>
+				}>
+					<App />
+				</Suspense>
 		</RecoilRoot>
 	</Router>
 );

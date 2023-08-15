@@ -111,3 +111,19 @@
   display: flex;
   align-items: center;
 }
+
+.challengeHome_create {
+  position: fixed;
+  bottom: 7%;
+  right: 2%;
+  border: none;
+  background-color: #d72b67;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  color: white;
+  padding: 0.1rem 0.5rem;
+}
+
+.challengeHome_create:active {
+  opacity: 50%;
+}

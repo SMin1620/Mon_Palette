@@ -9,7 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(value = "/login/oauth2", produces = "application/json")
+@RequestMapping(value = "/api/login/oauth2", produces = "application/json")
 @RequiredArgsConstructor
 @Tag(name = "OAUTH2.0 API")
 public class GoogleController {

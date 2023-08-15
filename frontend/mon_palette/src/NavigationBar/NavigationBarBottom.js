@@ -33,7 +33,7 @@ function NavigationBarBottom() {
 			</div>
 
 			<div className="nav_bottom_icons">
-				<Link>
+				<Link to="/shop">
 					<LocalMallOutlinedIcon sx={{ fontSize: 30 }} />
 				</Link>
 			</div>

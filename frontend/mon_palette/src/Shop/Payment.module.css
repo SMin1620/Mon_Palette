@@ -1,0 +1,208 @@
+/* Payment.module.css */
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0px 20px 20px;
+    max-width: 600px;
+    margin: 0 auto;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    border-radius: 10px;
+    background-color: #b4b4b4;
+}
+
+.item_container, 
+.address_container,
+.price_container,
+.paymethod_container {
+    width: 100%;
+    margin-bottom: 20px;
+    padding: 20px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    text-align: center;
+}
+
+
+.purchase {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    padding: 10px 20px;
+    background-color: #333;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.purchase:hover {
+    background-color: #555;
+}
+
+.purchase div {
+    color: #fff;
+    font-weight: bold;
+}
+
+/* h3, h4 {
+    margin-top: 20px;
+}
+*/
+
+.img {
+    /* max-width: 80%; */
+    margin: 20px 20px 20px 0px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+    height: 3em;
+    width: 3em;
+} 
+
+.title {
+    font-weight: 900;
+    font-size: 1.3rem;
+    text-align: left;
+    margin-bottom: 1.5rem;
+}
+
+.brand {
+    text-align: left;
+    color: #555;
+}
+
+.product {
+    display: flex; /* Flexbox를 사용하여 요소들을 가로로 정렬합니다. */
+    align-items: center; /* 이미지와 텍스트를 같은 높이에 맞춥니다. */
+    /* margin-bottom: 15px; */
+}
+
+.product-info { /* 새로운 클래스. 상품명과 가격을 담기 위한 컨테이너 */
+    display: flex;
+    flex-direction: column; /* 상품명과 가격을 수직으로 쌓습니다. */
+    justify-content: center; /* 상품명과 가격을 컨테이너의 중간에 위치시킵니다. */
+}
+
+.options {
+    display: flex;
+    /* flex-direction: column; */
+    align-items: flex-start;
+    /* margin-left: 10px; 필요한 경우 왼쪽 여백을 추가하여 상품 정보와 분리 */
+    font-size: 0.9em;
+    color: #555;
+}
+
+.option {
+    display: flex;
+    /* flex-direction: column; */
+}
+
+.option_container {
+    display: flex;
+    flex-direction: column;
+    margin-left: 2rem;
+}
+
+.option p {
+    margin-right : 1em;
+    margin-left: 0;
+}
+
+.brandbycontainer {
+    margin-bottom: 2rem;
+}
+
+.productname {
+    margin-bottom: 0.5em;
+}
+
+.deliveryinfo {
+    font-weight: 900;
+    font-size: 1.3rem;
+    text-align: left;
+    margin-bottom: 1.5rem;
+}
+
+.deliveryinfochange {
+    display: inline-block;
+    margin-bottom: 25px;
+}
+
+.address_container > div:first-child {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.deliveryinfocontainer {
+    background-color: #ebebeb;
+    border-radius: 1rem;
+    padding: 1rem 0rem;
+}
+
+.deliveryinfocontainer > div:first-child {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.deliveryinfocontainer > div:first-child > div:first-child{
+    margin-left: 1rem;
+}
+
+.deliveryinfocontainer > div:first-child > div:last-child{
+    margin-right: 11.2rem;
+    margin-left: 0;
+}
+
+.deliveryinfocontainer > div:last-child {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.deliveryinfocontainer > div:last-child > div:first-child, .deliveryinfocontainer > div:last-child > div:last-child {
+    margin-left: 1rem;
+    margin-top: 1em;
+}
+
+.deliveryinfocontainer > div:last-child > div:last-child {
+    margin-right: 1rem;
+}
+
+.priceinfo {
+    font-weight: 900;
+    font-size: 1.3rem;
+    text-align: left;
+    margin-bottom: 1.5rem
+}
+
+.price {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-right: 2rem;
+}
+
+.price > div:first-child {
+    font-size: 1rem;
+    font-weight: 900;
+    color: #828282;
+}
+
+.price > div:last-child {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #4f4e4e;
+}
+
+.paymethod_container > div:first-child {
+    font-size: 1.3rem;
+    font-weight: 900;
+    color: black;
+    text-align: start;
+}
