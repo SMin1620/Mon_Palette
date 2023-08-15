@@ -93,8 +93,8 @@
 
 .delivery_fee {
     margin-left: 1rem;
-    font-weight: 500;
-    margin-bottom: 1rem;
+    font-weight: 400;
+    margin-bottom: 0.7rem;
 }
 
 .top_btn {
@@ -111,6 +111,10 @@
     font-weight: 500;
     font-size: 15px;
     margin-bottom: 1.5rem;
+    border: 1px solid #fdf2f7;
+    display: inline-block;
+    border-radius: 10px;
+    background-color: #fdf2f7;
 }
 
 .content {
@@ -122,4 +126,10 @@
 
 .content_wrap {
     border-top: 1px solid #ccc;
+}
+
+.maximum {
+    margin-left: 1rem;
+    margin-bottom: 0.7rem;
+    font-weight: 600;
 }

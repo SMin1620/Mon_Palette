@@ -28,3 +28,6 @@
     height: 60px;
 }
 
+.header_container {
+    overflow: hidden;
+}

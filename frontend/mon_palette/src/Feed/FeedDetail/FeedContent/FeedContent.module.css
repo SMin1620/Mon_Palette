@@ -6,6 +6,7 @@
 
 .container {
     border-bottom: solid 1px black;
+    overflow: hidden;
 }
 
 .feed_wrapper::-webkit-scrollbar {
