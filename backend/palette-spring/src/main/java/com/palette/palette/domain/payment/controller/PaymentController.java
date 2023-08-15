@@ -2,6 +2,7 @@ package com.palette.palette.domain.payment.controller;
 
 import com.palette.palette.common.BaseResponse;
 import com.palette.palette.domain.order.dto.create.OrderCreateReqDto;
+import com.palette.palette.domain.payment.dto.CompletePaymentDto;
 import com.palette.palette.domain.payment.dto.VerifyPaymentDto;
 import com.palette.palette.domain.payment.entity.Payment;
 import com.palette.palette.domain.payment.service.PaymentService;
@@ -18,6 +19,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.reactive.function.client.WebClient;
 import org.yaml.snakeyaml.tokens.ScalarToken;
 
 import java.nio.file.attribute.UserPrincipalNotFoundException;
@@ -32,6 +34,7 @@ public class PaymentController {
     private final JwtTokenProvider jwtTokenProvider;
     private final UserRepository userRepository;
     private final PaymentService paymentService;
+    private final WebClient webClient;
 
 
     @Operation(summary = "결제 확인")
@@ -64,6 +67,30 @@ public class PaymentController {
         } catch (Exception e) {
             e.printStackTrace();
             return BaseResponse.error("결제 확인 도중에서 실패");
+        }
+    }
+
+
+    @Operation(summary = "결제 검증")
+    @PostMapping("/complete")
+    public BaseResponse completePayment (
+            HttpServletRequest request,
+            @RequestBody CompletePaymentDto completePaymentDto
+    ) {
+        System.out.println("결제 검증 컨트롤러");
+
+        try {
+            // 간편결제 검증 로직 호출
+            boolean paymentValidated = paymentService.validatePayment(request, completePaymentDto);
+
+            if (paymentValidated) {
+                return BaseResponse.success(true);
+            } else {
+                return BaseResponse.error("결제 검증 실패");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return BaseResponse.error("결제 검증 실패");
         }
     }
 
