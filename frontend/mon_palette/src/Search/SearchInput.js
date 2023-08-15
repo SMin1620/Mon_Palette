@@ -22,6 +22,8 @@ const SearchInput = () => {
   const [inputFocused, setInputFocused] = useState(false);
   const location = useLocation();
   const containerRef = useRef(null);
+  const autocompleteTimer = useRef(null);
+  
   
   const query = searchParams.get('query') || '';
 
@@ -67,26 +69,33 @@ const SearchInput = () => {
   };
 
   const autocomplete = (value) => {
-    if (value && inputFocused) {
-      setSuggestions([]);
-      axios.get(`${process.env.REACT_APP_API}/api/search/auto?keyword=${value}`, {
-        headers: { Authorization: Authorization }
-      })
-      .then((response) => {
-        const suggestions = response.data.data.map((item) => ({
-          nickname: item.nickname,
-          profileImage: item.profileImage,
-          id: item.id
-        }));
-        setSuggestions(suggestions);
-        setShowSuggestions(true);
-      })
-      .catch(err => console.log(err))
-    } else {
-      setSuggestions([]);
-      setShowSuggestions(false);
+    if (autocompleteTimer.current) {
+      clearTimeout(autocompleteTimer.current);
     }
+
+    autocompleteTimer.current = setTimeout(() => {
+      if (value && inputFocused) {
+        setSuggestions([]);
+        axios.get(`${process.env.REACT_APP_API}/api/search/auto?keyword=${value}`, {
+          headers: { Authorization: Authorization }
+        })
+        .then((response) => {
+          const suggestions = response.data.data.map((item) => ({
+            nickname: item.nickname,
+            profileImage: item.profileImage,
+            id: item.id
+          }));
+          setSuggestions(suggestions);
+          setShowSuggestions(true);
+        })
+        .catch(err => console.log(err))
+      } else {
+        setSuggestions([]);
+        setShowSuggestions(false);
+      }
+    }, 2000); 
   };
+
 
   useEffect(() => {
     const path = window.location.pathname;

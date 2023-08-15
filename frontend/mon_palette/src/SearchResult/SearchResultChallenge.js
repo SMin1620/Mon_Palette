@@ -6,6 +6,20 @@ import { loginState } from 'src/user/components/Atom/loginState';
 import { useRecoilValue } from 'recoil';
 import { PropagateLoader } from 'react-spinners';
 
+const DUMMY_DATA = [
+  { 
+    id: '1',
+    video: 'https://www.example.com/video1.mp4'
+  },
+  { 
+    id: '2',
+    video: 'https://www.example.com/video2.mp4'
+  },
+  { 
+    id: '3',
+    video: 'https://www.example.com/video3.mp4'
+  },
+];
 const SearchResultChallenge = ({ query }) => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -15,6 +29,7 @@ const SearchResultChallenge = ({ query }) => {
   const [load, setLoad] = useState(true);
   const obsRef = useRef(null);
   const endRef = useRef(false);
+
   
 const handleObs = (entries) => {
         const target = entries[0];
@@ -47,6 +62,7 @@ const handleObs = (entries) => {
     useEffect(() => {
       setResultData([]);
         fetchUserData(0);  
+        setResultData(DUMMY_DATA);
     }, [query]);
 
     useEffect(() => {
