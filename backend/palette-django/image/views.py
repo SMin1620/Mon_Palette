@@ -30,10 +30,10 @@ class MakeupAPIView(APIView):
 
             # 업로드된 이미지와 받은 이미지의 URL
             uploaded_image_url = serializer.data['image']
-            received_image_url = 'http://192.168.123.102:8080/api/color/makeup/send/django' # 스프링부트에서 받은 이미지의 URL
+            received_image_url = 'https://mon-palette.shop:8080/api/color/makeup/send/django' # 스프링부트에서 받은 이미지의 URL
 
             # 특정 API 호출
-            api_url = "http://192.168.123.102:8080/api/color/makeup/send/django"  # 호출할 API의 URL 설정
+            api_url = "https://mon-palette.shop:8080/api/color/makeup/send/django"  # 호출할 API의 URL 설정
             data = {
                 'uploaded_image_url': uploaded_image_url,
                 'received_image_url': received_image_url,
