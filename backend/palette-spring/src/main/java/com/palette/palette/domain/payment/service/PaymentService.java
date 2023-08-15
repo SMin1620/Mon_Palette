@@ -48,89 +48,89 @@ public class PaymentService {
     private String apiSecret;
 
 
-    /**
-     * 결제 확인 검증 로직 :: 첫번째
-     */
-    @Transactional
-    public Payment verifyPayment(String receiptId, Long orderId, User buyer) {
-
-        checkNotNull(receiptId, "receiptId must be provided.");
-
-        Optional<Payment> optionalPayment = paymentRepository.findByOrderIdAndBuyer(orderId, buyer);
-        if (optionalPayment.isPresent()) {
-            Payment payment = optionalPayment.get();
-            payment.setReceiptId(receiptId);
-            return verifyPayment(payment, buyer);
-        }
-        else {
-            throw new NotFoundException("Could not found payment for " + orderId + ".");
-        }
-
-    }
-
-
-    /**
-     * 결제 확인 검증 로직 :: 두번째
-     */
-    @Transactional
-    public Payment verifyPayment(Payment payment, User buyer) {
-
-        checkNotNull(payment, "payment must be provided.");
-        checkNotNull(buyer, "buyer must be provided.");
-
-        if (!payment.getBuyer().equals(buyer)) {
-            throw new NotFoundException("Could not found payment for " + buyer.getName() + ".");
-        }
-
-        IamportClient iamportClient = new IamportClient(apiKey, apiSecret);
-
-        try {
-
-            IamportResponse<com.siot.IamportRestClient.response.Payment> paymentResponse = iamportClient.paymentByImpUid(payment.getReceiptId());
-
-            if (Objects.nonNull(paymentResponse.getResponse())) {
-                com.siot.IamportRestClient.response.Payment paymentData = paymentResponse.getResponse();
-
-                if (payment.getReceiptId().equals(paymentData.getImpUid())
-                        && String.valueOf(payment.getOrder().getId()).equals(paymentData.getMerchantUid())
-                        && new BigDecimal(payment.getPrice()).compareTo(paymentData.getAmount()) == 0) {
-
-                    PaymentMethod method = PaymentMethod.valueOf(paymentData.getPayMethod().toUpperCase());
-                    PaymentStatus status = PaymentStatus.valueOf(paymentData.getStatus().toUpperCase());
-                    payment.setPaymentMethod(method);
-                    payment.setStatus(status);
-                    paymentRepository.save(payment);
-
-                    if (status.equals(PaymentStatus.PAID)) {
-                        payment.setPaidAt(paymentData.getPaidAt().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
-                        paymentRepository.save(payment);
-                    } else if (status.equals(PaymentStatus.FAILED)) {
-                        throw new InternalException("Payment failed.");
-                    } else if (status.equals(PaymentStatus.CANCELLED)) {
-                        throw new InternalException("This is a cancelled payment.");
-                    }
-                }
-                else {
-                    throw new IllegalArgumentException("The amount paid and the amount to be paid do not match.");
-                }
-            }
-            else {
-                throw new NotFoundException("Could not found payment for " + payment.getReceiptId() + ".");
-            }
-
-        } catch (IamportResponseException e) {
-
-            e.printStackTrace();
-            switch (e.getHttpStatusCode()) {
-                case 401 -> throw new InternalException("Authentication token not passed or invalid.");
-                case 404 -> throw new NotFoundException("Could not found payment for " + payment.getReceiptId() + ".");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return payment;
-    }
+//    /**
+//     * 결제 확인 검증 로직 :: 첫번째
+//     */
+//    @Transactional
+//    public Payment verifyPayment(String receiptId, Long orderId, User buyer) {
+//
+//        checkNotNull(receiptId, "receiptId must be provided.");
+//
+//        Optional<Payment> optionalPayment = paymentRepository.findByOrderIdAndBuyer(orderId, buyer);
+//        if (optionalPayment.isPresent()) {
+//            Payment payment = optionalPayment.get();
+//            payment.setReceiptId(receiptId);
+//            return verifyPayment(payment, buyer);
+//        }
+//        else {
+//            throw new NotFoundException("Could not found payment for " + orderId + ".");
+//        }
+//
+//    }
+//
+//
+//    /**
+//     * 결제 확인 검증 로직 :: 두번째
+//     */
+//    @Transactional
+//    public Payment verifyPayment(Payment payment, User buyer) {
+//
+//        checkNotNull(payment, "payment must be provided.");
+//        checkNotNull(buyer, "buyer must be provided.");
+//
+//        if (!payment.getBuyer().equals(buyer)) {
+//            throw new NotFoundException("Could not found payment for " + buyer.getName() + ".");
+//        }
+//
+//        IamportClient iamportClient = new IamportClient(apiKey, apiSecret);
+//
+//        try {
+//
+//            IamportResponse<com.siot.IamportRestClient.response.Payment> paymentResponse = iamportClient.paymentByImpUid(payment.getReceiptId());
+//
+//            if (Objects.nonNull(paymentResponse.getResponse())) {
+//                com.siot.IamportRestClient.response.Payment paymentData = paymentResponse.getResponse();
+//
+//                if (payment.getReceiptId().equals(paymentData.getImpUid())
+//                        && String.valueOf(payment.getOrder().getId()).equals(paymentData.getMerchantUid())
+//                        && new BigDecimal(payment.getPrice()).compareTo(paymentData.getAmount()) == 0) {
+//
+//                    PaymentMethod method = PaymentMethod.valueOf(paymentData.getPayMethod().toUpperCase());
+//                    PaymentStatus status = PaymentStatus.valueOf(paymentData.getStatus().toUpperCase());
+//                    payment.setPaymentMethod(method);
+//                    payment.setStatus(status);
+//                    paymentRepository.save(payment);
+//
+//                    if (status.equals(PaymentStatus.PAID)) {
+//                        payment.setPaidAt(paymentData.getPaidAt().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
+//                        paymentRepository.save(payment);
+//                    } else if (status.equals(PaymentStatus.FAILED)) {
+//                        throw new InternalException("Payment failed.");
+//                    } else if (status.equals(PaymentStatus.CANCELLED)) {
+//                        throw new InternalException("This is a cancelled payment.");
+//                    }
+//                }
+//                else {
+//                    throw new IllegalArgumentException("The amount paid and the amount to be paid do not match.");
+//                }
+//            }
+//            else {
+//                throw new NotFoundException("Could not found payment for " + payment.getReceiptId() + ".");
+//            }
+//
+//        } catch (IamportResponseException e) {
+//
+//            e.printStackTrace();
+//            switch (e.getHttpStatusCode()) {
+//                case 401 -> throw new InternalException("Authentication token not passed or invalid.");
+//                case 404 -> throw new NotFoundException("Could not found payment for " + payment.getReceiptId() + ".");
+//            }
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//        return payment;
+//    }
 
 
     /**
@@ -139,9 +139,17 @@ public class PaymentService {
     public boolean validatePayment(HttpServletRequest request, CompletePaymentDto completePaymentDto) {
 
         try {
+            // 결제 id로 paymentId, txId 저장.
+            Payment getPayment = paymentRepository.findById(completePaymentDto.getId())
+                    .orElseThrow(() -> new NotFoundException("결제 정보가 없습니다."));
+
             // 요청의 body로 SDK의 응답 중 txId와 paymentId가 오기를 기대합니다.
             String txId = completePaymentDto.getTxId();
             String paymentId = completePaymentDto.getPaymentId();
+
+            getPayment.setPaymentId(paymentId);
+            getPayment.setTxId(txId);
+            paymentRepository.save(getPayment);
 
             // 1. 포트원 API를 사용하기 위해 액세스 토큰을 발급받습니다.
             HttpHeaders headers = new HttpHeaders();
@@ -170,11 +178,23 @@ public class PaymentService {
                     .orElse(null);
 
 
+            // 결제 정보에서 금액 추출
+            BigDecimal amount = new BigDecimal((String) paymentMap.get("amount")); // amount는 string 형식
 
-            // 나머지 검증 로직을 구현하세요.
-            // ...
+            // getPayment의 getPrice() 메서드를 사용하여 Integer 타입의 결제 금액 추출
+            Integer paymentPrice = getPayment.getPrice();
 
-            return true; // or false based on your validation logic
+            // BigDecimal과 Integer를 비교하기 위해 BigDecimal을 생성
+            BigDecimal paymentAmount = BigDecimal.valueOf(paymentPrice);
+
+            // BigDecimal의 compareTo() 메서드로 비교
+            int comparison = amount.compareTo(paymentAmount);
+
+
+            // 포트원 결제 정보와 DB 결제 정보가 일치한지 확인 로직
+            if (comparison == 0) return true;
+            else return false;
+
         } catch (Exception e) {
             e.printStackTrace();
             return false;
