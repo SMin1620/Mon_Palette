@@ -38,6 +38,7 @@ public class GoogleService {
     private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
 
+    @Transactional
     public TokenDto socialLogin(HttpServletResponse response, String code, String registrationId){
         log.info("======================================================");
         System.out.println(code);
