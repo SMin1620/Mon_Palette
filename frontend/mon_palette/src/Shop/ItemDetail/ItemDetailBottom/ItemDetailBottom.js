@@ -4,15 +4,38 @@ import { HighlightOff as HighlightOffIcon, Clear as ClearIcon } from '@mui/icons
 import { MinusCircleOutlined, PlusCircleOutlined } from "@ant-design/icons";
 import Select from 'react-select'
 import axios from "axios";
-import { logDOM } from "@testing-library/react";
+import { useRecoilValue } from "recoil";
+import { loginState } from "../../../user/components/Atom/loginState";
+import { userId } from "src/user/components/Atom/UserId";
+import { useParams } from "react-router-dom";
+// import { logDOM } from "@testing-library/react";
+
 
 function ItemDetailBottom () {
 
-    const [isModalOpen, setIsModalOpen] = useState(false); 
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [itemDetailData, setItemDetailData] = useState("")
     // const [selectedOption, setSelectedOption] = useState(null);
     const [selectedOptionList, setSelectedOptionList] = useState([]);
     const [totalPrice, setTotalPrice] = useState(0);
+    const { itemId } = useParams()
+    const token = useRecoilValue(loginState)
 
+
+    useEffect(() => {
+        axios
+        .get(`${process.env.REACT_APP_API}/api/item/detail/1`, {
+         headers: { Authorization: token },
+        })
+        .then ((response) => {
+         setItemDetailData(response.data.data)
+         // console.log(ItemDetailData);
+        })
+        .catch ((err) => {
+             console.log(err);
+        })
+     },[])
+ 
     
 
 
@@ -90,65 +113,61 @@ function ItemDetailBottom () {
         },
     }
 
-    const options = ItemDetailData.itemOptionDtoList.map((option) => ({
+    const options = itemDetailData && itemDetailData.itemOptionDtoList.map((option) => ({
         value: option.id,
         label: option.optionName,
         stock: option.stock,
         count: 1
     }));
 
-    
-    const price = ItemDetailData.price
-    const maximumItem = ItemDetailData.maximum
+
+    const price = Math.round(itemDetailData.price * ((100 - itemDetailData.discount) * 0.01 ));
+
+    const maximumItem = itemDetailData.maximum
     const [totalCount, setTotalCount] = useState(0)
 
     const handleSelectChange = (selectedValue) => {
-        console.log(selectedValue);
-        // Check if the selected option is already in the list
-        const existingOptionIndex = selectedOptionList.findIndex(
-          (option) => option.value === selectedValue.value
-        );
-        setTotalCount(totalCount + selectedValue.count)
-        
-        // const totalCount = selectedOptionList.reduce((total, option) => total + option.count, 1);
-        // console.log(totalCount);
+        const newTotalCount = totalCount + selectedValue.count;
 
-        if (existingOptionIndex !== -1) {
-          // Option already exists in the list, increment its count
-          handleIncrement(existingOptionIndex);
-        } else {
-            // const totalCount = selectedOptionList.reduce((total, option) => total + option.count, 1);
-            // console.log(totalCount)
-          // Option is not in the list, add it with count 1
-          if (totalCount > maximumItem)  {
-            console.log("실행")
-            alert(`You can only select up to ${maximumItem} items.`);
-        } else {
-            setSelectedOptionList((prevSelected) => [...prevSelected, selectedValue]);
-        }
-        }
+        if (newTotalCount > maximumItem) {
+        alert(`최대 ${maximumItem}개까지 선택할 수 있습니다.`);
+        return;
+    }
+
+    setTotalCount(newTotalCount);
+
+    const existingOptionIndex = selectedOptionList.findIndex(
+        (option) => option.value === selectedValue.value
+    );
+
+    if (existingOptionIndex !== -1) {
+        handleIncrement(existingOptionIndex);
+    } else {
+        setSelectedOptionList((prevSelected) => [...prevSelected, selectedValue]);
+    }
       };
 
-      console.log('totalCount',totalCount)
-    useEffect(() => {
-        if (totalCount === ItemDetailData.maximum) {
-            alert("그이상 못산다")
-        }
-    })
 
     const handleClearClick = (index) => {
         setSelectedOptionList((prevSelected) => {
+            const removedOption = prevSelected[index];
             const newSelected = [...prevSelected];
+            setTotalCount((prevTotalCount) => prevTotalCount - removedOption.count);
             newSelected.splice(index, 1);
             return newSelected;
-        })
-    }
+        });
+    };
     
     const handleIncrement = (index) => {
         setSelectedOptionList((prevSelected) => {
           const newSelected = [...prevSelected];
-          newSelected[index].count += 1;
-          return newSelected;
+          if (newSelected[index].count + 1 <= maximumItem) {
+            newSelected[index].count += 1;
+            setTotalCount((prevTotalCount) => prevTotalCount + 1);
+        } else {
+            alert(`최대 ${maximumItem}개까지 선택할 수 있습니다.`);
+        }
+        return newSelected;
         });
       };
 
@@ -160,6 +179,7 @@ function ItemDetailBottom () {
             if (newSelected[index].count === 0) {
               handleClearClick(index); // If count reaches 0, remove the option
             }
+            setTotalCount((prevTotalCount) => prevTotalCount - 1);
           }
           return newSelected;
         });
@@ -181,6 +201,21 @@ function ItemDetailBottom () {
         setIsModalOpen(false);
     }
 
+    const addToCart = () => {
+        axios
+        .post(`${process.env.REACT_APP_API}/api/cart`, {
+            
+        }, {
+            headers: { Authorization: token }
+        })
+        .then ((response) => {
+            console.log(response);
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+    }
+
 
     
 
@@ -194,8 +229,12 @@ function ItemDetailBottom () {
             {/* 모달창 */}
             {
                 isModalOpen && (
-                <div className={styles.modal_background}>
-                    <div className={styles.modal_top}>
+                <div className={`${styles.modal_background} ${
+                    isModalOpen ? styles.modal_open : ''
+                }`}>
+                    <div className={`${styles.modal_top} ${
+                    isModalOpen ? styles.modal_open : ''
+                }`}>
                         <div className={styles.close_modal} onClick={closeModal}>
                             <HighlightOffIcon />
                         </div>
