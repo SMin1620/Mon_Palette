@@ -11,125 +11,158 @@ const Payment = () => {
     const navigate = useNavigate();
     const Authorization = useRecoilValue(loginState);
     const [paymentMethod, setPaymentMethod] = useState("KAKAOPAY");  
-    const mainAddress = userInfo.find(address => address.isMain === 1);
+    const mainAddress = userInfo.find(address => address.isMain === 0);
+    const [totalPrice, setTotalPrice] = useState(0);
+    const [id, setId] = useState(null);
+    
     // const {IMP} = window; 
     // IMP.init("imp66584242"); 
-    const orderData = {
-        brands: [
-            {
-                name: "BrandA",
-                products: [
-                    {
-                        name: "ProductA1",
-                        price: 100,
-                        options: [
-                            { name: "OptionA1", quantity: 2 },
-                            { name: "OptionA2", quantity: 3 }
-                        ]
-                    },
-                    {
-                        name: "ProductA2",
-                        price: 200,
-                        options: [
-                            { name: "OptionA3", quantity: 1 }
-                        ]
-                    }
-                ]
-            },
-            {
-                name: "BrandB",
-                products: [
-                    {
-                        name: "ProductB1",
-                        price: 50,
-                        options: [
-                            { name: "OptionB1", quantity: 5 }
-                        ]
-                    }
-                ]
-            }
-        ]
-    };
+    // const orderData = {
+        //     brands: [
+            //         {
+                //             name: "BrandA",
+                //             products: [
+                    //                 {
+                        //                     name: "ProductA1",
+                        //                     price: 100,
+                        //                     options: [
+                            //                         { name: "OptionA1", quantity: 2 },
+                            //                         { name: "OptionA2", quantity: 3 }
+                            //                     ]
+                            //                 },
+                            //                 {
+                                //                     name: "ProductA2",
+                                //                     price: 200,
+                                //                     options: [
+                                    //                         { name: "OptionA3", quantity: 1 }
+                                    //                     ]
+                                    //                 }
+                                    //             ]
+                                    //         },
+                                    //         {
+                                        //             name: "BrandB",
+                                        //             products: [
+                                            //                 {
+                                                //                     name: "ProductB1",
+                                                //                     price: 50,
+                                                //                     options: [
+    //                         { name: "OptionB1", quantity: 5 }
+    //                     ]
+    //                 }
+    //             ]
+    //         }
+    //     ]
+    // };
+    
+    const orderData =  [
+        {
+            itemId: 58,
+            itemOptions: [
+                {
+                    itemOptionId: 55,
+                    itemOptionCount: 2
+                },
+                {
+                    itemOptionId: 56,
+                    itemOptionCount: 3
+                }
+            ]
+        },
+                ];
+      
+      
+                
+                
+                
+        
+
+    // const calculateTotalPrice = () => {
+    //     let total = 0;
+
+    //     orderData.brands.forEach(brand => {
+    //         brand.products.forEach(product => {
+    //             product.options.forEach(option => {
+    //                 total += product.price * option.quantity;
+    //             });
+    //         });
+    //     });
+
+    //     return total;
+    // };
+
+    // const totalPrice = calculateTotalPrice();
 
 
     function openPaymentWindow() {
-            axios.post(
-                `${process.env.REACT_APP_API}/api/order`,
-                {
-                    data: {
-                        items: orderData.brands,
-                    }
+        let setAddress = {
+            address: mainAddress.address,
+            zipcode: mainAddress.zipcode,
+            phone: mainAddress.phone,
+            receiver: mainAddress.receiver,
+        };
+
+        axios.post(
+            `${process.env.REACT_APP_API}/api/order`,
+            {
+                items: orderData,
+                address: setAddress,
+                requirement: "빨리배송해주세요",
+                paymentMethod: "KAKAOPAY",
+                orderStatus: "ORDER"
+            },
+            {
+                headers: { Authorization: Authorization }
+            }
+        )
+        .then(orderResponse => {
+            const paymentData = orderResponse.data.data;
+            const orderId = paymentData.orderId;
+            console.log(paymentData);
+            setTotalPrice(paymentData.totalPrice);
+
+            return PortOne.requestPayment({
+                paymentId: `payments_${Date.now()}`,
+                storeId: 'store-179baf9b-4048-4f05-90b7-ec5d44e298d4',
+                channelKey: "channel-key-cdbcf2cf-3157-494d-b499-f8f1dd97dd2e",
+                orderName: paymentData.name,
+                totalAmount: paymentData.totalPrice,
+                currency: 'KRW',
+                pgProvider: "KAKAOPAY",
+                payMethod: "EASY_PAY",
+                windowType: {
+                    "pc": "IFRAME",
                 },
-                {
-                    headers: { Authorization: Authorization }
-                }
-            )
-            .then(orderResponse => {
-                const paymentData = orderResponse.data;
-                console.log(paymentData)
-        
-                return PortOne.requestPayment({
-                    // ...paymentData,
-                    paymentId: `payments_${Date.now()}`,
-                    storeId: 'store-179baf9b-4048-4f05-90b7-ec5d44e298d4',
-                    channelKey: "channel-key-cdbcf2cf-3157-494d-b499-f8f1dd97dd2e",
-                    orderName: paymentData.name,
-                    totalAmount: paymentData.totalPrice,
-                    currency: 'KRW',
-                    pgProvider: paymentMethod === "KAKAOPAY",
-                    payMethod: "EASY_PAY",
-                    windowType: {
-                        "pc": "IFRAME",
-                    },
-                    redirectUrl: "http://192.168.30.220:3000/home",
-                });
-            })
-            .then(paymentResponse => {
-                if (paymentResponse.code !== null) {
-                    return alert(paymentResponse.message);
-                }
-        
-                return axios.post(
-                    `${process.env.REACT_APP_API}/payments/complete`,
-                    {
-                        body: {
-                            txId: paymentResponse.txId,
-                            paymentId: paymentResponse.paymentId,
-                        },
-                    },
-                    {
-                        headers: { Authorization: Authorization }
-                    }
-                );
-            })
-            .then(validationResult => {
-                if (validationResult.data === true) {
-                    navigate('/paymentsucceed');
-                } else {
-                    navigate('/paymentfailed');
-                }
-            })
-            .catch(err => {
-                console.log(err);
+                redirectUrl: "http://192.168.30.220:8080/home"
+            }).then(paymentResponse => {
+                return { orderId, paymentResponse };
             });
-        
-    }
-
-    const calculateTotalPrice = () => {
-        let total = 0;
-
-        orderData.brands.forEach(brand => {
-            brand.products.forEach(product => {
-                product.options.forEach(option => {
-                    total += product.price * option.quantity;
-                });
-            });
+        })
+        // .then(({ orderId, paymentResponse }) => {
+        //     return axios.post(
+        //         `${process.env.REACT_APP_API}/payment/${orderId}`,
+        //         {
+        //             data: {
+        //                 txId: paymentResponse.txId,
+        //                 paymentId: paymentResponse.paymentId,
+        //             }
+        //         },
+        //         {
+        //             headers: { Authorization: Authorization }
+        //         }
+        //     );
+        // })
+        .then(validationResult => {
+            console.log(validationResult);
+            if (validationResult.orderId) {
+                navigate('/paymentsucceed');
+            } else {
+                navigate('/paymentfailed');
+            }
+        })
+        .catch(err => {
+            console.log(err);
         });
-
-        return total;
-    };
-
-    const totalPrice = calculateTotalPrice();
+    }
 
     useEffect(() => {
         axios.get(
@@ -138,7 +171,7 @@ const Payment = () => {
         )
         .then(response => {
             setUserInfo(response.data.data);
-            console.log(response.data)
+            // console.log(response.data)
         })
         .catch(error => {
             console.error("Error fetching user info:", error);
@@ -147,38 +180,33 @@ const Payment = () => {
     
     return (
         <div className={styles.container}>
-            <div className={styles["item_container"]}>
-                <div className={styles.title}>주문상품</div>
-                <div>
-                    {orderData.brands.map((brand, brandIdx) => (
-                        <div key={brandIdx} className={styles.brandbycontainer}>
-                            <div className={styles.brand}>{brand.name}</div>
-                            {brand.products.map((product, productIdx) => (
-                                <div key={productIdx} >
-                                    <div className={styles.product}>
-                                    <img className={styles.img} src={product.feedImages ? product.feedImages[0].imagePath : null} alt={product.name} />
-                                    <div className={styles["product-info"]}> 
-                                        <h4 className={styles.productname}>{product.name}</h4>
-                                        <div>가격: {product.price}</div>
-                                    </div>
-                                    </div>
-                                    <div className={styles.options}>
-                                        option: 
-                                        <div className={styles["option_container"]}>
-                                        {product.options.map((option, optionIdx) => (
-                                            <div key={optionIdx} className={styles.option}>
-                                                <p>{option.name}</p>
-                                                <p>{option.quantity}개</p>
-                                            </div>
-                                        ))}
-                                        </div>
-                                    </div>
-                                </div>
-                            ))}
+        <div className={styles["item_container"]}>
+            <div className={styles.title}>주문상품</div>
+            <div>
+                {orderData.map((item, itemIdx) => (
+                    <div key={itemIdx} className={styles.brandbycontainer}>
+                        <div className={styles.product}>
+                            <img className={styles.img} src={item.feedImages ? item.feedImages[0].imagePath : null} alt={`Item ${itemIdx + 1}`} />
+                            <div className={styles["product-info"]}> 
+                                <h4 className={styles.productname}>{`Item ${item.itemId}`}</h4>
+                                <div>가격: {/* 제품 가격은 실제 데이터에서 가져와야 합니다. */}</div>
+                            </div>
                         </div>
-                    ))}
-                </div>
+                        <div className={styles.options}>
+                            option: 
+                            <div className={styles["option_container"]}>
+                                {item.itemOptions.map((option, optionIdx) => (
+                                    <div key={optionIdx} className={styles.option}>
+                                        <p>{`Option ${option.itemOptionId}`}</p>
+                                        <p>{option.itemOptionCount}개</p>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                ))}
             </div>
+        </div>
             <div className={styles["address_container"]}>
                 <div>
                     <p className={styles.deliveryinfo}>배송지 정보</p>
