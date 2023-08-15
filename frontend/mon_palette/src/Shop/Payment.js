@@ -11,9 +11,9 @@ const Payment = () => {
     const navigate = useNavigate();
     const Authorization = useRecoilValue(loginState);
     const [paymentMethod, setPaymentMethod] = useState("KAKAOPAY");  
-    const mainAddress = userInfo.find(address => address.isMain === 0);
+    const mainAddress = userInfo.find(address => address.isMain === 1);
     const [totalPrice, setTotalPrice] = useState(0);
-    const [id, setId] = useState(null);
+    // const [id, setId] = useState(null);
     
     // const {IMP} = window; 
     // IMP.init("imp66584242"); 
@@ -115,6 +115,7 @@ const Payment = () => {
             }
         )
         .then(orderResponse => {
+            console.log(orderResponse)
             const paymentData = orderResponse.data.data;
             const orderId = paymentData.orderId;
             console.log(paymentData);
@@ -132,7 +133,7 @@ const Payment = () => {
                 windowType: {
                     "pc": "IFRAME",
                 },
-                redirectUrl: "http://192.168.30.220:8080/home"
+                redirectUrl: `${process.env.REACT_APP_API}/payments`
             }).then(paymentResponse => {
                 return { orderId, paymentResponse };
             });
