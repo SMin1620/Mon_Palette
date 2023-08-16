@@ -78,6 +78,7 @@ public class MakeUpController {
     @Operation(summary = "이미지 url 엔드포인트 테스트")
     @PostMapping(value = "/send/django", produces = MediaType.APPLICATION_JSON_VALUE)
     public BaseResponse djangoImage(
+            @RequestParam("parameter") String parameter
     ) {
 
         System.out.println("장고로 이미지 url 엔드포인트로 보내는 테스트 컨트롤러");
