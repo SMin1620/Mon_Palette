@@ -1,5 +1,6 @@
 package com.palette.palette.domain.payment.service;
 
+import com.palette.palette.common.BaseResponse;
 import com.palette.palette.domain.order.dto.create.OrderCreateReqDto;
 import com.palette.palette.domain.payment.dto.CompletePaymentDto;
 import com.palette.palette.domain.payment.entity.Payment;
@@ -136,11 +137,16 @@ public class PaymentService {
     /**
      * 결제 검증 로직
      */
+    @Transactional
     public boolean validatePayment(HttpServletRequest request, CompletePaymentDto completePaymentDto) {
 
         try {
+
+            System.out.println("결제 정보 >>> " + completePaymentDto.toString() + " " +  completePaymentDto.getPayId());
+
+            IamportClient iamportClient = new IamportClient(apiKey, apiSecret);
             // 결제 id로 paymentId, txId 저장.
-            Payment getPayment = paymentRepository.findById(completePaymentDto.getId())
+            Payment getPayment = paymentRepository.findById(completePaymentDto.getPayId())
                     .orElseThrow(() -> new NotFoundException("결제 정보가 없습니다."));
 
             // 요청의 body로 SDK의 응답 중 txId와 paymentId가 오기를 기대합니다.
@@ -200,5 +206,15 @@ public class PaymentService {
             return false;
         }
 
+    }
+
+    /**
+     * 테스트
+     */
+    public IamportClient testpayment() throws IamportResponseException, IOException {
+        IamportClient iamportClient = new IamportClient(apiKey, apiSecret);
+        System.out.println("iam >>> " + iamportClient.getAuth().getResponse().getToken());
+//        System.out.println("pay >>> " + iamportClient.("payments_1692099511918"));
+        return iamportClient;
     }
 }

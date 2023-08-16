@@ -22,7 +22,7 @@ public class OrderCreateResDto {
 
     private Long orderId;
 
-    private Long id;
+    private Long payId;
 
     public static OrderCreateResDto toDto(Payment payment) {
         return OrderCreateResDto.builder()
@@ -30,7 +30,7 @@ public class OrderCreateResDto {
                 .totalPrice(payment.getPrice())
                 .paymentMethod(payment.getPaymentMethod())
                 .orderId(payment.getOrder().getId())
-                .id(payment.getId())
+                .payId(payment.getId())
                 .build();
     }
 }
