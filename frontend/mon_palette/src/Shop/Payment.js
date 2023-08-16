@@ -56,18 +56,27 @@ const Payment = () => {
     
     const orderData =  [
         {
-            itemId: 58,
+            itemId: 1,
             itemOptions: [
                 {
-                    itemOptionId: 55,
-                    itemOptionCount: 2
+                    itemOptionId: 1,
+                    itemOptionCount: 1
                 },
-                {
-                    itemOptionId: 56,
-                    itemOptionCount: 3
-                }
+                // {
+                //     itemOptionId: 56,
+                //     itemOptionCount: 3
+                // }
             ]
         },
+        {
+            itemId : 2,
+            itemOptions: [
+                {
+                itemOptionId: 1,
+                itemOptionCount: 1
+            }
+            ]
+        }
                 ];
       
       
@@ -135,17 +144,16 @@ const Payment = () => {
                 },
                 redirectUrl: `${process.env.REACT_APP_API}/payments`
             }).then(paymentResponse => {
+                console.log(paymentResponse)
                 return { orderId, paymentResponse };
             });
         })
         // .then(({ orderId, paymentResponse }) => {
         //     return axios.post(
-        //         `${process.env.REACT_APP_API}/payment/${orderId}`,
+        //         `${process.env.REACT_APP_API}/payment/complete`,
         //         {
-        //             data: {
         //                 txId: paymentResponse.txId,
-        //                 paymentId: paymentResponse.paymentId,
-        //             }
+        //                 paymentId: paymentResponse.paymentId, 
         //         },
         //         {
         //             headers: { Authorization: Authorization }
