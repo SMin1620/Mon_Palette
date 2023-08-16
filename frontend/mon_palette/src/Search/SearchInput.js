@@ -23,9 +23,11 @@ const SearchInput = () => {
   const location = useLocation();
   const containerRef = useRef(null);
   const autocompleteTimer = useRef(null);
-  
-  
   const query = searchParams.get('query') || '';
+  const [localQuery, setLocalQuery] = useState(query);
+
+  
+  
 
   const handleSearch = (query) => {
     if (query.length < 2) return;
@@ -49,9 +51,9 @@ const SearchInput = () => {
 
   const handleClick = (event) => {
     event.preventDefault();
-    setShowSuggestions(false);
-    if (query !== '') {
-      handleSearch(query);
+    if (localQuery !== '') {
+      navigate(`/result?query=${localQuery}`);
+      handleSearch(localQuery);
     }
   };
 
@@ -93,7 +95,7 @@ const SearchInput = () => {
         setSuggestions([]);
         setShowSuggestions(false);
       }
-    }, 2000); 
+    }, 500); 
   };
 
 
@@ -103,12 +105,12 @@ const SearchInput = () => {
   }, []);
 
   useEffect(() => {
-    if (query) {
-      autocomplete(query);
+    if (localQuery) {
+      autocomplete(localQuery);
     } else {
       setShowSuggestions(false);
     }
-  }, [query]);
+  }, [localQuery]);
 
   useEffect(() => {
     setShowSuggestions(false);
@@ -124,18 +126,14 @@ const SearchInput = () => {
   return (
     <div className={styles.div} ref={containerRef}>
     <div className={styles['input-container']}>
-      <Link to={fromSearchResults ? '/search/' : '/'} className={styles.link}>
+      <Link to={fromSearchResults ? '/search/' : '/home'} className={styles.link}>
       <ArrowBackOutlinedIcon sx={{ fontSize:20 }} className={styles.back} />
       </Link>
       <input className={styles['search-input']}
         type="text"
-        value={query}
-        onChange={(e) => {
-          setSearchParams({ query: e.target.value });
-          autocomplete(e.target.value); 
-          }
-        }
-        onFocus={() => {setInputFocused(true); setSearchParams({ query: '' })}}
+        value={localQuery}
+        onChange={(e) => setLocalQuery(e.target.value)}
+        onFocus={() => {setInputFocused(true); setLocalQuery('')}}
         onBlur={() => setInputFocused(false)} 
         placeholder='검색어를 입력하세요'
       />
