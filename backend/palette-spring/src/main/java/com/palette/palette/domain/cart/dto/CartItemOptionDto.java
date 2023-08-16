@@ -13,7 +13,11 @@ public class CartItemOptionDto {
 
     private Long itemOptionId;
 
+    private Long itemOptionDetailId;
+
     private String itemOptionName;
+
+    private Integer stock;
 
     private Integer itemOptionCount;
 }
