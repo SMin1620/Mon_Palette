@@ -14,8 +14,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 @RestController
 @RequestMapping(value = "/api/login/oauth2", produces = "application/json")
@@ -29,20 +31,26 @@ public class GoogleController {
     public BaseResponse googleLogin(HttpServletResponse response
             , @RequestParam("code") String code
             , @PathVariable("registrationId") String registrationId
-            , HttpServletRequest request
     ) {
         try{
             TokenDto tokenDto = googleService.socialLogin(response, code, registrationId);
-            Cookie cookie = new Cookie("accessToken", tokenDto.getAccessToken());
-            Cookie cookie1 = new Cookie("refreshToken", tokenDto.getRefreshToken());
-            Cookie cookie2 = new Cookie("userId", tokenDto.getUserId().toString());
-            cookie.setPath("https://mon-palette.shop/home");
-            cookie.setHttpOnly(true);
-            cookie1.setPath("https://mon-palette.shop/home");
-            cookie1.setHttpOnly(true);
-            cookie2.setPath("https://mon-palette.shop/home");
-            cookie2.setHttpOnly(true);
-            response.sendRedirect("https://mon-palette.shop/home");
+//            Cookie cookie = new Cookie("accessToken", tokenDto.getAccessToken());
+//            Cookie cookie1 = new Cookie("refreshToken", tokenDto.getRefreshToken());
+//            Cookie cookie2 = new Cookie("userId", tokenDto.getUserId().toString());
+//            cookie.setPath("https://mon-palette.shop/home");
+//            cookie.setHttpOnly(true);
+//            cookie1.setPath("https://mon-palette.shop/home");
+//            cookie1.setHttpOnly(true);
+//            cookie2.setPath("https://mon-palette.shop/home");
+//            cookie2.setHttpOnly(true);
+//            response.sendRedirect("https://mon-palette.shop/home");
+            response.sendRedirect(UriComponentsBuilder.fromUriString("http://localhost:3000/oauth")
+                    .queryParam("accessToken", tokenDto.getAccessToken())
+                    .queryParam("refreshToken", tokenDto.getRefreshToken())
+                    .queryParam("userId", tokenDto.getUserId())
+                    .build()
+                    .encode(StandardCharsets.UTF_8)
+                    .toUriString());
             return BaseResponse.success(tokenDto);
         }catch (Exception e){
             e.printStackTrace();
