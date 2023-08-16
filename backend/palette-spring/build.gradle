@@ -57,6 +57,9 @@ dependencies {
 	// 아임포트 (포트원) 라이브러리 추가
 	implementation 'com.github.iamport:iamport-rest-client-java:0.2.21'
 
+	// 비동기 HTTP 요청을 수행하는 클라이언트 : 결제 api 호출을 위함.
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+
 }
 
 tasks.named('test') {

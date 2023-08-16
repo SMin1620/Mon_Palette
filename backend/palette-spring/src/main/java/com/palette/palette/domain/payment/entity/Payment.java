@@ -29,7 +29,10 @@ public class Payment {
     private User buyer; // 구매자
 
     @Column(unique = true)
-    private String receiptId; // PG 사에서 생성한 주문 번호
+    private String paymentId; // PG 사에서 생성한 주문 번호
+
+    @Column(unique = true)
+    private String txId; // PG 사에서 생성한 트랜잭션 번호
 
 //    @Column(nullable = false, unique = true)
 //    private String orderId; // 우리가 생성한 주문 번호
