@@ -11,6 +11,6 @@ import java.util.List;
 
 public interface MakeUpImageRepository extends JpaRepository<MakeUpImage, Long> {
 
-    @Query("select m from MakeUp m where m.color = :personalColor")
+    @Query("select m from MakeUp m where m.color.name = :personalColor")
     List<MakeUp> findAllByMakeUp(@Param("personalColor") String personalColor);
 }
