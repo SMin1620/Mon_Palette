@@ -45,6 +45,7 @@ import RecommendYoutuber from "./Youtube/RecommendYoutuber";
 import { Routes, Route } from "react-router-dom";
 import ItemDetailTop from "./Shop/ItemDetail/ItemDetailTop/ItemDetailTop";
 import ItemDetailBottom from "./Shop/ItemDetail/ItemDetailBottom/ItemDetailBottom";
+import OrderList from './OrderList';
 
 function App() {
 	return (
@@ -272,6 +273,14 @@ function App() {
 							<NavigationBarHeader title="Edit address" />,
 							<DeliveryList />,
 							// <NavigationBarBottom />
+						]}
+					/>
+					<Route
+						path="/orderList"
+						element={[
+							<NavigationBarHeader title="Mon, Palette" />,
+							<OrderList />,
+							<NavigationBarBottom />
 						]}
 					/>
 					<Route
