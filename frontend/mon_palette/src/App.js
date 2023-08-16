@@ -173,7 +173,7 @@ function App() {
 						]}
 					/>
 					<Route
-						path="/changeinfo/:oauth"
+						path="/changeinfo/"
 						element={[
 							<NavigationBarHeader title="Edit profile" />,
 							<NavigationBarBottom />,
