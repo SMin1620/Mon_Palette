@@ -37,7 +37,7 @@ const StartPage = () => {
 
     axios({
       method: "POST",
-      url: `${process.env.PERSONAL_API}/api/personal`,
+      url: `${process.env.PERSONAL_API}/api/django/personal`,
       // mode: "cors",
       headers: {
         "Content-Type": "multipart/form-data", 
@@ -53,7 +53,7 @@ const StartPage = () => {
 
       axios.put(`${process.env.REACT_APP_API}/api/personal`,
         {
-          body : {personal: response.data.personal},
+          body : {personalColor: response.data.personal},
         },
         {
           headers: {Authorization: Authorization} 
