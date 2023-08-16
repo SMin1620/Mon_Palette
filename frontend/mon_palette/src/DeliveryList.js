@@ -45,15 +45,16 @@ function DeliveryList() {
   const [address, setAddress] = useState([])
   const [update, setUpdate] = useState(false)
 
-  // useEffect(() => {
-  //   handleGetAddress()
-  // },[])
+  useEffect(() => {
+    // handleGetAddress()
+  },[])
 
-  // useEffect(() => {
-  //   if (update === true) {
-  //     handleGetAddress()
-  //   }
-  // },[update])
+  useEffect(() => {
+    if (update === true) {
+      handleGetAddress()
+    }
+    setUpdate(false)
+  },[update])
   
   const handleSetBaseAddress = (id) => {
     console.log(id)
