@@ -36,15 +36,19 @@ public class MakeUpController {
     private final MakeUpService makeUpService;
 
 
-    @Operation(summary = "메이크업 샘플 데이터 목록 조회")
-    @GetMapping("")
-    public BaseResponse imageList(
+    /**
+     * 메이크업 샘플 이미지 리스트
+     */
+    @Operation(summary = "메이크업 샘플 이미지 목록 조회")
+    @GetMapping("/sample")
+    public BaseResponse makeupList(
             HttpServletRequest request
     ) {
-        System.out.println("메이크업 샘플 데이텀 목록 조회 컨트롤러");
+        System.out.println("메이크업 샘플 이미지 목록 조회");
 
         try {
-            /////////////////////// 토큰으로 인가된 사용자 정보 처리하는 로직
+
+            //////////////////////// 토큰으로 인가된 사용자 정보 처리하는 로직
             String token = jwtTokenProvider.resolveToken(request);
             jwtTokenProvider.validateToken(token);
 
@@ -60,19 +64,12 @@ public class MakeUpController {
                 throw new UserPrincipalNotFoundException("유효한 사용자가 아닙니다.");
             }
 
-            return BaseResponse.success(makeUpService.list(user));
-
-
+            return BaseResponse.success(makeUpService.makeupList(user.getPersonalColor()));
         } catch (Exception e) {
             e.printStackTrace();
-            return BaseResponse.error("메이크업 샘플 데이텀 목록 조회 실패");
+            return BaseResponse.error("메이크업 샘플 이미지 목록 조회 실패");
         }
     }
-
-
-    /**
-     * 메이크업 샘플 이미지 리스트
-     */
 
 
     /**
