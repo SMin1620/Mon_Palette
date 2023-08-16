@@ -6,12 +6,14 @@ import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import "./ChangeInfo.css"; // 스타일 파일 임포트
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { loginState } from "./Atom/loginState";
-import { useNavigate, useParams } from "react-router-dom";
+import { userId } from "./Atom/UserId";
+import { IsOAuth } from "./Atom/IsOAuth";
+import { useNavigate } from "react-router-dom";
 import "./Modal.css";
 import AWS from "aws-sdk";
-import uuid from 'react-uuid';
+import uuid from "react-uuid";
 
 const ChangeInfo = () => {
 	const [background, setBackground] = useState("");
@@ -22,10 +24,12 @@ const ChangeInfo = () => {
 	const [address, setAddress] = useState("");
 	const [check, setCheck] = useState(true);
 
-	const { oauth } = useParams();
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const Authorization = useRecoilValue(loginState);
 	const Navigate = useNavigate();
+	const loginStateReset = useSetRecoilState(loginState);
+	const userIdReset = useSetRecoilState(userId);
+	const oauth = useSetRecoilState(IsOAuth);
 
 	// AWS 연동
 	const ACCESS_KEY = process.env.REACT_APP_AWS_S3_ACCESS_ID;
@@ -54,7 +58,7 @@ const ChangeInfo = () => {
 			const reader = new FileReader();
 			reader.onload = (e) => {
 				const imageBlob = new Blob([e.target.result], { type: file.type });
-				const replaceFileName = file.name.replace(/[^A-Za-z0-9_.-]/g, "")
+				const replaceFileName = file.name.replace(/[^A-Za-z0-9_.-]/g, "");
 				const params = {
 					ACL: "public-read",
 					Body: imageBlob, // Use the image data (blob) as the Body of the S3 object
@@ -88,12 +92,12 @@ const ChangeInfo = () => {
 		};
 
 		try {
-      const imageUrl = `https://${BUCKET}.s3.ap-northeast-2.amazonaws.com/${params.Key}`
-      return imageUrl
-    } catch (error) {
-      console.log(error)
-      return null
-    }
+			const imageUrl = `https://${BUCKET}.s3.ap-northeast-2.amazonaws.com/${params.Key}`;
+			return imageUrl;
+		} catch (error) {
+			console.log(error);
+			return null;
+		}
 	};
 
 	const getmapping = () => {
@@ -113,15 +117,9 @@ const ChangeInfo = () => {
 			});
 	};
 	const logout = () => {
-		axios
-			.get(`${process.env.REACT_APP_API}/api/user/logout`, {
-				headers: { Authorization: Authorization },
-			})
-			.then((response) => {
-				if (response.data.data !== null) {
-					Navigate(`/`);
-				}
-			});
+		loginStateReset();
+		userIdReset();
+		Navigate("/");
 	};
 	const changebackground = (url) => {
 		axios
@@ -278,7 +276,7 @@ const ChangeInfo = () => {
 					onClick={changepersonal}
 				/>
 			</div>
-			{oauth ? (
+			{!oauth ? (
 				<></>
 			) : (
 				<div className="changeInfo_form-group">

@@ -3,24 +3,33 @@ html {
 }
 
 .makeup_result_container {
-	display: flex;
+	margin: 5rem auto;
 	flex-direction: column; /* 요소들을 세로 방향으로 정렬합니다. */
 	align-items: center; /* 요소들을 가운데 정렬합니다. */
 	background-image: url("./startbg.png");
 }
 
 .makeup_result_img_container {
-	display: flex;
 }
 
 .makeup_slideimg {
-	height: 30px;
+	position: relative;
+	height: 220px;
+	width: 40%;
 	overflow: hidden; /* 이미지가 컨테이너 영역을 벗어나는 부분은 잘립니다. */
-	object-fit: cover; /* 이미지가 비율을 유지하면서 컨테이너를 가득 채우도록 합니다. */
+	object-fit: contain; /* 이미지가 비율을 유지하면서 컨테이너를 가득 채우도록 합니다. */
+	border: 1px solid black;
+	margin-left: 5%;
 }
 
 .makeup_result_img {
-	height: 30px;
+	position: absolute;
+	right: 5%;
+	top: 80px;
+	background-color: white;
+	height: 220px;
+	width: 40%;
 	overflow: hidden; /* 이미지가 컨테이너 영역을 벗어나는 부분은 잘립니다. */
-	object-fit: cover; /* 이미지가 비율을 유지하면서 컨테이너를 가득 채우도록 합니다. */
+	object-fit: contain; /* 이미지가 비율을 유지하면서 컨테이너를 가득 채우도록 합니다. */
+	border: 1px solid black;
 }

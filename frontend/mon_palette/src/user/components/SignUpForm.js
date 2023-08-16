@@ -172,7 +172,11 @@ const SignUpForm = () => {
 				</label>
 				<div className="signUpForm_input-with-button">
 					<input
-						className="signUpForm_input"
+						className={`signUpForm_input ${
+							!duplicationEmail || (!isEmailValid && email.trim() !== "")
+								? "impossible"
+								: ""
+						}`}
 						type="text"
 						id="email"
 						value={email}
@@ -180,6 +184,7 @@ const SignUpForm = () => {
 						onBlur={validateEmail} // 이메일 칸을 벗어날 때 유효성 검사 실행
 						placeholder="이메일 주소를 입력하세요"
 					/>
+					&nbsp;
 					<button
 						class="signUpForm_duplication-button"
 						onClick={(e) => possibleEmail(e)}
@@ -196,7 +201,9 @@ const SignUpForm = () => {
 					<p className="signUpForm_error-message">이미 가입된이메일입니다</p>
 				)}
 				{duplicationEmail && emailState && (
-					<p className="signUpForm_error-message">사용 가능한 이메일입니다</p>
+					<p className="signUpForm_possible-message">
+						사용 가능한 이메일입니다
+					</p>
 				)}
 			</div>
 			<div className="signUpForm_form-group">
@@ -256,7 +263,9 @@ const SignUpForm = () => {
 				</label>
 				<div className="signUpForm_input-with-button">
 					<input
-						className="signUpForm_input"
+						className={`signUpForm_input ${
+							!duplicationPhone ? "impossible" : ""
+						}`}
 						type="text"
 						id="phone"
 						value={phone}
@@ -274,7 +283,9 @@ const SignUpForm = () => {
 					<p className="signUpForm_error-message">이미 가입된 연락처입니다</p>
 				)}
 				{duplicationPhone && phoneState && (
-					<p className="signUpForm_error-message">사용 가능한 연락처입니다</p>
+					<p className="signUpForm_possible-message">
+						사용 가능한 연락처입니다
+					</p>
 				)}
 			</div>
 
@@ -297,7 +308,9 @@ const SignUpForm = () => {
 				</label>
 				<div className="signUpForm_input-with-button">
 					<input
-						className="signUpForm_input"
+						className={`signUpForm_input ${
+							!duplicationNickname ? "impossible" : ""
+						}`}
 						type="text"
 						id="nickname"
 						value={nickname}
@@ -315,7 +328,9 @@ const SignUpForm = () => {
 					<p className="signUpForm_error-message">이미 존재하는 닉네임입니다</p>
 				)}
 				{duplicationNickname && nicknameState && (
-					<p className="signUpForm_error-message">사용 가능한 닉네임입니다</p>
+					<p className="signUpForm_possible-message">
+						사용 가능한 닉네임입니다
+					</p>
 				)}
 			</div>
 			<div className="signUpForm_form-group">
@@ -348,6 +363,9 @@ const SignUpForm = () => {
 			>
 				<h3>{notduplication} 중복체크 해주세요 'v'</h3>
 			</Modal>
+			{/* <Modal isOpen={isModalOpen2} onClose={closeModal}>
+				<h3>회원가입 실패.. </h3>
+			</Modal> */}
 		</div>
 	);
 };
