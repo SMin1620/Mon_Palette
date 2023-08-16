@@ -28,8 +28,6 @@ const ChangeInfo = () => {
 	const Navigate = useNavigate();
 	const loginStateReset = useSetRecoilState(loginState);
 	const userIdReset = useSetRecoilState(userId);
-	const oauth = useSetRecoilState(IsOAuth);
-
 	// AWS 연동
 	const ACCESS_KEY = process.env.REACT_APP_AWS_S3_ACCESS_ID;
 	const SECRET_ACCESS_KEY = process.env.REACT_APP_AWS_S3_ACCESS_PW;
@@ -275,9 +273,7 @@ const ChangeInfo = () => {
 					onClick={changepersonal}
 				/>
 			</div>
-			{!oauth ? (
-				<></>
-			) : (
+			
 				<div className="changeInfo_form-group">
 					<div className="changeInfo_group-left">
 						<label className="changeInfo_label" htmlFor="password">
@@ -288,7 +284,7 @@ const ChangeInfo = () => {
 						<ChevronRightOutlinedIcon className="changeInfo_arrow-icon" />
 					</Link>
 				</div>
-			)}
+			
 			<div className="changeInfo_form-group">
 				<div className="changeInfo_group-left">
 					<label className="changeInfo_label" htmlFor="phone">
