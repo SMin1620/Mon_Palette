@@ -9,18 +9,14 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "makeups")
-public class MakeUp {
+@Table(name = "colors")
+public class Color {
 
     @Id
     @GeneratedValue
-    @Column(name = "makeup_id")
+    @Column(name = "color_id")
     private Long id;
 
     private String name;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "color_id")
-    private Color color;
 
 }
