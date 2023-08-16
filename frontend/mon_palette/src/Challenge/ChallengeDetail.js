@@ -23,6 +23,10 @@ function ChallengeDetail() {
     handleChallengeDetail()
   },[challengeLike, buttonText])
 
+  useEffect(() => {
+    setChallengeLike(challengeInfo.isLiked)
+  },[challengeInfo.isLiked])
+
   const handleModal = () => {
     setModalState(!modalState)
   }
@@ -47,15 +51,15 @@ function ChallengeDetail() {
         headers: { Authorization: token}
       })
       .then((response) => {
-        setChallengeLike(response.data.data)
         setChallengeInfo(prevChallengeInfo => ({
           ...prevChallengeInfo,
-          likeCount: prevChallengeInfo.likeCount +1
-        }))
+          likeCount: prevChallengeInfo.likeCount + 1,
+          isLiked: true
+        }));
       })
       .catch((error) => {
-        console.error(error)
-      })
+        console.error(error);
+      });
   }
 
   const unLickedChallenge = () => {
@@ -64,15 +68,15 @@ function ChallengeDetail() {
         headers: { Authorization: token}
       })
       .then((response) => {
-        setChallengeLike(response.data.data)
         setChallengeInfo(prevChallengeInfo => ({
           ...prevChallengeInfo,
-          likeCount: prevChallengeInfo.likeCount -1
-        }))
+          likeCount: prevChallengeInfo.likeCount - 1,
+          isLiked: false
+        }));
       })
       .catch((error) => {
-        console.error(error)
-      })
+        console.error(error);
+      });
   }
 
   const handleFollow = () => {
