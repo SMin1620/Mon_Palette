@@ -46,6 +46,7 @@ import { Routes, Route } from "react-router-dom";
 import ItemDetailTop from "./Shop/ItemDetail/ItemDetailTop/ItemDetailTop";
 import ItemDetailBottom from "./Shop/ItemDetail/ItemDetailBottom/ItemDetailBottom";
 import OrderList from './OrderList';
+import OrderDetail from "./OrderDetail";
 
 function App() {
 	return (
@@ -280,6 +281,14 @@ function App() {
 						element={[
 							<NavigationBarHeader title="Mon, Palette" />,
 							<OrderList />,
+							<NavigationBarBottom />
+						]}
+					/>
+					<Route
+						path="/order/:id"
+						element={[
+							<NavigationBarHeader title="Mon, Palette" />,
+							<OrderDetail />,
 							<NavigationBarBottom />
 						]}
 					/>
