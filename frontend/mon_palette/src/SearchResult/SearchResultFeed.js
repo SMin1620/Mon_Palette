@@ -69,8 +69,8 @@ function SearchResultFeed({ query }) {
                 <div className={styles["feedMain_body_container"]}>
                     {resultData.map((item, index) => (
                         <div key={index} className={styles["feedMain_body_info_item"]} onClick={() => goDetail(item.id)}>
-                            <div>
                                 <img src={item.feedImages[0].imagePath} alt="" onClick={() => goDetail(item.id)} className={styles["feedMain_body_info_item_top"]} />
+                            <div>
                                 <div className={styles["feedMain_body_info_item_bottom"]}>
                                     <img src={item.user.profileImage} alt={item.user.name} />
                                     <p>{item.user.nickname}</p>
@@ -79,7 +79,7 @@ function SearchResultFeed({ query }) {
                         </div>
                     ))}
                     {load ? 
-                        <div className="observer_spinner" ref={obsRef}>
+                        <div className={styles["observer_spinner"]} ref={obsRef}>
                             <PropagateLoader color='#fdf2f7'/>
                         </div>
                         :

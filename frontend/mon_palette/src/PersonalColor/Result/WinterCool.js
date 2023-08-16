@@ -21,10 +21,12 @@ const WinterCool = ({ handleRestart }) => {
       <div className={styles['result-description']}>
         <div className={styles.hashtag}>#화려한 #맑은 #시원한</div>
         <div className={styles.description}>
-        Best : 와인색, 엽색, 흰색, 검은색
+        <div>Best : </div>
+        <div className={styles.color}> 와인색, 엽색, 흰색, 검은색</div>
         </div>
         <div className={styles.description}> 
-        Worst : 황색, 오렌지, 갈색조, 탁한 색조
+        <div>Worst : </div>
+        <div className={styles.color}> 황색, 오렌지, 갈색조, 탁한 색조</div>
         </div>
     </div>
       )
@@ -43,7 +45,7 @@ const WinterCool = ({ handleRestart }) => {
                 <BackendResponseExample />
               </div>
             </div>
-            <div className={styles.page1}>
+            <div className={styles.page2}>
               <div className={styles['backend-response-scroll']}>
                 <BackendResponseExample />
                 <div className={styles.image}></div>
