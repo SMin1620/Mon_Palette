@@ -15,6 +15,7 @@ const SearchResultChallenge = ({ query }) => {
   const [load, setLoad] = useState(true);
   const obsRef = useRef(null);
   const endRef = useRef(false);
+
   
 const handleObs = (entries) => {
         const target = entries[0];
@@ -26,18 +27,18 @@ const handleObs = (entries) => {
     const fetchUserData = async (page) => {
         try {
             const response = await axios.get(
-                `${process.env.REACT_APP_API}/api/search?page=${page}&type=user&keyword=${query}`,
+                `${process.env.REACT_APP_API}/api/search?page=${page}&type=challenge&keyword=${query}`,
                 {
                     headers: { Authorization: Authorization }
                 }
             );
 
-            if (response.data.data.user.length !== 10) {
+            if (response.data.data.challenge.length !== 10) {
                 endRef.current = true;
                 setLoad(false);
             }
 
-            setResultData(prev => [...prev, ...response.data.data.user]);
+            setResultData(prev => [...prev, ...response.data.data.challenge]);
         } catch (error) {
             console.error(error);
         }
@@ -47,6 +48,7 @@ const handleObs = (entries) => {
     useEffect(() => {
       setResultData([]);
         fetchUserData(0);  
+        // setResultData(DUMMY_DATA);
     }, [query]);
 
     useEffect(() => {
@@ -70,6 +72,17 @@ const handleObs = (entries) => {
       {resultData && resultData.length>0 && resultData.map((challenge, index) => (
         <div key={index} className={styles["challengeHome_bottom_info_item"]} onClick={() => handleChallengeClick(challenge.id)}>
           <video src={challenge.video} className={styles.videoItem} />
+          <div className={styles["challengeHome_bottom_info_item_user"]}>
+                      <img src={challenge.user.profileImage} alt="" />
+                      <div className={styles["challengeHome_bottom_info_item_personal_color"]}>
+                        <p>{challenge.user.nickname}</p>
+                        {
+                          challenge.user.personalColor ? 
+                          <p>{challenge.user.personalColor}</p>
+                          : <p>null</p>
+                        }
+                      </div>
+                    </div>
         </div>
       ))}
       {load ? 

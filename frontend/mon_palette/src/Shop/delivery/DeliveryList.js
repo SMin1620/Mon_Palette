@@ -43,18 +43,18 @@ function DeliveryList() {
   const token = useRecoilValue(loginState)
   const navigate = useNavigate()
   const [address, setAddress] = useState([])
-  const [update, setUpdate] = useState(false)
+  // const [update, setUpdate] = useState(false)
 
-  useEffect(() => {
-    handleGetAddress()
-  },[])
+  // useEffect(() => {
+  //   handleGetAddress()
+  // },[])
 
-  useEffect(() => {
-    if (update === true) {
-      handleGetAddress()
-    }
-    update(false)
-  },[update])
+  // useEffect(() => {
+  //   if (update === true) {
+  //     handleGetAddress()
+  //   }
+  //   setUpdate(false)
+  // },[update])
   
   const handleSetBaseAddress = (id) => {
     console.log(id)
@@ -85,7 +85,7 @@ function DeliveryList() {
         headers: { Authorization: token }
       })
       .then(() => {
-        setUpdate(true)
+        // setUpdate(true)
       })
   }
 
@@ -93,7 +93,7 @@ function DeliveryList() {
     <div className="deliveryList">
       <div className="deliveryList_top_baseList">
         {
-          address.map(delivery => {
+          info.map(delivery => {
             return <div 
               className="deliveryList_top_baseList_container"
               key={delivery.id}

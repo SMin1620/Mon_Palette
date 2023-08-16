@@ -39,6 +39,8 @@ import DeliveryList from "./DeliveryList";
 import Payment from "./Shop/Payment";
 import PaymentFailed from "./Shop/PaymentFailed";
 import PaymentSucceed from "./Shop/PaymentSucceed";
+// 유튜브 추천
+import RecommendYoutuber from "./Youtube/RecommendYoutuber";
 
 import { Routes, Route } from "react-router-dom";
 
@@ -291,7 +293,15 @@ function App() {
 							<PaymentFailed />,
 							<NavigationBarBottom />,
 						]}
-					/>				
+					/>		
+					<Route
+						path="/recommendyoutube"
+						element={[
+							// <NavigationBarHeader title="Mon, Palette" />,
+							<RecommendYoutuber />,
+							<NavigationBarBottom />,
+						]}
+					/>					
 				</Routes>
 		</div>
 	);

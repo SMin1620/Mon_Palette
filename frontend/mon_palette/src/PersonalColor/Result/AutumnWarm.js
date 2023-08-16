@@ -26,13 +26,12 @@ const AutumnWarm = ({ handleRestart }) => {
       <div className={styles['result-description']}>
         <div className={styles.hashtag}>#분위기 맛집 #따뜻한 #침착한</div>
         <div className={styles.description}>
-        Best : 캐멀색, 베이지색, 주황색, 금색, 밤색
+        Best : 
+        <div className={styles.color}> 캐멀색, 베이지색, 주황색, 금색, 밤색</div>
         </div>
         <div className={styles.description}> 
-        Worst : 순백색, 검정색, 흰 기가 강한 파스
-        </div>
-        <div className={styles.description2}>
-        텔 색상 
+        Worst : 
+        <div className={styles.color}> 순백색, 검정색, 흰 기가 강한 파스텔 색상</div>
         </div>
       </div>
       )
@@ -51,7 +50,7 @@ const AutumnWarm = ({ handleRestart }) => {
                 <BackendResponseExample />
               </div>
             </div>
-            <div className={styles.page1}>
+            <div className={styles.page2}>
               <div className={styles['backend-response-scroll']}>
                 <BackendResponseExample />
                 <div className={styles.image}></div>

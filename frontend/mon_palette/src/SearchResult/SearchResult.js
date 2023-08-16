@@ -38,10 +38,10 @@ const SearchResult = () => {
             </div>
             <div className={styles["search_result"]}>
                 <div className={styles["search_result_top"]}>
-                    <div className={styles["search_result_page"]} onClick={() => setResultType("feed")}>Feed</div>
-                    <div className={styles["search_result_page"]} onClick={() => setResultType("item")}>한정 판매</div>
-                    <div className={styles["search_result_page"]} onClick={() => setResultType("challenge")}>Challenge</div>
-                    <div className={styles["search_result_page"]} onClick={() => setResultType("user")}>User</div>
+                    <div className={`${styles["search_result_page"]} ${resultType === "feed" ? styles.active : ''}`} onClick={() => setResultType("feed")}>Feed</div>
+                    <div className={`${styles["search_result_page"]} ${resultType === "item" ? styles.active : ''}`} onClick={() => setResultType("item")}>한정 판매</div>
+                    <div className={`${styles["search_result_page"]} ${resultType === "challenge" ? styles.active : ''}`} onClick={() => setResultType("challenge")}>Challenge</div>
+                    <div className={`${styles["search_result_page"]} ${resultType === "user" ? styles.active : ''}`} onClick={() => setResultType("user")}>User</div>
                 </div>
                 <ResultComponent query={searchQuery} />
             </div>
