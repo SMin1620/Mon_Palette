@@ -11,11 +11,7 @@ const FollowingList = () => {
 	const [isFollowList, setIsFollowList] = useState([]); // 팔로우 여부를 담는 배열로 상태로 초기화
 
 	const [check, setCheck] = useState(false); // 상태를 빈 배열로 초기화
-
-	const myid = useRecoilValue(userId);
-	const stringmyid = myid.toString();
 	const { id } = useParams();
-	const Navigate = useNavigate();
 	const Authorization = useRecoilValue(loginState);
 	useEffect(() => {
 		getmapping();

@@ -1,14 +1,15 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { userId } from "../user/components/Atom/UserId";
 import { loginState } from "../user/components/Atom/loginState";
 import { useRecoilValue } from "recoil";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./MakeUpResult.css";
-function Home() {
+const MakeUpResult = () => {
+	const location = useLocation();
 	const Authorization = useRecoilValue(loginState);
 	const settings = {
 		dots: false,
@@ -23,9 +24,9 @@ function Home() {
 
 	const [resultImage, setResultImage] = useState("/static/google.png");
 	const [slideImage, setSlideImage] = useState([
-		"/static/신짱구.png",
-		"/static/신짱구.png",
-		"/static/신짱구.png",
+		"/static/slide1.png",
+		"/static/slide2.png",
+		"/static/slide1.png",
 	]);
 
 	// useEffect(() => {
@@ -68,33 +69,39 @@ function Home() {
 	// 			}
 	// 		});
 	// };
+	const [currentSlide, setCurrentSlide] = useState(0);
+
+	const nextSlide = () => {
+		setCurrentSlide((prevSlide) => (prevSlide + 1) % slideImage.length);
+	};
+
+	useEffect(() => {
+		const interval = setInterval(nextSlide, 3000); // 3초마다 다음 슬라이드로 이동
+		return () => clearInterval(interval);
+	}, []);
 
 	return (
-		<div>
-			<div className="makeup_result_container">
-				<div className="makeup_result_img_container">
-					<Slider {...settings}>
-						{slideImage.map((slide, index) => (
-							<div key={index}>
-								<img
-									className="makeup_slideimg"
-									src={slide}
-									alt={`Slide ${index + 1}`}
-								/>
-							</div>
-						))}
-					</Slider>
-					<div className="makeup_result">
-						<img
-							className="makeup_result_img"
-							src={resultImage}
-							alt="이미지가 안나와요 힝"
-						/>
-					</div>
-				</div>
+		<div className="makeup_result_container">
+			<div className="makeup_result_img_container">
+				<Slider className="makeup_slider_style" {...settings}>
+					{slideImage.map((slide, index) => (
+						<div key={index} className="makeup_flex">
+							<img
+								className="makeup_slideimg"
+								src={slide}
+								alt={`Slide ${index + 1}`}
+							/>
+						</div>
+					))}
+				</Slider>
+				<img
+					className="makeup_result_img"
+					src={resultImage}
+					alt="이미지가 안나와요 힝"
+				/>
 			</div>
 		</div>
 	);
-}
+};
 
-export default Home;
+export default MakeUpResult;
