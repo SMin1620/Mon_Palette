@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './ChallengeHome.css'
 import { useRecoilValue } from 'recoil';
-import { loginState } from './../user/components/Atom/loginState';
+import { loginState } from '../user/components/Atom/loginState';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { PropagateLoader }  from 'react-spinners';
+import { useInView } from 'react-intersection-observer';
 
 function ChallengeHome() {
 
@@ -14,7 +15,7 @@ function ChallengeHome() {
   const [popularChallenge, setPopularChallenge] = useState([])
   const [challengePage, setChallengePage] = useState(0)
   const [load, setLoad] = useState(true)
-
+  const [ref, inView] = useInView(); 
   
   // 무한스크롤 구현
   const preventRef = useRef(true)
@@ -97,7 +98,6 @@ function ChallengeHome() {
     navigate(`/challenge/${id}`)
   }
 
-  console.log(challengeList)
   return (
     <div className="challengeHome">
       <div className="challengeHome_top">
@@ -121,8 +121,8 @@ function ChallengeHome() {
           <div className="challengeHome_mid_container">
             {
               popularChallenge&&popularChallenge.map((challengeInfo, index) => {
-                return <div className="challengeHome_mid_image_item" key={index} onClick={()=>handleChallengeDetail(challengeInfo.id)}>
-                  <video src={challengeInfo.video} alt="" />
+                return <div className={`challengeHome_mid_image_item ${inView ? "visible" : ""}`} key={index} onClick={()=>handleChallengeDetail(challengeInfo.id)}>
+                  <video src={challengeInfo.video} alt="" ref={ref}/>
                 </div>
               })
             }
@@ -134,30 +134,31 @@ function ChallengeHome() {
         <div className="challengeHome_bottom_label">
           <h3>Challenge</h3>
         </div>
-        
         <div className="challengeHome_bottom_challengeInfo">
-            <div className="challengeHome_bottom_container">
-              {
-                challengeList&&challengeList.map((challengeInfo, index) => {
-                  return <div className="challengeHome_bottom_info_item" key={index} onClick={() => handleChallengeDetail(challengeInfo.id)}>
-                    <video src={challengeInfo.video} alt="" />
-                    <div className="challengeHome_bottom_info_item_user">
-                      <img src={challengeInfo.user.profileImage} alt="" />
-                      <div className="challengeHome_bottom_info_item_personal_color">
-                        <p>{challengeInfo.user.nickname}</p>
-                        {
-                          challengeInfo.user.personalColor ? 
-                          <p>{challengeInfo.user.personalColor}</p>
-                          : <p>null</p>
-                        }
-                      </div>
+          <div className="challengeHome_bottom_container">
+            {
+              challengeList&&challengeList.map((challengeInfo, index) => {
+                return <div className={`challengeHome_bottom_info_item ${inView ? 'visible' : ''}`}
+                key={index} onClick={() => handleChallengeDetail(challengeInfo.id)}>
+                  <video src={challengeInfo.video} alt="" ref={ref}/>
+                  <div className="challengeHome_bottom_info_item_user">
+                    <img src={challengeInfo.user.profileImage} alt="" />
+                    <div className="challengeHome_bottom_info_item_personal_color">
+                      <p>{challengeInfo.user.nickname}</p>
+                      {
+                        challengeInfo.user.personalColor ? 
+                        <p>{challengeInfo.user.personalColor}</p>
+                        : <p>null</p>
+                      }
                     </div>
-
                   </div>
-                })
-              }
-            </div>
+
+                </div>
+              })
+            }
+          </div>
         </div>
+        
       </div>
       <div>
         <button 

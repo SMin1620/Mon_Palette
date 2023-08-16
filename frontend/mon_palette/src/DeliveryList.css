@@ -8,6 +8,15 @@
   margin-bottom: 1.5rem;  
   background-color: #fdf2f7;
   border-radius: 7px;
+  border: 2px solid #d72b67;
+}
+
+.deliveryList_top_another_list_container {
+  margin: 1rem;
+  padding: 1rem;
+  margin-bottom: 1.5rem;  
+  background-color: #fdf2f7;
+  border-radius: 7px;
 }
 
 .deliveryList_top_baseList_user_info {
