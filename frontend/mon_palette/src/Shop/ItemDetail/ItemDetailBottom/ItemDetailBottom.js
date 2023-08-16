@@ -8,144 +8,95 @@ import { useRecoilValue } from "recoil";
 import { loginState } from "../../../user/components/Atom/loginState";
 import { userId } from "src/user/components/Atom/UserId";
 import { useParams } from "react-router-dom";
-// import { logDOM } from "@testing-library/react";
-
+import { useRecoilState } from 'recoil';
+import { selectedOptionsState, RootWithPersistence } from "../../Atom/orderList"
 
 function ItemDetailBottom () {
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [itemDetailData, setItemDetailData] = useState("")
-    // const [selectedOption, setSelectedOption] = useState(null);
+    const [options, setOptions] = useState([]);
     const [selectedOptionList, setSelectedOptionList] = useState([]);
     const [totalPrice, setTotalPrice] = useState(0);
-    const { itemId } = useParams()
+
+    const itemId  = useParams()
     const token = useRecoilValue(loginState)
+    const [selectedOptions, setSelectedOptions] = useRecoilState(selectedOptionsState);
+
 
 
     useEffect(() => {
         axios
-        .get(`${process.env.REACT_APP_API}/api/item/detail/1608`, {
+        .get(`${process.env.REACT_APP_API}/api/item/detail/${itemId.id}`, {
          headers: { Authorization: token },
         })
         .then ((response) => {
-         setItemDetailData(response.data.data)
+            setItemDetailData(response.data.data)
          // console.log(ItemDetailData);
         })
         .catch ((err) => {
              console.log(err);
         })
      },[])
- 
+
+    useEffect(() => {
+        if (itemDetailData) {
+            const options =  itemDetailData.itemOptionDtoList.map((option) => ({
+                value: option.id,
+                label: option.optionName,
+                stock: option.stock,
+                count: 1
+            }));
+            setOptions(options);
+        }
+    }, [itemDetailData]);
+
     
-
-
-    const ItemDetailData = {
-        "thumbnail": "https://pbs.twimg.com/media/EZLMS90VcAUXk-z.jpg:large",
-        "id": 1603,
-        "name": "롬앤 틴트",
-        "content": "롬앤 * 산리오 콜라보 상품이에요! 우와앙아아앙 다들 환영해주세요!!",
-        "manufact": "롬앤",
-        "deliveryFee": "Free",
-        "maximum": 3,
-        "createAt": "2023-08-08T15:00:00",
-        "endAt": "2023-08-15T15:00:00",
-        "discount": 30,
-        "price": 20000,
-        "itemOptionDtoList": [
-            {
-                "id": 1604,
-                "optionName": "레드",
-                "stock": 100
-            },
-            {
-                "id": 1605,
-                "optionName": "오렌지",
-                "stock": 100
-            },
-            {
-                "id": 1606,
-                "optionName": "핑크",
-                "stock": 100
-            }
-        ],
-        "itemPhotoDtoList": [
-            {
-                "id": 1602,
-                "itemImage": "https://m.romand.co.kr/web/product/big/202306/85702c95740d57f55b23e0edb9dfb64c.jpg",
-            },
-            {
-                "id": 1603,
-                "itemImage": "https://image.oliveyoung.co.kr/uploads/images/goods/550/10/0000/0018/A00000018727204ko.jpg?l=ko"
-            },
-            {
-                "id": 1604,
-                "itemImage": "https://image.oliveyoung.co.kr/uploads/images/goods/550/10/0000/0018/A00000018727203ko.jpg?l=ko"
-            }
-        ],
-        "itemDetailPhotoDtoList": [
-            {
-                "id": 1,
-                "itemImage": "https://m.romand.co.kr/web/upload/NNEditor/20230616/copy-1686899483-EBA1ACEC95A4XEC82B0EBA6ACEC98A4-EC9993EC9790EBB284EAB1B8EC8AA4-1ECB0A8-ED8BB0ECA795_04.jpg",
-            },
-            {
-                "id": 2,
-                "itemImage": "https://m.romand.co.kr/web/upload/NNEditor/20230626/copy-1687747287-teasing_2_18.jpg"
-            },
-            {
-                "id": 3,
-                "itemImage": "https://m.romand.co.kr/web/upload/NNEditor/20230620/teasing_2_9.jpeg"
-            },
-            {
-                "id": 4,
-                "itemImage": "https://m.romand.co.kr/web/upload/NNEditor/20230620/teasing_2_13.jpeg"
-            },
-            {
-                "id": 5,
-                "itemImage": "https://m.romand.co.kr/web/upload/NNEditor/20230616/EBA1ACEC95A4XEC82B0EBA6ACEC98A4-EC9993EC9790EBB284EAB1B8EC8AA4-1ECB0A8-ED8BB0ECA795_0828EC8898ECA09529.jpg"
-            }
-
-        ],
-        user: {
-
-            "profileImage": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSpsrY1SG7leZFYE6nDsRusqHOM4zX2ojNPiw&usqp=CAU",
-            "nickname": "흰둥이",
-            "role": "IF",
-        },
-    }
-
-    const options = itemDetailData && itemDetailData.itemOptionDtoList.map((option) => ({
-        value: option.id,
-        label: option.optionName,
-        stock: option.stock,
-        count: 1
-    }));
 
 
     const price = Math.round(itemDetailData.price * ((100 - itemDetailData.discount) * 0.01 ));
 
     const maximumItem = itemDetailData.maximum
     const [totalCount, setTotalCount] = useState(0)
+    
 
-    const handleSelectChange = (selectedValue) => {
-        const newTotalCount = totalCount + selectedValue.count;
-
-        if (newTotalCount > maximumItem) {
-        alert(`최대 ${maximumItem}개까지 선택할 수 있습니다.`);
-        return;
-    }
-
-    setTotalCount(newTotalCount);
-
-    const existingOptionIndex = selectedOptionList.findIndex(
-        (option) => option.value === selectedValue.value
-    );
-
-    if (existingOptionIndex !== -1) {
-        handleIncrement(existingOptionIndex);
-    } else {
-        setSelectedOptionList((prevSelected) => [...prevSelected, selectedValue]);
-    }
+    const handleSelectChange = (selectedOption) => {
+        // 기존에 선택된 옵션들의 개수 합산
+        const totalSelectedCount = selectedOptions.reduce(
+          (total, option) => total + option.count,
+          0
+        );
+      
+        // 선택된 옵션의 개수까지 합산하여 최대 재고를 초과하는지 확인
+        const newTotalCount = totalSelectedCount + selectedOption.count;
+      
+        if (newTotalCount <= maximumItem) {
+          const existingOptionIndex = selectedOptions.findIndex(
+            (option) => option.label === selectedOption.label
+          );
+      
+          if (existingOptionIndex !== -1) {
+            // 이미 선택한 옵션이라면 해당 옵션의 개수를 증가시킵니다.
+            setSelectedOptions((prevSelectedOptions) => {
+              const newSelectedOptions = [...prevSelectedOptions];
+              newSelectedOptions[existingOptionIndex].count += selectedOption.count;
+              return newSelectedOptions;
+            });
+          } else {
+            // 새로운 옵션을 선택한 경우에는 선택한 옵션을 추가합니다.
+            setSelectedOptions((prevSelectedOptions) => [
+              ...prevSelectedOptions,
+              { label: selectedOption.label, count: selectedOption.count },
+            ]);
+          }
+        } else {
+          alert(`최대 ${maximumItem}개까지 선택할 수 있습니다.`);
+        }
       };
+      
+    
+    
+    
 
 
     const handleClearClick = (index) => {
@@ -202,17 +153,17 @@ function ItemDetailBottom () {
     }
 
     const addToCart = () => {
-        const cartItems = selectedOptionList.map((option) => {
-            return {
-                itemId: option.label,
-                count: option.count,
-            }
-        })
-
-
+        // const cartItems = selectedOptionList.map((option) => {
+        //     return {
+        //         item: option.label,
+        //         itemCnt: option.count,
+        //     }
+        // })
         axios
         .post(`${process.env.REACT_APP_API}/api/cart`, {
-            cartItems: cartItems,
+            // cartItems: cartItems,
+            item: "립스틱",
+            itemCnt: 3
         }, {
             headers: { Authorization: token }
         })
@@ -250,6 +201,7 @@ function ItemDetailBottom () {
 
                             </div>
                             <div className={styles.select_box}>
+                                { options && (
                                 <Select 
                                 options={options}
                                 // value={selectedOption}
@@ -283,6 +235,7 @@ function ItemDetailBottom () {
                                     }
                                 })}
                                 />
+                                )}
                             </div>
                             <div className={styles.selected}>
                                 {
@@ -325,7 +278,8 @@ function ItemDetailBottom () {
                                 <div className={styles.button_container}>
                                     <div>
                                         <button 
-                                        className={styles.modal_btn} 
+                                        className={styles.modal_btn}
+                                        onClick={addToCart} 
                                         type="button">Add to Cart</button>
                                     </div>
                                     <div>
@@ -344,4 +298,10 @@ function ItemDetailBottom () {
 
 }
 
-export default ItemDetailBottom;
+export default function ItemDetailWithPersistence(props) {
+  return (
+    <RootWithPersistence>
+      <ItemDetailBottom {...props} />
+    </RootWithPersistence>
+  );
+}
