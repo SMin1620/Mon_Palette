@@ -46,14 +46,14 @@ function DeliveryList() {
   const [update, setUpdate] = useState(false)
 
   useEffect(() => {
-    handleGetAddress()
+    // handleGetAddress()
   },[])
 
   useEffect(() => {
     if (update === true) {
       handleGetAddress()
     }
-    update(false)
+    setUpdate(false)
   },[update])
   
   const handleSetBaseAddress = (id) => {

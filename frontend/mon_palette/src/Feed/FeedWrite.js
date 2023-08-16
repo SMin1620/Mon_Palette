@@ -47,16 +47,22 @@ const FeedWrite = () => {
 
   // 이미지 미리보기 올리기 및 제거
   const handleImageUpload = (e) => {
-    const files = e.target.files[0]
+    const files = e.target.files
     if (!files) {
       setSelectedImages(selectedImages)
     } else {
-      if (selectedImages.length > 9) {
-        alert('최대 10장까지 등록 가능합니다.')
-        document.querySelector("#fileUpload").disabled = true
-      } else {
-        setSelectedImages((prevImages) => [...prevImages, files]);
+      let imageUrlLists = [...selectedImages]
+
+      // 선택한 이미지들의 상대경로를 imageUrlLists에 저장
+      for (let i = 0; i < files.length; i++) {
+        const currentImageUrl = URL.createObjectURL(files[i])
+        imageUrlLists.push(currentImageUrl)
       }
+      if (imageUrlLists.length > 10) {
+        imageUrlLists = imageUrlLists.slice(0, 10);
+        alert("최대 10장까지 등록 가능합니다.")
+      }
+      setSelectedImages(imageUrlLists)
     }
   };
 
@@ -207,7 +213,7 @@ const FeedWrite = () => {
             selectedImages.map((image, index) => (
               <div key={index} className="feed_write_top_image_container">
                 <div className="feed_write_top_image_item">
-                  <img src={URL.createObjectURL(image)} alt={index} />
+                  <img src={image} alt={index} />
                   <button onClick={() => handleRemoveImage(index)}>-</button>
                 </div>
               </div>
