@@ -1,9 +1,6 @@
 package com.palette.palette.domain.cart.service;
 
-import com.palette.palette.domain.cart.dto.CartAddReqDto;
-import com.palette.palette.domain.cart.dto.CartItemDto;
-import com.palette.palette.domain.cart.dto.CartItemOptionDto;
-import com.palette.palette.domain.cart.dto.CartListResDto;
+import com.palette.palette.domain.cart.dto.*;
 import com.palette.palette.domain.cart.entity.Cart;
 import com.palette.palette.domain.cart.entity.CartItem;
 import com.palette.palette.domain.cart.entity.CartItemOption;
@@ -100,13 +97,15 @@ public class CartService {
                             .cartPrice(cartItemOptionDto.getItemOptionCount() * item.getPrice())
                             .build();
 
-                    cartItem.setCartCount(cartItemOptionDto.getItemOptionCount());
-                    cartItem.setCartPrice(itemOption.getItem().getPrice() * cartItemOptionDto.getItemOptionCount());
+                    cartItem.setCartCount(itemCount);
+                    cartItem.setCartPrice(itemPrice);
 
                     cartItemOptionRepository.save(cartItemOption);
+                    cartItemOptionRepository.flush();
                 }
 
                 cartItemRepository.save(cartItem);
+                cartItemRepository.flush();
 
                 totalPrice += item.getDeliveryFee();
             }
@@ -136,7 +135,7 @@ public class CartService {
 
                 for(CartItemOptionDto cartItemOptionDto : cartItemDto.getItemOptionDtoList()){
 
-                    ItemOption itemOption = itemOptionRepository.findById(cartItemOptionDto.getItemOptionId())
+                    ItemOption itemOption = itemOptionRepository.findById(cartItemOptionDto.getItemOptionDetailId())
                             .orElseThrow(() -> new IllegalArgumentException("아이템 옵션을 찾이 못했습니다. Item Option Id : " + cartItemOptionDto.getItemOptionId()));
 
                     totalPrice += itemOption.getItem().getPrice() * cartItemOptionDto.getItemOptionCount();
@@ -152,8 +151,8 @@ public class CartService {
                             .cartPrice(cartItemOptionDto.getItemOptionCount() * item.getPrice())
                             .build();
 
-                    cartItem.setCartCount(cartItemOptionDto.getItemOptionCount());
-                    cartItem.setCartPrice(itemOption.getItem().getPrice() * cartItemOptionDto.getItemOptionCount());
+                    cartItem.setCartCount(itemCount);
+                    cartItem.setCartPrice(itemPrice);
 
                     cartItemOptionRepository.save(cartItemOption);
                 }
@@ -174,6 +173,49 @@ public class CartService {
 
 
 
+    }
+
+    @Transactional
+    public Boolean updateCartItem(HttpServletRequest request, Long itemId, CartUpdateReqDto cartUpdateReqDto){
+        String userEmail = jwtTokenProvider.getUserEmail(jwtTokenProvider.resolveToken(request));
+        Optional<User> user = userRepository.findByEmail(userEmail);
+        Optional<Cart> cart = cartRepository.findByUser(user.get());
+
+        Integer totalCount = cart.get().getCount();
+        Integer totalPrice = cart.get().getPrice();
+
+        Optional<CartItem> cartItem = cartItemRepository.findById(itemId);
+        List<CartItemOption> cartItemOptionList = cartItemOptionRepository.findByCartItemId(cartItem.get().getId());
+
+        totalPrice -= cartItem.get().getCartPrice();
+        totalCount -= cartItem.get().getCartCount();
+
+        Integer itemCount = 0;
+        Integer itemPrice = 0;
+        for(CartItemOption cartItemOption : cartItemOptionList){
+            cartItemOptionRepository.deleteById(cartItemOption.getId());
+        }
+        for(CartItemOptionDto cartItemOptionDto: cartUpdateReqDto.getItemOptionDtoList()){
+            Optional<ItemOption> itemOption = itemOptionRepository.findById(cartItemOptionDto.getItemOptionDetailId());
+            totalPrice += cartItem.get().getItem().getPrice() * cartItemOptionDto.getItemOptionCount();
+            totalCount += cartItemOptionDto.getItemOptionCount();
+
+            itemPrice += cartItem.get().getItem().getPrice() * cartItemOptionDto.getItemOptionCount();
+            itemCount += cartItemOptionDto.getItemOptionCount();
+
+            CartItemOption cartItemOption = CartItemOption.builder()
+                    .itemOption(itemOption.get())
+                    .cartItem(cartItem.get())
+                    .cartCount(cartItemOptionDto.getItemOptionCount())
+                    .cartPrice(cartItem.get().getItem().getPrice() * cartItemOptionDto.getItemOptionCount())
+                    .build();
+            cartItemOptionRepository.save(cartItemOption);
+        }
+        cartItem.get().setCartCount(itemCount);
+        cartItem.get().setCartPrice(itemPrice);
+        cart.get().setCount(totalCount);
+        cart.get().setPrice(totalPrice);
+        return true;
     }
 
     /**
@@ -208,9 +250,11 @@ public class CartService {
             for (CartItemOption cartItemOption:cartItemOptionList) {
 
                 CartItemOptionDto cartItemOptionDto = CartItemOptionDto.builder()
+                        .itemOptionDetailId(cartItemOption.getItemOption().getId())
                         .itemOptionId(cartItemOption.getId())
                         .itemOptionName(cartItemOption.getItemOption().getOptionName())
                         .itemOptionCount(cartItemOption.getCartCount())
+                        .stock(cartItemOption.getItemOption().getStock())
                         .build();
                 cartItemOptionDtoList.add(cartItemOptionDto);
             }

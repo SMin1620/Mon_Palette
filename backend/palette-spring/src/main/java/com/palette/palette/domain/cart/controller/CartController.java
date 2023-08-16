@@ -2,6 +2,7 @@ package com.palette.palette.domain.cart.controller;
 
 import com.palette.palette.common.BaseResponse;
 import com.palette.palette.domain.cart.dto.CartAddReqDto;
+import com.palette.palette.domain.cart.dto.CartUpdateReqDto;
 import com.palette.palette.domain.cart.service.CartService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -27,6 +28,17 @@ public class CartController {
         }catch (Exception e){
             e.printStackTrace();
             return BaseResponse.error("카트에 담기 실패하였습니다.");
+        }
+    }
+
+    @Operation(summary = "카트 아이템 업데이트")
+    @PutMapping("/{itemId}")
+    public BaseResponse updateCartItem(HttpServletRequest request, @PathVariable("itemId") Long itemId, @RequestBody @Valid CartUpdateReqDto cartUpdateReqDto){
+        try{
+            return BaseResponse.success(cartService.updateCartItem(request, itemId, cartUpdateReqDto));
+        }catch (Exception e){
+            e.printStackTrace();
+            return BaseResponse.error("카트 아이템 수정에 실패했습니다.");
         }
     }
 
