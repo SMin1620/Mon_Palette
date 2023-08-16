@@ -9,43 +9,6 @@ import Select from 'react-select'
 import { MinusCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
 
 function ShoppingCart() {
-  const dummydata = [
-    {
-      cartItemId: 1,
-      thumbnail: "",
-      manufact: "나이키",
-      name: "에어포스 1",
-      itemId: 1,
-      itemOptionDtoList: [
-        {
-          itemOptionId: 1,
-          itemOptionCount: 1,
-          itemOptionName: "레드"
-        },
-      ],
-      price: 100000,
-      discount: 10,
-      maximum: 5,
-    }
-  ]
-
-  const dummyOption = {
-    maximum: 5,
-    price: 10000,
-    itemOptionDtoList: [
-      {
-        "id": 1604,
-        "optionName": "레드",
-        "stock": 100
-      },
-      {
-        "id": 1605,
-        "optionName": "오렌지",
-        "stock": 100
-      }
-    ],
-  }
-  
 
   const token = useRecoilValue(loginState)
   const navigate = useNavigate()
@@ -55,36 +18,62 @@ function ShoppingCart() {
   const [productPrice, setProductPrice] = useState([])
   const [totalCost, setTotalCost] = useState(0)
   const [detailItem, setDetailItem] = useState(null)
+  const [cartItemValue, setCartItemValue] = useState(null)
+  const [itemOptionValue, setItemOptionValue] = useState(null)
   // 모달창 관련
   const [modalState, setModalState] = useState(false)
   const [totalCount, setTotalCount] = useState(0)
   const [selectedOptionList, setSelectedOptionList] = useState([]);
   const [optionTotalPrice, setOptionTotalPrice] = useState(0)
+  const [update, setUpdate] = useState(false)
 
   useEffect(() => {
     handleGetData()
   },[])
 
+  useEffect(() => {
+    if (update) {
+      handleGetData()
+    }
+  },[update])
+
   // 전체 장바구니 데이터 받아오기
-  const handleGetData = () => {
-    axios
-      .get(`${process.env.REACT_APP_API}/api/cart`, {
-        headers: { Authorization: token }
-      })
-      .then((response) => {
-        setCartItem(response.data.data.cartItemDtoList)
-      })
-      .catch((error) => {
-        console.error(error)
-      })
+  const handleGetData = async () => {
+    try {
+      await axios
+        .get(`${process.env.REACT_APP_API}/api/cart`, {
+          headers: { Authorization: token }
+        })
+        .then((response) => {
+          console.log(response);
+          setCartItem(response.data.data.cartItemDtoList)
+        })
+        .catch((error) => {
+          console.error(error)
+        })
+    } catch (error) {
+      console.error(error)
+    }
+    setUpdate(false)
   }
 
   // 장바구니에 수정요청
-  const handlePutData = () => {
-    axios
-      .put(`${process.env.REACT_APP_API}/api/cart`)
+  const handlePutData = async () => {
+    try {
+      await axios
+        .put(`${process.env.REACT_APP_API}/api/cart/${cartItemValue}`, {
+          itemId: itemOptionValue,
+          itemOptionDtoList: selectedOptionList,
+        },{
+          headers: { Authorization: token }
+        })
+        .then((response) => {
+          console.log(response)
+        })
+      } catch (error) {
+        console.error(error)
+    }
   }
-
   // 받아온 데이터에서 가격만 뽑기
   useEffect(() => {
     setProductPrice([])
@@ -125,42 +114,39 @@ function ShoppingCart() {
   }
 
   // 옵션 수량 변경
-  const handleEditOption = (itemId, itemOption) => {
-    console.log(itemOption)
+  const handleEditOption = (itemId, itemOption, cartItemId) => {
+    setCartItemValue(cartItemId)
+    setItemOptionValue(itemId)
     setSelectedOptionList(itemOption)
     itemOption.map(option => {
       setTotalCount(prev => prev + option.itemOptionCount)
     })
     // 아이템 디테일로 get요청
-    // axios
-    //   .get(`${process.env.REACT_APP_API}/api/item/detail/${itemId}`, {
-    //     headers: { Authorization: token }
-    //   })
-    //   .then((response) => {
-    //     console.log(response)
-    //     setDetailItem(response.data.data)
-    //     setModalState(true)
-    //   })
+    axios
+      .get(`${process.env.REACT_APP_API}/api/item/detail/${itemId}`, {
+        headers: { Authorization: token }
+      })
+      .then((response) => {
+        setDetailItem(response.data.data)
+      })
     setModalState(true)
   }
-  console.log(selectedOptionList)
 
+  // useEffect(() => {
+  //   if (detailItem) {
+  //     setModalState(true)
+  //   }
+  // },[detailItem])
 
-  useEffect(() => {
-    if (detailItem) {
-      setModalState(true)
-    }
-  },[detailItem])
-
-  let options = dummyOption.itemOptionDtoList.map((option) => ({
+  let options = detailItem&&detailItem.itemOptionDtoList.map((option) => ({
     value: option.id,
     label: option.optionName,
     stock: option.stock,
     count: 1
 }))
 
-  let maximumItem = dummyOption.maximum
-  let price = dummyOption.price
+  let maximumItem = detailItem&&detailItem.maximum
+  let price = detailItem&&detailItem.price
 
   const handleSelectChange = (selectedValue) => {
     const newTotalCount = totalCount + selectedValue.count;
@@ -172,7 +158,7 @@ function ShoppingCart() {
   setTotalCount(newTotalCount);
 
   const existingOptionIndex = selectedOptionList.findIndex(
-    (option) => option.itemOptionId === selectedValue.value
+    (option) => option.itemOptionDetailId === selectedValue.value
   );
 
   if (existingOptionIndex !== -1) {
@@ -180,6 +166,7 @@ function ShoppingCart() {
   } else {
     const selectedOption = {
       itemOptionId: selectedValue.value,
+      itemOptionDetailId: selectedValue.value,
       itemOptionCount: selectedValue.count,
       itemOptionName: selectedValue.label,
       itemOptionStock: selectedValue.stock
@@ -187,6 +174,7 @@ function ShoppingCart() {
     setSelectedOptionList((prevSelected) => [...prevSelected, selectedOption]);
   }
   };
+  console.log(selectedOptionList)
 
   const handleClearClick = (index) => {
     setSelectedOptionList((prevSelected) => {
@@ -284,7 +272,7 @@ function ShoppingCart() {
 
       <div className="shoppingCart_main_body_wrap">
         {
-          dummydata&&dummydata.map(product => {
+          cartItem&&cartItem.map(product => {
             return <div className="shoppingCart_main_body" key={product.cartItemid}>
               <input 
                 type="checkbox"
@@ -306,7 +294,7 @@ function ShoppingCart() {
                       <p className="shoppingCart_main_body_explain_item_name">{product.name}</p>
                       {
                         product.itemOptionDtoList.map(option => (
-                          <p key={option.itemOptionId} className="shoppingCart_main_body_option">
+                          <p key={option.itemOptionDetailId} className="shoppingCart_main_body_option">
                             <span>수량 {option.itemOptionCount}개</span>
                             <span> | </span>
                             <span>{option.itemOptionName}</span>
@@ -324,7 +312,7 @@ function ShoppingCart() {
                   </div>
 
                   <div className="shoppingCart_main_body_rigth_bottom">
-                    <button className="shoppingCart_main_bottom_option" onClick={() => handleEditOption(product.itemId, product.itemOptionDtoList)}>옵션/수량</button>
+                    <button className="shoppingCart_main_bottom_option" onClick={() => handleEditOption(product.itemId, product.itemOptionDtoList, product.cartItemId)}>옵션/수량</button>
                     <div>
                       {
                         product.discount !== 0 ? <div>
@@ -407,7 +395,7 @@ function ShoppingCart() {
               {
                 selectedOptionList && (
                   selectedOptionList.map((option, index) => {
-                    return <div key={option.itemOptionId} className="shoppingCart_modal_body_selected_option">
+                    return <div key={option.itemOptionDetailId} className="shoppingCart_modal_body_selected_option">
                       <div
                         className="shoppingCart_modal_body_selected_option_item"
                       >
