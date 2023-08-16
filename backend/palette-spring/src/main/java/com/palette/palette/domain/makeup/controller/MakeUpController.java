@@ -71,6 +71,11 @@ public class MakeUpController {
 
 
     /**
+     * 메이크업 샘플 이미지 리스트
+     */
+
+
+    /**
      * 이미지 url 엔드포인트 테스트
      */
     @Operation(summary = "이미지 url 엔드포인트 테스트")
