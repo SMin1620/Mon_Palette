@@ -58,7 +58,15 @@
   margin-left: 1rem;
 }
 
-.challengeHome_mid_image_item video {
+.challengeHome_mid_image_item {
+  background-color: #E2E2E2;
+}
+
+.challengeHome_mid_image_item.visible {
+  background-color: white;
+}
+
+.challengeHome_mid_image_item.visible video {
   width: 100px;
   height: 100px;
   object-fit: cover;
@@ -88,6 +96,11 @@
   display: inline-block;
   margin-bottom: 1em;
   border-radius: 10px;
+  background-color: #E2E2E2;
+}
+
+.challengeHome_bottom_info_item.visible {
+  background-color: white;
 }
 
 .challengeHome_bottom_info_item video {
