@@ -9,7 +9,6 @@ import "./ChangeInfo.css"; // 스타일 파일 임포트
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { loginState } from "./Atom/loginState";
 import { userId } from "./Atom/UserId";
-import { IsOAuth } from "./Atom/IsOAuth";
 import { useNavigate } from "react-router-dom";
 import "./Modal.css";
 import AWS from "aws-sdk";
