@@ -1,0 +1,154 @@
+.blank_space {
+    padding-top: 5.5rem;
+}
+
+.thumbnail {
+    overflow: hidden;
+    /* border: 3px solid black; */
+    height: 20rem;
+    overflow: hidden;
+    margin: 0 auto;
+    border-radius: 10px;
+    width: 100%;
+}
+
+
+.thumb_img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* position: absolute; */
+    top: 0;
+    left: 0;
+}
+
+.seller {
+    border-radius: 50%;
+    margin: 1em;
+    width: 50px;
+    height: 50px;
+}
+
+.h5 {
+    margin-bottom: 0.5em;
+    margin-right: 3em;
+    overflow: auto;
+    text-align: center;
+}
+
+.seller_info {
+    display: flex;
+    width: 100%;
+    align-items: center;
+}
+
+.item_container {
+    /* display: flex; */
+    align-items: center; 
+    position: relative;
+    overflow: hidden;
+}
+
+.price_wrap {
+    display: flex;
+    margin-bottom: 1rem;
+}
+
+.discount {
+    color: red;
+    margin-right: 0.5rem;
+    margin-left: 1rem;
+    font-weight: 500;
+}
+
+.price {
+    color: #ccc;
+    margin-right: 0.2rem;
+    text-decoration: line-through;
+}
+
+.result_price {
+    font-weight: 650;
+}
+
+.detail_photo_container {
+    width: 100%;
+    height: auto;
+}
+
+.detail_photo {
+    object-fit: cover;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    display: inline-block;
+}
+
+.name {
+    margin-left: 1rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+
+}
+
+.delivery_fee {
+    margin-left: 1rem;
+    font-weight: 400;
+    margin-bottom: 0.7rem;
+}
+
+.top_btn {
+    position: fixed;
+    bottom: 5rem;
+    right: 30px;
+    z-index: 1;
+    font-size: 25px;
+}
+
+
+.date {
+    margin-left: 1rem;
+    font-weight: 500;
+    font-size: 15px;
+    margin-bottom: 1.5rem;
+    border: 1px solid #fdf2f7;
+    display: inline-block;
+    border-radius: 10px;
+    background-color: #fdf2f7;
+}
+
+.content {
+    margin-left: 1rem;
+    margin-top: 2rem;
+    margin-right: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.content_wrap {
+    border-top: 1px solid #ccc;
+}
+
+.maximum {
+    margin-left: 1rem;
+    margin-bottom: 0.7rem;
+    font-weight: 600;
+}
+
+.more_btn {
+    margin-left: auto;
+    margin-right: 0.5rem;
+}
+
+.delete_btn {
+    font-size: 20px;
+    background-color: transparent;
+    color: #e84c8b;
+    border: none;
+}
+
+.edit_btn {
+    font-size: 20px;
+    background-color: transparent;
+    color: #e84c8b;
+    border: none;
+}

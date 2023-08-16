@@ -43,6 +43,8 @@ import PaymentSucceed from "./Shop/PaymentSucceed";
 import RecommendYoutuber from "./Youtube/RecommendYoutuber";
 
 import { Routes, Route } from "react-router-dom";
+import ItemDetailTop from "./Shop/ItemDetail/ItemDetailTop/ItemDetailTop";
+import ItemDetailBottom from "./Shop/ItemDetail/ItemDetailBottom/ItemDetailBottom";
 
 function App() {
 	return (
@@ -301,7 +303,15 @@ function App() {
 							<RecommendYoutuber />,
 							<NavigationBarBottom />,
 						]}
-					/>					
+					/>
+					<Route
+					path="/shop/shopdetail/:id"
+					element={[
+						<NavigationBarHeader title="Mon, Palette" />,
+						<ItemDetailTop />,
+						<ItemDetailBottom />,
+					]}				
+				/>					
 				</Routes>
 		</div>
 	);
