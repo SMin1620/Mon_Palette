@@ -92,49 +92,50 @@ const HandleProduct = () => {
 					<span className="handleproduct_productCnt">{productCnt}개</span>
 				</div>
 				<div className="handleproduct_content">
-					{productList.map((product, index) => (
-						<div>
-							<hr />
+					{productList &&
+						productList.map((product, index) => (
+							<div>
+								<hr />
 
-							<div key={index} className="handleproduct_object_with_icon">
-								<div
-									className="handleproduct_object"
-									onClick={(index) => {
-										Navigate(`/shop/${product.id}`);
-									}}
-								>
-									<div className="handleproduct_object_img">
-										<img
-											className="handleproduct_object_img_img"
-											src={product.thumbnail}
-											alt={index}
+								<div key={index} className="handleproduct_object_with_icon">
+									<div
+										className="handleproduct_object"
+										onClick={(index) => {
+											Navigate(`/shop/${product.id}`);
+										}}
+									>
+										<div className="handleproduct_object_img">
+											<img
+												className="handleproduct_object_img_img"
+												src={product.thumbnail}
+												alt={index}
+											/>
+										</div>
+										&nbsp; &nbsp;
+										<div>
+											<label className="handleproduct_label">
+												{product.name}
+											</label>
+											<label className="handleproduct_label">
+												{product.price}
+											</label>
+										</div>
+									</div>
+									<div className="handleproduct_object_icon">
+										<EditNoteOutlinedIcon
+											onClick={(e) => {
+												Navigate(`/itemodify/${product.id}`);
+											}}
+										/>
+										<ClearOutlinedIcon
+											onClick={(e) => {
+												deleteItem(product.id);
+											}}
 										/>
 									</div>
-									&nbsp; &nbsp;
-									<div>
-										<label className="handleproduct_label">
-											{product.name}
-										</label>
-										<label className="handleproduct_label">
-											{product.price}
-										</label>
-									</div>
-								</div>
-								<div className="handleproduct_object_icon">
-									<EditNoteOutlinedIcon
-										onClick={(e) => {
-											Navigate(`/itemodify/${product.id}`);
-										}}
-									/>
-									<ClearOutlinedIcon
-										onClick={(e) => {
-											deleteItem(product.id);
-										}}
-									/>
 								</div>
 							</div>
-						</div>
-					))}
+						))}
 				</div>
 			</div>
 			<br />
