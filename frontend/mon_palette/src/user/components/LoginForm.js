@@ -1,7 +1,4 @@
-//비밀번호 재설정 페이지 만들고 링크
-//axios 매핑 주소값 IP값 확인
-
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./LoginForm.css";
 import axios from "axios";
@@ -19,51 +16,37 @@ const LoginForm = () => {
 	const [id, setId] = useRecoilState(userId);
 	const [token, setToken] = useRecoilState(loginState);
 	const Navigate = useNavigate();
+	useEffect(() => {}, [isModalOpen]);
+	const openModal = () => {
+		setIsModalOpen(true);
+	};
 	const closeModal = () => {
 		setIsModalOpen(false);
 	};
 	const handleLogin = () => {
-		console.log("이메일:", email);
-		console.log("비밀번호:", password);
-		axios
-			.post(`${process.env.REACT_APP_API}/api/user/login`, {
-				email: email,
-				password: password,
-			})
-			.then((response) => {
-				if (response.data !== null) {
-					console.log(response);
-					setToken(response.headers.authorization);
-					setId(response.data.data.userId);
-					console.log(response.data.data.userId);
-					Navigate(`/home`);
-				} else {
-					setIsModalOpen(true);
-				}
-			})
-			.catch((err) => {
-				console.error("error", err);
-			});
+		if (isEmailValid && !passwordError) {
+			axios
+				.post(`${process.env.REACT_APP_API}/api/user/login`, {
+					email: email,
+					password: password,
+				})
+				.then((response) => {
+					if (response.data.status === "success") {
+						setToken(response.headers.authorization);
+						setId(response.data.data.userId);
+						Navigate(`/home`);
+					} else {
+						openModal();
+					}
+				})
+				.catch((err) => {
+					console.error("error", err);
+				});
+		} else {
+			openModal();
+		}
 	};
 
-	const sociallogin = () => {
-		axios
-			.get(`${process.env.REACT_APP_API}/login/oauth2/code/${email}`)
-			.then((response) => {
-				if (response.data !== null) {
-					console.log(response);
-					setToken(response.headers.authorization);
-					setId(response.data.data.userId);
-					console.log(response.data.data.userId);
-					Navigate(`/home`);
-				} else {
-					setIsModalOpen(true);
-				}
-			})
-			.catch((err) => {
-				console.error("error", err);
-			});
-	};
 	const validateEmail = () => {
 		if (email.trim() === "") {
 			setIsEmailValid(true);
@@ -80,23 +63,6 @@ const LoginForm = () => {
 		const passwordRegex =
 			/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,20}$/;
 		setPasswordError(!passwordRegex.test(password));
-	};
-
-	const SocialLoginButton = ({ socialMedia, buttonText }) => {
-		const imageSrc = `/static/${socialMedia}.png`; // 소셜 미디어에 따른 이미지 경로 설정
-
-		return (
-			<div className="signUp_social-login-button-container">
-				<button className="signUp_button">
-					<img
-						src={imageSrc}
-						alt={socialMedia}
-						className="signUp_social-media-icon"
-					/>
-					{buttonText}
-				</button>
-			</div>
-		);
 	};
 
 	return (
@@ -152,14 +118,8 @@ const LoginForm = () => {
 				<button onClick={handleLogin}>Login</button>
 			</div>
 
-			<div className="signUp_horizontal-line-container">or</div>
-			<SocialLoginButton
-				socialMedia="google"
-				buttonText="Join with Google"
-				onClick={sociallogin}
-			/>
 			<Modal isOpen={isModalOpen} onClose={closeModal}>
-				<h3>ID나 비밀번호를 확인해주세요 ._.</h3>
+				<h3>ID와 비밀번호를 확인해주세요 ._.</h3>
 			</Modal>
 		</div>
 	);
