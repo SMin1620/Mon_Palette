@@ -28,7 +28,7 @@ public class initDb {
 
     @PostConstruct  // 스프링 빈이 다 등록되고 실행이 된다.
     public void init() {
-        initService.makeupInit();
+//        initService.makeupInit();
     }
 
 
@@ -63,25 +63,25 @@ public class initDb {
             
             for (int i = 1; i <= 7; i++) {
                 MakeUp makeUp = MakeUp.builder()
-                        .name("classpath:/media/가을웜톤" + i + "png").color(color1).build();
+                        .name("가을웜톤" + i + "png").color(color1).build();
                 em.persist(makeUp);
             }
 
             for (int i = 1; i <= 7; i++) {
                 MakeUp makeUp = MakeUp.builder()
-                        .name("classpath:/media/봄웜톤" + i + "png").color(color2).build();
+                        .name("봄웜톤" + i + "png").color(color2).build();
                 em.persist(makeUp);
             }
 
             for (int i = 1; i <= 7; i++) {
                 MakeUp makeUp = MakeUp.builder()
-                        .name("classpath:/media/여름쿨톤" + i + "png").color(color3).build();
+                        .name("여름쿨톤" + i + "png").color(color3).build();
                 em.persist(makeUp);
             }
 
             for (int i = 1; i <= 7; i++) {
                 MakeUp makeUp = MakeUp.builder()
-                        .name("classpath:/media/겨울쿨톤" + i + "png").color(color4).build();
+                        .name("겨울쿨톤" + i + "png").color(color4).build();
                 em.persist(makeUp);
             }
         }
