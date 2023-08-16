@@ -64,13 +64,13 @@ function SearchResultShop({ query }) {
                   headers: { Authorization: Authorization }
               }
           );
-
           if (response.data.data.item.length !== 10) {
               endRef.current = true;
               setLoad(false);
           }
 
           setResultData(prev => [...prev, ...response.data.data.item]);
+          // console.log(resultData)
       } catch (error) {
           console.error(error);
       }
@@ -102,13 +102,22 @@ function SearchResultShop({ query }) {
     <div className={styles["search_result_shop_wrap"]}>
       {
         resultData && resultData.length >0 && resultData.map((shopdata, index) => {
+          const originalPrice = shopdata.price;
+          const discountedPrice = shopdata.price - (shopdata.price * (shopdata.discount / 100));
           return <div key={index} className={styles["search_result_shop_item"]} onClick={ () => goDetail(shopdata.id) }>
-            <img src={shopdata.imgSrc} alt="" className={styles["search_result_shop_shopImg"]}/>
+            <img src={shopdata.thumbnail} alt="" className={styles["search_result_shop_shopImg"]}/>
             <div className={styles["search_result_shop_shopTop"]}>
-              <h3>{shopdata.title}</h3>
-              <p>{shopdata.description.slice(0,12)}</p>
+              <h3>{shopdata.name}</h3>
+              <p>{(shopdata.content || "설명설명설명설명설명설명").slice(0,12)}</p>
             </div>
-              <h3>{shopdata.cost.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} <span>원</span></h3>
+            <div className={styles["price_section"]}>
+              <span className={styles["original_price"]}>
+                {originalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원
+              </span>
+              <h3 className={styles["discounted_price"]}>
+                {discountedPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원
+              </h3>
+            </div>
           </div>
         })
       }

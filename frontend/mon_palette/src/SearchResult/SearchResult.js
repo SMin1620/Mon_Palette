@@ -32,7 +32,7 @@ const SearchResult = () => {
     }
 
     return (
-        <div>
+        <div className={styles['div']}>
             <div className={styles['search-container']}>
                 <SearchInput />
             </div>
