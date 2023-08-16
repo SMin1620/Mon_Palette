@@ -13,6 +13,7 @@ import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
+import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -58,6 +59,7 @@ public class Feed {
     @OneToMany(mappedBy = "feed", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<FeedHashtag> hashtags;
 
+    @CreatedDate
     private LocalDateTime createAt;
 
     private LocalDateTime updateAt;

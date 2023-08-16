@@ -22,12 +22,15 @@ public class OrderCreateResDto {
 
     private Long orderId;
 
+    private Long payId;
+
     public static OrderCreateResDto toDto(Payment payment) {
         return OrderCreateResDto.builder()
                 .name(payment.getName())
                 .totalPrice(payment.getPrice())
                 .paymentMethod(payment.getPaymentMethod())
                 .orderId(payment.getOrder().getId())
+                .payId(payment.getId())
                 .build();
     }
 }

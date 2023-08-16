@@ -1,6 +1,7 @@
 package com.palette.palette;
 
 
+import com.palette.palette.domain.makeup.entity.Color;
 import com.palette.palette.domain.makeup.entity.MakeUpImage;
 import com.palette.palette.domain.makeup.entity.MakeUp;
 import com.palette.palette.domain.user.entity.Role;
@@ -27,7 +28,7 @@ public class initDb {
 
     @PostConstruct  // 스프링 빈이 다 등록되고 실행이 된다.
     public void init() {
-//        initService.colorInit();
+//        initService.makeupInit();
     }
 
 
@@ -37,6 +38,53 @@ public class initDb {
     static class InitService {
 
         private final EntityManager em;
+
+
+        /**
+         * 메이크업 샘플 더미 데이터 
+         */
+        public void makeupInit() {
+            
+            Color color1 = Color.builder()
+                    .name("가을웜톤").build();
+            em.persist(color1);
+
+            Color color2 = Color.builder()
+                    .name("봄웜톤").build();
+            em.persist(color2);
+
+            Color color3 = Color.builder()
+                    .name("여름쿨톤").build();
+            em.persist(color3);
+
+            Color color4 = Color.builder()
+                    .name("가을쿨톤").build();
+            em.persist(color4);
+            
+            for (int i = 1; i <= 7; i++) {
+                MakeUp makeUp = MakeUp.builder()
+                        .name("가을웜톤" + i + "png").color(color1).build();
+                em.persist(makeUp);
+            }
+
+            for (int i = 1; i <= 7; i++) {
+                MakeUp makeUp = MakeUp.builder()
+                        .name("봄웜톤" + i + "png").color(color2).build();
+                em.persist(makeUp);
+            }
+
+            for (int i = 1; i <= 7; i++) {
+                MakeUp makeUp = MakeUp.builder()
+                        .name("여름쿨톤" + i + "png").color(color3).build();
+                em.persist(makeUp);
+            }
+
+            for (int i = 1; i <= 7; i++) {
+                MakeUp makeUp = MakeUp.builder()
+                        .name("겨울쿨톤" + i + "png").color(color4).build();
+                em.persist(makeUp);
+            }
+        }
 
         public void userInit() {
             User user1 = User.builder()
