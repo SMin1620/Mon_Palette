@@ -80,14 +80,16 @@ function Comment() {
           headers: { Authorization: token }
         })
         .then((response) => {
+            console.log(response)
           
-          if (response.data.data.comments.length !== 10) {
+          if (response.data.data.length !== 10) {
             endRef.current = true
             setLoad(false)
-            setComments(response.data.data);
+            setComments((prev) => [...prev, ...response.data.data]);
             // setFeedInfo((prevFeedInfo) => [...prevFeedInfo, ...response.data.data.feeds])
             // setTagInfo(response.data.data.tagRanking)
           } else {
+            setComments((prev) => [...prev, ...response.data.data])
             // setFeedInfo((prevFeedInfo) => [...prevFeedInfo, ...response.data.data.feeds]);
             // setTagInfo(response.data.data.tagRanking)
             preventRef.current = true
@@ -124,19 +126,21 @@ function Comment() {
 
 
     // 댓글 불러오기
-    useEffect(() => {
-        axios
-            .get(`${process.env.REACT_APP_API}/api/feed/${feedId}/comment?page=0`,{
-                headers: { Authorization: token },
-            })
-            .then((response) => {
-                console.log(response.data.data);
-                setComments(response.data.data);
-            })
-            .catch((err) => {
-                console.log(err);
-            });
-    }, [check]);
+    // useEffect(() => {
+    //     axios
+    //         .get(`${process.env.REACT_APP_API}/api/feed/${feedId}/comment?page=0`,{
+    //             headers: { Authorization: token },
+    //         })
+    //         .then((response) => {
+    //             console.log(response.data.data.length);
+    //             setComments(response.data.data);
+    //         })
+    //         .catch((err) => {
+    //             console.log(err);
+    //         });
+    // }, [check]);
+
+    // console.log(comments)
 
     
     // 댓글 Create

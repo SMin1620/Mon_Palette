@@ -24,7 +24,7 @@ function ItemDetailBottom () {
 
     useEffect(() => {
         axios
-        .get(`${process.env.REACT_APP_API}/api/item/detail/1`, {
+        .get(`${process.env.REACT_APP_API}/api/item/detail/1608`, {
          headers: { Authorization: token },
         })
         .then ((response) => {
@@ -202,9 +202,17 @@ function ItemDetailBottom () {
     }
 
     const addToCart = () => {
+        const cartItems = selectedOptionList.map((option) => {
+            return {
+                itemId: option.label,
+                count: option.count,
+            }
+        })
+
+
         axios
         .post(`${process.env.REACT_APP_API}/api/cart`, {
-            
+            cartItems: cartItems,
         }, {
             headers: { Authorization: token }
         })
@@ -227,8 +235,7 @@ function ItemDetailBottom () {
             </div>
 
             {/* 모달창 */}
-            {
-                isModalOpen && (
+          
                 <div className={`${styles.modal_background} ${
                     isModalOpen ? styles.modal_open : ''
                 }`}>
@@ -331,7 +338,7 @@ function ItemDetailBottom () {
                         </div>
                     </div>
                 </div>
-            )}    
+    
         </div>
     )
 
