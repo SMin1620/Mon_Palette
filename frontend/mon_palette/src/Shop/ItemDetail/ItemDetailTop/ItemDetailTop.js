@@ -7,20 +7,24 @@ import axios from "axios"
 import { useRecoilValue } from "recoil";
 import { loginState } from "../../../user/components/Atom/loginState";
 import { userId } from "src/user/components/Atom/UserId";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { MoreOutlined, SendOutlined, EditOutlined, CloseCircleOutlined, DeleteOutlined } from '@ant-design/icons';
 import TopButton from "../TopButton/TopButton";
 
 
 function ItemDetailTop() {
 
     const [itemDetailData, setItemDetailData] = useState("")
+    const [showModal, setShowModal] = useState(false);
 
-    const { itemId } = useParams()
+    const itemId = useParams()
     const token = useRecoilValue(loginState)
+    const userInfo = useRecoilValue(userId)
+    const navigate = useNavigate()
 
     useEffect(() => {
        axios
-       .get(`${process.env.REACT_APP_API}/api/item/detail/1`, {
+       .get(`${process.env.REACT_APP_API}/api/item/detail/${itemId.id}`, {
         headers: { Authorization: token },
        })
        .then ((response) => {
@@ -34,7 +38,8 @@ function ItemDetailTop() {
        })
     },[])
 
-    console.log('안뇽');
+    console.log(itemId);
+
     
     // console.log(ItemDetailData, "check");
     // // console.log(ItemDetailData.user.profileImage);
@@ -134,6 +139,43 @@ function ItemDetailTop() {
     const endDay = createDateFormatted(itemDetailData.endAt)
 
 
+     // 작성자 여부 판단
+     const isCurrentUser = (user) => {
+        if(user === userInfo) {
+            return (
+                true
+                )
+        }
+    }
+
+    const handleMoreClick = () => {
+        if (showModal) {
+            setShowModal(false);
+        } else {
+            setShowModal(true);
+        }
+    };
+
+    const handleDelete = () => {
+        axios
+        .delete(`${process.env.REACT_APP_API}/api/item/${itemId}`, {
+            headers: { Authorization: token },
+        })
+        .then(response => {
+            console.log(response, "아이템 삭제 성공");
+            navigate(`/shop/`);
+            setShowModal(false);
+        })
+        .catch(error => {
+            console.log(error);
+        })
+    }
+
+    const handleEdit = () => {
+        navigate(`/itemmodify/${itemId}`, { state: { itemDetailData }});
+        setShowModal(false);
+    }
+
 
 
     return (
@@ -175,12 +217,34 @@ function ItemDetailTop() {
                             {itemDetailData.user.nickname}
                         </h5>
                     </div>
+                    { isCurrentUser(itemDetailData.user.id) ? (
+                        <div 
+                        className={styles.more_btn}
+                        onClick={handleMoreClick}><MoreOutlined /></div>
+                    ) : (
+                        <div></div>
+                    )}
+                     {/* 모달창 */}
+            { showModal && (
+                <div className={styles.modal}>
+                    <div className={styles.modalContent}>
+                        <button
+                        className={styles.delete_btn}
+                        onClick={handleDelete}><DeleteOutlined /></button>
+                        <button
+                        className={styles.edit_btn}
+                        onClick={handleEdit}><EditOutlined /></button>
+                    </div>
+                </div>
+            )}
                 </div>
                 <div className={styles.name}>
                     <p>{ itemDetailData.name }</p>
                 </div>
             </div>
             )}
+
+           
 
             { itemDetailData && (
             <div className={styles.price_wrap}>

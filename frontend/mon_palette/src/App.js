@@ -296,7 +296,7 @@ function App() {
 					]}
 				/>
 				<Route
-					path="/shop/shopdetail"
+					path="/shop/shopdetail/:id"
 					element={[
 						<NavigationBarHeader title="Mon, Palette" />,
 						<ItemDetailTop />,
