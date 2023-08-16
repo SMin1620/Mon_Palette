@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class CompletePaymentDto {
 
-    private Long id;
+    private Long payId;
 
     private String paymentId;
 
