@@ -44,7 +44,7 @@ public class GoogleController {
 //            cookie2.setPath("https://mon-palette.shop/home");
 //            cookie2.setHttpOnly(true);
 //            response.sendRedirect("https://mon-palette.shop/home");
-            response.sendRedirect(UriComponentsBuilder.fromUriString("http://localhost:3000/oauth")
+            response.sendRedirect(UriComponentsBuilder.fromUriString("https://mon-palette.shop/oauthredirect")
                     .queryParam("accessToken", tokenDto.getAccessToken())
                     .queryParam("refreshToken", tokenDto.getRefreshToken())
                     .queryParam("userId", tokenDto.getUserId())
