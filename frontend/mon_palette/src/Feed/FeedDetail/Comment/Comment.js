@@ -6,7 +6,8 @@ import { loginState } from "../../../user/components/Atom/loginState";
 import { userId } from "src/user/components/Atom/UserId";
 import { useParams } from 'react-router-dom';
 import axios from "axios"
-import { MoreOutlined, SendOutlined } from '@ant-design/icons';
+import { MoreOutlined, SendOutlined, EditOutlined, CloseCircleOutlined } from '@ant-design/icons';
+import { PropagateLoader }  from 'react-spinners';
 // import InfiniteLoader from 'react-window-infinite-loader';
 
 // 댓글 작성시간 구하는 함수
@@ -43,22 +44,103 @@ function Comment() {
     const [modalStates, setModalstates] = useState({});
     const [editingCommentId, setEditingCommentId] = useState(null);
     const [editedContent, setEditedContent] = useState("");
+    const [feedPage, setFeedPage] = useState(0);
+    const [load, setLoad] = useState(true)
+
+    const preventRef = useRef(true)
+    const obsRef = useRef(null);
+    const endRef = useRef(false);
+
+    // useEffect(() => {
+    //     if (props.midCategory !== null ) {
+    //         // setCategoryItem([])
+    //         // handleCategoryItem([])
+    //         const observer = new IntersectionObserver(handleObs, { threshold: 0.5});
+    //         if (obsRef.current) observer.observe(obsRef.current);
+    //         return () => { observer.disconnect(); };
+    //     }
+    // }, [props.midCategory])
+
+    // 무한스크롤 구현해서 피드에서 내려갈때마다 axios 요청 보내자
+    // const handleObs = (entries) => {
+    //     const target = entries[0];
+    //     if (!endRef.current && target.isIntersecting) {
+    //       preventRef.current = false
+    //       // 스크롤 바닥에 도달하면 페이지 번호를 증가시키고 데이터를 가져옴
+    //       setCategoryPage((prevPage) => prevPage + 1);
+    //     }
+    //   };
+
+      
+
+      const getFeed = async () => {
+    try {
+      await axios
+        .get(`${process.env.REACT_APP_API}/api/feed/${feedId}/comment?page=${feedPage}`, {
+          headers: { Authorization: token }
+        })
+        .then((response) => {
+            console.log(response)
+          
+          if (response.data.data.length !== 10) {
+            endRef.current = true
+            setLoad(false)
+            setComments((prev) => [...prev, ...response.data.data]);
+            // setFeedInfo((prevFeedInfo) => [...prevFeedInfo, ...response.data.data.feeds])
+            // setTagInfo(response.data.data.tagRanking)
+          } else {
+            setComments((prev) => [...prev, ...response.data.data])
+            // setFeedInfo((prevFeedInfo) => [...prevFeedInfo, ...response.data.data.feeds]);
+            // setTagInfo(response.data.data.tagRanking)
+            preventRef.current = true
+          }
+        })
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    getFeed(); // axios 요청 보내기
+    const observer = new IntersectionObserver(handleObs, { threshold: 0.5 }); // 페이지 최초 렌더링시 옵저버 생성
+    if (obsRef.current) observer.observe(obsRef.current);
+    return () => { observer.disconnect(); }; // 페이지 언마운트시 옵저버 해제
+  }, [check]);
+
+  useEffect(() => {
+    if (feedPage !== 0) {
+      getFeed();
+    }
+  }, [feedPage]);
+
+  // 무한스크롤 구현해서 피드에서 내려갈때마다 axios 요청 보내자
+  const handleObs = (entries) => {
+    const target = entries[0];
+    if (!endRef.current && target.isIntersecting) {
+      preventRef.current = false
+      // 스크롤 바닥에 도달하면 페이지 번호를 증가시키고 데이터를 가져옴
+      setFeedPage((prevPage) => prevPage + 1);
+    }
+  };
+    
 
 
     // 댓글 불러오기
-    useEffect(() => {
-        axios
-            .get(`${process.env.REACT_APP_API}/api/feed/${feedId}/comment?page=0`,{
-                headers: { Authorization: token },
-            })
-            .then((response) => {
-                console.log(response.data.data);
-                setComments(response.data.data);
-            })
-            .catch((err) => {
-                console.log(err);
-            });
-    }, [check]);
+    // useEffect(() => {
+    //     axios
+    //         .get(`${process.env.REACT_APP_API}/api/feed/${feedId}/comment?page=0`,{
+    //             headers: { Authorization: token },
+    //         })
+    //         .then((response) => {
+    //             console.log(response.data.data.length);
+    //             setComments(response.data.data);
+    //         })
+    //         .catch((err) => {
+    //             console.log(err);
+    //         });
+    // }, [check]);
+
+    // console.log(comments)
 
     
     // 댓글 Create
@@ -175,7 +257,7 @@ function Comment() {
             <div key={comment.id}>
               <div>
                 {
-                    <div className={styles.commentInfo}>
+                    <div className={styles.comment_info}>
                         <div>
                             <img
                             className={styles.img}
@@ -193,13 +275,16 @@ function Comment() {
                             {editingCommentId === comment.id ? (
                                 <div>
                                     <textarea
+                                    className={styles.textarea}
                                     value={editedContent}
                                     onChange={(event) => setEditedContent(event.target.value)}
                                     />
                                     <button 
-                                    className={styles.edit_btn}
-                                    onClick={handleSaveEdit}>Save</button>
-                                    <button onClick={handleCancelEdit}>cancel</button>
+                                    className={styles.icon_btn}
+                                    onClick={handleSaveEdit}><SendOutlined /></button>
+                                    <button 
+                                    className={styles.icon_btn}
+                                    onClick={handleCancelEdit}><CloseCircleOutlined /></button>
                                 </div>
                             ) : (
                                 <p>{comment.content}</p>
@@ -218,9 +303,10 @@ function Comment() {
                             {modalStates[comment.id] && (
                                 <div className={styles.modal}>
                                 <div className={styles.modalContent}>
-                                    <button onClick={() => handleEdit(comment.id)}>수정</button>
+                                    <button 
+                                    className={styles.icon_btn} onClick={() => handleEdit(comment.id)}><EditOutlined /></button>
                                     {/* 닫기 버튼 */}
-                                    <button onClick={() => updateModalState(comment.id, false)}>닫기</button>
+                                    {/* <button onClick={() => updateModalState(comment.id, false)}>닫기</button> */}
                                 </div>
                             </div>
                         )}
@@ -229,6 +315,19 @@ function Comment() {
                 </div>
             </div>
           ))}
+
+          {/* 이부분이 보이면 ref로 무한 스크롤 구현 */}
+            {
+                load ? 
+                <div className="observer_spinner" ref={obsRef}>
+                <PropagateLoader color='#fdf2f7'/>
+                </div>
+                :
+                <div
+                className="observer_last_data"
+                ref={obsRef}
+                >Last Page</div>
+            }
         <div>
             
             <div 

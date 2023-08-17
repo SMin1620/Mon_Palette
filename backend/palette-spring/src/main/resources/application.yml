@@ -1,4 +1,13 @@
+server:
+  port: 8080
+
 spring:
+
+  ########### method ###########
+  profiles:
+    active: local
+  ##############################
+
   jpa:
     hibernate:
       ddl-auto: update
@@ -6,11 +15,13 @@ spring:
       hibernate:
         format_sql: true
         show_sql: true
+
   datasource:
     url: jdbc:h2:tcp://localhost/~/test
     username: sa
     password:
     driver-class-name: org.h2.Driver
+
   h2:
     console:
       enabled: true
@@ -20,6 +31,7 @@ spring:
   security:
     user:
       password: 1234
+
 
   data:
     redis:
@@ -32,6 +44,7 @@ spring:
       host: 127.0.0.1
       password: 1234
 
+
   servlet:
     multipart:
       enabled: true
@@ -39,7 +52,6 @@ spring:
 
   mvc:
     static-path-pattern: /static/**
-
 
 
 springdoc:
@@ -64,12 +76,13 @@ logging:
 jwt:
   header: Authorization
   #HS512 알고리즘을 사용할 것이기 때문에 512bit, 즉 64byte 이상의 secret key를 사용해야 한다.
-  secret: a2FyaW10b2thcmltdG9rYXJpbXRva2FyaW10ba2FyaW10b2thcmltdG9rYXJpbXRva2FyaW10ba2FyaW10b2thcmltdG9rYXJpbXRva2FyaW10ba2FyaW10b2thcmltdG9rYXJpbXRva2FyaW10b
+  secret: ${secret}
 
   token:
     token-validity-in-seconds: 86400 # ttl (초)
     access-token-expiration-sec: 1800
     refresh-token-expiration-sec: 1209600
+
 
   oauth2:
     google:

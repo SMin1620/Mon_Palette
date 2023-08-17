@@ -46,14 +46,14 @@ function DeliveryList() {
   const [update, setUpdate] = useState(false)
 
   useEffect(() => {
-    handleGetAddress()
+    // handleGetAddress()
   },[])
 
   useEffect(() => {
     if (update === true) {
       handleGetAddress()
     }
-    update(false)
+    setUpdate(false)
   },[update])
   
   const handleSetBaseAddress = (id) => {
@@ -69,6 +69,7 @@ function DeliveryList() {
       })
       .then((response) => {
         setAddress(response.data)
+        update(false)
       })
   }
 
@@ -91,10 +92,12 @@ function DeliveryList() {
 
   return (
     <div className="deliveryList">
-      <div className="deliveryList_top_baseList">
+      {/* 기본배송지로 설정되면 제일위로 표시되게 설정 */}
+      <div className="deliveryList_top_base_list">
         {
-          address.map(delivery => {
-            return <div 
+          info.map(delivery => {
+            if (delivery.baseAddress) {
+              return <div 
               className="deliveryList_top_baseList_container"
               key={delivery.id}
               >
@@ -108,13 +111,46 @@ function DeliveryList() {
                   <span>-</span>
                   <span>{delivery.phone.slice(7)}</span>
                 </div>
-                {
-                  delivery.baseAddress ? <div className="deliveryList_top_baseList_baseAddress">
-                    기본배송지
-                    </div>
-                    :
-                    null
-                }
+
+                <div className="deliveryList_top_baseList_baseAddress">
+                  기본배송지
+                </div>
+              </div>
+  
+              <div className="deliveryList_top_baseList_address_info">
+                {/* 주소 3개로 나눴는데 굳이..? */}
+                <span>({delivery.addressNumber})</span>
+                <span>{delivery.address}</span>
+                <p>{delivery.addressDetail}</p>
+              </div>
+  
+              <div className="deliveryList_top_baseList_button">
+                <button onClick={() => handleEditAddress(delivery.id, delivery)}>수정</button>
+                <button onClick={() => handleDeleteAddress(delivery.id)}>삭제</button>
+              </div>
+            </div>
+            }
+          })
+        }
+      </div>
+
+      {/* 기본배송지가 아닌곳들 */}
+      <div className="deliveryList_top_another_list">
+        {
+          info.map(delivery => {
+            if (delivery.baseAddress === false) {
+              return <div 
+              className="deliveryList_top_another_list_container"
+              key={delivery.id}
+              >
+              <div className="deliveryList_top_baseList_user_info">
+                <span>{delivery.userName}</span>
+                <span> | </span>
+                <span>{delivery.phone.slice(0,3)}</span>
+                <span>-</span>
+                <span>{delivery.phone.slice(3,7)}</span>
+                <span>-</span>
+                <span>{delivery.phone.slice(7)}</span>
               </div>
   
               <div className="deliveryList_top_baseList_address_info">
@@ -124,22 +160,15 @@ function DeliveryList() {
                 <p>{delivery.addressDetail}</p>
               </div>
               
-              {
-                delivery.baseAddress ? 
-                <div className="deliveryList_top_baseList_button">
-                  <button>수정</button>
-                  <button>삭제</button>
-                </div>
-                :
-                <div className="deliveryList_top_baseList_button">
-                  <button onClick={() => handleEditAddress(delivery.id, delivery)}>수정</button>
-                  <button onClick={() => handleDeleteAddress(delivery.id)}>삭제</button>
-                  <button 
-                    onClick={() => handleSetBaseAddress(delivery.id)}
-                  >기본 배송지로 설정</button>
-                </div>
-              }
+              <div className="deliveryList_top_baseList_button">
+                <button onClick={() => handleEditAddress(delivery.id, delivery)}>수정</button>
+                <button onClick={() => handleDeleteAddress(delivery.id)}>삭제</button>
+                <button 
+                  onClick={() => handleSetBaseAddress(delivery.id)}
+                >기본 배송지로 설정</button>
+              </div>
             </div>
+            }
           })
         }
       </div>

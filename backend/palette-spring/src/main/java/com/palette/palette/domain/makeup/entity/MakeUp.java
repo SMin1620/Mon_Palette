@@ -19,4 +19,8 @@ public class MakeUp {
 
     private String name;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "color_id")
+    private Color color;
+
 }

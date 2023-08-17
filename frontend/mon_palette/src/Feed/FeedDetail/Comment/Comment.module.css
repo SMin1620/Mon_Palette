@@ -8,9 +8,10 @@
     
 }
 
-.commentInfo {
+.comment_info {
     display: flex;
     align-items: flex-start;
+    /* align-items: center; */
     margin-top: 1em;
     margin-bottom: 0.5em;
 
@@ -23,7 +24,7 @@
     text-align: center;
     /* width: 4em; */
     align-items: flex-start;
-    margin-right: 7px;
+    margin-right: 10px;
 }
 
 .author {
@@ -35,6 +36,7 @@
 
 .time {
     font-size: 13px;
+    margin-top: 5px;
 }
 
 .content_wrap {
@@ -42,6 +44,7 @@
     flex-direction: column;
     justify-content: center;
     overflow: auto;
+    flex: 1;
     /* margin: 1rem; */
 }
 
@@ -50,6 +53,7 @@
     /* 줄바꿈 */
     word-break: break-all;  
     margin-right: 10px;
+   
 }
 
 .input_wrap {
@@ -103,5 +107,22 @@
 }
 
 .more_btn {
-    
+    /* align-self: flex-end; */
+    margin-left: auto;
+    position: relative;
+    display: inline-block;
+    margin-right: 0.5rem;
+
+}
+
+.icon_btn {
+    font-size: 20px;
+    background-color: transparent;
+    color: #e84c8b;
+    border: none;
+}
+
+.textarea {
+    border: none;
+    background-color: #fdf2f7;
 }
