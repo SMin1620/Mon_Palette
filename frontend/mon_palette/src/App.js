@@ -29,6 +29,7 @@ import Search2 from "./Search/Search2";
 import MakeUpStart from "./AIMakeUp/MakeUpStart";
 import StartPage from "./PersonalColor/StartPage";
 import MakeUpResult from "./AIMakeUp/MakeUpResult";
+import ResultPage from "./PersonalColor/ResultPage";
 // 쇼핑몰
 import ShopMain from "./Shop/ShopMain/ShopMain";
 import ShoppingCart from "./Shop/ShoppingCart/ShoppingCart";
@@ -222,6 +223,12 @@ function App() {
 							<StartPage />
 						]}
 					/>
+					<Route
+						path="/mypalette"
+						element={[
+							<ResultPage />,
+						]}				
+					/>		
 					<Route 
 						path="/makeupresult" 
 						element={[
