@@ -55,7 +55,6 @@ function ChallengeCreate() {
         navigate("/challenge")
       })
   }
-  console.log(update)
 
   // AWS에 비디오 저장하고 url 가져오기
   const handleVideoUploadToS3 = async () => {
