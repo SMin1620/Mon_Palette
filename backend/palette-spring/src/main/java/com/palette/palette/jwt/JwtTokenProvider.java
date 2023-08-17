@@ -32,8 +32,8 @@ public class JwtTokenProvider {
     private final Environment env;
 
 
-//    @Value("${jwt.secret}")
-    private String secretKey = env.getProperty("secret");;
+    @Value("${secret}")
+    private String secretKey;
 
     @Value("Authorization")
     private String jwtHeader;
