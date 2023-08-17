@@ -6,10 +6,10 @@ import Select from 'react-select'
 import axios from "axios";
 import { useRecoilValue } from "recoil";
 import { loginState } from "../../../user/components/Atom/loginState";
-import { userId } from "src/user/components/Atom/UserId";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilState } from 'recoil';
-import { selectedOptionsState, RootWithPersistence } from "../../Atom/orderList"
+import { orderList }  from '../../Atom/orderList';
+// import { selectedOptionsState, RootWithPersistence } from "../../Atom/orderList"
 
 function ItemDetailBottom () {
 
@@ -18,12 +18,13 @@ function ItemDetailBottom () {
     const [options, setOptions] = useState([]);
     const [selectedOptionList, setSelectedOptionList] = useState([]);
     const [totalPrice, setTotalPrice] = useState(0);
+    const [selectedItems, setSelectedItems] = useState(null);
 
     const itemId  = useParams()
     const token = useRecoilValue(loginState)
-    const [selectedOptions, setSelectedOptions] = useRecoilState(selectedOptionsState);
+   
 
-
+    const navigate = useNavigate()
 
     useEffect(() => {
         axios
@@ -61,39 +62,27 @@ function ItemDetailBottom () {
     
 
     const handleSelectChange = (selectedOption) => {
-        // 기존에 선택된 옵션들의 개수 합산
-        const totalSelectedCount = selectedOptions.reduce(
-          (total, option) => total + option.count,
-          0
-        );
+      // 기존에 선택된 옵션들의 개수 합산
+      const totalSelectedCount = selectedOptionList.reduce((total, option) => total + option.count, 0);
       
-        // 선택된 옵션의 개수까지 합산하여 최대 재고를 초과하는지 확인
-        const newTotalCount = totalSelectedCount + selectedOption.count;
+      // 선택된 옵션의 개수까지 합산하여 최대 재고를 초과하는지 확인
+      const newTotalCount = totalSelectedCount + selectedOption.count;
       
-        if (newTotalCount <= maximumItem) {
-          const existingOptionIndex = selectedOptions.findIndex(
-            (option) => option.label === selectedOption.label
+      if (newTotalCount <= maximumItem) {
+          const existingOptionIndex = selectedOptionList.findIndex(
+              (option) => option.value === selectedOption.value
           );
-      
+  
           if (existingOptionIndex !== -1) {
-            // 이미 선택한 옵션이라면 해당 옵션의 개수를 증가시킵니다.
-            setSelectedOptions((prevSelectedOptions) => {
-              const newSelectedOptions = [...prevSelectedOptions];
-              newSelectedOptions[existingOptionIndex].count += selectedOption.count;
-              return newSelectedOptions;
-            });
+              handleIncrement(existingOptionIndex);
           } else {
-            // 새로운 옵션을 선택한 경우에는 선택한 옵션을 추가합니다.
-            setSelectedOptions((prevSelectedOptions) => [
-              ...prevSelectedOptions,
-              { label: selectedOption.label, count: selectedOption.count },
-            ]);
+              setSelectedOptionList((prevSelected) => [...prevSelected, selectedOption]);
           }
-        } else {
+      } else {
           alert(`최대 ${maximumItem}개까지 선택할 수 있습니다.`);
-        }
-      };
-      
+      }
+  };
+  
     
     
     
@@ -127,11 +116,11 @@ function ItemDetailBottom () {
           const newSelected = [...prevSelected];
           if (newSelected[index].count > 0) {
             newSelected[index].count -= 1;
-            if (newSelected[index].count === 0) {
-              handleClearClick(index); // If count reaches 0, remove the option
-            }
             setTotalCount((prevTotalCount) => prevTotalCount - 1);
-          }
+            if (newSelected[index].count === 0) {
+                handleClearClick(index); // If count reaches 0, remove the option
+            }
+        }
           return newSelected;
         });
       };
@@ -153,27 +142,66 @@ function ItemDetailBottom () {
     }
 
     const addToCart = () => {
-        // const cartItems = selectedOptionList.map((option) => {
-        //     return {
-        //         item: option.label,
-        //         itemCnt: option.count,
-        //     }
-        // })
+      const cartItemDtoList = selectedOptionList.map((option) => ({
+        cartItemId: 0, 
+        itemId: itemDetailData.id, 
+        name: itemDetailData.name, 
+        price: itemDetailData.price, 
+        discount: itemDetailData.discount,
+        manufact: itemDetailData.manufact, 
+        deliveryFee: itemDetailData.deliveryFee, 
+        thumbnail: itemDetailData.thumbnail, 
+        maximum: itemDetailData.maximum, 
+        itemOptionDtoList: [
+          {
+            itemOptionId: option.value, 
+            itemOptionDetailId: option.value, 
+            stock: option.stock,
+            itemOptionCount: option.count,
+          },
+        ],
+      }));
+
+      const requestBody = { cartItemDtoList };
+
         axios
-        .post(`${process.env.REACT_APP_API}/api/cart`, {
-            // cartItems: cartItems,
-            item: "립스틱",
-            itemCnt: 3
-        }, {
-            headers: { Authorization: token }
+        .post(`${process.env.REACT_APP_API}/api/cart/insert`, requestBody, {
+            headers: { Authorization: token },
         })
         .then ((response) => {
             console.log(response);
+            setSelectedOptionList([]);
         })
         .catch((err) => {
             console.log(err);
         })
     }
+
+    const addToBuy = () => {
+      const buyItemDtoList = selectedOptionList.map((option) => ({
+        cartItemId: 0, 
+        itemId: itemDetailData.id, 
+        name: itemDetailData.name, 
+        price: itemDetailData.price, 
+        discount: itemDetailData.discount,
+        manufact: itemDetailData.manufact, 
+        deliveryFee: itemDetailData.deliveryFee, 
+        thumbnail: itemDetailData.thumbnail, 
+        maximum: itemDetailData.maximum, 
+        itemOptionDtoList: [
+          {
+            itemOptionId: option.value, 
+            itemOptionDetailId: option.value, 
+            stock: option.stock,
+            itemOptionCount: option.count,
+          },
+        ],
+      }));
+
+      setSelectedItems(buyItemDtoList);
+      navigate(`/payment`, { state: selectedItems })
+    }
+    console.log(selectedItems);
 
 
     
@@ -285,6 +313,7 @@ function ItemDetailBottom () {
                                     <div>
                                         <button 
                                         className={styles.modal_btn}
+                                        onClick={addToBuy}
                                         type="button">Buy</button>
                                     </div>
                                 </div>
@@ -298,10 +327,5 @@ function ItemDetailBottom () {
 
 }
 
-export default function ItemDetailWithPersistence(props) {
-  return (
-    <RootWithPersistence>
-      <ItemDetailBottom {...props} />
-    </RootWithPersistence>
-  );
-}
+export default ItemDetailBottom;
+
