@@ -42,7 +42,7 @@ const TrendingSearches = () => {
       </div>
       <ul className={styles.ul}>
         {TrendingWords.map((item, index) => (
-          <li key={index} onClick={() => handleSearchFromTrending(item.keyword)}>
+          <li key={index} onClick={(e) => handleSearchFromTrending(item.keyword)}>
             <Link to={`/result?query=${item.keyword}`} style={{textDecoration: "none"}}>
               <span className={styles.span}>{index + 1}.</span>
               <div className={styles.li}>{item.keyword}</div>

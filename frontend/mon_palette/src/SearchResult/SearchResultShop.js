@@ -48,10 +48,12 @@ function SearchResultShop({ query }) {
   const [load, setLoad] = useState(true);
   const endRef = useRef(false);
   const obsRef = useRef(null);
+  const [loading, setLoading] = useState(false);
 
   const handleObs = (entries) => {
     const target = entries[0];
-    if (!endRef.current && target.isIntersecting) {
+    if (!loading && !endRef.current && target.isIntersecting) {
+        setLoading(true);
         setItemPage((prevPage) => prevPage + 1);
     }
 };
@@ -70,20 +72,21 @@ function SearchResultShop({ query }) {
           }
 
           setResultData(prev => [...prev, ...response.data.data.item]);
-          // console.log(resultData)
+          setLoading(false);
       } catch (error) {
           console.error(error);
+          setLoading(false);
       }
   };
 
 
   useEffect(() => {
-      fetchUserData(0);  
-      setResultData([]);
+    setResultData([]);
+    setItemPage(0)  
   }, [query]);
 
   useEffect(() => {
-      if (itemPage > 0) {  
+      if (itemPage >= 0) {  
           fetchUserData(itemPage);
       }
 
