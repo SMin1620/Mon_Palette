@@ -53,7 +53,8 @@ public class GoogleService {
             case "google": {
                 user.setEmail(userResourceNode.get("email").asText());
                 user.setName(userResourceNode.get("name").asText());
-                user.setProfileImage(userResourceNode.get("picture").asText());
+                user.setProfileImage("https://ssafy9-monpalette.s3.ap-northeast-2.amazonaws.com/baseimg.png");
+                user.setBackgroundImage("https://ssafy9-monpalette.s3.ap-northeast-2.amazonaws.com/background.jpg");
                 break;
             } default: {
                 throw new RuntimeException("UNSUPPORTED SOCIAL TYPE");

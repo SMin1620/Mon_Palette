@@ -98,7 +98,7 @@ public class User {
                 .isLeave(false)
                 .nickname(userOauthDto.getName())
                 .backgroundImage("https://ssafy9-monpalette.s3.ap-northeast-2.amazonaws.com/background.jpg")
-                .profileImage(userOauthDto.getProfileImage())
+                .profileImage("https://ssafy9-monpalette.s3.ap-northeast-2.amazonaws.com/baseimg.png")
                 .isOauth(true)
                 .build();
     }

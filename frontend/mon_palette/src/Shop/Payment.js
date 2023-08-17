@@ -33,6 +33,8 @@ const Payment = () => {
     function getAggregatedList(data) {
         const result = [];
     
+        const isFromCheckedItems = data[0] && data[0].itemOptionDtoList !== undefined;
+    
         const groupedByName = data.reduce((acc, item) => {
             if (!acc[item.name]) {
                 acc[item.name] = [];
@@ -41,13 +43,14 @@ const Payment = () => {
             return acc;
         }, {});
     
-        let totalSumPrice = 0; 
+        let totalSumPrice = 0;
     
         for (const name in groupedByName) {
             const items = groupedByName[name];
             
             const aggregatedOptions = items.reduce((acc, item) => {
-                item.itemOptionDtoList.forEach(option => {
+                const optionsSource = isFromCheckedItems ? item.itemOptionDtoList : item.Options;
+                optionsSource.forEach(option => {
                     const existingOption = acc.find(o => o.itemOptionName === option.itemOptionName);
                     if (existingOption) {
                         existingOption.itemOptionCount += option.itemOptionCount;
@@ -59,7 +62,7 @@ const Payment = () => {
             }, []);
         
             const itemSumPrice = items.reduce((sum, item) => sum + item.sumPrice, 0);
-            totalSumPrice += itemSumPrice; 
+            totalSumPrice += itemSumPrice;
     
             result.push({
                 name: name,
@@ -79,7 +82,7 @@ const Payment = () => {
     
     
     // const orderData = getAggregatedList(checkedItems);
-    const orderData = getAggregatedList( checkedItems ? checkedItems : selectedItems )
+    const orderData = getAggregatedList(checkedItems || selectedItems);
     console.log(orderData.items);  
     console.log(orderData.totalSumPrice);  
     
