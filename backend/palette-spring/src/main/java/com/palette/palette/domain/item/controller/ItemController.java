@@ -13,6 +13,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.BitSet;
+
 
 @RestController
 @RequiredArgsConstructor
@@ -88,12 +90,23 @@ public class ItemController {
 
     @Operation(summary = "카테고리별 아이템 조회")
     @GetMapping("/category")
-    public BaseResponse getCategoryItem(@RequestParam("categoryid") Long id){
+    public BaseResponse getCategoryItem(@RequestParam("categoryid") Long id, @RequestParam("page") int page){
         try{
-            return BaseResponse.success(itemService.getCategoryItem(id));
+            return BaseResponse.success(itemService.getCategoryItem(id, page, 10));
         }catch (Exception e){
             e.printStackTrace();
             return BaseResponse.error("카테고리별 아이템 조회에 실패했습니다.");
+        }
+    }
+
+    @Operation(summary = "상품 관리 페이지")
+    @GetMapping("/manage")
+    public BaseResponse getManageItem(HttpServletRequest request){
+        try{
+            return BaseResponse.success(itemService.getManageItem(request));
+        }catch (Exception e){
+            e.printStackTrace();
+            return BaseResponse.error("상품 관리 페이지 조회에 실패했습니다.");
         }
     }
 
