@@ -101,7 +101,7 @@ const HandleProduct = () => {
 									<div
 										className="handleproduct_object"
 										onClick={(index) => {
-											Navigate(`/shop/${product.id}`);
+											Navigate(`/shop/shopdetail/${product.id}`);
 										}}
 									>
 										<div className="handleproduct_object_img">
@@ -124,7 +124,7 @@ const HandleProduct = () => {
 									<div className="handleproduct_object_icon">
 										<EditNoteOutlinedIcon
 											onClick={(e) => {
-												Navigate(`/itemodify/${product.id}`);
+												Navigate(`/itemmodify/${product.id}`);
 											}}
 										/>
 										<ClearOutlinedIcon
