@@ -47,6 +47,8 @@ import ItemDetailTop from "./Shop/ItemDetail/ItemDetailTop/ItemDetailTop";
 import ItemDetailBottom from "./Shop/ItemDetail/ItemDetailBottom/ItemDetailBottom";
 import OrderList from './OrderList';
 import OrderDetail from "./OrderDetail";
+import OauthRedirect from "./user/components/OauthRedirect";
+import PrivateRoute from "./PrivateRoute"
 
 function App() {
 	return (
@@ -62,272 +64,353 @@ function App() {
 					<Route
 						path="/home"
 						element={[
-							<NavigationBarHeader title="Mon, Palette" />,
-							<Home />,
-							<NavigationBarBottom />,
+							<PrivateRoute>
+								<NavigationBarHeader title="Mon, Palette" />,
+								<Home />
+								<NavigationBarBottom />
+							</PrivateRoute>
 						]}
 					/>
 					<Route
 						path="/feed/"
 						element={[
-							<NavigationBarHeader title="Mon, Palette" />,
-							<NavigationBarBottom />,
-							<FeedMain />,
+							<PrivateRoute>
+								<NavigationBarHeader title="Mon, Palette" />
+								<NavigationBarBottom />
+								<FeedMain />
+							</PrivateRoute>
 						]}
 					/>
 					<Route
 						path="/feed/write"
 						element={[
-							<NavigationBarBottom />, 
-							<FeedWrite />
+							<PrivateRoute>
+								<NavigationBarBottom />
+								<FeedWrite />
+							</PrivateRoute>
 						]}
 					/>
 					<Route
 						path="/feed/edit/:id"
 						element={[
-							<NavigationBarBottom />,
-							<FeedEdit />
+							<PrivateRoute>
+								<NavigationBarBottom />
+								<FeedEdit />
+							</PrivateRoute>
 						]}
 					/>
 					<Route
 						path="/feed/:feedId"
 						element={[
-							<NavigationBarHeader title="Mon, Palette" />,
-							<FeedDetail />,
-							<NavigationBarBottom />
+							<PrivateRoute>
+								<NavigationBarHeader title="Mon, Palette" />
+								<FeedDetail />
+								<NavigationBarBottom />
+							</PrivateRoute>
 						]}
 					/>
 					<Route
 						path="/challenge"
 						element={[
-							<NavigationBarHeader title="Mon, Palette" />,
-							<NavigationBarBottom />,
-							<ChallengeHome />,
+							<PrivateRoute>
+								<NavigationBarHeader title="Mon, Palette" />
+								<NavigationBarBottom />
+								<ChallengeHome />
+							</PrivateRoute>
 						]}
 					/>
 					<Route
 						path="/challenge/create"
 						element={[
-							<NavigationBarBottom />,
-							<ChallengeCreate />
+							<PrivateRoute>
+								<NavigationBarBottom />
+								<ChallengeCreate />
+							</PrivateRoute>
 						]}
 					/>
 					<Route
 						path="/challenge/edit/:id"
 						element={[
-							<NavigationBarBottom />,
-							<ChallengeEdit />
+							<PrivateRoute>
+								<NavigationBarBottom />
+								<ChallengeEdit />
+							</PrivateRoute>
 						]}
 					/>
 					<Route
 						path="/challenge/:challengeId"
 						element={[
-							<ChallengeDetail />,
-							<NavigationBarBottom />,
+							<PrivateRoute>
+								<ChallengeDetail />
+								<NavigationBarBottom />
+							</PrivateRoute>
 						]}
 					/>
 					<Route
 						path="/userpage/:id"
 						element={[
-							<NavigationBarHeader title="Mon, Palette" />,
-							<NavigationBarBottom />,
-							<UserPage />,
+							<PrivateRoute>
+								<NavigationBarHeader title="Mon, Palette" />
+								<NavigationBarBottom />
+								<UserPage />
+							</PrivateRoute>
 						]}
 					/>
 					<Route
 						path="signupform"
 						element={[
-							<NavigationBarHeader title="Sign up" />, 
-							<SignUpForm />
+							<PrivateRoute>
+								<NavigationBarHeader title="Sign up" />
+								<SignUpForm />
+							</PrivateRoute>
 						]}
 					/>
 					<Route
 						path="/changenickname"
 						element={[
-							<NavigationBarHeader title="ChangeNickname" />,
-							<ChangeNickname />,
-							<NavigationBarBottom />,
+							<PrivateRoute>
+								<NavigationBarHeader title="ChangeNickname" />
+								<ChangeNickname />
+								<NavigationBarBottom />
+							</PrivateRoute>
 						]}
 					/>
 					<Route
 						path="/changepassword"
 						element={[
-							<NavigationBarHeader title="ChangePassword" />,
-							<ChangePassword />,
-							<NavigationBarBottom />,
+							<PrivateRoute>
+								<NavigationBarHeader title="ChangePassword" />
+								<ChangePassword />
+								<NavigationBarBottom />
+							</PrivateRoute>
 						]}
 					/>
 					<Route
 						path="/changephone"
 						element={[
-							<NavigationBarHeader title="ChangePhone" />,
-							<ChangePhone />,
-							<NavigationBarBottom />,
+							<PrivateRoute>
+								<NavigationBarHeader title="ChangePhone" />
+								<ChangePhone />
+								<NavigationBarBottom />
+							</PrivateRoute>
 						]}
 					/>
 					<Route
 						path="/changeaddress"
 						element={[
-							<NavigationBarHeader title="ChangeAddress" />,
-							<ChangeAddress />,
-							<NavigationBarBottom />,
+							<PrivateRoute>
+								<NavigationBarHeader title="ChangeAddress" />
+								<ChangeAddress />
+								<NavigationBarBottom />
+							</PrivateRoute>
 						]}
 					/>
 					<Route
 						path="/changeinfo/"
 						element={[
-							<NavigationBarHeader title="Edit profile" />,
-							<NavigationBarBottom />,
-							<ChangeInfo />,
+							<PrivateRoute>
+								<NavigationBarHeader title="Edit profile" />
+								<NavigationBarBottom />
+								<ChangeInfo />
+							</PrivateRoute>
 						]}
 					/>
 					<Route
 						path="/userpage/following/:id"
 						element={[
-							<NavigationBarHeader title="following" />,
-							<NavigationBarBottom />,
-							<FollowingList />,
+							<PrivateRoute>
+								<NavigationBarHeader title="following" />
+								<NavigationBarBottom />
+								<FollowingList />
+							</PrivateRoute>
 						]}
 					/>
 					<Route
 						path="/userpage/follower/:id"
 						element={[
-							<NavigationBarHeader title="follower" />,
-							<NavigationBarBottom />,
-							<FollowerList />,
+							<PrivateRoute>
+								<NavigationBarHeader title="follower" />
+								<NavigationBarBottom />
+								<FollowerList />
+							</PrivateRoute>
 						]}
 					/>
 					<Route
 						path="/search/"
 						element={[
-							<NavigationBarBottom />, 
-							<Search2 />
+							<PrivateRoute>
+								<NavigationBarBottom />
+								<Search2 />
+							</PrivateRoute>
 						]}
 					/>
 					<Route
 						path="/result"
 						element={[
-							<NavigationBarBottom />, 
-							<SearchResult />
+							<PrivateRoute>
+								<NavigationBarBottom />
+								<SearchResult />
+							</PrivateRoute>
 						]}
 					/>
 					<Route 
 						path="/AImakeup" 
 						element={[
-							<MakeUpStart />
+							<PrivateRoute>
+								<MakeUpStart />
+							</PrivateRoute>
 						]} />
 					<Route
 						path="/personalcolor"
 						element={[
-							<StartPage />
+							<PrivateRoute>
+								<StartPage />
+							</PrivateRoute>
 						]}
 					/>
 					<Route 
 						path="/makeupresult" 
 						element={[
-							<MakeUpResult />
+							<PrivateRoute>
+								<MakeUpResult />
+							</PrivateRoute>
 							]}
 					/>
 					<Route
 						path="/shop"
 						element={[
-							<NavigationBarHeader title="Mon, Palette" item="shop"/>,
-							<ShopMain />,
-							<NavigationBarBottom />
+							<PrivateRoute>
+								<NavigationBarHeader title="Mon, Palette" item="shop"/>
+								<ShopMain />
+								<NavigationBarBottom />
+							</PrivateRoute>
 						]}
 					/>
 					<Route
 						path="/cart"
 						element={[
-							<NavigationBarHeader title="Mon, Palette" item="shop"/>,
-							<ShoppingCart />,
-							<NavigationBarBottom />
+							<PrivateRoute>
+								<NavigationBarHeader title="Mon, Palette" item="shop"/>
+								<ShoppingCart />
+								<NavigationBarBottom />
+							</PrivateRoute>
 						]}
 					/>
 					<Route
 						path="/itemregist"
 						element={[
-							<NavigationBarHeader title="Mon, Palette" />,
-							<NavigationBarBottom />,
-							<ItemRegist />,
+							<PrivateRoute>
+								<NavigationBarHeader title="Mon, Palette" />
+								<NavigationBarBottom />
+								<ItemRegist />
+							</PrivateRoute>
 						]}
 					/>
 					<Route
 						path="/handleProduct"
 						element={[
-							<NavigationBarHeader title="" />,
-							<NavigationBarBottom />,
-							<HandleProduct />,
+							<PrivateRoute>
+								<NavigationBarHeader title="" />
+								<NavigationBarBottom />
+								<HandleProduct />
+							</PrivateRoute>
 						]}
 					/>
 					<Route
 						path="/deliveryregist"
 						element={[
-							<NavigationBarHeader title="" />,
-							<NavigationBarBottom />,
-							<DeliveryRegist />,
+							<PrivateRoute>
+								<NavigationBarHeader title="" />
+								<NavigationBarBottom />
+								<DeliveryRegist />
+							</PrivateRoute>
 						]}
 					/>
 					<Route
 						path="/deliveryList"
 						element={[
-							<NavigationBarHeader title="Edit address" />,
-							<DeliveryList />,
-							// <NavigationBarBottom />
+							<PrivateRoute>
+								<NavigationBarHeader title="Edit address" />
+								<DeliveryList />
+								<NavigationBarBottom />
+							</PrivateRoute>
 						]}
 					/>
 					<Route
 						path="/orderList"
 						element={[
-							<NavigationBarHeader title="Mon, Palette" />,
-							<OrderList />,
-							<NavigationBarBottom />
+							<PrivateRoute>
+								<NavigationBarHeader title="Mon, Palette" />
+								<OrderList />
+								<NavigationBarBottom />
+							</PrivateRoute>
 						]}
 					/>
 					<Route
 						path="/order/:id"
 						element={[
-							<NavigationBarHeader title="Mon, Palette" />,
-							<OrderDetail />,
-							<NavigationBarBottom />
+							<PrivateRoute>
+								<NavigationBarHeader title="Mon, Palette" />
+								<OrderDetail />
+								<NavigationBarBottom />
+							</PrivateRoute>
 						]}
 					/>
 					<Route
 						path="/payment"
 						element={[
-							<Payment />,
+							<PrivateRoute>
+								<Payment />
+							</PrivateRoute>
 						]}
 					/>
 					<Route
 						path="/paymentsucceed"
 						element={[
-							<NavigationBarHeader title="Mon, Palette" />,
-							<NavigationBarBottom />,
-							<PaymentSucceed />,
+							<PrivateRoute>
+								<NavigationBarHeader title="Mon, Palette" />
+								<NavigationBarBottom />
+								<PaymentSucceed />
+							</PrivateRoute>
 						]}
 					/>
 					<Route
 						path="/paymentfailed"
 						element={[
-							<NavigationBarHeader title="Mon, Palette" />,
-							<PaymentFailed />,
-							<NavigationBarBottom />,
+							<PrivateRoute>
+								<NavigationBarHeader title="Mon, Palette" />
+								<PaymentFailed />
+								<NavigationBarBottom />
+							</PrivateRoute>
 						]}
 					/>		
 					<Route
 						path="/recommendyoutube"
 						element={[
-							// <NavigationBarHeader title="Mon, Palette" />,
-							<RecommendYoutuber />,
-							<NavigationBarBottom />,
+							<PrivateRoute>
+								<RecommendYoutuber />
+								<NavigationBarBottom />
+							</PrivateRoute>
 						]}
 					/>
 					<Route
 					path="/shop/shopdetail/:id"
 					element={[
-						<NavigationBarHeader title="Mon, Palette" />,
-						<ItemDetailTop />,
-						<ItemDetailBottom />,
+						<PrivateRoute>
+							<NavigationBarHeader title="Mon, Palette" />
+							<ItemDetailTop />
+							<ItemDetailBottom />
+							</PrivateRoute>
+					]}				
+				/>					
+					<Route
+					path="/oauthredirect"
+					element={[
+						<PrivateRoute>
+							<NavigationBarHeader title="Mon, Palette" />
+							<OauthRedirect />
+							<ItemDetailBottom />
+							</PrivateRoute>
 					]}				
 				/>					
 				</Routes>

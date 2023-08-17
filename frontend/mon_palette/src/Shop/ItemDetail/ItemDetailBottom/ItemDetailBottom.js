@@ -8,7 +8,6 @@ import { useRecoilValue } from "recoil";
 import { loginState } from "../../../user/components/Atom/loginState";
 import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilState } from 'recoil';
-import { orderList }  from '../../Atom/orderList';
 // import { selectedOptionsState, RootWithPersistence } from "../../Atom/orderList"
 
 function ItemDetailBottom () {
