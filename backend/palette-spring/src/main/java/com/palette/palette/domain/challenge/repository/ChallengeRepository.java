@@ -3,6 +3,7 @@ package com.palette.palette.domain.challenge.repository;
 import com.palette.palette.domain.challenge.dto.list.ChallengeResDto;
 import com.palette.palette.domain.challenge.entity.Challenge;
 import com.palette.palette.domain.feed.entity.Feed;
+import com.palette.palette.domain.user.entity.User;
 import io.lettuce.core.dynamic.annotation.Param;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -39,5 +40,7 @@ public interface ChallengeRepository extends JpaRepository<Challenge, Long>, Cha
             "order by c.createAt desc"
     )
     List<Challenge> findAllByRecentFollow(@Param("twentyFourHoursAgo") LocalDateTime twentyFourHoursAgo, @Param("userEmail") String userEmail);
+
+    List<Challenge> findByUser(User user);
 
 }
