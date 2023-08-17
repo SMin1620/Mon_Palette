@@ -8,7 +8,7 @@ import { useRecoilValue } from "recoil";
 import { loginState } from "../../../user/components/Atom/loginState";
 import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilState } from 'recoil';
-import { orderList }  from '../../Atom/orderList';
+
 // import { selectedOptionsState, RootWithPersistence } from "../../Atom/orderList"
 
 function ItemDetailBottom () {
@@ -19,6 +19,8 @@ function ItemDetailBottom () {
     const [selectedOptionList, setSelectedOptionList] = useState([]);
     const [totalPrice, setTotalPrice] = useState(0);
     const [selectedItems, setSelectedItems] = useState(null);
+    const [check, setCheck] = useState(false);
+    const [showModal, setShowModal] = useState(false);
 
     const itemId  = useParams()
     const token = useRecoilValue(loginState)
@@ -52,7 +54,11 @@ function ItemDetailBottom () {
         }
     }, [itemDetailData]);
 
-    
+    useEffect (()=> {
+      if (check) {
+        navigate(`/payment`, { state: selectedItems })
+      }
+    },[check])
 
 
     const price = Math.round(itemDetailData.price * ((100 - itemDetailData.discount) * 0.01 ));
@@ -79,7 +85,7 @@ function ItemDetailBottom () {
               setSelectedOptionList((prevSelected) => [...prevSelected, selectedOption]);
           }
       } else {
-          alert(`최대 ${maximumItem}개까지 선택할 수 있습니다.`);
+          setShowModal(true);
       }
   };
   
@@ -99,17 +105,21 @@ function ItemDetailBottom () {
     };
     
     const handleIncrement = (index) => {
-        setSelectedOptionList((prevSelected) => {
-          const newSelected = [...prevSelected];
-          if (newSelected[index].count + 1 <= maximumItem) {
-            newSelected[index].count += 1;
-            setTotalCount((prevTotalCount) => prevTotalCount + 1);
-        } else {
-            alert(`최대 ${maximumItem}개까지 선택할 수 있습니다.`);
-        }
-        return newSelected;
-        });
-      };
+      // 총 선택된 옵션들의 개수 합산
+      const totalSelectedCount = selectedOptionList.reduce((total, option) => total + option.count, 0);
+      
+      if (totalSelectedCount + 1 <= maximumItem) {
+          setSelectedOptionList((prevSelected) => {
+              const newSelected = [...prevSelected];
+              newSelected[index].count += 1;
+              setTotalCount((prevTotalCount) => prevTotalCount + 1);
+              return newSelected;
+          });
+      } else {
+          setShowModal(true);
+      }
+  };
+  
 
       const handleDecrement = (index) => {
         setSelectedOptionList((prevSelected) => {
@@ -199,11 +209,14 @@ function ItemDetailBottom () {
       }));
 
       setSelectedItems(buyItemDtoList);
-      navigate(`/payment`, { state: selectedItems })
+      setCheck(true);
+      
+    
     }
-    console.log(selectedItems);
 
-
+    const closeAlert = () => {
+      setShowModal(false);
+    }
     
 
 
@@ -232,18 +245,14 @@ function ItemDetailBottom () {
                                 { options && (
                                 <Select 
                                 options={options}
-                                // value={selectedOption}
                                 onChange={handleSelectChange}
-                                // components={{
-                                //     Option: CustomOption
-                                // }}
                                 styles={{
                                     control: (baseStyles, state) => ({
                                       ...baseStyles,
                                       borderColor: state.isFocused ? 'pink' : 'pink',
                                       boxShadow: state.isFocused ? '0 0 0 2px hotpink' : 'hotpink', // Add boxShadow for focus
                                       '&:hover': {
-                                        borderColor: 'pink', // Add hover style
+                                        borderColor: 'pink', 
                                       },
                                     }),
                                     option: (baseStyles, state) => ({
@@ -319,6 +328,22 @@ function ItemDetailBottom () {
                                 </div>
                                 
                         </div>
+                        { showModal && (
+                          <div className={styles.alert_wrap}>
+                            <div className={styles.alert}>
+                              <div className={styles.container}>
+                                <div>
+                                {`최대 ${maximumItem}개까지 선택할 수 있습니다.`}
+                                </div>
+                                <div>
+                                  <button
+                                  className={styles.alert_btn}
+                                  onClick={closeAlert}>확인</button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        )}
                     </div>
                 </div>
     
