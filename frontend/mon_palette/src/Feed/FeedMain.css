@@ -71,8 +71,10 @@
 
 .feedMain_body_info_item_bottom img {
   width: 30px !important;
+  height: 30px !important;
   border-radius: 50% !important;
   margin-right: 0.5rem!important;
+  object-fit: cover;
 }
 
 .feedMain_body_info_item_bottom p {
