@@ -45,9 +45,10 @@ function DeliveryList() {
   const [address, setAddress] = useState([])
   // const [update, setUpdate] = useState(false)
 
-  // useEffect(() => {
-  //   handleGetAddress()
-  // },[])
+  useEffect(() => {
+    handleGetAddress()
+    console.log("실행")
+  },[])
 
   // useEffect(() => {
   //   if (update === true) {
@@ -69,6 +70,7 @@ function DeliveryList() {
       })
       .then((response) => {
         setAddress(response.data)
+        console.log(address)
       })
   }
 
@@ -89,11 +91,12 @@ function DeliveryList() {
       })
   }
 
+
   return (
     <div className="deliveryList">
       <div className="deliveryList_top_baseList">
         {
-          info.map(delivery => {
+          address.map(delivery => {
             return <div 
               className="deliveryList_top_baseList_container"
               key={delivery.id}

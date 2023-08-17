@@ -6,6 +6,17 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { loginState } from '../user/components/Atom/loginState';
 import * as PortOne from '@portone/browser-sdk/v2';
 
+const info = 
+  {
+    id: 1,
+    userName: "정수완",
+    phone: "01026595557",
+    addressNumber: 12345,
+    address: "부산 서구 초장동 43-6",
+    addressDetail: "신화헤라 502호",
+    isMain: 1
+  }
+
 const Payment = () => {
     const [userInfo, setUserInfo] = useState([]);
     const navigate = useNavigate();
@@ -64,6 +75,8 @@ const Payment = () => {
             totalSumPrice: totalSumPrice
         };
     }
+
+    
     
     // const orderData = getAggregatedList(checkedItems);
     const orderData = getAggregatedList( checkedItems ? checkedItems : selectedItems )
