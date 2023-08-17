@@ -110,6 +110,11 @@ const StartPage = () => {
           <button className={styles.button2} onClick={handleStartLoading} disabled={!uploadedImage}>
             Start
           </button>
+          <div className={styles.explain}>
+            <p>어둡지 않은 곳에서 촬영하되</p> 
+            <p>눈, 코, 입이 다 잘 나온 사진을 사용해주세요!</p>
+          </div>
+          
         </div>
       )}
       {isLoading && <LoadingPage />}
