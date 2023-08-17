@@ -14,4 +14,5 @@ public class UserOauthDto {
     private String email;
     private String name;
     private String profileImage;
+    private String backgroundImage;
 }
