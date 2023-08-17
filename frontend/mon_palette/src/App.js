@@ -37,7 +37,7 @@ import ItemRegist from "./Shop/ItemRegist";
 import ItemModify from "./Shop/ItemModify";
 import HandleProduct from "./Shop/HandleProduct";
 import DeliveryRegist from "./Shop/delivery/DeliveryRegist";
-import DeliveryList from "./DeliveryList";
+import DeliveryList from "./Shop/delivery/DeliveryList";
 import Payment from "./Shop/Payment";
 import PaymentFailed from "./Shop/PaymentFailed";
 import PaymentSucceed from "./Shop/PaymentSucceed";
