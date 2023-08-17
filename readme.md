@@ -64,7 +64,7 @@
 | Platform | React </br> Flutter |
 | WAS | Spring Boot |
 | DB | Mysql DB  </br> Redis  </br> |
-| 언어 | Java </br>JavaScript |
+| 언어 | Java </br>JavaScript Python |
 | IDE | Intellij IDEA </br>Visual Studio Code |
 | 형상관리 | GIT </br> JIRA |
 
@@ -74,8 +74,8 @@
    
 ## Distributing Roles
 ### 👨‍💻 Front-end
-* 팀장 조은정 : 회원가입, 로그인, 유저, 상품등록, 상품수정, 판매상품관리, AI 화이트 밸런스 알고리즘
-* 팀원 정수완 : 퍼블리싱, api 연동, 피드, 챌린지, 네비게이션바, 라우터보안, 장바구니, 카테고리, 쇼핑몰 메인, 배송지 수정, 주문목록, 해시태그, S3, 플러터
+* 팀장 조은정 : 회원가입, 로그인, 유저, 상품등록, 상품수정, 판매상품관리, AI 화이트 밸런스 알고리즘, 배송지 추가
+* 팀원 정수완 : 퍼블리싱, api 연동, 피드, 챌린지, 네비게이션바, 라우터보안, 장바구니, 카테고리, 쇼핑몰 메인, 배송지 조회, 주문목록, 해시태그, S3, 플러터
 * 팀원 김예슬 : 피드 상세페이지, 아이템 상세페이지, 퍼블리싱, UI/UX, api 연동, 퍼블리싱, 디자인, 좋아요 목록페이지, 댓글
 * 팀원 오수빈 : 검색, 검색결과, 결제, 퍼스널 커러, UI/UX디자인, 퍼블리싱, api 연동
 
@@ -101,10 +101,34 @@
 ![요구사항정의서](https://ssafy9-monpalette.s3.ap-northeast-2.amazonaws.com/%EC%9A%94%EA%B5%AC%EC%82%AC%ED%95%AD3.PNG)
 ![요구사항정의서](https://ssafy9-monpalette.s3.ap-northeast-2.amazonaws.com/%EC%9A%94%EA%B5%AC%EC%82%AC%ED%95%AD4.PNG)
  
+## [시스템아키텍쳐](https://app.cloudcraft.co/blueprint/ea72a24d-6513-442b-ba5e-7aee7736f3d3)
+![시스템아키텍쳐](https://ssafy9-monpalette.s3.ap-northeast-2.amazonaws.com/%EC%8B%9C%EC%8A%A4%ED%85%9C+%EC%95%84%ED%82%A4%ED%85%8D%EC%B3%90+%EC%B5%9C%EC%B5%9C%EC%B5%9C%EC%B5%9C%EC%A2%85.png)
 
-## [API definition](https://docs.google.com/spreadsheets/d/12nOguE9l1JOKt8SKRY-HHSe4u4cLdYqLRlauNgJj_Zs/edit?usp=sharing)
-![API정의서](https://user-images.githubusercontent.com/108394795/201238605-5e83d503-0237-43e7-8839-3b2017058d9d.png)
+
+## [API definition](https://www.notion.so/API-c5f7220e363848309c1d41426c298fbb#8f6ca5c482f84f07b0d98d9e8a660182)
+![API정의서](https://ssafy9-monpalette.s3.ap-northeast-2.amazonaws.com/API%EC%A0%95%EC%9D%98%EC%84%9C/%EA%B2%80%EC%83%891.PNG)
+![API정의서](https://ssafy9-monpalette.s3.ap-northeast-2.amazonaws.com/API%EC%A0%95%EC%9D%98%EC%84%9C/%EA%B2%80%EC%83%892.PNG)
+![API정의서](https://ssafy9-monpalette.s3.ap-northeast-2.amazonaws.com/API%EC%A0%95%EC%9D%98%EC%84%9C/%EB%8C%93%EA%B8%80.PNG)
+![API정의서](https://ssafy9-monpalette.s3.ap-northeast-2.amazonaws.com/API%EC%A0%95%EC%9D%98%EC%84%9C/%EB%A9%94%EC%9D%B8%ED%8E%98%EC%9D%B4%EC%A7%80.PNG)
+![API정의서](https://ssafy9-monpalette.s3.ap-northeast-2.amazonaws.com/API%EC%A0%95%EC%9D%98%EC%84%9C/%EB%B0%B0%EC%86%A1.PNG)
+![API정의서](https://ssafy9-monpalette.s3.ap-northeast-2.amazonaws.com/API%EC%A0%95%EC%9D%98%EC%84%9C/%EC%83%81%ED%92%881.PNG)
+![API정의서](https://ssafy9-monpalette.s3.ap-northeast-2.amazonaws.com/API%EC%A0%95%EC%9D%98%EC%84%9C/%EC%83%81%ED%92%882.PNG)
+![API정의서](https://ssafy9-monpalette.s3.ap-northeast-2.amazonaws.com/API%EC%A0%95%EC%9D%98%EC%84%9C/%EC%9E%A5%EB%B0%94%EA%B5%AC%EB%8B%88.PNG)
+![API정의서](https://ssafy9-monpalette.s3.ap-northeast-2.amazonaws.com/API%EC%A0%95%EC%9D%98%EC%84%9C/%EC%A3%BC%EB%AC%B81.PNG)
+![API정의서](https://ssafy9-monpalette.s3.ap-northeast-2.amazonaws.com/API%EC%A0%95%EC%9D%98%EC%84%9C/%EC%A3%BC%EB%AC%B82.PNG)
+![API정의서](https://ssafy9-monpalette.s3.ap-northeast-2.amazonaws.com/API%EC%A0%95%EC%9D%98%EC%84%9C/%EC%B1%8C%EB%A6%B0%EC%A7%801.PNG)
+![API정의서](https://ssafy9-monpalette.s3.ap-northeast-2.amazonaws.com/API%EC%A0%95%EC%9D%98%EC%84%9C/%EC%B1%8C%EB%A6%B0%EC%A7%802.PNG)
+![API정의서](https://ssafy9-monpalette.s3.ap-northeast-2.amazonaws.com/API%EC%A0%95%EC%9D%98%EC%84%9C/%EC%B1%8C%EB%A6%B0%EC%A7%803.PNG)
+![API정의서](https://ssafy9-monpalette.s3.ap-northeast-2.amazonaws.com/API%EC%A0%95%EC%9D%98%EC%84%9C/%EC%B9%B4%ED%85%8C%EA%B3%A0%EB%A6%AC.PNG)
+![API정의서](https://ssafy9-monpalette.s3.ap-northeast-2.amazonaws.com/API%EC%A0%95%EC%9D%98%EC%84%9C/%EC%BB%AC%EB%9F%AC.PNG)
+![API정의서](https://ssafy9-monpalette.s3.ap-northeast-2.amazonaws.com/API%EC%A0%95%EC%9D%98%EC%84%9C/%ED%94%BC%EB%93%9C1.PNG)
+![API정의서](https://ssafy9-monpalette.s3.ap-northeast-2.amazonaws.com/API%EC%A0%95%EC%9D%98%EC%84%9C/%ED%94%BC%EB%93%9C2.PNG)
+![API정의서](https://ssafy9-monpalette.s3.ap-northeast-2.amazonaws.com/API%EC%A0%95%EC%9D%98%EC%84%9C/%ED%94%BC%EB%93%9C3.PNG)
+![API정의서](https://ssafy9-monpalette.s3.ap-northeast-2.amazonaws.com/API%EC%A0%95%EC%9D%98%EC%84%9C/%ED%94%BC%EB%93%9C%EC%A2%8B%EC%95%84%EC%9A%94.PNG)
+![API정의서](https://ssafy9-monpalette.s3.ap-northeast-2.amazonaws.com/API%EC%A0%95%EC%9D%98%EC%84%9C/%ED%9A%8C%EC%9B%901.PNG)
+![API정의서](https://ssafy9-monpalette.s3.ap-northeast-2.amazonaws.com/API%EC%A0%95%EC%9D%98%EC%84%9C/%ED%9A%8C%EC%9B%902.PNG)
+![API정의서](https://ssafy9-monpalette.s3.ap-northeast-2.amazonaws.com/API%EC%A0%95%EC%9D%98%EC%84%9C/%ED%9A%8C%EC%9B%902.PNG)
  
   
-## [구현 영상](https://www.youtube.com/watch?v=bXAIobVNImg)
-[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/bXAIobVNImg/0.jpg)](https://www.youtube.com/watch?v=bXAIobVNImgo)
+## [구현 영상]()
+[![IMAGE ALT TEXT HERE](썸네일)](영상정보)
