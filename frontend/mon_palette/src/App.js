@@ -360,6 +360,7 @@ function App() {
 						path="/payment"
 						element={[
 							<PrivateRoute>
+								<NavigationBarHeader title="Mon, Palette" />
 								<Payment />
 							</PrivateRoute>
 						]}
