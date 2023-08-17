@@ -50,7 +50,7 @@ const SpringWarm = ({ handleRestart }) => {
             </div>
             <div className={styles.page2}>
               <div className={styles['backend-response-scroll']}>
-                <BackendResponseExample />
+                {/* <BackendResponseExample /> */}
                 <div className={styles.image}></div>
                 <BackendResponseDescription />
               </div>  

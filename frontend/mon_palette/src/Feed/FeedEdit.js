@@ -142,7 +142,7 @@ function FeedEdit(props) {
     <div className="feed_edit">
       <div className="feed_edit_top">
         <ArrowBackIcon sx={{ fontSize: 20 }}className="feed_write_top_back"/>
-        <h2>Edit Profile</h2>
+        <h2>Edit feed</h2>
         <div onClick={handleUpload} className="feed_edit_top_upload">edit</div>
       </div>
 

@@ -236,7 +236,7 @@ const ItemRegist = () => {
 			.then((response) => {
 				console.log(response);
 
-				Navigate(`/producthandle`);
+				Navigate(`/handleproduct`);
 			})
 			.catch((error) => {
 				console.error(error);

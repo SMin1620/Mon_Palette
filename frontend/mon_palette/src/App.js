@@ -29,13 +29,15 @@ import Search2 from "./Search/Search2";
 import MakeUpStart from "./AIMakeUp/MakeUpStart";
 import StartPage from "./PersonalColor/StartPage";
 import MakeUpResult from "./AIMakeUp/MakeUpResult";
+import ResultPage from "./PersonalColor/ResultPage";
 // 쇼핑몰
 import ShopMain from "./Shop/ShopMain/ShopMain";
 import ShoppingCart from "./Shop/ShoppingCart/ShoppingCart";
 import ItemRegist from "./Shop/ItemRegist";
+import ItemModify from "./Shop/ItemModify";
 import HandleProduct from "./Shop/HandleProduct";
 import DeliveryRegist from "./Shop/delivery/DeliveryRegist";
-import DeliveryList from "./DeliveryList";
+import DeliveryList from "./Shop/delivery/DeliveryList";
 import Payment from "./Shop/Payment";
 import PaymentFailed from "./Shop/PaymentFailed";
 import PaymentSucceed from "./Shop/PaymentSucceed";
@@ -45,10 +47,10 @@ import RecommendYoutuber from "./Youtube/RecommendYoutuber";
 import { Routes, Route } from "react-router-dom";
 import ItemDetailTop from "./Shop/ItemDetail/ItemDetailTop/ItemDetailTop";
 import ItemDetailBottom from "./Shop/ItemDetail/ItemDetailBottom/ItemDetailBottom";
-import OrderList from './OrderList';
+import OrderList from "./OrderList";
 import OrderDetail from "./OrderDetail";
 import OauthRedirect from "./user/components/OauthRedirect";
-import PrivateRoute from "./PrivateRoute"
+import PrivateRoute from "./PrivateRoute";
 
 function App() {
 	return (
@@ -103,7 +105,7 @@ function App() {
 						path="/feed/:feedId"
 						element={[
 							<PrivateRoute>
-								<NavigationBarHeader title="Mon, Palette" />
+								<NavigationBarHeader />
 								<FeedDetail />
 								<NavigationBarBottom />
 							</PrivateRoute>
@@ -159,10 +161,8 @@ function App() {
 					<Route
 						path="signupform"
 						element={[
-							<PrivateRoute>
-								<NavigationBarHeader title="Sign up" />
-								<SignUpForm />
-							</PrivateRoute>
+							<NavigationBarHeader title="Sign up" />,
+							<SignUpForm />
 						]}
 					/>
 					<Route
@@ -398,23 +398,21 @@ function App() {
 					path="/shop/shopdetail/:id"
 					element={[
 						<PrivateRoute>
-							<NavigationBarHeader title="Mon, Palette" />
+							<NavigationBarHeader />
 							<ItemDetailTop />
 							<ItemDetailBottom />
-							</PrivateRoute>
-					]}				
-				/>					
-					<Route
+						</PrivateRoute>,
+					]}
+				/>
+				<Route
 					path="/oauthredirect"
 					element={[
-						<PrivateRoute>
-							<NavigationBarHeader title="Mon, Palette" />
-							<OauthRedirect />
-							<ItemDetailBottom />
-							</PrivateRoute>
-					]}				
-				/>					
-				</Routes>
+						<NavigationBarHeader title="Mon, Palette" />,
+						<OauthRedirect />,
+						<ItemDetailBottom />,
+					]}
+				/>
+			</Routes>
 		</div>
 	);
 }
