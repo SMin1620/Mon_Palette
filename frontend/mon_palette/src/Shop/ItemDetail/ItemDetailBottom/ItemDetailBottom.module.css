@@ -208,36 +208,40 @@
     /* color: #e84c8b; */
 }
 
-
-/* .modal_open {
-    animation: slideUp 0.1s ease ;
-    transform: translateY(0%);
+.alert_wrap {
+    justify-content: center;
+    align-items: center;
 }
 
-.modal_close {
-    animation: slideDown 0.5s ease;
-    transform: translateY(100%);
+.alert {
+    z-index: 9;
+    background-color: white;
+    border: 1.5px solid #ccc;
+    border-radius: 10px;
+    width: 70%;
+    height: 90px;
+    text-align: center;
+    position: fixed;
+    top: 67%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    justify-content: center;
+    margin: 0 auto;
 }
 
-@keyframes slideUp {
-    0% {
-        opacity: 0;
-        transform: translate3d(0, 100%, 0);
-    }
-    100% {
-        opacity: 1;
-        transform: translate3d(0, 0, 0);
-    }
+.alert_btn {
+    background-color: #ccc;
+    border: none;
+    color: white;
+    border-radius: 5px;
+    width: 50px;
+    height: 30px;
+    margin-top: 0.3rem;
 }
 
-
-@keyframes slideDown {
-    0% {
-        opacity: 1;
-        transform: translateY(0);
-    }
-    100% {
-        opacity: 0;
-        transform: translateY(100%);
-    }
-} */
+.container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%)
+}
