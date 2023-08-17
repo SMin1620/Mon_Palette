@@ -103,8 +103,8 @@ function ItemDetailBottom() {
       } else {
           setShowModal(true); // maximum을 초과하면 모달 표시
       }
-  };
-  
+ 	 	};
+	}
   
 
     const handleClearClick = (index) => {
@@ -141,7 +141,7 @@ function ItemDetailBottom() {
           setShowModal(true);
       }
   };
-
+  
 	const handleDecrement = (index) => {
 		setSelectedOptionList((prevSelected) => {
 			const newSelected = [...prevSelected];
