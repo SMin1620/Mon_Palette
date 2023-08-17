@@ -37,7 +37,7 @@ const StartPage = () => {
 
     axios({
       method: "POST",
-      url: `${process.env.PERSONAL_API}/api/personal`,
+      url: 'https://mon-palette.shop:8000/api/django/personal',
       // mode: "cors",
       headers: {
         "Content-Type": "multipart/form-data", 
@@ -53,7 +53,7 @@ const StartPage = () => {
 
       axios.put(`${process.env.REACT_APP_API}/api/personal`,
         {
-          personalColor: response.data.personal,
+          body : {personalColor: response.data.personal},
         },
         {
           headers: {Authorization: Authorization} 
@@ -110,6 +110,11 @@ const StartPage = () => {
           <button className={styles.button2} onClick={handleStartLoading} disabled={!uploadedImage}>
             Start
           </button>
+          <div className={styles.explain}>
+            <p>어둡지 않은 곳에서 촬영하되</p> 
+            <p>눈, 코, 입이 다 잘 나온 사진을 사용해주세요!</p>
+          </div>
+          
         </div>
       )}
       {isLoading && <LoadingPage />}

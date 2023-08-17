@@ -20,19 +20,16 @@ const SpringWarm = ({ handleRestart }) => {
   }
     const BackendResponseDescription = () => {
       return (
-      <div className={styles['result']}>
-        <div className={styles.hashtag}>#화사 #따뜻 #부드러움</div>
         <div className={styles['result-description']}>
+        <div className={styles.hashtag}>#화사 #따뜻 #부드러움</div>
         <div className={styles.description}>
-        Best : 노란색이 선명한 핑크, 피치 그린, 
-        </div>
-        <div className={styles.description2}>
-        살구색, 웜베이지
+        <div>Best :</div>
+        <div className={styles.color}> 노란색이 선명한 핑크, 피치 그린, 살구색, 웜베이지</div> 
         </div>
         <div className={styles.description}> 
-        Worst : 블랙, 차가운 화이트, 보라색, 실버 
+        <div>Worst :</div>
+        <div className={styles.color}> 블랙, 차가운 화이트, 보라색, 실버 </div>
         </div>
-      </div>
     </div>
       )
     };
@@ -51,9 +48,9 @@ const SpringWarm = ({ handleRestart }) => {
                 <BackendResponseExample />
               </div>
             </div>
-            <div className={styles.page1}>
+            <div className={styles.page2}>
               <div className={styles['backend-response-scroll']}>
-                <BackendResponseExample />
+                {/* <BackendResponseExample /> */}
                 <div className={styles.image}></div>
                 <BackendResponseDescription />
               </div>  

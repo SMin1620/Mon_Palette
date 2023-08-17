@@ -1,0 +1,89 @@
+server:
+  ssl:
+    key-store: classpath:keystore.p12
+    key-store-type: PKCS12
+    key-store-password: 1234
+    enabled: true
+  port: 8080
+
+
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+        dialect: org.hibernate.dialect.MySQL8Dialect
+
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/palette?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul
+    username: root
+    password: 1234
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  security:
+    user:
+      password: 1234
+
+
+  data:
+    redis:
+      lettuce:
+        pool:
+          max-active: 10
+          max-idle: 10
+          min-idle: 2
+
+      port: 6379
+      host: 127.0.0.1
+
+
+  servlet:
+    multipart:
+      enabled: true
+      location: ./media/img/
+
+  mvc:
+    static-path-pattern: /static/**
+
+
+
+springdoc:
+  default-consumes-media-type: application/json;charset=UTF-8
+  default-produces-media-type: application/json;charset=UTF-8
+  paths-to-match: /**
+  swagger-ui:
+    path: /
+    display-request-duration: true
+    groups-order: desc
+    operations-sorter: alpha
+    disable-swagger-default-url: true
+  api-docs:
+    groups:
+      enabled: true
+
+logging:
+  level:
+    org.hibernate.sql: debug
+    org.hibernate.type: trace
+
+jwt:
+  header: Authorization
+  #HS512 알고리즘을 사용할 것이기 때문에 512bit, 즉 64byte 이상의 secret key를 사용해야 한다.
+  secret: ${secret}
+
+  token:
+    token-validity-in-seconds: 86400 # ttl (초)
+    access-token-expiration-sec: 1800
+    refresh-token-expiration-sec: 1209600
+
+
+  oauth2:
+    google:
+      client-id: ${oauth2.google.client-id}
+      client-secret: ${oauth2.google.client-secret}
+      redirect-uri: ${oauth2.google.redirect-uri}
+      token-uri: ${oauth2.google.token-uri}
+      resource-uri: ${oauth2.google.resource-uri}

@@ -24,7 +24,8 @@ const UserPage = () => {
 	const [isoauth, setIsOauth] = useState(false);
 	const [buttonText, setButtonText] = useState("팔로우");
 	const [feed, setFeed] = useState([]);
-	const [getinfo, setGetInfo] = useState(null);
+	const [challenge, setChallenge] = useState([]);
+	const [getinfo, setGetInfo] = useState("feed");
 	const Authorization = useRecoilValue(loginState);
 	const Navigate = useNavigate();
 	const { id } = useParams();
@@ -71,9 +72,9 @@ const UserPage = () => {
 					setIsInfluence(response.data.data.isInfluence);
 					setFeed(response.data.data.feed);
 					setIsOauth(response.data.data.isOauth);
+					setChallenge(response.data.data.challengeResDtoList);
 					console.log(response.data.data.feed);
 
-					console.log(response.data.data.feed[0]);
 					setIsMe(response.data.data.isMe);
 					if (!response.data.data.isMe) {
 						//내 페이지가 아니고
@@ -98,71 +99,19 @@ const UserPage = () => {
 		// setFollowing(0);
 		// setIsInfluence("USER");
 	}, [buttonText]); // 빈 배열을 넣어서 컴포넌트가 처음 렌더링될 때 한 번만 실행되도록 합니다.
-	useEffect(() => {
-		if (getinfo !== null) {
-			if (getinfo === "feed") {
-				getFeed();
-				setGetInfo(null);
-			} else if (getinfo === "challenge") {
-				getChallenge();
-				setGetInfo(null);
-			} else if (getinfo === "liked") {
-				getLiked();
-				setGetInfo(null);
-			}
-		}
-	}, [getinfo]); // 빈 배열을 넣어서 컴포넌트가 처음 렌더링될 때 한 번만 실행되도록 합니다.
+	useEffect(() => {}, [getinfo]);
 
 	const handleFeedDetail = (feedId) => {
 		if (getinfo === "feed") {
 			Navigate(`/feed/${feedId}`);
-		} else if (getinfo === "challenge") {
-			Navigate(`/challenge/${feedId}`);
 		} else {
 			Navigate(`/challenge/${feedId}`);
 		}
 	};
 
-	const getFeed = () => {
-		axios
-			.get(`${process.env.REACT_APP_API}/api/user/feed/${id}`, {
-				headers: { Authorization: Authorization },
-			})
-			.then((response) => {
-				console.log(response.data);
-				if (response.data !== null) {
-					console.log(response.data);
-					setFeed(response.data.data.feed);
-				}
-			});
+	const handleChallengeDetail = (id) => {
+		Navigate(`/challenge/${id}`);
 	};
-	const getChallenge = () => {
-		axios
-			.get(`${process.env.REACT_APP_API}/api/user/challenge/${id}`, {
-				headers: { Authorization: Authorization },
-			})
-			.then((response) => {
-				console.log(response.data);
-				if (response.data !== null) {
-					console.log(response.data);
-					setFeed(response.data.data.feed);
-				}
-			});
-	};
-	const getLiked = () => {
-		axios
-			.get(`${process.env.REACT_APP_API}/api/user/liked/${id}`, {
-				headers: { Authorization: Authorization },
-			})
-			.then((response) => {
-				console.log(response.data);
-				if (response.data !== null) {
-					console.log(response.data);
-					setFeed(response.data.data.feed);
-				}
-			});
-	};
-
 	return (
 		<div className="mypage_container">
 			<div className="mypage_background-container">
@@ -216,6 +165,28 @@ const UserPage = () => {
 					{isInfluence === "USER" ? (
 						<div className="mypage_menu_button">
 							<Link to="/changenickname">
+								<button className="mypage_button5">
+									<AssignmentOutlinedIcon />
+									<div className="mypage_group-left">order</div>
+								</button>
+							</Link>
+							<Link to="/cart">
+								<button className="mypage_button6">
+									<ShoppingCartOutlinedIcon />
+									<div className="mypage_group-left">cart</div>
+								</button>
+							</Link>
+
+							<Link to="/changeinfo">
+								<button className="mypage_button7">
+									<SettingsOutlinedIcon />
+									<div className="mypage_group-left">info</div>
+								</button>
+							</Link>
+						</div>
+					) : (
+						<div className="mypage_menu_button">
+							<Link to="/feedwrite">
 								<button className="mypage_button1">
 									<AssignmentOutlinedIcon />
 									<div className="mypage_group-left">order</div>
@@ -227,55 +198,19 @@ const UserPage = () => {
 									<div className="mypage_group-left">cart</div>
 								</button>
 							</Link>
-							<Link to="/feed/write">
+							<Link to="/handleproduct">
 								<button className="mypage_button3">
-									<AddOutlinedIcon />
-									<div className="mypage_group-left">write</div>
+									<AddShoppingCartOutlinedIcon />
+									<div className="mypage_group-left">sell</div>
 								</button>
 							</Link>
-							<Link to={`/changeinfo/${isoauth}`}>
+
+							<Link to={`/changeinfo`}>
 								<button className="mypage_button4">
 									<SettingsOutlinedIcon />
 									<div className="mypage_group-left">info</div>
 								</button>
 							</Link>
-						</div>
-					) : (
-						<div>
-							<div className="mypage_menu_button">
-								<Link to="/feedwrite">
-									<button className="mypage_button5">
-										<AssignmentOutlinedIcon />
-										<div className="mypage_group-left">주문목록</div>
-									</button>
-								</Link>
-								<Link to="/cart">
-									<button className="mypage_button6">
-										<ShoppingCartOutlinedIcon />
-										<div className="mypage_group-left">장바구니</div>
-									</button>
-								</Link>
-							</div>
-							<div className="mypage_menu_button">
-								<Link to="/handleproduct">
-									<button className="mypage_button7">
-										<AddShoppingCartOutlinedIcon />
-										<div className="mypage_group-left">상품판매</div>
-									</button>
-								</Link>
-								<Link to="/feed/write">
-									<button className="mypage_button8">
-										<AddOutlinedIcon />
-										<div className="mypage_group-left">만들기</div>
-									</button>
-								</Link>
-								<Link to={`/changeinfo/${isoauth}`}>
-									<button className="mypage_button9">
-										<SettingsOutlinedIcon />
-										<div className="mypage_group-left">정보수정</div>
-									</button>
-								</Link>
-							</div>
 						</div>
 					)}
 				</>
@@ -298,30 +233,53 @@ const UserPage = () => {
 				>
 					Challenge
 				</button>
-				<button
-					className="mypage_button_makeup"
-					onClick={() => setGetInfo("liked")}
-				>
-					Liked
-				</button>
 			</div>
 
 			<hr className="mypage_hr" />
 			<div className="feedMain_body">
 				<div className="feedMain_body_info">
-					<div className="feedMain_body_container">
-						{feed.map((feedimg, index) => {
-							return (
-								<div className="feedMain_body_info_item" key={index}>
-									<img
-										src={feedimg.feedImages[0].imagePath}
-										alt=""
-										onClick={() => handleFeedDetail(feedimg.id)}
-									/>
-								</div>
-							);
-						})}
-					</div>
+					{getinfo === "feed" ? (
+						<div className="feedMain_body_container">
+							{feed &&
+								feed.map((feedimg, index) => {
+									return (
+										<div className="feedMain_body_info_item" key={index}>
+											<img
+												src={feedimg.feedImages[0].imagePath}
+												alt="호오옹오오오오잉"
+												onClick={() => handleFeedDetail(feedimg.id)}
+											/>
+										</div>
+									);
+								})}
+						</div>
+					) : (
+						<div className="feedMain_body_container">
+							{challenge &&
+								challenge.map((challengeInfo, index) => {
+									return (
+										<div
+											className="challengeHome_bottom_info_item"
+											key={index}
+											onClick={() => handleChallengeDetail(challengeInfo.id)}
+										>
+											<video src={challengeInfo.video} alt="" />
+											<div className="challengeHome_bottom_info_item_user">
+												<img src={challengeInfo.user.profileImage} alt="" />
+												<div className="challengeHome_bottom_info_item_personal_color">
+													<p>{challengeInfo.user.nickname}</p>
+													{challengeInfo.user.personalColor ? (
+														<p>{challengeInfo.user.personalColor}</p>
+													) : (
+														<p>null</p>
+													)}
+												</div>
+											</div>
+										</div>
+									);
+								})}
+						</div>
+					)}
 				</div>
 			</div>
 		</div>

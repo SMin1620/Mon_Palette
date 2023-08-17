@@ -20,19 +20,17 @@ const SummerCool = ({ handleRestart }) => {
   }
     const BackendResponseDescription = () => {
       return (
-      <div className={styles['result']}>
-        <div className={styles.hashtag}>#고전적 #시원 #부드러움</div>
         <div className={styles['result-description']}>
+        <div className={styles.hashtag}>#고전적 #시원 #부드러움</div>
         <div className={styles.description}>
-        Best : 화이트, 쿨아이보리, 그레이, 하늘색
+        <div>Best :</div>
+        <div className={styles.color}> 화이트, 쿨아이보리, 그레이, 하늘색</div> 
         </div>
-        <div className={styles.description3}> 
-        Worst : 선명한 원색, 탁하고 짙은 색, 카키, 
+        <div className={styles.description}>
+        <div>Worst : </div>
+        <div className={styles.color}> 선명한 원색, 탁하고 짙은 색, 카키, 버건디</div>
         </div>
-        <div className={styles.description2}>
-        버건디
-        </div>
-      </div>        
+                
     </div>
       )
     };
@@ -50,9 +48,9 @@ const SummerCool = ({ handleRestart }) => {
                 <BackendResponseExample />
               </div>
             </div>
-            <div className={styles.page1}>
+            <div className={styles.page2}>
               <div className={styles['backend-response-scroll']}>
-                <BackendResponseExample />
+                {/* <BackendResponseExample /> */}
                 <div className={styles.image}></div>
                 <BackendResponseDescription />
               </div>  

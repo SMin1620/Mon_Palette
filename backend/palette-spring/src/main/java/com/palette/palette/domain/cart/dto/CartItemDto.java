@@ -26,6 +26,8 @@ public class CartItemDto {
 
     private Integer price;
 
+    private Integer sumPrice;
+
     private Integer discount;
 
     private String manufact;

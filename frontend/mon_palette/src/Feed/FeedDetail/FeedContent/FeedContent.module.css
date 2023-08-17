@@ -6,6 +6,7 @@
 
 .container {
     border-bottom: solid 1px black;
+    overflow: hidden;
 }
 
 .feed_wrapper::-webkit-scrollbar {
@@ -13,20 +14,24 @@
 }
 
 .feed_item {
-    min-width: 100%;
+    width: 100%;
+    height: 20rem;
     overflow: hidden;
+    margin: 0 auto;
     border: 3px solid white;
 }
 
 .img {
     width: 100%;
-    height: 18rem;
+    height: 100%;
     display: block;
     object-fit: cover;
+    top: 0;
+    left: 0;
 }
 
 .content {
-    margin: 5%;
+    margin: 1rem;
 }
 
 .heart_filled {
@@ -90,9 +95,7 @@
 
 .like_list {
     display: flex;
-    align-items: center;
-    
-    
+    align-items: center;  
 }
 
 .nickname {
@@ -103,7 +106,6 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    /* border-bottom: 1px solid #ccc; */
 }
 
 .follow_button {
@@ -135,4 +137,70 @@
 
 .temp_div {
     width: 37.6px;
+}
+
+.content_bottom {
+    display: flex;
+    justify-content: space-between;
+}
+
+.more_btn {
+    margin-left: auto;
+    margin-right: 0.5rem;
+}
+
+
+
+.more_btn_container {
+    position: relative;
+    display: inline-block;
+}
+
+.feed_tag {
+    padding: 0;
+    background-color: #FCE7F1;
+    border-radius: 200px;
+    margin-right: 1rem;
+    padding-left: 1rem;
+    font-weight: bold;
+    width: auto;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+.tag_container {
+    width: 100%;
+    display: flex;
+    overflow-x: scroll;
+    margin-bottom: 1.5rem;
+}
+
+.tags {
+    display: flex;
+    margin-top: 1rem;
+    margin-left: 1rem;
+}
+
+.delete_btn {
+    font-size: 20px;
+    background-color: transparent;
+    color: #e84c8b;
+    border: none;
+}
+
+.edit_btn {
+    font-size: 20px;
+    background-color: transparent;
+    color: #e84c8b;
+    border: none;
+}
+
+.p {
+    background-color: #FCE7F1;
+    border-radius: 200px;
+    margin-right: 1rem;
+    white-space: nowrap;
+    padding: 0 1rem;
+    font-weight: 500;
 }

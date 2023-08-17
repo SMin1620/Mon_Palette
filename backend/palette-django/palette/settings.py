@@ -36,7 +36,7 @@ SECRET_KEY = env('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['*', '[fe80::2863:97a3:c4c9:cd21]']
 
 
 # Application definition
@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'sslserver',
 ]
 
 INSTALLED_APPS += [
@@ -55,7 +56,6 @@ INSTALLED_APPS += [
     'drf_yasg',
     'rest_framework_simplejwt',
     'corsheaders',
-    'color',
     'image',
 ]
 
@@ -115,7 +115,7 @@ DATABASES = {
         'USER': 'root',
         'PASSWORD': '1234',
         # 'HOST': '127.0.0.1',
-        'HOST': 'db',
+        'HOST': 'mysql',
         'PORT': '3306',
         'OPTIONS': {
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
@@ -192,3 +192,12 @@ SWAGGER_SETTINGS = {
 
 CORS_ALLOW_CREDENTIALS = True
 CORS_ORIGIN_ALLOW_ALL = True
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+SECURE_SSL_REDIRECT = True
+
+SSL_ENABLED = True
+SSL_CERTIFICATE = '/data/certbot/conf/live/mon-palette.shop/fullchain.pem'   # 인증서 파일의 경로
+SSL_KEY = '/data/certbot/conf/live/mon-palette.shop/privkey.pem'         # 개인 키 파일의 경로

@@ -14,7 +14,7 @@ const info =
     addressNumber: 12345,
     address: "부산 서구 초장동 43-6",
     addressDetail: "신화헤라 502호",
-    baseAddress: true
+    isMain: 1
   },
   {
     id: 2,
@@ -23,7 +23,7 @@ const info =
     addressNumber: 23456,
     address: "부산 강서구 명지대방디엠시티",
     addressDetail: "0동 000호",
-    baseAddress: false
+    isMain: 0
   },
   {
     id: 3,
@@ -32,7 +32,7 @@ const info =
     addressNumber: 34567,
     address: "부산 강서구 명지오션시티",
     addressDetail: "0동 000호",
-    baseAddress: false
+    isMain: 0
   },
 ]
 
@@ -43,18 +43,19 @@ function DeliveryList() {
   const token = useRecoilValue(loginState)
   const navigate = useNavigate()
   const [address, setAddress] = useState([])
-  const [update, setUpdate] = useState(false)
+  // const [update, setUpdate] = useState(false)
 
   useEffect(() => {
     handleGetAddress()
+    console.log("실행")
   },[])
 
-  useEffect(() => {
-    if (update === true) {
-      handleGetAddress()
-    }
-    update(false)
-  },[update])
+  // useEffect(() => {
+  //   if (update === true) {
+  //     handleGetAddress()
+  //   }
+  //   setUpdate(false)
+  // },[update])
   
   const handleSetBaseAddress = (id) => {
     console.log(id)
@@ -69,6 +70,7 @@ function DeliveryList() {
       })
       .then((response) => {
         setAddress(response.data)
+        console.log(address)
       })
   }
 
@@ -85,9 +87,10 @@ function DeliveryList() {
         headers: { Authorization: token }
       })
       .then(() => {
-        setUpdate(true)
+        // setUpdate(true)
       })
   }
+
 
   return (
     <div className="deliveryList">
@@ -109,7 +112,7 @@ function DeliveryList() {
                   <span>{delivery.phone.slice(7)}</span>
                 </div>
                 {
-                  delivery.baseAddress ? <div className="deliveryList_top_baseList_baseAddress">
+                  delivery.isMain === 1 ? <div className="deliveryList_top_baseList_baseAddress">
                     기본배송지
                     </div>
                     :
@@ -125,7 +128,7 @@ function DeliveryList() {
               </div>
               
               {
-                delivery.baseAddress ? 
+                delivery.isMain === 1 ? 
                 <div className="deliveryList_top_baseList_button">
                   <button>수정</button>
                   <button>삭제</button>

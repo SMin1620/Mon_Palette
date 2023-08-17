@@ -22,8 +22,12 @@ const SearchInput = () => {
   const [inputFocused, setInputFocused] = useState(false);
   const location = useLocation();
   const containerRef = useRef(null);
-  
+  const autocompleteTimer = useRef(null);
   const query = searchParams.get('query') || '';
+  const [localQuery, setLocalQuery] = useState(query);
+
+  
+  
 
   const handleSearch = (query) => {
     if (query.length < 2) return;
@@ -32,24 +36,24 @@ const SearchInput = () => {
     console.log(`${query}로 검색을 수행합니다.`)
     setShowSuggestions(false);
 
-    axios.get(
-      `${process.env.REACT_APP_API}/api/search?page=0&type=feed&keyword=${query}`,
-      {
-        headers: { Authorization: Authorization }
-      }
-    )
-    .then((response) => {
+    // axios.get(
+    //   `${process.env.REACT_APP_API}/api/search?page=0&type=feed&keyword=${query}`,
+    //   {
+    //     headers: { Authorization: Authorization }
+    //   }
+    // )
+    // .then((response) => {
       // console.log(response.data.data)
       // setResults(response.data.data.feed)
       navigate(`/result?query=${query}`);
-    })
+    // })
   };
 
   const handleClick = (event) => {
     event.preventDefault();
-    setShowSuggestions(false);
-    if (query !== '') {
-      handleSearch(query);
+    if (localQuery !== '') {
+      // navigate(`/result?query=${localQuery}`);
+      handleSearch(localQuery);
     }
   };
 
@@ -67,26 +71,33 @@ const SearchInput = () => {
   };
 
   const autocomplete = (value) => {
-    if (value && inputFocused) {
-      setSuggestions([]);
-      axios.get(`${process.env.REACT_APP_API}/api/search/auto?keyword=${value}`, {
-        headers: { Authorization: Authorization }
-      })
-      .then((response) => {
-        const suggestions = response.data.data.map((item) => ({
-          nickname: item.nickname,
-          profileImage: item.profileImage,
-          id: item.id
-        }));
-        setSuggestions(suggestions);
-        setShowSuggestions(true);
-      })
-      .catch(err => console.log(err))
-    } else {
-      setSuggestions([]);
-      setShowSuggestions(false);
+    if (autocompleteTimer.current) {
+      clearTimeout(autocompleteTimer.current);
     }
+
+    autocompleteTimer.current = setTimeout(() => {
+      if (value && inputFocused) {
+        setSuggestions([]);
+        axios.get(`${process.env.REACT_APP_API}/api/search/auto?keyword=${value}`, {
+          headers: { Authorization: Authorization }
+        })
+        .then((response) => {
+          const suggestions = response.data.data.map((item) => ({
+            nickname: item.nickname,
+            profileImage: item.profileImage,
+            id: item.id
+          }));
+          setSuggestions(suggestions);
+          setShowSuggestions(true);
+        })
+        .catch(err => console.log(err))
+      } else {
+        setSuggestions([]);
+        setShowSuggestions(false);
+      }
+    }, 500); 
   };
+
 
   useEffect(() => {
     const path = window.location.pathname;
@@ -94,12 +105,12 @@ const SearchInput = () => {
   }, []);
 
   useEffect(() => {
-    if (query) {
-      autocomplete(query);
+    if (localQuery) {
+      autocomplete(localQuery);
     } else {
       setShowSuggestions(false);
     }
-  }, [query]);
+  }, [localQuery]);
 
   useEffect(() => {
     setShowSuggestions(false);
@@ -115,18 +126,14 @@ const SearchInput = () => {
   return (
     <div className={styles.div} ref={containerRef}>
     <div className={styles['input-container']}>
-      <Link to={fromSearchResults ? '/search/' : '/'} className={styles.link}>
+      <Link to={fromSearchResults ? '/search/' : '/home'} className={styles.link}>
       <ArrowBackOutlinedIcon sx={{ fontSize:20 }} className={styles.back} />
       </Link>
       <input className={styles['search-input']}
         type="text"
-        value={query}
-        onChange={(e) => {
-          setSearchParams({ query: e.target.value });
-          autocomplete(e.target.value); 
-          }
-        }
-        onFocus={() => {setInputFocused(true); setSearchParams({ query: '' })}}
+        value={localQuery}
+        onChange={(e) => setLocalQuery(e.target.value)}
+        onFocus={() => {setInputFocused(true); setLocalQuery('')}}
         onBlur={() => setInputFocused(false)} 
         placeholder='검색어를 입력하세요'
       />

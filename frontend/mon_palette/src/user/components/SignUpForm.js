@@ -22,14 +22,18 @@ const SignUpForm = () => {
 	const [phone, setPhone] = useState("");
 	const [duplicationPhone, setDuplicationPhone] = useState(true);
 	const [phoneState, setPhoneState] = useState(false);
+	const [nicknameError, setNicknameError] = useState(false);
+	const [phoneError, setPhoneError] = useState(false);
 	const [isEmailValid, setIsEmailValid] = useState(true);
 	const [gender, setGender] = useState("");
 	const [notduplication, setNotDuplication] = useState("");
 	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [isModalOpen2, setIsModalOpen2] = useState(false);
 	const Navigate = useNavigate();
 
 	const closeModal = () => {
 		setIsModalOpen(false);
+		setIsModalOpen2(false);
 	};
 
 	const handleSignUp = () => {
@@ -51,7 +55,10 @@ const SignUpForm = () => {
 			phoneState &&
 			duplicationEmail &&
 			duplicationNickname &&
-			duplicationPhone
+			duplicationPhone &&
+			!passwordError &&
+			!nicknameError &&
+			!phoneError
 		) {
 			axios
 				.post(`${process.env.REACT_APP_API}/api/user/signup`, {
@@ -70,61 +77,79 @@ const SignUpForm = () => {
 				})
 				.catch((err) => {
 					console.error("error", err);
+
+					setIsModalOpen2(true);
 				});
+		} else {
+			setIsModalOpen2(true);
 		}
 	};
 
 	const possibleEmail = (e) => {
-		axios
-			.get(`${process.env.REACT_APP_API}/api/user/idcheck?email=${email}`)
-			.then((response) => {
-				if (response.data && response.data.data.check === false) {
-					setDuplicationEmail(false);
-					setEmailState(false);
-				} else {
-					setDuplicationEmail(true);
-					setEmailState(true);
-				}
-			})
-			.catch((err) => {
-				console.error("error", err);
-			});
+		if (!isEmailValid && email.trim() !== "") {
+			alert("형식이 올바르지 않습니다.");
+		} else {
+			axios
+				.get(`${process.env.REACT_APP_API}/api/user/idcheck?email=${email}`)
+				.then((response) => {
+					if (response.data && response.data.data.check === false) {
+						setDuplicationEmail(false);
+						setEmailState(false);
+					} else {
+						setDuplicationEmail(true);
+						setEmailState(true);
+					}
+				})
+				.catch((err) => {
+					console.error("error", err);
+				});
+		}
 	};
 
 	const possibleNickname = (e) => {
-		axios
-			.get(
-				`${process.env.REACT_APP_API}/api/user/nicknamecheck?nickname=${nickname}`
-			)
-			.then((response) => {
-				if (response.data && response.data.data.check === false) {
-					setDuplicationNickname(false);
-					setNicknameState(false);
-				} else {
-					setDuplicationNickname(true);
-					setNicknameState(true);
-				}
-			})
-			.catch((err) => {
-				console.error("error", err);
-			});
+		if (nicknameError) {
+			alert("형식이 올바르지 않습니다.");
+			return;
+		} else {
+			axios
+				.get(
+					`${process.env.REACT_APP_API}/api/user/nicknamecheck?nickname=${nickname}`
+				)
+				.then((response) => {
+					if (response.data && response.data.data.check === false) {
+						setDuplicationNickname(false);
+						setNicknameState(false);
+					} else {
+						setDuplicationNickname(true);
+						setNicknameState(true);
+					}
+				})
+				.catch((err) => {
+					console.error("error", err);
+				});
+		}
 	};
 
 	const possiblePhone = () => {
-		axios
-			.get(`${process.env.REACT_APP_API}/api/user/phonecheck?phone=${phone}`)
-			.then((response) => {
-				if (response.data && response.data.data.check === false) {
-					setDuplicationPhone(false);
-					setPhoneState(false);
-				} else {
-					setDuplicationPhone(true);
-					setPhoneState(true);
-				}
-			})
-			.catch((err) => {
-				console.error("error", err);
-			});
+		if (phoneError) {
+			alert("형식이 올바르지 않습니다.");
+			return;
+		} else {
+			axios
+				.get(`${process.env.REACT_APP_API}/api/user/phonecheck?phone=${phone}`)
+				.then((response) => {
+					if (response.data && response.data.data.check === false) {
+						setDuplicationPhone(false);
+						setPhoneState(false);
+					} else {
+						setDuplicationPhone(true);
+						setPhoneState(true);
+					}
+				})
+				.catch((err) => {
+					console.error("error", err);
+				});
+		}
 	};
 
 	const validateEmail = () => {
@@ -147,6 +172,16 @@ const SignUpForm = () => {
 
 	const validatePasswordConfirm = () => {
 		setPasswordConfirmError(password !== passwordConfirm);
+	};
+
+	const validatePhone = () => {
+		const phoneRegex = /^01([0|1|6|7|8|9]?)?([0-9]{3,4})?([0-9]{4})$/;
+		setPhoneError(!phoneRegex.test(phone));
+	};
+
+	const validateNickname = () => {
+		const nicknameRegex = /^[a-zA-Z0-9가-힣]{2,10}$/;
+		setNicknameError(!nicknameRegex.test(nickname));
 	};
 
 	const changeEmail = (e) => {
@@ -172,7 +207,11 @@ const SignUpForm = () => {
 				</label>
 				<div className="signUpForm_input-with-button">
 					<input
-						className="signUpForm_input"
+						className={`signUpForm_input ${
+							!duplicationEmail || (!isEmailValid && email.trim() !== "")
+								? "impossible"
+								: ""
+						}`}
 						type="text"
 						id="email"
 						value={email}
@@ -180,6 +219,7 @@ const SignUpForm = () => {
 						onBlur={validateEmail} // 이메일 칸을 벗어날 때 유효성 검사 실행
 						placeholder="이메일 주소를 입력하세요"
 					/>
+					&nbsp;
 					<button
 						class="signUpForm_duplication-button"
 						onClick={(e) => possibleEmail(e)}
@@ -196,7 +236,9 @@ const SignUpForm = () => {
 					<p className="signUpForm_error-message">이미 가입된이메일입니다</p>
 				)}
 				{duplicationEmail && emailState && (
-					<p className="signUpForm_error-message">사용 가능한 이메일입니다</p>
+					<p className="signUpForm_possible-message">
+						사용 가능한 이메일입니다
+					</p>
 				)}
 			</div>
 			<div className="signUpForm_form-group">
@@ -256,12 +298,15 @@ const SignUpForm = () => {
 				</label>
 				<div className="signUpForm_input-with-button">
 					<input
-						className="signUpForm_input"
+						className={`signUpForm_input ${
+							!duplicationPhone ? "impossible" : ""
+						}`}
 						type="text"
 						id="phone"
 						value={phone}
-						placeholder="00*-000*-0000"
+						placeholder="00*000*0000"
 						onChange={changePhone}
+						onBlur={validatePhone}
 					/>
 					<button
 						class="signUpForm_duplication-button"
@@ -273,8 +318,13 @@ const SignUpForm = () => {
 				{!duplicationPhone && (
 					<p className="signUpForm_error-message">이미 가입된 연락처입니다</p>
 				)}
-				{duplicationPhone && phoneState && (
-					<p className="signUpForm_error-message">사용 가능한 연락처입니다</p>
+				{phoneError && (
+					<p className="signUpForm_error-message">연락처 양식을 확인해주세요</p>
+				)}
+				{duplicationPhone && phoneState && !phoneError && (
+					<p className="signUpForm_possible-message">
+						사용 가능한 연락처입니다
+					</p>
 				)}
 			</div>
 
@@ -297,16 +347,19 @@ const SignUpForm = () => {
 				</label>
 				<div className="signUpForm_input-with-button">
 					<input
-						className="signUpForm_input"
+						className={`signUpForm_input ${
+							!duplicationNickname ? "impossible" : ""
+						}`}
 						type="text"
 						id="nickname"
 						value={nickname}
 						onChange={changeNickname}
+						onBlur={validateNickname}
 						placeholder="닉네임을 입력하세요"
 					/>
 					<button
 						class="signUpForm_duplication-button"
-						onClick={(e) => possibleNickname(e)}
+						onClick={possibleNickname}
 					>
 						중복확인
 					</button>
@@ -314,8 +367,15 @@ const SignUpForm = () => {
 				{!duplicationNickname && (
 					<p className="signUpForm_error-message">이미 존재하는 닉네임입니다</p>
 				)}
-				{duplicationNickname && nicknameState && (
-					<p className="signUpForm_error-message">사용 가능한 닉네임입니다</p>
+				{nicknameError && (
+					<p className="signUpForm_error-message">
+						닉네임은 2-10글자 사이의 한글/영문/숫자만 사용가능합니다
+					</p>
+				)}
+				{duplicationNickname && nicknameState && !nicknameError && (
+					<p className="signUpForm_possible-message">
+						사용 가능한 닉네임입니다
+					</p>
 				)}
 			</div>
 			<div className="signUpForm_form-group">
@@ -347,6 +407,9 @@ const SignUpForm = () => {
 				children={notduplication}
 			>
 				<h3>{notduplication} 중복체크 해주세요 'v'</h3>
+			</Modal>
+			<Modal isOpen={isModalOpen2} onClose={closeModal}>
+				<h3>회원가입 실패.. </h3>
 			</Modal>
 		</div>
 	);

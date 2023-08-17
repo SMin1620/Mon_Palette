@@ -91,7 +91,7 @@ html {
 }
 
 .mypage_button1 {
-	width: 6rem;
+	width: 5rem;
 	height: 5rem;
 	background-color: white;
 	border: lightgray;
@@ -101,7 +101,7 @@ html {
 	box-shadow: 2px 2px 4px 1px rgba(0, 0, 0, 0.3);
 }
 .mypage_button2 {
-	width: 6rem;
+	width: 5rem;
 	height: 5rem;
 	border: lightgray;
 	border-width: 0.1px;
@@ -109,7 +109,7 @@ html {
 	box-shadow: 2px 2px 4px 1px rgba(0, 0, 0, 0.3);
 }
 .mypage_button3 {
-	width: 6rem;
+	width: 5rem;
 	height: 5rem;
 	border: lightgray;
 	border-width: 0.1px;
@@ -117,7 +117,7 @@ html {
 	box-shadow: 2px 2px 4px 1px rgba(0, 0, 0, 0.3);
 }
 .mypage_button4 {
-	width: 6rem;
+	width: rem;
 	height: 5rem;
 	border: lightgray;
 	border-width: 0.1px;
@@ -127,66 +127,43 @@ html {
 	box-shadow: 2px 2px 4px 1px rgba(0, 0, 0, 0.3);
 }
 .mypage_button5 {
-	width: 11.25rem;
+	width: 7rem;
 	height: 3rem;
 	background-color: white;
 	border: lightgray;
 	border-width: 0.1px;
 	border-top-left-radius: 10px;
+	border-bottom-left-radius: 10px;
 	box-shadow: 2px 2px 4px 1px rgba(0, 0, 0, 0.3);
 }
 .mypage_button6 {
-	width: 11.25rem;
+	width: 6rem;
+	height: 3rem;
+	background-color: white;
+	border: lightgray;
+	border-width: 0.1px;
+	box-shadow: 2px 2px 4px 1px rgba(0, 0, 0, 0.3);
+}
+.mypage_button7 {
+	width: 7rem;
 	height: 3rem;
 	background-color: white;
 	border: lightgray;
 	border-width: 0.1px;
 	border-top-right-radius: 10px;
-	box-shadow: 2px 2px 4px 1px rgba(0, 0, 0, 0.3);
-}
-.mypage_button7 {
-	width: 7.5rem;
-	height: 3rem;
-	background-color: white;
-	border: lightgray;
-	border-width: 0.1px;
-	border-bottom-left-radius: 10px;
-	box-shadow: 2px 2px 4px 1px rgba(0, 0, 0, 0.3);
-}
-.mypage_button8 {
-	width: 7.5rem;
-	height: 3rem;
-	background-color: white;
-	border: lightgray;
-	border-width: 0.1px;
-	box-shadow: 2px 2px 4px 1px rgba(0, 0, 0, 0.3);
-}
-.mypage_button9 {
-	width: 7.5rem;
-	height: 3rem;
-	background-color: white;
-	border: lightgray;
-	border-width: 0.1px;
 	border-bottom-right-radius: 10px;
 	box-shadow: 2px 2px 4px 1px rgba(0, 0, 0, 0.3);
 }
 
 .mypage_button_feed {
-	width: 30%;
+	width: 50%;
 	height: 2.5rem;
 	font-weight: bold;
 	background-color: white;
 	border: none;
 }
 .mypage_button_challenge {
-	width: 40%;
-	height: 2.5rem;
-	font-weight: bold;
-	background-color: white;
-	border: none;
-}
-.mypage_button_makeup {
-	width: 30%;
+	width: 50%;
 	height: 2.5rem;
 	font-weight: bold;
 	background-color: white;

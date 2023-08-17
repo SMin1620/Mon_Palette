@@ -15,10 +15,12 @@ function SearchResultFeed({ query }) {
     const [load, setLoad] = useState(true);
     const endRef = useRef(false);
     const obsRef = useRef(null);
+    const [loading, setLoading] = useState(false);
 
     const handleObs = (entries) => {
         const target = entries[0];
-        if (!endRef.current && target.isIntersecting) {
+        if (!loading && !endRef.current && target.isIntersecting) {
+            setLoading(true);
             setFeedPage((prevPage) => prevPage + 1);
         }
     };
@@ -31,21 +33,23 @@ function SearchResultFeed({ query }) {
                     headers: { Authorization: Authorization }
                 }
             );
-
+            console.log(response)
             if (response.data.data.feed.length !== 10) {
                 endRef.current = true;
                 setLoad(false);
             }
-
             setResultData(prev => [...prev, ...response.data.data.feed]);
+            setLoading(false);
         } catch (error) {
             console.error(error);
+            setLoading(false);
         }
     };
 
     useEffect(() => {
-        fetchFeedData(0);  
+        
         setResultData([]);
+        fetchFeedData(0);  
     }, [query]);
 
     useEffect(() => {
@@ -69,8 +73,8 @@ function SearchResultFeed({ query }) {
                 <div className={styles["feedMain_body_container"]}>
                     {resultData.map((item, index) => (
                         <div key={index} className={styles["feedMain_body_info_item"]} onClick={() => goDetail(item.id)}>
-                            <div>
                                 <img src={item.feedImages[0].imagePath} alt="" onClick={() => goDetail(item.id)} className={styles["feedMain_body_info_item_top"]} />
+                            <div>
                                 <div className={styles["feedMain_body_info_item_bottom"]}>
                                     <img src={item.user.profileImage} alt={item.user.name} />
                                     <p>{item.user.nickname}</p>
@@ -79,7 +83,7 @@ function SearchResultFeed({ query }) {
                         </div>
                     ))}
                     {load ? 
-                        <div className="observer_spinner" ref={obsRef}>
+                        <div className={styles["observer_spinner"]} ref={obsRef}>
                             <PropagateLoader color='#fdf2f7'/>
                         </div>
                         :
