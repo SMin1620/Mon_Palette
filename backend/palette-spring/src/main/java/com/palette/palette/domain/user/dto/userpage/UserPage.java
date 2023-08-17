@@ -1,5 +1,6 @@
 package com.palette.palette.domain.user.dto.userpage;
 
+import com.palette.palette.domain.challenge.dto.list.ChallengeResDto;
 import com.palette.palette.domain.feed.dto.list.FeedResDto;
 import com.palette.palette.domain.feed.entity.Feed;
 import com.palette.palette.domain.user.entity.Role;
@@ -54,5 +55,8 @@ public class UserPage {
     private List<FeedResDto> feed;
     @Schema(description = "소셜 로그인 여부", example = "true")
     private Boolean isOauth;
+
+    @Schema(description = "챌린지", example = "챌린지 리스트")
+    private List<ChallengeResDto> challengeResDtoList;
 
 }
