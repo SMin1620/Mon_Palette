@@ -68,7 +68,8 @@ function ShoppingCart() {
           headers: { Authorization: token }
         })
         .then((response) => {
-          console.log(response)
+          setModalState(false) // 모달창 닫기
+          handleGetData() // 장바구니 새로 받아오기
         })
       } catch (error) {
         console.error(error)
@@ -179,7 +180,8 @@ function ShoppingCart() {
   const handleClearClick = (index) => {
     setSelectedOptionList((prevSelected) => {
       const newSelected = [...prevSelected];
-      newSelected.splice(index, 1);
+      const removeSelected = newSelected.splice(index, 1);
+      setTotalCount(totalCount - removeSelected.itemOptionCount)
       return newSelected;
     })
   }
