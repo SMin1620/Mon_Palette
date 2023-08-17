@@ -36,23 +36,23 @@ const SearchInput = () => {
     console.log(`${query}로 검색을 수행합니다.`)
     setShowSuggestions(false);
 
-    axios.get(
-      `${process.env.REACT_APP_API}/api/search?page=0&type=feed&keyword=${query}`,
-      {
-        headers: { Authorization: Authorization }
-      }
-    )
-    .then((response) => {
+    // axios.get(
+    //   `${process.env.REACT_APP_API}/api/search?page=0&type=feed&keyword=${query}`,
+    //   {
+    //     headers: { Authorization: Authorization }
+    //   }
+    // )
+    // .then((response) => {
       // console.log(response.data.data)
       // setResults(response.data.data.feed)
       navigate(`/result?query=${query}`);
-    })
+    // })
   };
 
   const handleClick = (event) => {
     event.preventDefault();
     if (localQuery !== '') {
-      navigate(`/result?query=${localQuery}`);
+      // navigate(`/result?query=${localQuery}`);
       handleSearch(localQuery);
     }
   };

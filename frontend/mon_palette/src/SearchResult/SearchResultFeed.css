@@ -1,6 +1,7 @@
 .feedMain_body {
   height: 100%;
   margin-bottom: 3rem;
+  padding-bottom: 48px;
 }
 .feedMain_body_info {
   column-count: 2;
