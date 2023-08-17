@@ -8,7 +8,6 @@ import { useRecoilValue } from "recoil";
 import { loginState } from "../../../user/components/Atom/loginState";
 import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilState } from 'recoil';
-// import { selectedOptionsState, RootWithPersistence } from "../../Atom/orderList"
 
 function ItemDetailBottom () {
 
@@ -18,6 +17,7 @@ function ItemDetailBottom () {
     const [selectedOptionList, setSelectedOptionList] = useState([]);
     const [totalPrice, setTotalPrice] = useState(0);
     const [selectedItems, setSelectedItems] = useState(null);
+    const [check, setCheck] = useState(false);
 
     const itemId  = useParams()
     const token = useRecoilValue(loginState)
@@ -51,7 +51,12 @@ function ItemDetailBottom () {
         }
     }, [itemDetailData]);
 
-    
+    useEffect (()=> {
+      if (check) {
+        navigate(`/payment`, { state: {selectedItems} })
+        console.log(selectedItems, 12)
+      }
+    },[check])
 
 
     const price = Math.round(itemDetailData.price * ((100 - itemDetailData.discount) * 0.01 ));
@@ -198,9 +203,13 @@ function ItemDetailBottom () {
       }));
 
       setSelectedItems(buyItemDtoList);
-      navigate(`/payment`, { state: selectedItems })
+      setCheck(true);
+      
+    
     }
+    console.log(selectedOptionList);
     console.log(selectedItems);
+    
 
 
     
