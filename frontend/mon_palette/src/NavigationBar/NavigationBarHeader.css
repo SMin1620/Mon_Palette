@@ -55,7 +55,7 @@
 .modal_top {
   display: flex;
   justify-content: space-between;
-  padding-top: 1.9rem;
+  padding-top: 2rem;
   border-bottom: 0.5px solid black;
   background-color: white;
 }
