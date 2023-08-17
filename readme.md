@@ -95,7 +95,7 @@
 
  
 
-## [Requirements Specification](https://docs.google.com/spreadsheets/d/1hAx5qhCoRiv-z2_f1oFVj8MbqUzzIZCvdEnwHWEj_UQ/edit#gid=1145252849)
+## [요구사항정의서](https://docs.google.com/spreadsheets/d/1hAx5qhCoRiv-z2_f1oFVj8MbqUzzIZCvdEnwHWEj_UQ/edit#gid=1145252849)
 ![요구사항정의서](https://ssafy9-monpalette.s3.ap-northeast-2.amazonaws.com/%EC%9A%94%EA%B5%AC%EC%82%AC%ED%95%AD1.PNG)
 ![요구사항정의서](https://ssafy9-monpalette.s3.ap-northeast-2.amazonaws.com/%EC%9A%94%EA%B5%AC%EC%82%AC%ED%95%AD2.PNG)
 ![요구사항정의서](https://ssafy9-monpalette.s3.ap-northeast-2.amazonaws.com/%EC%9A%94%EA%B5%AC%EC%82%AC%ED%95%AD3.PNG)
@@ -105,7 +105,7 @@
 ![시스템아키텍쳐](https://ssafy9-monpalette.s3.ap-northeast-2.amazonaws.com/%EC%8B%9C%EC%8A%A4%ED%85%9C+%EC%95%84%ED%82%A4%ED%85%8D%EC%B3%90+%EC%B5%9C%EC%B5%9C%EC%B5%9C%EC%B5%9C%EC%A2%85.png)
 
 
-## [API definition](https://www.notion.so/API-c5f7220e363848309c1d41426c298fbb#8f6ca5c482f84f07b0d98d9e8a660182)
+## [API 정의서](https://www.notion.so/API-c5f7220e363848309c1d41426c298fbb#8f6ca5c482f84f07b0d98d9e8a660182)
 ![API정의서](https://ssafy9-monpalette.s3.ap-northeast-2.amazonaws.com/API%EC%A0%95%EC%9D%98%EC%84%9C/%EA%B2%80%EC%83%891.PNG)
 ![API정의서](https://ssafy9-monpalette.s3.ap-northeast-2.amazonaws.com/API%EC%A0%95%EC%9D%98%EC%84%9C/%EA%B2%80%EC%83%892.PNG)
 ![API정의서](https://ssafy9-monpalette.s3.ap-northeast-2.amazonaws.com/API%EC%A0%95%EC%9D%98%EC%84%9C/%EB%8C%93%EA%B8%80.PNG)
