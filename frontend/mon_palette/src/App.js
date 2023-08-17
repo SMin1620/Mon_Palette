@@ -407,11 +407,9 @@ function App() {
 					<Route
 					path="/oauthredirect"
 					element={[
-						<PrivateRoute>
-							<NavigationBarHeader title="Mon, Palette" />
-							<OauthRedirect />
-							<ItemDetailBottom />
-							</PrivateRoute>
+						<NavigationBarHeader title="Mon, Palette" />,
+						<OauthRedirect />,
+						<ItemDetailBottom />
 					]}				
 				/>					
 				</Routes>
