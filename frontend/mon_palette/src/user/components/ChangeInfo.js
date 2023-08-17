@@ -1,3 +1,5 @@
+//get요청 uri 수정
+
 import React, { useState, useEffect } from "react";
 import ChevronRightOutlinedIcon from "@mui/icons-material/ChevronRightOutlined";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
@@ -7,6 +9,7 @@ import "./ChangeInfo.css"; // 스타일 파일 임포트
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { loginState } from "./Atom/loginState";
 import { userId } from "./Atom/UserId";
+import { isOAuth } from "./Atom/isOAuth";
 import { useNavigate } from "react-router-dom";
 import "./Modal.css";
 import AWS from "aws-sdk";
@@ -23,11 +26,10 @@ const ChangeInfo = () => {
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const Authorization = useRecoilValue(loginState);
+    const isoauth = useRecoilValue(isOAuth);
     const Navigate = useNavigate();
     const loginStateReset = useSetRecoilState(loginState);
     const userIdReset = useSetRecoilState(userId);
-    const oauth = useSetRecoilState(IsOAuth);
-
     // AWS 연동
     const ACCESS_KEY = process.env.REACT_APP_AWS_S3_ACCESS_ID;
     const SECRET_ACCESS_KEY = process.env.REACT_APP_AWS_S3_ACCESS_PW;
@@ -273,9 +275,7 @@ const ChangeInfo = () => {
                     onClick={changepersonal}
                 />
             </div>
-            {!oauth ? (
-                <></>
-            ) : (
+            {isoauth?
                 <div className="changeInfo_form-group">
                     <div className="changeInfo_group-left">
                         <label className="changeInfo_label" htmlFor="password">
@@ -286,7 +286,7 @@ const ChangeInfo = () => {
                         <ChevronRightOutlinedIcon className="changeInfo_arrow-icon" />
                     </Link>
                 </div>
-            )}
+            :<></>}
             <div className="changeInfo_form-group">
                 <div className="changeInfo_group-left">
                     <label className="changeInfo_label" htmlFor="phone">
