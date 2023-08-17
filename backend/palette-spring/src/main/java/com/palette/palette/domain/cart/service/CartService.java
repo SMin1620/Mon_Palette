@@ -247,6 +247,8 @@ public class CartService {
 
             List<CartItemOption> cartItemOptionList = cartItemOptionRepository.findByCartItemId(cartItem.getId());
 
+            Integer sumPrice = 0;
+
             for (CartItemOption cartItemOption:cartItemOptionList) {
 
                 CartItemOptionDto cartItemOptionDto = CartItemOptionDto.builder()
@@ -257,9 +259,14 @@ public class CartService {
                         .stock(cartItemOption.getItemOption().getStock())
                         .build();
                 cartItemOptionDtoList.add(cartItemOptionDto);
+
+                sumPrice += cartItem.getItem().getPrice() * cartItemOption.getCartCount();
             }
+            sumPrice += cartItem.getItem().getDeliveryFee();
 
             cartItemDto.setItemOptionDtoList(cartItemOptionDtoList);
+
+            cartItemDto.setSumPrice(sumPrice);
 
             cartItemDtoList.add(cartItemDto);
 

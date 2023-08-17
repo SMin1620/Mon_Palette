@@ -22,8 +22,7 @@
 .order_list_item_top button {
   border: none;
   background-color: transparent;
-  color: blue;
-  font-size: 0.5rem;
+  font-size: 0.7rem;
   font-weight: bold;
 }
 
@@ -42,14 +41,59 @@
 .order_list_item_body_info {
   display: flex;
   margin-bottom: 0.5rem;
+  flex-direction: column;
 }
 
-.order_list_item_body button {
+.order_list_item_body_info_wrap {
+  display: flex;
+  justify-content: space-between;
+}
+
+.order_list_item_body_info_requirements_title {
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+
+.order_list_item_body_info_requirements {
+  font-size: 0.7rem;
+  color: #949494;
+}
+
+.order_list_item_sucess {
+  align-self: flex-start;
+  font-weight: bold;
+  font-size: 1rem;
+  background-color: #d72b67;
+  border-radius: 200px;
+  color: white;
+  padding: 0 0.5rem;
+}
+
+.order_list_item_cancle {
+  align-self: flex-start;
+  font-weight: bold;
+  background-color: #e2e2e2;
+  border-radius: 200px;
+  padding: 0 0.5rem;
+  color: white;
+}
+
+.abled_button {
   width: 100%;
   font-size: 1rem;
   height: 2.5rem;
   border: none;
   background-color: #d72b67;
+  border-radius: 7px;
+  color: white;
+}
+
+.disabled_button {
+  width: 100%;
+  font-size: 1rem;
+  height: 2.5rem;
+  border: none;
+  background-color: #e2e2e2;
   border-radius: 7px;
   color: white;
 }
@@ -67,4 +111,17 @@
 
 .order_list_item p {
   margin-bottom: 0.3rem;
+}
+
+.order_list_item_body_info_cost_wrap {
+  margin-top: 0.3rem;
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid #949494;
+  padding-top: 0.3rem;
+}
+
+.order_list_item_body_info_cost {
+  font-weight: bold;
+  font-size: 1rem;
 }

@@ -99,9 +99,13 @@ function OrderList() {
   const [myOrderList, setMyOrderList] = useState([])
   
 
+  // useEffect(() => {
+  //   handleGetItem()
+  // },[myOrderList])
+
   useEffect(() => {
     handleGetItem()
-  },[myOrderList])
+  },[])
 
   // 주문조회
   const handleGetItem = () => {
@@ -110,7 +114,8 @@ function OrderList() {
         headers: { Authorization: token }
       })
       .then((response) => {
-        setMyOrderList((prev) => [...prev, response.data.data])
+        console.log(response)
+        setMyOrderList(response.data.data)
       })
       .catch((error) => {
         console.error(error)
@@ -128,8 +133,10 @@ function OrderList() {
       .put(`${process.env.REACT_APP_API}/api/order/${id}`,{}, {
         headers: { Authorization: token }
       })
-      .then(() => {
+      .then((response) => {
+        console.log(response)
         setMyOrderList([])
+        handleGetItem()
       })
   }
 
@@ -137,7 +144,7 @@ function OrderList() {
     <div className="order_list">
       <div className="order_list_wrap">
         {
-          info.map(item => {
+          myOrderList&&myOrderList.map(item => {
             return <div className="order_list_item" key={item.id}>
               <div className="order_list_item_top">
                 <h4 className="order_list_item_orderAt">{item.orderAt.slice(0,10)}일 주문</h4>
@@ -147,19 +154,31 @@ function OrderList() {
 
               <div className="order_list_item_body">
                 <div className="order_list_item_body_info">
-                  <img src={item.itemImage} alt=""/>
-                  <div>
-                    <p>{item.itemName}</p>
-                    <p>
-                      <span>{item.itemOption.color}</span>
-                      <span> | </span>
-                      <span>{item.itemOption.size}</span>
-                    </p>
-                    <p>{item.price}</p>
+                  <div className="order_list_item_body_info_wrap">
+                    <div>
+                      <p className="order_list_item_body_info_requirements_title">요구사항</p>
+                      <p className="order_list_item_body_info_requirements">{item.requirement}</p>
+                    </div>
+                    {
+                      item.orderStatus === "ORDER" ? 
+                      <p className="order_list_item_sucess">주문접수</p>
+                      :
+                      <p className="order_list_item_cancle">주문취소</p>
+                    }
+                  </div>
+
+                  <div className="order_list_item_body_info_cost_wrap">
+                    <p>결제금액</p>
+                    <p className="order_list_item_body_info_cost">{item.price.toLocaleString()} 원</p>
                   </div>
                 </div>
 
-                <button ocClick={() => handleDeleteOrder(item.id)}>주문취소</button>
+                <button className={item.orderStatus === "ORDER" ? "abled_button" : "disabled_button"}
+                  onClick={() => handleDeleteOrder(item.id)}
+                  disabled={
+                    item.orderStatus === "CANCLE"
+                  }
+                >주문취소</button>
               </div>
             </div>
           })

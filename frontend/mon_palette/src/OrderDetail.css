@@ -1,0 +1,118 @@
+.OrderDetail {
+  margin: 4.1725rem 0 3rem 0;
+}
+
+.OrderDetail_top {
+  margin: 1rem;
+  margin-top: 5.1725rem;
+}
+
+.OrderDetail_top_delivery_status {
+  font-weight: bold;
+  font-size: 1.2rem;
+  margin-bottom: 0.3rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.status_ready {
+  font-size: 1rem;
+}
+
+.status_complete {
+  background-color: #d72b67;
+  border-radius: 200px;
+  padding: 0 0.5rem;
+  font-size: 1rem;
+  color: white;
+}
+
+.OrderDetail_top_delivery {
+  background-color: #fdf2f7;
+  padding: 0.5rem;
+  border-radius: 7px;
+}
+
+.OrderDetail_top_delivery_receiver {
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.OrderDetail_top_delivery_other {
+  font-size: 0.7rem;
+}
+
+.OrderDetail_mid_item {
+  background-color: #fdf2f7;
+  margin: 0 1rem;
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  border-radius: 7px;
+}
+
+.OrderDetail_mid_item p {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.OrderDetail_mid_item_cost_info {
+  margin-bottom: 1rem;
+  margin-top: 0.5rem;
+}
+
+.OrderDetail_mid_item_cost {
+  display: flex;
+  justify-content: space-between;
+}
+
+.OrderDetail_mid_item_cost span {
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+  color: #949494;
+}
+
+.OrderDetail_mid_item_cost_total {
+  border-top: 1px solid #e2e2e2;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+  padding-top: 1rem;
+}
+
+.OrderDetail_mid_item_option_wrap {
+  margin: 0 1rem;
+  margin-bottom: 1rem;
+}
+
+.OrderDetail_mid_item_option_wrap h3 {
+  padding: 0 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.OrderDetail_mid_item_option_container {
+  background-color: #fdf2f7;
+  border-radius: 10px;
+  padding: 1rem 0.5rem;
+  display: flex;
+}
+
+.OrderDetail_mid_item_option_container img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border: 1px solid black;
+}
+
+.OrderDetail_mid_item_option_body {
+  margin-left: 1rem;
+}
+
+.OrderDetail_mid_item_option_body h4 {
+  font-size: 1.2rem;
+}
+
+.OrderDetail_mid_item_option_body span {
+  font-size: 1rem;
+  color: #949494;
+}

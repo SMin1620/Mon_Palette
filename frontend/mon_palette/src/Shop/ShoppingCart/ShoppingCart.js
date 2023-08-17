@@ -7,6 +7,7 @@ import axios from 'axios';
 import { HighlightOff as HighlightOffIcon, Clear as ClearIcon } from '@mui/icons-material';
 import Select from 'react-select'
 import { MinusCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
+import { recentSearchesState } from './../../Search/Atom';
 
 function ShoppingCart() {
 
@@ -45,7 +46,6 @@ function ShoppingCart() {
           headers: { Authorization: token }
         })
         .then((response) => {
-          console.log(response);
           setCartItem(response.data.data.cartItemDtoList)
         })
         .catch((error) => {
@@ -68,7 +68,9 @@ function ShoppingCart() {
           headers: { Authorization: token }
         })
         .then((response) => {
-          console.log(response)
+          setModalState(false) // 모달창 닫기
+          setTotalCount(0)
+          handleGetData() // 장바구니 새로 받아오기
         })
       } catch (error) {
         console.error(error)
@@ -78,7 +80,7 @@ function ShoppingCart() {
   useEffect(() => {
     setProductPrice([])
     checkedItem.map(product => {
-      setProductPrice((prev) => [...prev, product.price])
+      setProductPrice((prev) => [...prev, product.sumPrice])
     })
   },[checkedItem])
 
@@ -132,12 +134,6 @@ function ShoppingCart() {
     setModalState(true)
   }
 
-  // useEffect(() => {
-  //   if (detailItem) {
-  //     setModalState(true)
-  //   }
-  // },[detailItem])
-
   let options = detailItem&&detailItem.itemOptionDtoList.map((option) => ({
     value: option.id,
     label: option.optionName,
@@ -174,12 +170,20 @@ function ShoppingCart() {
     setSelectedOptionList((prevSelected) => [...prevSelected, selectedOption]);
   }
   };
-  console.log(selectedOptionList)
 
   const handleClearClick = (index) => {
     setSelectedOptionList((prevSelected) => {
       const newSelected = [...prevSelected];
-      newSelected.splice(index, 1);
+      const removeSelected = newSelected.splice(index, 1);
+      setTotalCount(totalCount - removeSelected[0].itemOptionCount)
+      return newSelected;
+    })
+  }
+
+  const handleDecreAll = (index) => {
+    setSelectedOptionList((prevSelected) => {
+      const newSelected = [...prevSelected];
+      const removeSelected = newSelected.splice(index, 1);
       return newSelected;
     })
   }
@@ -203,12 +207,14 @@ function ShoppingCart() {
       if (newSelected[index].itemOptionCount > 0) {
         newSelected[index].itemOptionCount -= 1;
         if (newSelected[index].itemOptionCount === 0) {
-          handleClearClick(index); // If count reaches 0, remove the option
+          handleDecreAll(index); // If count reaches 0, remove the option
         }
       }
       return newSelected;
     });
-    setTotalCount(totalCount - 1)
+    if (totalCount > 0) {
+      setTotalCount(totalCount - 1)
+    }
   };
 
   useEffect(() => {
@@ -219,14 +225,16 @@ function ShoppingCart() {
     setOptionTotalPrice(newTotalPrice);
   }, [selectedOptionList, price]);
 
+  const calcTotalCost = (products, productOption) => {
+    let totalCost = 0
 
-
-
-
-
-
-
-
+    productOption.forEach(option => {
+      const count = option.itemOptionCount
+      const price = products.price
+      totalCost += count * price
+    })
+    return totalCost + products.deliveryFee
+  } 
 
   // 장바구니 아이템 단일 삭제
   const handleRemoveItem = (id) => {
@@ -255,6 +263,7 @@ function ShoppingCart() {
 
   const closeModal = () => {
     setModalState(false)
+    setTotalCount(0)
   }
 
   return (
@@ -314,20 +323,7 @@ function ShoppingCart() {
                   <div className="shoppingCart_main_body_rigth_bottom">
                     <button className="shoppingCart_main_bottom_option" onClick={() => handleEditOption(product.itemId, product.itemOptionDtoList, product.cartItemId)}>옵션/수량</button>
                     <div>
-                      {
-                        product.discount !== 0 ? <div>
-                          <p 
-                            className="shoppingCart_main_body_price"
-                          >{product.price.toLocaleString()}원</p>
-                          <p className="shoppingCart_main_body_discount_price">
-                            {
-                            (product.price - ((product.discount / 100) * product.price)).toLocaleString()
-                            }원
-                            </p>
-                        </div> : 
-                        <p>{product.price.toLocaleString()}원</p>
-                      }
-
+                      {calcTotalCost(product, product.itemOptionDtoList).toLocaleString()} 원
                     </div>
                   </div>
                 </div>
@@ -404,18 +400,20 @@ function ShoppingCart() {
                       </div>
 
                       <div className="shoppingCart_modal_body_count">
-                        <div className="shoppingCart_modal_body_minus" onClick={() => handleDecrement(index)}>
-                          <MinusCircleOutlined/>
+                        <div className="shoppingCart_modal_body_count_temp">
+                          <div className="shoppingCart_modal_body_minus" onClick={() => handleDecrement(index)}>
+                            <MinusCircleOutlined/>
+                          </div>
+                          <div className="shoppingCart_modal_body_count_body">
+                            {option.itemOptionCount}
+                          </div>
+                          <div className="shoppingCart_modal_body_plus" onClick={() => handleIncrement(index)}>
+                            <PlusCircleOutlined/>
+                          </div>
+                          <span className="shoppingCart_modal_body_stock">
+                            (재고: {option.itemOptionStock})
+                          </span>
                         </div>
-                        <div className="shoppingCart_modal_body_count_body">
-                          {option.itemOptionCount}
-                        </div>
-                        <div className="shoppingCart_modal_body_plus" onClick={() => handleIncrement(index)}>
-                          <PlusCircleOutlined/>
-                        </div>
-                        <span className="shoppingCart_modal_body_stock">
-                          (재고: {option.itemOptionStock})
-                        </span>
                         <div className="shoppingCart_modal_body_price">
                           {((option.itemOptionCount) * (price)).toLocaleString()} ₩
                         </div>
