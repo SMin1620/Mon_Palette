@@ -34,16 +34,6 @@ public class GoogleController {
     ) {
         try{
             TokenDto tokenDto = googleService.socialLogin(response, code, registrationId);
-//            Cookie cookie = new Cookie("accessToken", tokenDto.getAccessToken());
-//            Cookie cookie1 = new Cookie("refreshToken", tokenDto.getRefreshToken());
-//            Cookie cookie2 = new Cookie("userId", tokenDto.getUserId().toString());
-//            cookie.setPath("https://mon-palette.shop/home");
-//            cookie.setHttpOnly(true);
-//            cookie1.setPath("https://mon-palette.shop/home");
-//            cookie1.setHttpOnly(true);
-//            cookie2.setPath("https://mon-palette.shop/home");
-//            cookie2.setHttpOnly(true);
-//            response.sendRedirect("https://mon-palette.shop/home");
             response.sendRedirect(UriComponentsBuilder.fromUriString("https://mon-palette.shop/oauthredirect")
                     .queryParam("accessToken", tokenDto.getAccessToken())
                     .queryParam("refreshToken", tokenDto.getRefreshToken())
