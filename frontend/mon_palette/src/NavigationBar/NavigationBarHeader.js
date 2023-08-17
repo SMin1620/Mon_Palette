@@ -16,6 +16,9 @@ function NavigationBarHeader(props) {
   const handleModal = () => { setShowPage(!showPage) }
   const handlePageBack = () => { navigate(-1) }
   
+  const fixing = () => {
+    alert("공사중입니다 :(")
+  }
   let PageTitle = props.title
   console.log(props.item)
   let PageCenter = true
@@ -88,8 +91,9 @@ function NavigationBarHeader(props) {
         </div>
         {/* Function 에 Link 걸기 */}
         <div className="modal_body">
-          <div className="modal_body_item">
-            <Link to="/AImakeup">AI MakeUp</Link>
+          <div className="modal_body_item" onClick={fixing}>
+            
+          <Link to="/home">AI MakeUp</Link>
           </div>
 
           <div className="modal_body_item">
