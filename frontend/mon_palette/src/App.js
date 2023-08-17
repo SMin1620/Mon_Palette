@@ -159,10 +159,8 @@ function App() {
 					<Route
 						path="signupform"
 						element={[
-							<PrivateRoute>
-								<NavigationBarHeader title="Sign up" />
-								<SignUpForm />
-							</PrivateRoute>
+							<NavigationBarHeader title="Sign up" />,
+							<SignUpForm />
 						]}
 					/>
 					<Route
@@ -401,7 +399,7 @@ function App() {
 							<NavigationBarHeader title="Mon, Palette" />
 							<ItemDetailTop />
 							<ItemDetailBottom />
-							</PrivateRoute>
+						</PrivateRoute>
 					]}				
 				/>					
 					<Route
