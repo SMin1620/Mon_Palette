@@ -1,16 +1,12 @@
 server:
   port: 8080
 
-spring:
 
-  ########### method ###########
-  profiles:
-    default: create
-  ##############################
+spring:
 
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     properties:
       hibernate:
         format_sql: true
@@ -27,11 +23,9 @@ spring:
       enabled: true
       path: /h2-console
 
-
   security:
     user:
       password: 1234
-
 
   data:
     redis:
@@ -43,7 +37,6 @@ spring:
       port: 6379
       host: 127.0.0.1
       password: 1234
-
 
   servlet:
     multipart:
@@ -91,3 +84,4 @@ jwt:
       redirect-uri: ${oauth2.google.redirect-uri}
       token-uri: ${oauth2.google.token-uri}
       resource-uri: ${oauth2.google.resource-uri}
+
