@@ -225,7 +225,7 @@ public class CartService {
         String userEmail = jwtTokenProvider.getUserEmail(jwtTokenProvider.resolveToken(request));
         Optional<User> user = userRepository.findByEmail(userEmail);
         Optional<Cart> cart = cartRepository.findByUser(user.get());
-        List<CartItem> cartItemList = cartItemRepository.findByCartId(cart.get().getId());
+        List<CartItem> cartItemList = cartItemRepository.findByCartIdItem(cart.get().getId());
 
         List<CartItemDto> cartItemDtoList = new ArrayList<>();
 
