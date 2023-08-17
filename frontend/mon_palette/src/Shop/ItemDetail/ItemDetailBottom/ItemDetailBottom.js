@@ -77,52 +77,70 @@ function ItemDetailBottom() {
 		// 선택된 옵션의 개수까지 합산하여 최대 재고를 초과하는지 확인
 		const newTotalCount = totalSelectedCount + selectedOption.count;
 
-		if (newTotalCount <= maximumItem) {
-			const existingOptionIndex = selectedOptionList.findIndex(
-				(option) => option.value === selectedOption.value
-			);
+    const handleSelectChange = (selectedOption) => {
+      const totalSelectedCount = selectedOptionList.reduce((total, option) => total + option.count, 0);
+      const newTotalCount = totalSelectedCount + 1; // 새로운 옵션을 선택했을 때의 total count
+      
+      if (newTotalCount <= maximumItem) {
+          const existingOptionIndex = selectedOptionList.findIndex(
+              (option) => option.value === selectedOption.value
+          );
+          
+          if (existingOptionIndex !== -1) {
+              // 이미 선택된 옵션이 있는 경우, count를 1 증가
+              setSelectedOptionList((prevSelected) => {
+                  const newSelected = [...prevSelected];
+                  newSelected[existingOptionIndex].count += 1;
+                  return newSelected;
+              });
+          } else {
+              // 선택되지 않은 옵션인 경우, count를 1로 설정하고 추가
+              setSelectedOptionList((prevSelected) => [
+                  ...prevSelected,
+                  { ...selectedOption, count: 1 }
+              ]);
+          }
+      } else {
+          setShowModal(true); // maximum을 초과하면 모달 표시
+      }
+  };
+  
+  
 
-			if (existingOptionIndex !== -1) {
-				handleIncrement(existingOptionIndex);
-			} else {
-				setSelectedOptionList((prevSelected) => [
-					...prevSelected,
-					selectedOption,
-				]);
-			}
-		} else {
-			setShowModal(true);
-		}
-	};
+    const handleClearClick = (index) => {
+      setSelectedOptionList((prevSelected) => {
+          const newSelected = [...prevSelected];
+          const option = newSelected[index];
 
-	const handleClearClick = (index) => {
-		setSelectedOptionList((prevSelected) => {
-			const removedOption = prevSelected[index];
-			const newSelected = [...prevSelected];
-			setTotalCount((prevTotalCount) => prevTotalCount - removedOption.count);
-			newSelected.splice(index, 1);
-			return newSelected;
-		});
-	};
+          // 옵션의 count를 0으로 설정하여 선택 해제
+          option.count = 0;
 
-	const handleIncrement = (index) => {
-		// 총 선택된 옵션들의 개수 합산
-		const totalSelectedCount = selectedOptionList.reduce(
-			(total, option) => total + option.count,
-			0
-		);
+          // 옵션의 count가 0인 경우 리스트에서 제거
+          if (option.count === 0) {
+              newSelected.splice(index, 1);
+          }
 
-		if (totalSelectedCount + 1 <= maximumItem) {
-			setSelectedOptionList((prevSelected) => {
-				const newSelected = [...prevSelected];
-				newSelected[index].count += 1;
-				setTotalCount((prevTotalCount) => prevTotalCount + 1);
-				return newSelected;
-			});
-		} else {
-			setShowModal(true);
-		}
-	};
+          return newSelected;
+      });
+  };
+
+
+    
+    const handleIncrement = (index) => {
+      // 총 선택된 옵션들의 개수 합산
+      const totalSelectedCount = selectedOptionList.reduce((total, option) => total + option.count, 0);
+      
+      if (totalSelectedCount + 1 <= maximumItem) {
+          setSelectedOptionList((prevSelected) => {
+              const newSelected = [...prevSelected];
+              newSelected[index].count += 1;
+              setTotalCount((prevTotalCount) => prevTotalCount + 1);
+              return newSelected;
+          });
+      } else {
+          setShowModal(true);
+      }
+  };
 
 	const handleDecrement = (index) => {
 		setSelectedOptionList((prevSelected) => {
