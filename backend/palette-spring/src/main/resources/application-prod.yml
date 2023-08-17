@@ -8,7 +8,6 @@ server:
 
 
 spring:
-
   jpa:
     hibernate:
       ddl-auto: create
@@ -24,11 +23,9 @@ spring:
     password: 1234
     driver-class-name: com.mysql.cj.jdbc.Driver
 
-
   security:
     user:
       password: 1234
-
 
   data:
     redis:
@@ -41,7 +38,6 @@ spring:
       port: 6379
       host: redis
 
-
   servlet:
     multipart:
       enabled: true
@@ -49,7 +45,6 @@ spring:
 
   mvc:
     static-path-pattern: /static/**
-
 
 
 springdoc:
@@ -66,10 +61,6 @@ springdoc:
     groups:
       enabled: true
 
-logging:
-  level:
-    org.hibernate.sql: debug
-    org.hibernate.type: trace
 
 jwt:
   header: Authorization
@@ -80,7 +71,6 @@ jwt:
     token-validity-in-seconds: 86400 # ttl (초)
     access-token-expiration-sec: 1800
     refresh-token-expiration-sec: 1209600
-
 
   oauth2:
     google:
