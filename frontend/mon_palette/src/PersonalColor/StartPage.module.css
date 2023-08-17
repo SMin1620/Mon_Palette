@@ -99,3 +99,10 @@
   margin-top: 10rem; 
   margin-bottom: 0.625rem; 
 }
+
+.explain {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #949494;
+}
