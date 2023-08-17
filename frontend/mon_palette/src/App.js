@@ -295,7 +295,9 @@ function App() {
 					<Route
 						path="/payment"
 						element={[
+							<NavigationBarHeader title="Mon, Palette" />,
 							<Payment />,
+							// <NavigationBarBottom />,
 						]}
 					/>
 					<Route
