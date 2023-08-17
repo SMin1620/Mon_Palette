@@ -14,7 +14,6 @@ const ItemRegist = () => {
 	const [userPhone, setUserPhone] = useState("판매자연락처");
 	const [price, setPrice] = useState("");
 	const [sale, setSale] = useState("");
-	const [minDate, setMinDate] = useState(new Date());
 	const [startDate, setStartDate] = useState("");
 	const [endDate, setEndDate] = useState("");
 	const [itemName, setItemName] = useState("");
@@ -45,7 +44,6 @@ const ItemRegist = () => {
 			})
 			.then((response) => {
 				if (response.data.data !== null) {
-					console.log(response.data.data);
 					setUserProfile(response.data.data.profilePhoto);
 					setUserName(response.data.data.nickname);
 					setUserPhone(response.data.data.phone);
@@ -66,8 +64,6 @@ const ItemRegist = () => {
 				setManufacture(response.data.data.manufact);
 				setDeliveryFee(response.data.data.deliveryFee);
 				setItemCountLimit(response.data.data.maximum);
-				setStartDate(response.data.data.createAt);
-				setEndDate(response.data.data.endAt);
 				setOptions(response.data.data.itemOptionList);
 				setItemImgUrl(response.data.data.itemPhotoDtoList);
 				setItemContentImgUrl(response.data.data.itemDetailPhotoDtoList);
@@ -185,7 +181,6 @@ const ItemRegist = () => {
 					selectsStart
 					startDate={startDate}
 					endDate={endDate}
-					minDate={minDate}
 					placeholderText="start date"
 					className="example-custom-input"
 				/>
