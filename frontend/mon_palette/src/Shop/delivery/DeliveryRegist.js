@@ -41,12 +41,10 @@ const DeliveryRegist = () => {
 				{
 					userId: id,
 					receiver: name,
-					phone: phone,
-					address: address,
-					addressDetail: addressDetail,
+					address: address + addressDetail,
 					zipcode: postCode,
-					req: deliverRequest,
-					isMain: checkedItem,
+					phone: phone,
+					isMain: checkedItem ? 1 : 0,
 				},
 				{
 					headers: { Authorization: Authorization },
@@ -55,7 +53,7 @@ const DeliveryRegist = () => {
 			.then((response) => {
 				console.log(response);
 
-				Navigate(`/`);
+				Navigate(`/deliverylist`);
 			})
 			.catch((error) => {
 				console.error(error);
@@ -71,10 +69,6 @@ const DeliveryRegist = () => {
 
 		// 주소 선택 이벤트
 		selectAddress: (data) => {
-			console.log(`
-                주소: ${data.address},
-                우편번호: ${data.zonecode}
-            `);
 			setAddress(data.address);
 			setPostCode(data.zonecode);
 
