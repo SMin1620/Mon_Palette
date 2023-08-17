@@ -23,7 +23,7 @@ function Function() {
 			</div>
 			&nbsp;
 			<div className="function3">
-				<Link to="AImakeup">
+				<Link to="/mypalette">
 					<div className="function_text">My</div>
 					<div className="function_text">palette</div>
 				</Link>

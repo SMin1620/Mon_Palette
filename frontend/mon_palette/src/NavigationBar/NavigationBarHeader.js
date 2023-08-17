@@ -101,7 +101,7 @@ function NavigationBarHeader(props) {
           </div>
 
           <div className="modal_body_item">
-            <Link to="/AImakeup">My Palette</Link>
+            <Link to="/mypalette">My Palette</Link>
           </div>
 
           <div className="modal_body_item">
