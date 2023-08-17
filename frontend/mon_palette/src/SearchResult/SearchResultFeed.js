@@ -15,10 +15,12 @@ function SearchResultFeed({ query }) {
     const [load, setLoad] = useState(true);
     const endRef = useRef(false);
     const obsRef = useRef(null);
+    const [loading, setLoading] = useState(false);
 
     const handleObs = (entries) => {
         const target = entries[0];
-        if (!endRef.current && target.isIntersecting) {
+        if (!loading && !endRef.current && target.isIntersecting) {
+            setLoading(true);
             setFeedPage((prevPage) => prevPage + 1);
         }
     };
@@ -31,21 +33,23 @@ function SearchResultFeed({ query }) {
                     headers: { Authorization: Authorization }
                 }
             );
-
+            console.log(response)
             if (response.data.data.feed.length !== 10) {
                 endRef.current = true;
                 setLoad(false);
             }
-
             setResultData(prev => [...prev, ...response.data.data.feed]);
+            setLoading(false);
         } catch (error) {
             console.error(error);
+            setLoading(false);
         }
     };
 
     useEffect(() => {
-        fetchFeedData(0);  
+        
         setResultData([]);
+        fetchFeedData(0);  
     }, [query]);
 
     useEffect(() => {
