@@ -52,7 +52,7 @@ const AutumnWarm = ({ handleRestart }) => {
             </div>
             <div className={styles.page2}>
               <div className={styles['backend-response-scroll']}>
-                <BackendResponseExample />
+                {/* <BackendResponseExample /> */}
                 <div className={styles.image}></div>
                 {/* <img src="./summer.png"></img> */}
                 <BackendResponseDescription />
