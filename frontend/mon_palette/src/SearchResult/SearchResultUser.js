@@ -14,11 +14,13 @@ const SearchResultUser = ({ query }) => {
     const [load, setLoad] = useState(true);
     const endRef = useRef(false);
     const obsRef = useRef(null);
+    const [loading, setLoading] = useState(false);
 
 
     const handleObs = (entries) => {
         const target = entries[0];
         if (!endRef.current && target.isIntersecting) {
+            setLoading(true);
             setUserPage((prevPage) => prevPage + 1);
         }
     };
@@ -38,8 +40,10 @@ const SearchResultUser = ({ query }) => {
             }
 
             setResultData(prev => [...prev, ...response.data.data.user]);
+            setLoading(false);
         } catch (error) {
             console.error(error);
+            setLoading(false);
         }
     };
 

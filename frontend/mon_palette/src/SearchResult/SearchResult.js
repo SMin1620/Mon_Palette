@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import styles from './SearchResult.module.css';
 import SearchResultShop from './SearchResultShop';
 import SearchResultFeed from './SearchResultFeed';
@@ -11,28 +11,30 @@ const SearchResult = () => {
     const [resultType, setResultType] = useState('feed');
     const location = useLocation();
     const searchQuery = new URLSearchParams(location.search).get('query');
+    useEffect(()=> {
 
+    },[resultType])
     let ResultComponent;
     switch (resultType) {
         case 'item':
             ResultComponent = SearchResultShop;
-            break;
-        case 'feed':
-            ResultComponent = SearchResultFeed;
-            break;
-        case 'challenge':
-            ResultComponent = SearchResultChallenge;
-            break;
-        case 'user':
-            ResultComponent = SearchResultUser;
-            break;
-        default:
-            ResultComponent = SearchResultFeed;
-            break;
-    }
+             break;
+         case 'feed':
+             ResultComponent = SearchResultFeed;
+             break;
+         case 'challenge':
+             ResultComponent = SearchResultChallenge;
+             break;
+         case 'user':
+             ResultComponent = SearchResultUser;
+             break;
+         default:
+             ResultComponent = SearchResultFeed;
+             break;
+     }
 
     return (
-        <div>
+        <div className={styles['div']}>
             <div className={styles['search-container']}>
                 <SearchInput />
             </div>

@@ -12,15 +12,21 @@ const SearchResultChallenge = ({ query }) => {
   const Authorization = useRecoilValue(loginState);
   const [resultData, setResultData] = useState([]);
   const [challengePage, setChallengePage] = useState(0);
+  const [feedPage, setFeedPage] = useState(0);
   const [load, setLoad] = useState(true);
   const obsRef = useRef(null);
   const endRef = useRef(false);
+  const [loading, setLoading] = useState(false);
+
 
   
 const handleObs = (entries) => {
         const target = entries[0];
-        if (!endRef.current && target.isIntersecting) {
-            setChallengePage((prevPage) => prevPage + 1);
+        if (!loading && !endRef.current && target.isIntersecting) {
+          setLoading(true);  
+          setChallengePage((prevPage) => prevPage + 1);
+
+
         }
     };
 
@@ -39,6 +45,7 @@ const handleObs = (entries) => {
             }
 
             setResultData(prev => [...prev, ...response.data.data.challenge]);
+            setLoading(false);
         } catch (error) {
             console.error(error);
         }
@@ -47,7 +54,7 @@ const handleObs = (entries) => {
 
     useEffect(() => {
       setResultData([]);
-        fetchUserData(0);  
+        setFeedPage(0);  
         // setResultData(DUMMY_DATA);
     }, [query]);
 
