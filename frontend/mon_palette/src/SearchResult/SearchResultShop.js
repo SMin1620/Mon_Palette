@@ -98,7 +98,7 @@ function SearchResultShop({ query }) {
 
 
   const goDetail = (id) => {
-    navigate(`/item/${id}`)
+    navigate(`/shop/shopdetail/${id}`)
   }
 
   return (

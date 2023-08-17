@@ -256,7 +256,7 @@ function ShoppingCart() {
       alert("결제할 상품을 선택하세요!")
     } else {
       navigate("/payment", {
-        state: checkedItem
+        state: {checkedItem}
       })
     }
   }

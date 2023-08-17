@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styles from './Payment.module.css';
 import axios from 'axios';
 import { useRecoilValue } from 'recoil';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { loginState } from '../user/components/Atom/loginState';
 import * as PortOne from '@portone/browser-sdk/v2';
 
@@ -13,6 +13,66 @@ const Payment = () => {
     const [paymentMethod, setPaymentMethod] = useState("KAKAOPAY");  
     const mainAddress = userInfo.find(address => address.isMain === 1);
     const [totalPrice, setTotalPrice] = useState(0);
+    const location = useLocation();
+    const checkedItems = location.state.checkedItem;
+    const selectedItems = location.state.selectedItems;
+    console.log(checkedItems)
+    console.log(selectedItems)
+
+    function getAggregatedList(data) {
+        const result = [];
+    
+        const groupedByName = data.reduce((acc, item) => {
+            if (!acc[item.name]) {
+                acc[item.name] = [];
+            }
+            acc[item.name].push(item);
+            return acc;
+        }, {});
+    
+        let totalSumPrice = 0; 
+    
+        for (const name in groupedByName) {
+            const items = groupedByName[name];
+            
+            const aggregatedOptions = items.reduce((acc, item) => {
+                item.itemOptionDtoList.forEach(option => {
+                    const existingOption = acc.find(o => o.itemOptionName === option.itemOptionName);
+                    if (existingOption) {
+                        existingOption.itemOptionCount += option.itemOptionCount;
+                    } else {
+                        acc.push({ ...option });
+                    }
+                });
+                return acc;
+            }, []);
+        
+            const itemSumPrice = items.reduce((sum, item) => sum + item.sumPrice, 0);
+            totalSumPrice += itemSumPrice; 
+    
+            result.push({
+                name: name,
+                price: items[0].price,
+                options: aggregatedOptions,
+                sumPrice: itemSumPrice,
+                thumbnail: items[0].thumbnail
+            });
+        }
+        
+        return {
+            items: result,
+            totalSumPrice: totalSumPrice
+        };
+    }
+    
+    // const orderData = getAggregatedList(checkedItems);
+    const orderData = getAggregatedList( checkedItems ? checkedItems : selectedItems )
+    console.log(orderData.items);  
+    console.log(orderData.totalSumPrice);  
+    
+
+
+
     // const [id, setId] = useState(null);
     
     // const {IMP} = window; 
@@ -54,30 +114,30 @@ const Payment = () => {
     //     ]
     // };
     
-    const orderData =  [
-        {
-            itemId: 1,
-            itemOptions: [
-                {
-                    itemOptionId: 1,
-                    itemOptionCount: 1
-                },
+    // const orderData =  [
+    //     {
+    //         itemId: 1,
+    //         itemOptions: [
+    //             {
+    //                 itemOptionId: 1,
+    //                 itemOptionCount: 1
+    //             },
                 // {
                 //     itemOptionId: 56,
                 //     itemOptionCount: 3
                 // }
-            ]
-        },
-        {
-            itemId : 2,
-            itemOptions: [
-                {
-                itemOptionId: 1,
-                itemOptionCount: 1
-            }
-            ]
-        }
-                ];
+        //     ]
+        // },
+        // {
+        //     itemId : 2,
+        //     itemOptions: [
+        //         {
+        //         itemOptionId: 1,
+        //         itemOptionCount: 1
+        //     }
+        //     ]
+        // }
+        //         ];
       
       
                 
@@ -192,21 +252,21 @@ const Payment = () => {
         <div className={styles["item_container"]}>
             <div className={styles.title}>주문상품</div>
             <div>
-                {orderData.map((item, itemIdx) => (
+                {orderData.items.map((item, itemIdx) => (
                     <div key={itemIdx} className={styles.brandbycontainer}>
                         <div className={styles.product}>
-                            <img className={styles.img} src={item.feedImages ? item.feedImages[0].imagePath : null} alt={`Item ${itemIdx + 1}`} />
+                            <img className={styles.img} src={item.thumbnail ? item.thumbnail : null} alt={`Item ${itemIdx + 1}`} />
                             <div className={styles["product-info"]}> 
-                                <h4 className={styles.productname}>{`Item ${item.itemId}`}</h4>
-                                <div>가격: {/* 제품 가격은 실제 데이터에서 가져와야 합니다. */}</div>
+                                <h4 className={styles.productname}>{item.name}</h4>
+                                <div>가격: {item.price}</div>
                             </div>
                         </div>
                         <div className={styles.options}>
                             option: 
                             <div className={styles["option_container"]}>
-                                {item.itemOptions.map((option, optionIdx) => (
+                                {item.options.map((option, optionIdx) => (
                                     <div key={optionIdx} className={styles.option}>
-                                        <p>{`Option ${option.itemOptionId}`}</p>
+                                        <p>{option.itemOptionName}</p>
                                         <p>{option.itemOptionCount}개</p>
                                     </div>
                                 ))}
@@ -261,11 +321,11 @@ const Payment = () => {
                 <div className={styles.priceinfo}>결제 금액</div>
                 <div className={styles.price}>
                     <div>총 결제금액</div>
-                    <div>{totalPrice}원</div>
+                    <div>{orderData.totalSumPrice ? orderData.totalSumPrice : 10000}원</div>
                 </div>
             </div>
             <div className={styles.purchase}>
-                <div onClick={openPaymentWindow}>구매하기({totalPrice}원)</div>
+                <div onClick={openPaymentWindow}>구매하기({orderData.totalSumPrice ? orderData.totalSumPrice : 10000}원)</div>
             </div>
         </div>
     );
