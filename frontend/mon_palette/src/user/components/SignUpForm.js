@@ -51,7 +51,8 @@ const SignUpForm = () => {
 			phoneState &&
 			duplicationEmail &&
 			duplicationNickname &&
-			duplicationPhone
+			duplicationPhone &&
+			passwordError
 		) {
 			axios
 				.post(`${process.env.REACT_APP_API}/api/user/signup`, {
