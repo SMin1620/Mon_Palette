@@ -176,6 +176,10 @@
     margin-bottom: 1.5rem;
 }
 
+.tag_container::-webkit-scrollbar {
+    display: none;
+}
+
 .tags {
     display: flex;
     margin-top: 1rem;
