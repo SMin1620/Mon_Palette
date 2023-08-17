@@ -103,7 +103,7 @@ function App() {
 						path="/feed/:feedId"
 						element={[
 							<PrivateRoute>
-								<NavigationBarHeader title="Mon, Palette" />
+								<NavigationBarHeader />
 								<FeedDetail />
 								<NavigationBarBottom />
 							</PrivateRoute>
@@ -396,7 +396,7 @@ function App() {
 					path="/shop/shopdetail/:id"
 					element={[
 						<PrivateRoute>
-							<NavigationBarHeader title="Mon, Palette" />
+							<NavigationBarHeader />
 							<ItemDetailTop />
 							<ItemDetailBottom />
 						</PrivateRoute>
