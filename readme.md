@@ -1,4 +1,4 @@
-# SSAFY 9기 공통프로젝트  - 팀 Mon, Palette
+# SSAFY 9기 공통프로젝트  - 팀 양치 3분
 
 
 
