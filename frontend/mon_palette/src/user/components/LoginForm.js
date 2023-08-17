@@ -65,6 +65,26 @@ const LoginForm = () => {
 		setPasswordError(!passwordRegex.test(password));
 	};
 
+	
+const SocialLoginButton = ({ socialMedia, buttonText }) => {
+	const imageSrc = `/static/${socialMedia}.png`; // 소셜 미디어에 따른 이미지 경로 설정
+	
+	return (
+		<a href = "https://accounts.google.com/o/oauth2/auth?client_id=103846021246-78is58di7n3hvgml8u73i4g9ro66o2v1.apps.googleusercontent.com&redirect_uri=https://mon-palette:8080/api/login/oauth2/code/google&response_type=code&scope=https://www.googleapis.com/auth/userinfo.email%20https://www.googleapis.com/auth/userinfo.profile">
+	<div className="signUp_social-login-button-container">
+	<button className="signUp_button">
+	<img
+	src={imageSrc}
+	alt={socialMedia}
+	className="signUp_social-media-icon"
+	/>
+	{buttonText}
+	</button>
+	</div>
+	</a>
+	);
+	};
+
 	return (
 		<div className="loginForm_container">
 			<div className="loginForm_form-group">
@@ -117,7 +137,11 @@ const LoginForm = () => {
 			<div className="loginForm_button-container">
 				<button onClick={handleLogin}>Login</button>
 			</div>
-
+			<div className = "loginForm_center" > or </div>
+			<SocialLoginButton
+				socialMedia="google"
+				buttonText="Sign Up with Google"
+			/>
 			<Modal isOpen={isModalOpen} onClose={closeModal}>
 				<h3>ID와 비밀번호를 확인해주세요 ._.</h3>
 			</Modal>
