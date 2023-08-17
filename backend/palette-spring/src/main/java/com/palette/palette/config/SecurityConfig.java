@@ -22,7 +22,7 @@ import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
 @Configuration
 @RequiredArgsConstructor
-@EnableWebSecurity(debug = true)
+@EnableWebSecurity
 public class SecurityConfig {
 
     private final JwtTokenProvider jwtTokenProvider;
@@ -30,7 +30,6 @@ public class SecurityConfig {
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
 
     private final CorsConfig corsConfig;
-//    private final AuthenticationConfiguration authenticationConfiguration;
 
     @Bean
     public PasswordEncoder getPasswordEncoder() {
@@ -60,7 +59,7 @@ public class SecurityConfig {
                         .requestMatchers(mvcMatcherBuilder.pattern("/api/user/signup")).permitAll()
                         .requestMatchers(mvcMatcherBuilder.pattern("https://oauth2.googleapis.com/token")).permitAll()
                         .requestMatchers(mvcMatcherBuilder.pattern("https://www.googleapis.com/oauth2/v2/userinfo")).permitAll()
-                                .requestMatchers(mvcMatcherBuilder.pattern("/api/login/oauth2/code/google")).permitAll()
+                        .requestMatchers(mvcMatcherBuilder.pattern("/api/login/oauth2/code/google")).permitAll()
                         .requestMatchers(mvcMatcherBuilder.pattern("/api/user/idcheck")).permitAll()
                         .requestMatchers(mvcMatcherBuilder.pattern("/api/user/nicknamecheck")).permitAll()
                         .requestMatchers(mvcMatcherBuilder.pattern("/api/user/phonecheck")).permitAll()

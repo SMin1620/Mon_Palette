@@ -5,6 +5,7 @@ import com.palette.palette.domain.category.entity.Category;
 import com.palette.palette.domain.item.entity.Item;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Where;
 
 @Entity
 @Getter

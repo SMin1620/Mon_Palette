@@ -25,6 +25,7 @@
 .feedMain_body {
   height: 100%;
   margin-bottom: 3rem;
+  padding-bottom: 48px;
 }
 
 .feed_tags_container {
