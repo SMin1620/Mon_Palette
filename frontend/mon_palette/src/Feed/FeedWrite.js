@@ -56,7 +56,11 @@ const FeedWrite = () => {
       // 선택한 이미지들의 상대경로를 imageUrlLists에 저장
       for (let i = 0; i < files.length; i++) {
         const currentImageUrl = URL.createObjectURL(files[i])
-        imageUrlLists.push(currentImageUrl)
+        const fileName = files[i].name
+        imageUrlLists.push({
+          name:fileName, 
+          imageUrl:currentImageUrl,
+          body: files[i]})
       }
       if (imageUrlLists.length > 10) {
         imageUrlLists = imageUrlLists.slice(0, 10);
@@ -79,7 +83,6 @@ const FeedWrite = () => {
     };
     try {
       const imageUrl = `https://${BUCKET}.s3.ap-northeast-2.amazonaws.com/${params.Key}`
-      console.log(imageUrl)
       return imageUrl
     } catch (error) {
       console.log(error)
@@ -102,7 +105,7 @@ const FeedWrite = () => {
             const replaceFileName = imageFile.name.replace(/[^A-Za-z0-9_.-]/g, "");
             const params = {
               ACL: "public-read",
-              Body: imageFile,
+              Body: imageFile.body,
               Bucket: BUCKET,
               Key: uuid() + replaceFileName,
             };
@@ -173,7 +176,7 @@ const FeedWrite = () => {
           headers: { Authorization: token },
         })
         .then((response) => {
-          navigate("/feed/")
+          navigate("/feed")
         })
         .catch((error) => {
           console.error(error)
@@ -213,7 +216,7 @@ const FeedWrite = () => {
             selectedImages.map((image, index) => (
               <div key={index} className="feed_write_top_image_container">
                 <div className="feed_write_top_image_item">
-                  <img src={image} alt={index} />
+                  <img src={image.imageUrl} alt={index} />
                   <button onClick={() => handleRemoveImage(index)}>-</button>
                 </div>
               </div>

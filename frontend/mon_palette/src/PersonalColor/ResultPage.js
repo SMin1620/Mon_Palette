@@ -18,7 +18,7 @@ const ResultPage = () => {
   const Authorization = useRecoilValue(loginState);
 
   useEffect(() => {
-    axios.get('/api/user/info', {
+    axios.get(`${process.env.REACT_APP_API}/api/user/info`, {
       headers: {
         Authorization: Authorization  
       }
@@ -34,7 +34,7 @@ const ResultPage = () => {
       }
     })
     .catch(err => console.log(err));
-  }, [Authorization]);  
+  }, []);  
 
   return (
     <div>

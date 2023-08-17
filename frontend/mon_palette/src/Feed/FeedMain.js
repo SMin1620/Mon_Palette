@@ -51,7 +51,6 @@ function FeedMain() {
           headers: { Authorization: token }
         })
         .then((response) => {
-          
           if (response.data.data.feeds.length !== 10) {
             endRef.current = true
             setLoad(false)
@@ -75,7 +74,6 @@ function FeedMain() {
   const handleTags = (tag) => {
     if (tagState !== tag.keyword) {
       setTagState(tag.keyword);
-      console.log(tagState)
     } else {
       setTagState(null);
     }
