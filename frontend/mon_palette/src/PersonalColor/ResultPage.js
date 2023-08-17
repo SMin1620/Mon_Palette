@@ -34,7 +34,7 @@ const ResultPage = () => {
       }
     })
     .catch(err => console.log(err));
-  }, [Authorization]);  
+  }, []);  
 
   return (
     <div>
