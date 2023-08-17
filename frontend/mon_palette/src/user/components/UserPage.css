@@ -91,7 +91,7 @@ html {
 }
 
 .mypage_button1 {
-	width: 100%;
+	width: 5rem;
 	height: 5rem;
 	background-color: white;
 	border: lightgray;
@@ -101,7 +101,7 @@ html {
 	box-shadow: 2px 2px 4px 1px rgba(0, 0, 0, 0.3);
 }
 .mypage_button2 {
-	width: 100%;
+	width: 5rem;
 	height: 5rem;
 	border: lightgray;
 	border-width: 0.1px;
@@ -109,7 +109,7 @@ html {
 	box-shadow: 2px 2px 4px 1px rgba(0, 0, 0, 0.3);
 }
 .mypage_button3 {
-	width: 100%;
+	width: 5rem;
 	height: 5rem;
 	border: lightgray;
 	border-width: 0.1px;
@@ -117,7 +117,7 @@ html {
 	box-shadow: 2px 2px 4px 1px rgba(0, 0, 0, 0.3);
 }
 .mypage_button4 {
-	width: 100%;
+	width: rem;
 	height: 5rem;
 	border: lightgray;
 	border-width: 0.1px;
@@ -126,8 +126,8 @@ html {
 	border-bottom-right-radius: 10px;
 	box-shadow: 2px 2px 4px 1px rgba(0, 0, 0, 0.3);
 }
-.mypage_button7 {
-	width: 100%;
+.mypage_button5 {
+	width: 7rem;
 	height: 3rem;
 	background-color: white;
 	border: lightgray;
@@ -136,16 +136,16 @@ html {
 	border-bottom-left-radius: 10px;
 	box-shadow: 2px 2px 4px 1px rgba(0, 0, 0, 0.3);
 }
-.mypage_button8 {
-	width: 100%;
+.mypage_button6 {
+	width: 6rem;
 	height: 3rem;
 	background-color: white;
 	border: lightgray;
 	border-width: 0.1px;
 	box-shadow: 2px 2px 4px 1px rgba(0, 0, 0, 0.3);
 }
-.mypage_button9 {
-	width: 100%;
+.mypage_button7 {
+	width: 7rem;
 	height: 3rem;
 	background-color: white;
 	border: lightgray;
