@@ -54,7 +54,7 @@ function Home() {
 			.then((response) => {
 				console.log(response);
 				if (response.data !== null) {
-					//setFeedList(response.data.data); // 데이터를 배열로 감싸서 상태 업데이트
+					setFeedList(response.data.data.feeds); // 데이터를 배열로 감싸서 상태 업데이트
 				}
 			})
 			.catch((err) => {
@@ -81,23 +81,21 @@ function Home() {
 			{feedList === undefined || feedList.length === 0 ? (
 				<div className="Home_notfeed"> 인기게시글 없음 ... 글좀써줘잉 </div>
 			) : (
-				feedList.map((info, index) => {
-					return (
-						<div className="feedMain_body">
-							<div className="feedMain_body_info">
-								<div className="feedMain_body_container">
-									<div className="feedMain_body_info_item" key={index}>
-										<img
-											src={info.feedImages[0].imagePath}
-											alt=""
-											onClick={() => handleFeedDetail(info.id)}
-										/>
-									</div>
+				<div className="feedMain_body">
+					<div className="feedMain_body_info">
+						<div className="feedMain_body_container">
+							{feedList.map((info, index) => (
+								<div className="feedMain_body_info_item" key={index}>
+									<img
+										src={info.feedImages[0].imagePath}
+										alt=""
+										onClick={() => handleFeedDetail(info.id)}
+									/>
 								</div>
-							</div>
+							))}
 						</div>
-					);
-				})
+					</div>
+				</div>
 			)}
 		</div>
 	);
