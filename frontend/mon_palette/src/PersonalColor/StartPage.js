@@ -37,7 +37,7 @@ const StartPage = () => {
 
     axios({
       method: "POST",
-      url: 'https://mon-palette.shop:8000/api/django/personal',
+      url: `${process.env.REACT_APP_API}/django/personal`,
       // mode: "cors",
       headers: {
         "Content-Type": "multipart/form-data", 
