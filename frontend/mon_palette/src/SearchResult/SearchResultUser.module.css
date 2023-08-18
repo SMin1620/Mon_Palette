@@ -1,0 +1,25 @@
+.wrap {
+    display: flex;
+    flex-wrap: wrap;
+    /* justify-content: center; */
+    padding: 2rem; 
+    padding-bottom: 48px;
+
+}
+
+.container {
+    /* flex: 0 0 48%;   */
+    margin-bottom: 2rem; 
+}
+
+.img {
+    width: 9rem;
+    border-radius: 50%;
+    display: block; 
+}
+
+.nickname {
+    text-align: center;
+    margin-top: 1rem; 
+    font-size: 1.2rem;
+}

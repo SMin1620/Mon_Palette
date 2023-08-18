@@ -1,0 +1,35 @@
+.wrap {
+    column-count: 2;
+    column-gap: 1em;
+    margin: 0 1em;
+    margin-top: 1em;
+    padding-bottom: 48px;
+  }
+
+  .resultContainer {
+    justify-content: center;
+  }
+
+  .challengeHome_bottom_info_item {
+    display: inline-block;
+    margin-bottom: 1em;
+    border-radius: 10px;
+  }
+
+  .challengeHome_bottom_info_item video {
+    width: 100%;
+    border-radius: 10px;
+  }
+
+  .challengeHome_bottom_info_item_user > img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 0.5rem;
+  }
+  
+  .challengeHome_bottom_info_item_user {
+    display: flex;
+    align-items: center;
+  }

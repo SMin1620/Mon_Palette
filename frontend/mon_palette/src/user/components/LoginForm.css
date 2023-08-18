@@ -1,0 +1,102 @@
+/* LoginForm.css */
+html {
+	font-size: 16px; /* 루트 요소(HTML)의 기본 폰트 크기를 설정합니다. */
+}
+
+.loginForm_container {
+	margin: 50% auto;
+	width: 18.75rem; /* 300px를 rem 단위로 변환 (300 / 16 = 18.75) */
+	text-align: left;
+}
+
+.loginForm_form-group {
+	margin-bottom: 0.9375rem; /* 15px를 rem 단위로 변환 (15 / 16 = 0.9375) */
+	overflow-x: hidden;
+}
+
+.loginForm_label {
+	display: block;
+	font-weight: bold;
+}
+
+.loginForm_input {
+	width: 100%;
+	padding: 0.625rem; /* 10px를 rem 단위로 변환 (10 / 16 = 0.625) */
+	border: none;
+	border-radius: 0;
+	font-size: 1rem; /* 16px를 rem 단위로 변환 (16 / 16 = 1) */
+	border-bottom: 0.125rem solid #dddddd; /* 2px를 rem 단위로 변환 (2 / 16 = 0.125) */
+}
+
+.loginForm_input:-webkit-autofill {
+	-webkit-box-shadow: 0 0 0 1000px white inset;
+	box-shadow: 0 0 0 1000px white inset;
+}
+.loginForm_input:focus {
+	outline: none;
+	border-bottom: 0.125rem solid #e84c8b;
+}
+
+.loginForm_button-container {
+	display: flex;
+	justify-content: center;
+}
+
+.loginForm_button-container button {
+	width: 100%;
+	padding: 1.25rem 2.5rem; /* 20px, 40px를 rem 단위로 변환 (20 / 16 = 1.25, 40 / 16 = 2.5) */
+	background-color: #e84c8b;
+	color: #fff;
+	border: none;
+	border-radius: 0.3125rem; /* 5px를 rem 단위로 변환 (5 / 16 = 0.3125) */
+	font-size: 1rem;
+	cursor: pointer;
+	margin-top: 1rem;
+}
+
+.loginForm_link-container {
+	display: flex;
+	justify-content: center;
+}
+
+.loginForm_link-container p {
+	margin: 0;
+	margin-right: 0.3125rem; /* 5px를 rem 단위로 변환 (5 / 16 = 0.3125) */
+	font-size: 0.875rem; /* 14px를 rem 단위로 변환 (14 / 16 = 0.875) */
+	color: #666;
+}
+
+/* HorizontalLine.css */
+.signUp_horizontal-line-container {
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+}
+/* SocialLoginButton.css */
+.signUp_social-login-button-container {
+	display: flex;
+	justify-content: center;
+	margin-bottom: 10px;
+}
+
+.signUp_social-login-button-container button {
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center; /* 가운데 정렬 추가 */
+	background-color: #f0f0f0;
+	border: none;
+	border-radius: 5px;
+	padding: 10px;
+	cursor: pointer;
+	font-weight: bold;
+}
+.signUp_social-media-icon {
+	width: 20px;
+	height: 20px;
+	margin-right: 8px;
+}
+
+.loginForm_center{
+	text-align: center
+}

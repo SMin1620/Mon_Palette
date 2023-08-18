@@ -1,0 +1,59 @@
+:root {
+  font-size: 16px;
+}
+
+.recent-searches {
+  padding: 0.625rem; 
+  min-height: 15.625rem; 
+}
+
+
+.recent-searches h3 {
+  color: #000;
+  text-align: start;
+  font-size: 1.063rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  margin-left: 0.625rem; 
+  margin-bottom: 0.5rem; 
+}
+
+
+.trending-searches {
+  padding: 0.625rem; 
+}
+
+
+.recent-searches ul {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+
+.recent-searches li {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.125rem 0.625rem; 
+  margin: 0.938rem 0.5rem; 
+  background-color: #d9d9d9;
+  border-radius: 0.938rem; 
+  font-size: 0.875rem; 
+}
+
+.recent-searches button {
+  color: black;
+  background-color: #d9d9d9;
+  border: none;
+  cursor: pointer;
+  margin: 0.125rem 0px 0px 0px; 
+  padding: 0px;
+  font-weight: 700;
+}
+
+.recent-searches span {
+  margin-right: 1.25rem; 
+}
