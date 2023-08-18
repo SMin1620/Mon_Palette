@@ -9,9 +9,12 @@ import SearchIcon from '@mui/icons-material/Search';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
+import { useRecoilValue } from 'recoil';
+import { loginState } from 'src/user/components/Atom/loginState';
 
 function NavigationBarHeader(props) {
   const navigate = useNavigate()
+  const token = useRecoilValue(loginState)
   const [showPage, setShowPage] = useState(false)
   const handleModal = () => { setShowPage(!showPage) }
   const handlePageBack = () => { navigate(-1) }
@@ -38,6 +41,11 @@ function NavigationBarHeader(props) {
 
   const handleCart = () => {
     navigate("/cart")
+  }
+
+  const handleLogOut = () => {
+    window.localStorage.clear()
+    window.location.replace("https://mon-palette.shop/")
   }
   
 
@@ -111,7 +119,7 @@ function NavigationBarHeader(props) {
 
         <div className="modal_bottom">
           {/* <SettingsOutlinedIcon sx={{ fontSize: 30}} className="modal_bottom_settings" /> */}
-          <LogoutOutlinedIcon sx={{ fontSize: 30}} className="modal_bottom_logout" />
+          <LogoutOutlinedIcon sx={{ fontSize: 30}} className="modal_bottom_logout" onClick={handleLogOut} />
         </div>
       </div>
     </>
