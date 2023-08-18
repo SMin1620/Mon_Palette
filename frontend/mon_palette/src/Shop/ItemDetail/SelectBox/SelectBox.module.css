@@ -1,0 +1,121 @@
+.wrapper {
+    display: block;
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+
+    div {
+        border-radius: 0.5rem;
+        position: relative;
+        font-weight: 600;
+    }
+}
+
+select {
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    -o-appearance: none;
+    -ms-appearance: none;
+    appearance: none;
+    border-radius: 0;
+    background: none transparent;
+    vertical-align: middle;
+    font-size: inherit;
+    color: inherit;
+    box-sizing: content-box;
+    margin: 0;
+    width: 120px;
+    border-radius: 0.5rem;
+    padding: 0.75rem 2.5rem 0.65rem 0.75rem;
+    box-shadow: none;
+    box-sizing: border-box;
+    display: block;
+    width: 100%;
+    border: 2px solid #ddd;
+    line-height: 1.06;
+}
+
+ul {
+    position: absolute;
+    z-index: 99;
+    width: 100%;
+    margin-top: 0.25rem;
+    border-radius: 0.5rem;
+    /* border: 2px solid black; */
+    padding: 0.5rem 0.5rem;
+    background: white;
+    list-style: none;
+    box-sizing: border-box;
+
+    button {
+        display: block;
+        width: 100%;
+        text-align: left;
+        transition: all 0.3s;
+        padding: 0.5rem;
+        border-radius: 0.5rem;
+        border: 0;
+        outline: 0;
+        background: none;
+
+        &:hover {
+            background: #eee;
+        }
+        &:active {
+            background: #aaa;
+        }
+        &.selected {
+            background: #000;
+            color: #fff;
+        }
+    }
+}
+
+.arrow {
+    width: 20px;
+    height: 20px;
+    background: #000;
+    display: block;
+    position: absolute;
+    right: 0.5rem;
+    top: 10px;
+    border-radius: 0.25rem;
+    pointer-events: none;
+    &:before,
+    &:after {
+      content: "";
+      background-color: transparent;
+      width: 2px;
+      height: 12px;
+      background: yellow;
+      border-bottom: 7px solid white;
+      display: block;
+      position: absolute;
+      background: none;
+      box-sizing: border-box;
+      transform: rotate(0);
+      transform-origin: center;
+      top: 2px;
+      left: 9px;
+      transition: all 0.3s;
+    }
+    &.is-expanded {
+      &:before,
+      &:after {
+        top: 6px;
+      }
+      &:before {
+        transform: rotate(135deg);
+      }
+      &:after {
+        transform: rotate(-135deg);
+      }
+    }
+    &:before {
+      transform: rotate(45deg);
+    }
+    &:after {
+      transform: rotate(-45deg);
+    }
+  }

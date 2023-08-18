@@ -1,0 +1,23 @@
+:root {
+  font-size: 16px;
+}
+
+.search-container {
+  margin: 0;
+  padding-top: 1.25rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.line {
+  width: 100%; 
+  flex-shrink: 0;
+  display: inline-block;
+  margin: 0.188rem 0px; 
+}
+
+.container {
+  height: 100vh;
+}

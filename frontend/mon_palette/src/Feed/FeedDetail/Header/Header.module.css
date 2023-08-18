@@ -1,0 +1,33 @@
+.feedTotalInfo {
+    display: flex;
+    margin-top: 4.8rem;
+}
+
+.author_info {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.author_info_left {
+    margin-right: 4em;
+}
+
+.h3 {
+    margin-bottom: 0.5em;
+    margin-right: 3em;
+    overflow: auto;
+    text-align: center;
+}
+
+.img {
+    border-radius: 50%;
+    margin: 1em;
+    width: 60px;
+    height: 60px;
+}
+
+.header_container {
+    overflow: hidden;
+}

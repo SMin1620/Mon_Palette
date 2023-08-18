@@ -1,0 +1,24 @@
+.feed_tags_container {
+  width: 100%;
+  display: flex;
+  overflow-x: scroll;
+}
+
+.feed_tags_container::-webkit-scrollbar {
+  display: none;
+}
+
+.feed_tags {
+  display: flex;
+  margin-top: 1rem;
+  margin-left: 1rem;
+}
+
+.feed_tag_item {
+  background-color: #FCE7F1;
+  border-radius: 200px;
+  margin-right: 1rem;
+  font-weight: bold;
+  width: 130px;
+  display: flex;
+}

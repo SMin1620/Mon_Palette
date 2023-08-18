@@ -1,0 +1,210 @@
+.feed {
+    width: 100%;
+    min-height: 300px;
+    
+}
+
+.container {
+    border-bottom: solid 1px black;
+    overflow: hidden;
+}
+
+.feed_wrapper::-webkit-scrollbar {
+    display: none;
+}
+
+.feed_item {
+    width: 100%;
+    height: 20rem;
+    overflow: hidden;
+    margin: 0 auto;
+    border: 3px solid white;
+}
+
+.img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    top: 0;
+    left: 0;
+}
+
+.content {
+    margin: 1rem;
+}
+
+.heart_filled {
+    margin-left: 1rem;
+    color: red;
+    font-size: 20px;
+    cursor: pointer;
+    transition: transform 300ms ease;
+}
+
+.heart_filled:hover {
+    transform: scale(1.1);
+}
+
+.heart {
+    margin-left: 1rem;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.comment {
+    font-size: 20px;
+    margin-left: 10px;
+}
+
+.like_count {
+    margin-left: 1rem;
+    font-size: 13px;
+    cursor: pointer;
+    display: inline-block;
+    margin-bottom: 1rem;
+    margin-top: 0.5rem;
+}
+
+.page {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    right: 200%;
+    background-color: white;
+    transition: right 0.8s ease;
+    z-index: 100; 
+}
+
+.open {
+    right: 0;
+}
+
+.profile_img {
+    border-radius: 50%;
+    margin: 0.8em;
+    /* margin-bottom: 0.7em; */
+    width: 50px;
+    height:50px;
+    align-items: center;
+    margin-right: 30px;
+    
+    
+}
+
+.like_list {
+    display: flex;
+    align-items: center;  
+}
+
+.nickname {
+    font-weight: 700;
+}
+
+.user_wrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.follow_button {
+    margin-right: 1rem;
+}
+
+.back_btn {
+    border: 1px solid black;  
+    border-radius: 50%;
+    margin-left: 1rem;
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.modal_header {
+    border-bottom: 1px solid black;
+    display: flex;
+    justify-content: space-between;
+
+}
+
+
+.header_name {
+    display: flex;
+    align-items: center;
+    font-weight: 700;
+    color: black;
+}
+
+.temp_div {
+    width: 37.6px;
+}
+
+.content_bottom {
+    display: flex;
+    justify-content: space-between;
+}
+
+.more_btn {
+    margin-left: auto;
+    margin-right: 0.5rem;
+}
+
+
+
+.more_btn_container {
+    position: relative;
+    display: inline-block;
+}
+
+.feed_tag {
+    padding: 0;
+    background-color: #FCE7F1;
+    border-radius: 200px;
+    margin-right: 1rem;
+    padding-left: 1rem;
+    font-weight: bold;
+    width: auto;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+.tag_container {
+    width: 100%;
+    display: flex;
+    overflow-x: scroll;
+    margin-bottom: 1.5rem;
+}
+
+.tag_container::-webkit-scrollbar {
+    display: none;
+}
+
+.tags {
+    display: flex;
+    margin-top: 1rem;
+    margin-left: 1rem;
+}
+
+.delete_btn {
+    font-size: 20px;
+    background-color: transparent;
+    color: #e84c8b;
+    border: none;
+}
+
+.edit_btn {
+    font-size: 20px;
+    background-color: transparent;
+    color: #e84c8b;
+    border: none;
+}
+
+.p {
+    background-color: #FCE7F1;
+    border-radius: 200px;
+    margin-right: 1rem;
+    white-space: nowrap;
+    padding: 0 1rem;
+    font-weight: 500;
+}

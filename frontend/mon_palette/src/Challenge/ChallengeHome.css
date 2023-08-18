@@ -1,0 +1,142 @@
+.challengeHome {
+  margin-top: 4.1875em;
+}
+
+.challengeHome_top {
+  width: 100%;
+  display: flex;
+  overflow-x: scroll;
+  margin-bottom: 1rem;
+}
+
+.challengeHome_top::-webkit-scrollbar {
+  display: none;
+}
+
+.challengeHome_top_container {
+  display: flex;
+  margin-top: 1rem;
+  margin-left: 1rem;
+}
+
+.challengeHome_top_image_item {
+  margin-right: 1rem;
+  width: 80px;
+  justify-content: center;
+  align-items: center;
+}
+
+.challengeHome_top_image_item img {
+  margin: auto;
+  width: 100%;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.challengeHome_top_image_item p {
+  text-align: center;
+}
+
+.challenge_mid_label {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 1rem;
+  align-items: center;
+}
+
+.challengeHome_mid_challengeImg {
+  width: 100%;
+  display: flex;
+  overflow-x: scroll;
+  margin-bottom: 1rem;
+}
+
+.challengeHome_mid_container {
+  display: flex;
+  margin-top: 1rem;
+  margin-left: 1rem;
+}
+
+.challengeHome_mid_image_item {
+  background-color: #E2E2E2;
+}
+
+.challengeHome_mid_image_item.visible {
+  background-color: white;
+}
+
+.challengeHome_mid_image_item.visible video {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 4px;
+  margin-right: 1rem;
+}
+
+.challengeHome_mid_challengeImg::-webkit-scrollbar {
+  display: none;
+}
+
+.challengeHome_bottom_label {
+  margin-left: 1em;
+}
+.challengeHome_bottom_challengeInfo {
+  column-count: 2;
+  column-gap: 1em;
+  margin: 0 1em;
+  margin-top: 1em;
+}
+
+.challengeHome_bottom_container {
+  justify-content: center;
+}
+
+.challengeHome_bottom_info_item {
+  display: inline-block;
+  margin-bottom: 1em;
+  border-radius: 10px;
+  background-color: #E2E2E2;
+}
+
+.challengeHome_bottom_info_item.visible {
+  background-color: white;
+}
+
+.challengeHome_bottom_info_item video {
+  width: 100%;
+  border-radius: 10px;
+}
+
+.challengeHome_bottom {
+  margin-bottom: 3em;
+}
+
+.challengeHome_bottom_info_item_user > img {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 0.5rem;
+}
+
+.challengeHome_bottom_info_item_user {
+  display: flex;
+  align-items: center;
+}
+
+.challengeHome_create {
+  position: fixed;
+  bottom: 7%;
+  right: 2%;
+  border: none;
+  background-color: #d72b67;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  color: white;
+  padding: 0.1rem 0.5rem;
+}
+
+.challengeHome_create:active {
+  opacity: 50%;
+}

@@ -1,0 +1,159 @@
+:root {
+  font-size: 16px;
+}
+
+@import url('https://cdn.rawgit.com/moonspam/NanumSquare/master/nanumsquare.css');
+
+.div {
+  overflow: scroll;
+  /* scroll-snap-type: y mandatory; */
+  /* height: 100vh; */
+}
+
+.container {
+  margin-top: 0;
+  background-image: url('../startbg.png');
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  background-position: center;
+  scroll-padding: 12.5rem; 
+}
+
+.page1 {
+  height: 100vh;
+}
+.page2 {
+  height: 80vh;
+}
+
+.exit {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  color: grey;
+}
+
+
+.exit:active {
+  color: grey;
+
+}
+
+.text-container {
+  /* margin-top: 6.25rem; */ 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* scroll-snap-align: start; */
+  /* scroll-margin: 12.5rem;  */
+  height: 31.25rem; 
+}
+
+.text {
+  color: #000;
+  font-size: 3.125rem;
+  font-style: italic;
+  font-weight: 600;
+  line-height: normal;
+  text-align: center;
+}
+
+.text1 {
+  color: #000;
+  font-size: 3.125rem; 
+  font-style: italic;
+  font-weight: 600;
+  line-height: normal;
+  text-align: center;
+  margin-top: 6.25rem;
+}
+
+.backend-response-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.backend-response {
+  color: #000;
+  font-family: Inter;
+  font-size: 3.125rem; 
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  overflow-y: scroll;
+  scroll-snap-stop: normal;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.result-description {
+  padding: 3.125rem 1.5rem 2rem;
+  font-family: 'NanumSquare';
+}
+.result{
+  padding: 3.125rem 0rem 0rem 0rem;
+  font-family: 'NanumSquare';
+  margin-left: 2rem;
+}
+
+.description {
+  margin-top: 1rem;
+  display: flex;
+  
+}
+
+.color {
+  word-wrap: break-word;
+  white-space: pre-wrap;
+}
+
+.hashtag {
+  font-style: italic;
+  font-weight: 900;
+  font-size: 1.3rem;
+  text-align: center;
+}
+
+.backend-response-scroll {
+  scroll-snap-align: start;
+  scroll-margin-top: 5rem; 
+}
+
+.button2 {
+  margin-bottom: 2rem; 
+  padding: 0.625rem 1.25rem; 
+  background-color: #F5719B;
+  color: black;
+  border: none;
+  border-radius: 1.875rem; 
+  cursor: pointer;
+  font-family: Inter;
+  font-size: 1.875rem; 
+  font-weight: 600;
+  width: 9.375rem; 
+}
+
+.result {
+  display: inline-block;
+}
+
+.button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  margin-top: 2rem;
+  /* scroll-snap-align: end; */
+}
+
+.image {
+  background-image: url('./spring_warm.png');
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  background-position: center;
+  margin-top: 1.25rem; 
+  padding: 1.25rem; 
+  height: 10rem;
+}
