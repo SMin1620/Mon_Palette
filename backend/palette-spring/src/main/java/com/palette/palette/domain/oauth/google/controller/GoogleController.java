@@ -35,8 +35,8 @@ public class GoogleController {
         try{
             TokenDto tokenDto = googleService.socialLogin(response, code, registrationId);
             response.sendRedirect(UriComponentsBuilder.fromUriString("https://mon-palette.shop/oauthredirect")
-                    .queryParam("accessToken", tokenDto.getAccessToken())
-                    .queryParam("refreshToken", tokenDto.getRefreshToken())
+                    .queryParam("accessToken", "Bearer "+tokenDto.getAccessToken())
+                    .queryParam("refreshToken", "Bearer " + tokenDto.getRefreshToken())
                     .queryParam("userId", tokenDto.getUserId())
                     .build()
                     .encode(StandardCharsets.UTF_8)
